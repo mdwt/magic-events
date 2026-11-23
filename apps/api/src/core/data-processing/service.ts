@@ -1,23 +1,56 @@
-import type { Catalogue } from "../catalogue/ports.ts";
+import type {
+  Catalogue,
+  ExperienceMatch,
+  Location,
+  SaveExperienceInput,
+  SaveExperienceResult,
+} from "../catalogue/ports.ts";
+import type { ClaimedRawListing, Discovery } from "../discovery/ports.ts";
+import type { Clock } from "../shared/clock.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
+import { type LanguageModel, LanguageModelFailed } from "../shared/language-model.ts";
 import type { Logger } from "../shared/logger.ts";
+import type { ProcessingSettings } from "../shared/settings.ts";
+import type { Transactions } from "../shared/transactions.ts";
+import {
+  checkClassification,
+  classificationAnswerSchema,
+  classificationInstructions,
+  classificationText,
+  type Definitions,
+  seasonsOf,
+} from "./classify.ts";
+import { isIsoDate } from "./dates.ts";
+import {
+  createExtractors,
+  type ExtractedExperience,
+  type Extractor,
+  experienceSpan,
+  sourcingWindow,
+  UnreadableListing,
+} from "./extract.ts";
+import { MATCH_INSTRUCTIONS } from "./instructions.ts";
+import {
+  isFinal,
+  matchAnswerSchema,
+  matchInCode,
+  matchLinked,
+  matchText,
+  pickedCandidate,
+  precedenceOf,
+  type Span,
+} from "./match.ts";
 import type {
   AttributeDefinition,
   DataProcessing,
   DataProcessingRepository,
+  ProcessingOutcome,
   SaveSeasonInput,
   Season,
   TagDefinition,
+  UndefinedValueRow,
+  WarehouseRow,
 } from "./ports.ts";
-
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
-
-function isIsoDate(value: string): boolean {
-  if (!ISO_DATE.test(value)) return false;
-  const parsed = new Date(`${value}T00:00:00Z`);
-  // Rejects dates that do not exist, such as 2027-02-30, which Date would roll over into March.
-  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-}
 
 // Why the attribute's default value does not fit it, or null when it fits.
 function defaultValueProblem(input: AttributeDefinition): string | null {
@@ -38,15 +71,375 @@ function defaultValueProblem(input: AttributeDefinition): string | null {
   }
 }
 
+// The longest error text kept on a failed raw listing.
+const ERROR_TEXT_LIMIT = 1000;
+
+// A short text for the raw listing's error, saying what failed.
+function errorText(error: unknown): string {
+  let text: string;
+  if (error instanceof LanguageModelFailed) text = `The language model failed (${error.reason}): ${error.message}`;
+  else if (error instanceof AppError) text = `${error.code}: ${error.message}`;
+  else if (error instanceof Error) text = error.message;
+  else text = String(error);
+  return text.length > ERROR_TEXT_LIMIT ? `${text.slice(0, ERROR_TEXT_LIMIT - 1)}…` : text;
+}
+
+// A failure that comes from the raw listing or the model's answer, not from the system.
+function isInputFailure(error: unknown): boolean {
+  return (
+    error instanceof LanguageModelFailed ||
+    error instanceof UnreadableListing ||
+    (error instanceof AppError && error.code === "invalid_input")
+  );
+}
+
+// The experience's dates as one span, an open-ended one running to the horizon.
+function spanOf(experience: ExtractedExperience, horizonEnd: string): Span {
+  const { first, last } = experienceSpan(experience);
+  return { start: first, end: last ?? horizonEnd };
+}
+
+// The extracted experience, as Catalogue saves it.
+function saveInput(input: {
+  experience: ExtractedExperience;
+  location: Location;
+  raw: ClaimedRawListing;
+  match: ExperienceMatch | undefined;
+  precedence: "lead" | "fill";
+  attributes: SaveExperienceInput["attributes"];
+  tags: string[];
+  profile: string | undefined;
+}): SaveExperienceInput {
+  const { experience } = input;
+  return {
+    ...(input.match ? { experienceId: input.match.id } : {}),
+    locationId: input.location.id,
+    title: experience.title,
+    summary: experience.summary,
+    description: experience.description,
+    profile: input.profile,
+    type: experience.type,
+    status: experience.status,
+    booking: experience.booking,
+    openingHours: experience.openingHours,
+    venue: experience.venue,
+    price: experience.price,
+    onSaleAt: experience.onSaleAt,
+    bookingClosesAt: experience.bookingClosesAt,
+    bookingUrl: experience.bookingUrl,
+    imageUrl: experience.imageUrl,
+    sessions: experience.sessions.map((session) => ({
+      startDate: session.start,
+      endDate: session.end,
+      precision: session.precision,
+      startTime: session.startTime,
+      endTime: session.endTime,
+      label: session.label,
+      soldOut: session.soldOut,
+      cancelled: session.cancelled,
+    })),
+    recurrence: experience.recurrence,
+    attributes: input.attributes,
+    tags: input.tags,
+    source: { listingId: input.raw.listingId, rawListingId: input.raw.id },
+    precedence: input.precedence,
+  };
+}
+
+function outcomeOf(
+  raw: ClaimedRawListing,
+  counts: Pick<ProcessingOutcome, "experiences" | "created" | "changed" | "unlinked">,
+): ProcessingOutcome {
+  return {
+    rawListingId: raw.id,
+    listingId: raw.listingId,
+    sourceName: raw.source.name,
+    outcome: "processed",
+    ...counts,
+    error: null,
+  };
+}
+
 export class DataProcessingService implements DataProcessing {
   readonly #repository: DataProcessingRepository;
   readonly #catalogue: Catalogue;
+  readonly #discovery: Discovery;
+  readonly #languageModel: LanguageModel;
+  readonly #transactions: Transactions;
+  readonly #settings: ProcessingSettings;
   readonly #logger: Logger;
+  readonly #clock: Clock;
+  readonly #extractors: Map<string, Extractor>;
 
-  constructor(deps: { repository: DataProcessingRepository; catalogue: Catalogue; logger: Logger }) {
+  constructor(deps: {
+    repository: DataProcessingRepository;
+    catalogue: Catalogue;
+    discovery: Discovery;
+    languageModel: LanguageModel;
+    transactions: Transactions;
+    settings: ProcessingSettings;
+    logger: Logger;
+    clock?: Clock;
+  }) {
     this.#repository = deps.repository;
     this.#catalogue = deps.catalogue;
+    this.#discovery = deps.discovery;
+    this.#languageModel = deps.languageModel;
+    this.#transactions = deps.transactions;
+    this.#settings = deps.settings;
     this.#logger = deps.logger.child({ domain: "data-processing" });
+    this.#clock = deps.clock ?? (() => new Date());
+    this.#extractors = createExtractors({
+      languageModel: deps.languageModel,
+      horizonMonths: deps.settings.horizonMonths,
+      logger: this.#logger,
+    });
+  }
+
+  async processNext(): Promise<ProcessingOutcome | null> {
+    // Held outside the transaction, so a failure can be marked once the transaction has rolled back.
+    const claim: { raw?: ClaimedRawListing } = {};
+    try {
+      return await this.#transactions.run(async () => {
+        const raw = await this.#discovery.claimPendingRawListing();
+        if (raw === null) return null;
+        claim.raw = raw;
+        return this.#process(raw);
+      });
+    } catch (error) {
+      // A failure before anything was claimed is the system's, not a raw listing's.
+      if (claim.raw === undefined) throw error;
+      return this.#fail(claim.raw, error);
+    }
+  }
+
+  async processPending(options: { limit?: number } = {}): Promise<ProcessingOutcome[]> {
+    const outcomes: ProcessingOutcome[] = [];
+    while (options.limit === undefined || outcomes.length < options.limit) {
+      const outcome = await this.processNext();
+      if (outcome === null) break;
+      outcomes.push(outcome);
+    }
+    return outcomes;
+  }
+
+  async #process(raw: ClaimedRawListing): Promise<ProcessingOutcome> {
+    const started = performance.now();
+    const context = { rawListingId: raw.id, listingId: raw.listingId, source: raw.source.name };
+
+    if (raw.kind === "removed") {
+      const unlinked = await this.#catalogue.removeSourceLink({ listingId: raw.listingId, rawListingId: raw.id });
+      await this.#discovery.markRawListingProcessed(raw.id);
+      this.#logger.info({ ...context, unlinked: unlinked.length }, "Removed listing processed");
+      return outcomeOf(raw, { experiences: 0, created: 0, changed: 0, unlinked: unlinked.length });
+    }
+
+    const extractor = this.#extractors.get(raw.source.kind);
+    if (extractor === undefined) {
+      throw new UnreadableListing(`No extractor reads the source kind "${raw.source.kind}" yet.`);
+    }
+    if (raw.content === null) throw new UnreadableListing("The raw listing has no content.");
+    const location = await this.#catalogue.getLocation({ id: raw.source.locationId });
+    if (location === null) throw new Error(`The source's location ${raw.source.locationId} does not exist.`);
+
+    const now = this.#clock();
+    const fetchedAt = new Date(raw.fetchedAt);
+    const extracted = await extractor.extract({
+      content: raw.content,
+      contentType: raw.contentType ?? "",
+      ...(raw.url === null ? {} : { url: raw.url }),
+      fetchedAt,
+      now,
+      location,
+    });
+    const { horizonEnd } = sourcingWindow({
+      fetchedAt,
+      now,
+      timezone: location.timezone,
+      horizonMonths: this.#settings.horizonMonths,
+    });
+
+    // The definitions are read once per raw listing, so a changed definition applies from the next one on.
+    const [definitions, seasons, linked] = await Promise.all([
+      this.#repository.listDefinitions(),
+      this.#repository.listSeasons(location.id),
+      this.#catalogue.findExperiencesByListing(raw.listingId),
+    ]);
+    const instructions = classificationInstructions(definitions);
+
+    // The experiences this version matched. Two extracted experiences never match the same stored one.
+    const taken = new Set<string>();
+    const saved: SaveExperienceResult[] = [];
+    const undefinedValues: UndefinedValueRow[] = [];
+
+    for (const experience of extracted) {
+      const { classification, answer } = await this.#classify(experience, definitions, instructions);
+      for (const found of classification.undefinedValues) {
+        this.#logger.warn({ ...context, title: experience.title, ...found }, "Undefined value saved for review");
+        undefinedValues.push({
+          rawListingId: raw.id,
+          kind: found.kind,
+          value: found.value,
+          extractedExperience: experience,
+          modelAnswer: answer,
+        });
+      }
+      if (classification.misfits.length > 0) {
+        this.#logger.warn({ ...context, title: experience.title, values: classification.misfits }, "Values left off");
+      }
+
+      const span = spanOf(experience, horizonEnd);
+      const match = await this.#match({ experience, span, extracted, linked, taken, location });
+      if (match) taken.add(match.id);
+      const precedence = match
+        ? precedenceOf(raw.source.priority, raw.listingId, await this.#discovery.getListingPriorities(match.listingIds))
+        : "lead";
+
+      const tags = [...classification.tags];
+      for (const slug of seasonsOf(experience, seasons, horizonEnd)) if (!tags.includes(slug)) tags.push(slug);
+
+      const result = await this.#catalogue.saveExperience(
+        saveInput({
+          experience,
+          location,
+          raw,
+          match,
+          precedence,
+          attributes: classification.attributes,
+          tags,
+          profile: classification.profile,
+        }),
+      );
+      taken.add(result.experience.id);
+      saved.push(result);
+      if (result.created || result.changed) {
+        this.#logger.info(
+          {
+            ...context,
+            experienceId: result.experience.id,
+            version: result.experience.version,
+            change: result.change,
+            precedence,
+          },
+          result.created ? "Experience published" : "Experience changed",
+        );
+      }
+    }
+
+    // Links that fall away: what this listing linked to before and no longer describes.
+    let unlinked = 0;
+    for (const previous of linked) {
+      if (taken.has(previous.id)) continue;
+      const removed = await this.#catalogue.removeSourceLink({
+        listingId: raw.listingId,
+        experienceId: previous.id,
+        rawListingId: raw.id,
+      });
+      unlinked += removed.length;
+    }
+
+    const rows: WarehouseRow[] = saved.map((result) => ({
+      experienceId: result.experience.id,
+      rawListingId: raw.id,
+      version: result.experience.version,
+      experience: { ...result.experience },
+    }));
+    await this.#repository.appendWarehouseRows(rows);
+    await this.#repository.saveUndefinedValues(undefinedValues);
+    await this.#discovery.markRawListingProcessed(raw.id);
+
+    const counts = {
+      experiences: saved.length,
+      created: saved.filter((result) => result.created).length,
+      changed: saved.filter((result) => result.changed && !result.created).length,
+      unlinked,
+    };
+    this.#logger.info(
+      { ...context, ...counts, milliseconds: Math.round(performance.now() - started) },
+      "Raw listing processed",
+    );
+    return outcomeOf(raw, counts);
+  }
+
+  async #classify(experience: ExtractedExperience, definitions: Definitions, instructions: string) {
+    const answer = await this.#languageModel.ask({
+      instructions,
+      text: classificationText(experience),
+      schema: classificationAnswerSchema,
+    });
+    return { answer, classification: checkClassification(answer, definitions) };
+  }
+
+  // The stored experience this extracted one is, or undefined for a new one.
+  async #match(input: {
+    experience: ExtractedExperience;
+    span: Span;
+    extracted: ExtractedExperience[];
+    linked: ExperienceMatch[];
+    taken: Set<string>;
+    location: Location;
+  }): Promise<ExperienceMatch | undefined> {
+    const { experience, span, linked, taken } = input;
+
+    // The listing's own links first. A listing of one experience that links to one still open updates it.
+    const open = linked.filter((match) => !isFinal(match));
+    const only = open[0];
+    if (input.extracted.length === 1 && open.length === 1 && only !== undefined) return only;
+    // A cancelled experience is final, but the listing that still says so matches it rather than making a copy.
+    const comparable = linked.filter(
+      (match) =>
+        !taken.has(match.id) &&
+        (!isFinal(match) || (match.status === "cancelled" && experience.status === "cancelled")),
+    );
+    const byLink = matchLinked(experience, comparable);
+    if (byLink) return byLink;
+
+    const candidates = (
+      await this.#catalogue.findMatchCandidates({
+        locationId: input.location.id,
+        title: experience.title,
+        from: span.start,
+        to: span.end,
+      })
+    ).filter((candidate) => !taken.has(candidate.id) && !isFinal(candidate));
+    if (candidates.length === 0) return undefined;
+    const inCode = matchInCode(experience, span, candidates);
+    if (inCode) return inCode;
+
+    const answer = await this.#languageModel.ask({
+      instructions: MATCH_INSTRUCTIONS,
+      text: matchText(experience, span, candidates),
+      schema: matchAnswerSchema,
+    });
+    return pickedCandidate(answer, candidates);
+  }
+
+  // Outside the transaction, which has rolled back: nothing from the raw listing is saved, and the claim is free.
+  async #fail(raw: ClaimedRawListing, error: unknown): Promise<ProcessingOutcome> {
+    const text = errorText(error);
+    const marked = await this.#discovery.markRawListingFailed(raw.id, text);
+    const context = {
+      rawListingId: raw.id,
+      listingId: raw.listingId,
+      source: raw.source.name,
+      kind: raw.source.kind,
+      attempts: marked.attempts,
+      willRetry: marked.willRetry,
+      error: text,
+    };
+    if (isInputFailure(error)) this.#logger.warn(context, "Raw listing failed");
+    else this.#logger.error({ ...context, err: error }, "Raw listing failed");
+    return {
+      rawListingId: raw.id,
+      listingId: raw.listingId,
+      sourceName: raw.source.name,
+      outcome: "failed",
+      experiences: 0,
+      created: 0,
+      changed: 0,
+      unlinked: 0,
+      error: text,
+    };
   }
 
   async saveAttribute(input: AttributeDefinition): Promise<AttributeDefinition> {

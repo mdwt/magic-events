@@ -1,6 +1,15 @@
-import { attribute, attributeOption, season, seasonPeriod, tag, type Db } from "@magic-events/db";
+import {
+  attribute,
+  attributeOption,
+  season,
+  seasonPeriod,
+  tag,
+  undefinedValue,
+  warehouseExperience,
+  type Db,
+} from "@magic-events/db";
 import { asc, eq, sql } from "drizzle-orm";
-import type { AttributeDefinition, DataProcessingRepository } from "../../core/data-processing/ports.ts";
+import type { AttributeDefinition, DataProcessingRepository, Season } from "../../core/data-processing/ports.ts";
 
 export function createDataProcessingRepository(db: Db): DataProcessingRepository {
   return {
@@ -90,6 +99,76 @@ export function createDataProcessingRepository(db: Db): DataProcessingRepository
           periods,
         };
       });
+    },
+
+    // Three queries, whatever the number of definitions.
+    async listDefinitions() {
+      const [attributes, options, tags] = await Promise.all([
+        db.select().from(attribute).orderBy(asc(attribute.key)),
+        db.select().from(attributeOption).orderBy(asc(attributeOption.attributeId), asc(attributeOption.position)),
+        db.select({ slug: tag.slug, name: tag.name, description: tag.description }).from(tag).orderBy(asc(tag.slug)),
+      ]);
+      return {
+        attributes: attributes.map(
+          (row): AttributeDefinition => ({
+            key: row.key,
+            name: row.name,
+            description: row.description,
+            type: row.type,
+            defaultValue: row.defaultValue ?? null,
+            multiple: row.multiple,
+            filterable: row.filterable,
+            options: options
+              .filter((option) => option.attributeId === row.id)
+              .map((option) => ({ key: option.key, name: option.name, description: option.description })),
+          }),
+        ),
+        tags,
+      };
+    },
+
+    async listSeasons(locationId) {
+      const rows = await db
+        .select({
+          id: season.id,
+          locationId: season.locationId,
+          slug: season.slug,
+          name: season.name,
+          description: season.description,
+          startDate: seasonPeriod.startDate,
+          endDate: seasonPeriod.endDate,
+        })
+        .from(season)
+        .leftJoin(seasonPeriod, eq(seasonPeriod.seasonId, season.id))
+        .where(eq(season.locationId, locationId))
+        .orderBy(asc(season.slug), asc(seasonPeriod.startDate));
+
+      const seasons = new Map<string, Season>();
+      for (const row of rows) {
+        const found = seasons.get(row.id) ?? {
+          id: row.id,
+          locationId: row.locationId,
+          slug: row.slug,
+          name: row.name,
+          description: row.description,
+          periods: [],
+        };
+        if (row.startDate !== null && row.endDate !== null) {
+          found.periods.push({ startDate: row.startDate, endDate: row.endDate });
+        }
+        seasons.set(row.id, found);
+      }
+      return [...seasons.values()];
+    },
+
+    async appendWarehouseRows(rows) {
+      if (rows.length === 0) return;
+      await db.insert(warehouseExperience).values(rows);
+    },
+
+    async saveUndefinedValues(rows) {
+      if (rows.length === 0) return;
+      await db.insert(undefinedValue).values(rows);
     },
   };
 }

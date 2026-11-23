@@ -86,9 +86,34 @@ export interface DataProcessing {
   saveSeason(input: SaveSeasonInput): Promise<Season>;
 }
 
+// One experience as processing saved it, appended to the data warehouse.
+export interface WarehouseRow {
+  experienceId: string;
+  rawListingId: string;
+  version: number;
+  // The experience as Catalogue saved it.
+  experience: Record<string, unknown>;
+}
+
+// An attribute, option or tag the classifier returned that is not defined, saved for review.
+export interface UndefinedValueRow {
+  rawListingId: string;
+  kind: "attribute" | "option" | "tag";
+  value: string;
+  extractedExperience: Record<string, unknown>;
+  // The model's whole answer.
+  modelAnswer: Record<string, unknown>;
+}
+
 // Outbound port: what Data processing needs.
 export interface DataProcessingRepository {
   upsertAttribute(input: AttributeDefinition): Promise<AttributeDefinition>;
   upsertTag(input: TagDefinition): Promise<TagDefinition>;
   upsertSeason(input: Omit<Season, "id">): Promise<Season>;
+  // Every attribute with its options in order, and every tag, each ordered by key or slug.
+  listDefinitions(): Promise<{ attributes: AttributeDefinition[]; tags: TagDefinition[] }>;
+  // The seasons of a location, with their periods.
+  listSeasons(locationId: string): Promise<Season[]>;
+  appendWarehouseRows(rows: WarehouseRow[]): Promise<void>;
+  saveUndefinedValues(rows: UndefinedValueRow[]): Promise<void>;
 }
