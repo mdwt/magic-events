@@ -116,6 +116,10 @@ export default defineConfig([
         message: "The inbound sides reach data and credentials through the core's services, never directly.",
       },
       {
+        group: ["@aws-sdk/*"],
+        message: "The inbound sides reach the embedding model through Catalogue's service. app.ts hands it over.",
+      },
+      {
         group: ["pg", "pg-boss"],
         message: "The inbound sides reach the job queue through its port. app.ts and server.ts hand it over.",
       },

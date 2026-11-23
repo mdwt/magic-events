@@ -475,6 +475,8 @@ export interface Catalogue {
   // Creates the location, or updates the one that has this slug.
   saveLocation(input: SaveLocationInput): Promise<Location>;
   getLocation(by: { id: string } | { slug: string }): Promise<Location | null>;
+  // One experience whole, whatever its status, by its ID or its slug. Null when there is none.
+  getExperience(by: { id: string } | { slug: string }): Promise<StoredExperience | null>;
 
   // The experiences a listing is linked to, whatever their status.
   findExperiencesByListing(listingId: string): Promise<ExperienceMatch[]>;
@@ -527,6 +529,8 @@ export interface CatalogueRepository {
   findLocation(by: { id: string } | { slug: string }): Promise<Location | null>;
   // Experiences whole, by ID or by a listing they are linked to.
   loadExperiences(by: { ids: string[] } | { listingId: string }): Promise<StoredExperience[]>;
+  // The ID of the experience with this ID or this slug, or null when there is none.
+  findExperienceId(by: { id: string } | { slug: string }): Promise<string | null>;
   // The IDs of the match candidates, best match first.
   findMatchCandidateIds(query: {
     locationId: string;
