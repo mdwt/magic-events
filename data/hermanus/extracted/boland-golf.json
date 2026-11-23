@@ -29,6 +29,7 @@
       "Arabella"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -72,6 +73,7 @@
       "Arabella"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -114,6 +116,7 @@
       "Hermanus"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -156,6 +159,7 @@
       "Hermanus"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -198,6 +202,7 @@
       "Kleinmond"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -240,6 +245,7 @@
       "Hermanus"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"

@@ -26,6 +26,7 @@
       "Hermanus First Friday"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -69,6 +70,7 @@
       "Festivals & Markets"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -114,6 +116,7 @@
       "parkrun"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],

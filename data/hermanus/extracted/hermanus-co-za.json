@@ -26,6 +26,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -65,6 +66,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -110,6 +112,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -150,6 +153,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -194,6 +198,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "culture_and_heritage"
       ],
@@ -237,6 +242,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -279,6 +285,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -318,6 +325,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -354,6 +362,7 @@
       "Hermanus Events (Google Calendar)"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "music"
@@ -392,6 +401,7 @@
       "Markets"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "music"

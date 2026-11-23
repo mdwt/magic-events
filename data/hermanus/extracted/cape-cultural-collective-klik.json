@@ -38,6 +38,7 @@
       "Programmes"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "culture_and_heritage",
         "music",

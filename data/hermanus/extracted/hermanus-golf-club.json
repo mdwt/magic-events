@@ -25,6 +25,7 @@
       "fixtures"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"

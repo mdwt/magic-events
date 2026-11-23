@@ -26,6 +26,7 @@
     },
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Wildlife-Sculpture-Exhibition-Hermanus_b0477338-b0c3-4875-b0b2-a4d3e3827c03.jpg?v=1785922508",
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts",
         "nature_and_wildlife"
@@ -74,6 +75,7 @@
     },
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Benguela-Cove-ParkRun_711a6b54-3c3a-496e-a0c0-90653f4a338b.jpg?v=1761229858",
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -129,6 +131,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/the-blending-table",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Blending-Table_ee8b08c1-bad5-4326-9490-5be819b3cea7.jpg?v=1785946445",
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -177,6 +180,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/fire-on-the-lagoon-dinners",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Dining-Hermanus-Fire-Lagoon_2b5b20ed-99f4-479b-9eb7-f488642b83cd.jpg?v=1790174108",
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -251,6 +255,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/swallow-series-wine-tasting-lunch-events",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Swallow-Series-Wine-Tasting-Events-Cape-Town_9fb9c511-d1cb-4d0b-bd0a-ed4dcd2ad173.jpg?v=1794479333",
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -304,6 +309,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/that-80s-show-concert",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Live-music-performance-Hermanus_cad74d48-cc46-4bc4-95c5-e547ce7d066f.jpg?v=1786014617",
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -347,6 +353,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/christmas-eve-dinner-2026",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/12209_BCSA_Moody_Lagoon_Christmas_Eve_Dinner_2026_Social_posts_no_QR_d4e24acb-73ab-478b-8b54-0ce41c4184b3.jpg?v=1787138650",
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
@@ -392,6 +399,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/christmas-lunch-2026",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Christmas-Day-Lunch_88f45eb8-bb66-4c2b-acfb-473890bc2858.jpg?v=1787138221",
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
@@ -439,6 +447,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/new-years-eve-2026",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/NYE-2026-Party-Benguela-Cove_63e23000-518a-449a-a558-9bc6534147c1.jpg?v=1791458270",
     "attributes": {
+      "tier": "premium",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -488,6 +497,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/andrew-young-live-concert",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Andrew-Young-Live-Concert_986d28cc-9feb-49f5-8f10-0599aa6224c4.jpg?v=1786972122",
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -542,6 +552,7 @@
     "bookingUrl": "https://benguelacove.co.za/products/dancing-queen-ultimate-abba-experience",
     "imageUrl": "http://benguelacove.co.za/cdn/shop/files/11909_BCSA_ABBA_Show-Digital_Assets-v2_IG_POST_2_EVENT_2_f9e0ea4f-f912-4762-924f-b836d8f24342.png?v=1794224460",
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],

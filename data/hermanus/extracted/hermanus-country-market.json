@@ -19,7 +19,7 @@
       "city": "Hermanus"
     },
     "hints": ["Pet-friendly", "Family-friendly", "Music", "Hand-made", "Home-made", "Local"],
-    "attributes": { "category": ["food_and_drink", "visual_arts"], "format": "market", "audience": "all_ages", "setting": "outdoor", "scale": "local" },
+    "attributes": { "tier": "everyday", "category": ["food_and_drink", "visual_arts"], "format": "market", "audience": "all_ages", "setting": "outdoor", "scale": "local" },
     "tags": ["craft"],
     "profile": "A weekly open-air Saturday market at the Hermanus Cricket Club with over 60 traders selling fresh produce, artisan breads, prepared food, crafts, jewellery and clothing. Visitors shop, eat on site and listen to live music, and children have a Kiddies' Corner and jungle gym. It suits families, pet owners and anyone looking for local food and handmade gifts on a Saturday morning."
   },
@@ -43,7 +43,7 @@
       "city": "Hermanus"
     },
     "hints": ["Night Markets", "Summer Festive Season"],
-    "attributes": { "category": ["food_and_drink", "holidays_and_celebrations"], "format": "market", "audience": "all_ages", "setting": "outdoor", "scale": "local" },
+    "attributes": { "tier": "everyday", "category": ["food_and_drink", "holidays_and_celebrations"], "format": "market", "audience": "all_ages", "setting": "outdoor", "scale": "local" },
     "tags": ["christmas", "craft"],
     "profile": "An evening edition of the Hermanus Country Market held on Wednesdays in December and January, from 5pm to 9pm. Visitors browse the market's local food and craft stalls on a summer evening. It suits holidaymakers and families in Hermanus over the festive season."
   }
