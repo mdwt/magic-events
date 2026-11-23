@@ -1,4 +1,5 @@
 import type { Location } from "../catalogue/ports.ts";
+import type { DomainEvent } from "../shared/domain-events.ts";
 import type { LastRun } from "./due.ts";
 
 export type { LastRun };
@@ -190,8 +191,10 @@ export interface RawListingForMark {
   maxProcessingAttempts: number;
 }
 
+type Captured = DomainEvent<"raw_listing.captured">;
+
 // Outbound port: what Discovery needs from storage. Each method that saves a raw listing, or changes its status,
-// appends the domain event for it in the same transaction.
+// appends the domain event for it in the same transaction and returns the event as stored. It does not publish it.
 export interface DiscoveryRepository {
   upsertSource(input: Omit<Source, "id">): Promise<Source>;
   listSources(): Promise<Source[]>;
@@ -208,30 +211,33 @@ export interface DiscoveryRepository {
 
   findListings(sourceId: string): Promise<KnownListing[]>;
   // Creates the listing, first and last seen by the version's run, with its first raw listing.
-  saveNewListing(input: { sourceId: string; sourceListingId: string } & ListingVersion): Promise<string>;
+  saveNewListing(input: { sourceId: string; sourceListingId: string } & ListingVersion): Promise<Captured>;
   // Saves a new version of a listing: its fingerprint, last seen and state listed, with a new raw listing.
-  saveListingVersion(input: { listingId: string } & ListingVersion): Promise<void>;
+  saveListingVersion(input: { listingId: string } & ListingVersion): Promise<Captured>;
   // Sets the last seen run of listings that came back unchanged.
   markListingsSeen(listingIds: string[], runId: string): Promise<void>;
   // Listed listings of the source that at least `missedRuns` successful, complete runs have started after the
   // run that last saw them.
   findMissedListings(sourceId: string, missedRuns: number): Promise<string[]>;
   // Sets the listings to removed, each with a pending raw listing of kind removed, all in one transaction.
-  removeListings(listingIds: string[], runId: string, removedAt: Date): Promise<void>;
+  removeListings(listingIds: string[], runId: string, removedAt: Date): Promise<Captured[]>;
 
   // Must be called inside a transaction, which holds the lock until it ends. Locked rows are skipped.
   lockOldestPendingRawListing(): Promise<LockedRawListing | null>;
   // Sets the listing's pending and failed versions other than the newer one, and older than it, to superseded.
-  // Versions locked by another transaction are skipped. Returns the IDs it set.
-  supersedeOlderVersions(input: { listingId: string; newerRawListingId: string }): Promise<string[]>;
+  // Versions locked by another transaction are skipped. Returns an event for each one it set.
+  supersedeOlderVersions(input: {
+    listingId: string;
+    newerRawListingId: string;
+  }): Promise<DomainEvent<"raw_listing.superseded">[]>;
   findRawListingForMark(rawListingId: string): Promise<RawListingForMark | null>;
-  markRawListingProcessed(input: { id: string; listingId: string }): Promise<void>;
+  markRawListingProcessed(input: { id: string; listingId: string }): Promise<DomainEvent<"raw_listing.processed">>;
   markRawListingFailed(input: {
     id: string;
     listingId: string;
     attempts: number;
     error: string;
     willRetry: boolean;
-  }): Promise<void>;
+  }): Promise<DomainEvent<"raw_listing.failed">>;
   findListingPriorities(listingIds: string[]): Promise<Record<string, number>>;
 }

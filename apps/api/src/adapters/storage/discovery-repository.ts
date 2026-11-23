@@ -2,6 +2,7 @@ import { events, listing, rawListing, run, source, type Db, type Tx } from "@mag
 import { and, asc, count, desc, eq, gt, gte, inArray, lt, lte, ne, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import type { DiscoveryRepository, LastRun, ListingVersion, Source } from "../../core/discovery/ports.ts";
+import type { DomainEvent, DomainEventType } from "../../core/shared/domain-events.ts";
 
 type SourceRow = typeof source.$inferSelect;
 
@@ -21,8 +22,37 @@ function toSource(row: SourceRow): Source {
   };
 }
 
+interface Stored {
+  id: string;
+  recordedAt: string;
+}
+
+// Appends domain events, one per resource, and gives back each one's ID and time by its resource ID.
+async function appendEvents(
+  tx: Tx,
+  rows: { type: DomainEventType; resourceId: string; data: Record<string, unknown> }[],
+): Promise<(resourceId: string) => Stored> {
+  const saved =
+    rows.length === 0
+      ? []
+      : await tx
+          .insert(events)
+          .values(rows)
+          .returning({ id: events.id, resourceId: events.resourceId, recordedAt: events.recordedAt });
+  const byResource = new Map(saved.map((row) => [row.resourceId, { id: row.id, recordedAt: row.recordedAt.toISOString() }]));
+  return (resourceId) => {
+    const stored = byResource.get(resourceId);
+    if (!stored) throw new Error(`Appending the domain event of ${resourceId} returned no row`);
+    return stored;
+  };
+}
+
 // The pending raw listing of one version of a listing, with its raw_listing.captured domain event.
-async function captureVersion(tx: Tx, listingId: string, version: ListingVersion): Promise<void> {
+async function captureVersion(
+  tx: Tx,
+  listingId: string,
+  version: ListingVersion,
+): Promise<DomainEvent<"raw_listing.captured">> {
   const [saved] = await tx
     .insert(rawListing)
     .values({
@@ -36,11 +66,9 @@ async function captureVersion(tx: Tx, listingId: string, version: ListingVersion
     })
     .returning({ id: rawListing.id });
   if (!saved) throw new Error("Saving the raw listing returned no row");
-  await tx.insert(events).values({
-    type: "raw_listing.captured",
-    resourceId: saved.id,
-    data: { listing_id: listingId, run_id: version.runId, kind: "listing" },
-  });
+  const data = { listing_id: listingId, run_id: version.runId, kind: "listing" as const };
+  const stored = await appendEvents(tx, [{ type: "raw_listing.captured", resourceId: saved.id, data }]);
+  return { ...stored(saved.id), type: "raw_listing.captured", resourceId: saved.id, data };
 }
 
 export function createDiscoveryRepository(db: Db): DiscoveryRepository {
@@ -164,13 +192,12 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
           })
           .returning({ id: listing.id });
         if (!created) throw new Error("Saving the listing returned no row");
-        await captureVersion(tx, created.id, input);
-        return created.id;
+        return captureVersion(tx, created.id, input);
       });
     },
 
     async saveListingVersion(input) {
-      await db.transaction(async (tx) => {
+      return db.transaction(async (tx) => {
         await tx
           .update(listing)
           .set({
@@ -181,7 +208,7 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
             updatedAt: sql`now()`,
           })
           .where(eq(listing.id, input.listingId));
-        await captureVersion(tx, input.listingId, input);
+        return captureVersion(tx, input.listingId, input);
       });
     },
 
@@ -225,8 +252,8 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
 
     // Every listing set to removed, each with its raw listing of kind removed and its domain event, together.
     async removeListings(listingIds, runId, removedAt) {
-      if (listingIds.length === 0) return;
-      await db.transaction(async (tx) => {
+      if (listingIds.length === 0) return [];
+      return db.transaction(async (tx) => {
         await tx
           .update(listing)
           .set({ state: "removed", updatedAt: sql`now()` })
@@ -235,13 +262,13 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
           .insert(rawListing)
           .values(listingIds.map((listingId) => ({ listingId, runId, kind: "removed" as const, fetchedAt: removedAt })))
           .returning({ id: rawListing.id, listingId: rawListing.listingId });
-        await tx.insert(events).values(
-          saved.map((one) => ({
-            type: "raw_listing.captured",
-            resourceId: one.id,
-            data: { listing_id: one.listingId, run_id: runId, kind: "removed" },
-          })),
-        );
+        const captured = saved.map((one) => ({
+          type: "raw_listing.captured" as const,
+          resourceId: one.id,
+          data: { listing_id: one.listingId, run_id: runId, kind: "removed" as const },
+        }));
+        const stored = await appendEvents(tx, captured);
+        return captured.map((event) => ({ ...stored(event.resourceId), ...event }));
       });
     },
 
@@ -306,16 +333,13 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
           .set({ status: "superseded" })
           .where(inArray(rawListing.id, candidates))
           .returning({ id: rawListing.id });
-        if (superseded.length > 0) {
-          await tx.insert(events).values(
-            superseded.map((one) => ({
-              type: "raw_listing.superseded",
-              resourceId: one.id,
-              data: { listing_id: listingId, raw_listing_id: newerRawListingId },
-            })),
-          );
-        }
-        return superseded.map((one) => one.id);
+        const appended = superseded.map((one) => ({
+          type: "raw_listing.superseded" as const,
+          resourceId: one.id,
+          data: { listing_id: listingId, raw_listing_id: newerRawListingId },
+        }));
+        const stored = await appendEvents(tx, appended);
+        return appended.map((event) => ({ ...stored(event.resourceId), ...event }));
       });
     },
 
@@ -336,30 +360,30 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
     },
 
     async markRawListingProcessed({ id, listingId }) {
-      await db.transaction(async (tx) => {
+      return db.transaction(async (tx) => {
         const [updated] = await tx
           .update(rawListing)
           .set({ status: "processed" })
           .where(and(eq(rawListing.id, id), eq(rawListing.status, "pending")))
           .returning({ id: rawListing.id });
         if (!updated) throw new Error(`Raw listing ${id} is not pending, so it cannot be marked processed`);
-        await tx.insert(events).values({ type: "raw_listing.processed", resourceId: id, data: { listing_id: listingId } });
+        const data = { listing_id: listingId };
+        const stored = await appendEvents(tx, [{ type: "raw_listing.processed", resourceId: id, data }]);
+        return { ...stored(id), type: "raw_listing.processed" as const, resourceId: id, data };
       });
     },
 
     async markRawListingFailed({ id, listingId, attempts, error, willRetry }) {
-      await db.transaction(async (tx) => {
+      return db.transaction(async (tx) => {
         const [updated] = await tx
           .update(rawListing)
           .set({ status: willRetry ? "pending" : "failed", attempts, error })
           .where(and(eq(rawListing.id, id), eq(rawListing.status, "pending")))
           .returning({ id: rawListing.id });
         if (!updated) throw new Error(`Raw listing ${id} is not pending, so it cannot be marked failed`);
-        await tx.insert(events).values({
-          type: "raw_listing.failed",
-          resourceId: id,
-          data: { listing_id: listingId, error, attempt: attempts, will_retry: willRetry },
-        });
+        const data = { listing_id: listingId, error, attempt: attempts, will_retry: willRetry };
+        const stored = await appendEvents(tx, [{ type: "raw_listing.failed", resourceId: id, data }]);
+        return { ...stored(id), type: "raw_listing.failed" as const, resourceId: id, data };
       });
     },
 

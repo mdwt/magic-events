@@ -1,5 +1,6 @@
 import type { Catalogue, Location } from "../catalogue/ports.ts";
 import type { Clock } from "../shared/clock.ts";
+import type { DomainEventPublisher } from "../shared/domain-events.ts";
 import { AppError } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { DiscoverySettings } from "../shared/settings.ts";
@@ -33,6 +34,7 @@ interface Counts {
 
 export class DiscoveryService implements Discovery {
   readonly #repository: DiscoveryRepository;
+  readonly #events: DomainEventPublisher;
   readonly #catalogue: Catalogue;
   readonly #fetchers: Map<string, SourceFetcher>;
   readonly #settings: DiscoverySettings;
@@ -41,6 +43,7 @@ export class DiscoveryService implements Discovery {
 
   constructor(deps: {
     repository: DiscoveryRepository;
+    events: DomainEventPublisher;
     catalogue: Catalogue;
     fetchers: SourceFetcher[];
     settings: DiscoverySettings;
@@ -48,6 +51,7 @@ export class DiscoveryService implements Discovery {
     clock?: Clock;
   }) {
     this.#repository = deps.repository;
+    this.#events = deps.events;
     this.#catalogue = deps.catalogue;
     this.#fetchers = new Map(deps.fetchers.map((fetcher) => [fetcher.kind, fetcher]));
     this.#settings = deps.settings;
@@ -170,7 +174,11 @@ export class DiscoveryService implements Discovery {
     let removed = 0;
     if (status === "succeeded" && complete) {
       const missed = await this.#repository.findMissedListings(source.id, source.missedRunsBeforeRemoval);
-      if (missed.length > 0) await this.#repository.removeListings(missed, runId, this.#clock());
+      if (missed.length > 0) {
+        for (const event of await this.#repository.removeListings(missed, runId, this.#clock())) {
+          this.#events.publish(event);
+        }
+      }
       removed = missed.length;
     }
 
@@ -213,9 +221,14 @@ export class DiscoveryService implements Discovery {
         listingId: rawListing.listingId,
         newerRawListingId: latestRawListingId,
       });
+      for (const event of superseded) this.#events.publish(event);
       if (superseded.length > 0) {
         this.#logger.debug(
-          { listingId: rawListing.listingId, superseded, newerRawListingId: latestRawListingId },
+          {
+            listingId: rawListing.listingId,
+            superseded: superseded.map((event) => event.resourceId),
+            newerRawListingId: latestRawListingId,
+          },
           "Older versions of a listing superseded",
         );
       }
@@ -231,7 +244,9 @@ export class DiscoveryService implements Discovery {
 
   async markRawListingProcessed(rawListingId: string): Promise<void> {
     const rawListing = await this.#pending(rawListingId);
-    await this.#repository.markRawListingProcessed({ id: rawListing.id, listingId: rawListing.listingId });
+    this.#events.publish(
+      await this.#repository.markRawListingProcessed({ id: rawListing.id, listingId: rawListing.listingId }),
+    );
     this.#logger.info({ rawListingId, listingId: rawListing.listingId }, "Raw listing processed");
   }
 
@@ -240,13 +255,14 @@ export class DiscoveryService implements Discovery {
     const attempts = rawListing.attempts + 1;
     // Back to pending while attempts are below the source's max, then failed for good.
     const willRetry = attempts < rawListing.maxProcessingAttempts;
-    await this.#repository.markRawListingFailed({
+    const event = await this.#repository.markRawListingFailed({
       id: rawListing.id,
       listingId: rawListing.listingId,
       attempts,
       error,
       willRetry,
     });
+    this.#events.publish(event);
     this.#logger.info({ rawListingId, listingId: rawListing.listingId, attempts, willRetry }, "Raw listing failed");
     return { attempts, willRetry };
   }
@@ -318,17 +334,18 @@ export class DiscoveryService implements Discovery {
         };
         const record = known.get(listing.sourceListingId);
         if (!record) {
-          await this.#repository.saveNewListing({
+          const event = await this.#repository.saveNewListing({
             sourceId: source.id,
             sourceListingId: listing.sourceListingId,
             ...version,
           });
+          this.#events.publish(event);
           counts.newOrChanged += 1;
         } else if (record.fingerprint === version.fingerprint && record.state === "listed") {
           unchanged.push(record.id);
           counts.unchanged += 1;
         } else {
-          await this.#repository.saveListingVersion({ listingId: record.id, ...version });
+          this.#events.publish(await this.#repository.saveListingVersion({ listingId: record.id, ...version }));
           counts.newOrChanged += 1;
           if (record.state === "removed") {
             logger.info({ listingId: record.id, sourceListingId: listing.sourceListingId }, "A removed listing is back");

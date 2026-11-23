@@ -19,6 +19,7 @@ import type {
 import type { LastRun } from "../src/core/discovery/due.ts";
 import { DiscoveryService } from "../src/core/discovery/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
+import type { DomainEvent, DomainEventPublisher } from "../src/core/shared/domain-events.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
 import type { DiscoverySettings } from "../src/core/shared/settings.ts";
 
@@ -84,10 +85,12 @@ interface FakeListing extends KnownListing {
 }
 
 interface FakeRawListing {
+  id: string;
   listingId: string;
   runId: string;
   kind: "listing" | "removed";
   content: string | null;
+  status: "pending" | "processed" | "failed" | "superseded";
 }
 
 // Storage as the Discovery repository keeps it, in memory, with the same rules for missed listings.
@@ -97,10 +100,25 @@ function memoryRepository() {
   const listings: FakeListing[] = [];
   const rawListings: FakeRawListing[] = [];
   const syncStates: Record<string, unknown>[] = [];
+  // Every domain event the repository appended, in order.
+  const appended: DomainEvent[] = [];
   let failSaveAfter = Infinity;
 
-  function capture(listingId: string, version: ListingVersion) {
-    rawListings.push({ listingId, runId: version.runId, kind: "listing", content: version.content });
+  function append<E extends DomainEvent>(event: E): E {
+    appended.push(event);
+    return event;
+  }
+
+  function capture(listingId: string, version: ListingVersion): DomainEvent<"raw_listing.captured"> {
+    const id = randomUUID();
+    rawListings.push({ id, listingId, runId: version.runId, kind: "listing", content: version.content, status: "pending" });
+    return append({
+      id: randomUUID(),
+      type: "raw_listing.captured",
+      resourceId: id,
+      data: { listing_id: listingId, run_id: version.runId, kind: "listing" },
+      recordedAt: version.fetchedAt.toISOString(),
+    });
   }
 
   const repository: DiscoveryRepository = {
@@ -170,14 +188,12 @@ function memoryRepository() {
         state: "listed",
         lastSeenRunId: input.runId,
       });
-      capture(id, input);
-      return Promise.resolve(id);
+      return Promise.resolve(capture(id, input));
     },
     saveListingVersion(input) {
       const found = listings.find((one) => one.id === input.listingId);
       if (found) Object.assign(found, { fingerprint: input.fingerprint, state: "listed", lastSeenRunId: input.runId });
-      capture(input.listingId, input);
-      return Promise.resolve();
+      return Promise.resolve(capture(input.listingId, input));
     },
     markListingsSeen(listingIds, runId) {
       for (const one of listings) if (listingIds.includes(one.id)) one.lastSeenRunId = runId;
@@ -195,20 +211,85 @@ function memoryRepository() {
       });
       return Promise.resolve(missed.map((one) => one.id));
     },
-    removeListings(listingIds, runId) {
+    removeListings(listingIds, runId, removedAt) {
+      const events: DomainEvent<"raw_listing.captured">[] = [];
       for (const one of listings) {
         if (!listingIds.includes(one.id)) continue;
         one.state = "removed";
-        rawListings.push({ listingId: one.id, runId, kind: "removed", content: null });
+        const id = randomUUID();
+        rawListings.push({ id, listingId: one.id, runId, kind: "removed", content: null, status: "pending" });
+        events.push(
+          append({
+            id: randomUUID(),
+            type: "raw_listing.captured",
+            resourceId: id,
+            data: { listing_id: one.id, run_id: runId, kind: "removed" },
+            recordedAt: removedAt.toISOString(),
+          }),
+        );
       }
-      return Promise.resolve();
+      return Promise.resolve(events);
     },
-    lockOldestPendingRawListing: notUsed,
-    supersedeOlderVersions: notUsed,
+    // The oldest pending raw listing, and the newest version of its listing, in the order they were saved.
+    lockOldestPendingRawListing() {
+      const oldest = rawListings.find((one) => one.status === "pending");
+      if (!oldest) return Promise.resolve(null);
+      const latest = rawListings.filter((one) => one.listingId === oldest.listingId).at(-1) ?? oldest;
+      return Promise.resolve({
+        rawListing: {
+          id: oldest.id,
+          listingId: oldest.listingId,
+          kind: oldest.kind,
+          source: { id: "source-1", name: "Organiser pages", kind: "web_page", priority: 0, locationId: hermanus.id },
+          url: null,
+          contentType: "text/html",
+          content: oldest.content,
+          fetchedAt: "2026-11-23T08:00:00.000Z",
+          attempts: 0,
+        },
+        latestRawListingId: latest.id,
+      });
+    },
+    supersedeOlderVersions({ listingId, newerRawListingId }) {
+      const newer = rawListings.findIndex((one) => one.id === newerRawListingId);
+      const older = rawListings
+        .slice(0, newer)
+        .filter((one) => one.listingId === listingId && (one.status === "pending" || one.status === "failed"));
+      return Promise.resolve(
+        older.map((one) => {
+          one.status = "superseded";
+          return append({
+            id: randomUUID(),
+            type: "raw_listing.superseded",
+            resourceId: one.id,
+            data: { listing_id: listingId, raw_listing_id: newerRawListingId },
+            recordedAt: "2026-11-23T08:00:00.000Z",
+          });
+        }),
+      );
+    },
     findRawListingForMark: (id) =>
       Promise.resolve({ id, listingId: "listing-1", status: "pending", attempts: 1, maxProcessingAttempts: 3 }),
-    markRawListingProcessed: () => Promise.resolve(),
-    markRawListingFailed: () => Promise.resolve(),
+    markRawListingProcessed: ({ id, listingId }) =>
+      Promise.resolve(
+        append({
+          id: randomUUID(),
+          type: "raw_listing.processed",
+          resourceId: id,
+          data: { listing_id: listingId },
+          recordedAt: "2026-11-23T08:00:00.000Z",
+        }),
+      ),
+    markRawListingFailed: ({ id, listingId, attempts, error, willRetry }) =>
+      Promise.resolve(
+        append({
+          id: randomUUID(),
+          type: "raw_listing.failed",
+          resourceId: id,
+          data: { listing_id: listingId, error, attempt: attempts, will_retry: willRetry },
+          recordedAt: "2026-11-23T08:00:00.000Z",
+        }),
+      ),
     findListingPriorities: (ids) => Promise.resolve(Object.fromEntries(ids.map((id) => [id, 10]))),
   };
 
@@ -218,6 +299,7 @@ function memoryRepository() {
     listings,
     rawListings,
     syncStates,
+    appended,
     failSavesAfter(count: number) {
       failSaveAfter = count;
     },
@@ -261,8 +343,16 @@ function setup(options: { fetchers?: SourceFetcher[]; start?: string } = {}) {
   const memory = memoryRepository();
   const adapter = fakeFetcher();
   let now = new Date(options.start ?? "2026-11-23T08:00:00Z");
+  // A publisher that records what it is handed.
+  const published: DomainEvent[] = [];
+  const events: DomainEventPublisher = {
+    publish(event) {
+      published.push(event);
+    },
+  };
   const service = new DiscoveryService({
     repository: memory.repository,
+    events,
     catalogue,
     fetchers: options.fetchers ?? [adapter.fetcher],
     settings,
@@ -273,6 +363,7 @@ function setup(options: { fetchers?: SourceFetcher[]; start?: string } = {}) {
     service,
     memory,
     adapter,
+    published,
     // A day later, so each run starts after the one before.
     nextDay: () => {
       now = new Date(now.getTime() + 24 * 60 * 60 * 1000);
@@ -362,7 +453,7 @@ describe("DiscoveryService.saveSource", () => {
 
 describe("DiscoveryService.runSource: listings", () => {
   test("saves new listings, counts unchanged ones, and saves a changed one again", async () => {
-    const { service, memory, adapter, nextDay, source } = setup();
+    const { service, memory, adapter, published, nextDay, source } = setup();
     const saved = await source();
 
     adapter.returns([page("a", "<p>A</p>"), page("b", "<p>B</p>")]);
@@ -385,6 +476,14 @@ describe("DiscoveryService.runSource: listings", () => {
       memory.rawListings.map((raw) => raw.content),
       ["<p>A</p>", "<p>B</p>", "<p>B, with a new date</p>", "<p>C</p>"],
     );
+    // Each new raw listing's raw_listing.captured was published once, as the repository appended it.
+    assert.deepEqual(published, memory.appended);
+    assert.equal(published.length, 4);
+    const changed = memory.rawListings[2];
+    const forChanged = published.filter((event) => event.resourceId === changed?.id);
+    assert.equal(forChanged.length, 1);
+    assert.equal(forChanged[0]?.type, "raw_listing.captured");
+    assert.deepEqual(forChanged[0].data, { listing_id: changed?.listingId, run_id: second.runId, kind: "listing" });
     // The unchanged listing was seen by the second run.
     const a = memory.listings.find((one) => one.sourceListingId === "a");
     assert.equal(a?.lastSeenRunId, second.runId);
@@ -484,7 +583,7 @@ describe("DiscoveryService.runSource: failures are failed runs", () => {
   });
 
   test("keeps the listings saved before a run failed", async () => {
-    const { service, memory, adapter, source } = setup();
+    const { service, memory, adapter, published, source } = setup();
     const saved = await source();
     memory.failSavesAfter(1);
     adapter.returns([page("a", "A"), page("b", "B")]);
@@ -495,6 +594,7 @@ describe("DiscoveryService.runSource: failures are failed runs", () => {
     assert.equal(summary.error, "The database went away");
     assert.equal(summary.listingsNewOrChanged, 1);
     assert.equal(memory.rawListings.length, 1);
+    assert.equal(published.length, 1);
   });
 
   test("an unknown source is not_found", async () => {
@@ -508,7 +608,7 @@ describe("DiscoveryService.runSource: failures are failed runs", () => {
 
 describe("DiscoveryService.runSource: listings that disappear", () => {
   test("removes a listing after the configured number of successful, complete runs without it", async () => {
-    const { service, memory, adapter, nextDay, source } = setup();
+    const { service, memory, adapter, published, nextDay, source } = setup();
     const saved = await source({ missedRunsBeforeRemoval: 2 });
 
     adapter.returns([page("a", "A"), page("b", "B")]);
@@ -525,7 +625,21 @@ describe("DiscoveryService.runSource: listings that disappear", () => {
     assert.equal(secondMiss.listingsRemoved, 1);
     const b = memory.listings.find((one) => one.sourceListingId === "b");
     assert.equal(b?.state, "removed");
-    assert.deepEqual(memory.rawListings.at(-1), { listingId: b.id, runId: secondMiss.runId, kind: "removed", content: null });
+    const removed = memory.rawListings.at(-1);
+    assert.ok(removed);
+    assert.deepEqual({ ...removed, id: "" }, {
+      id: "",
+      listingId: b.id,
+      runId: secondMiss.runId,
+      kind: "removed",
+      content: null,
+      status: "pending",
+    });
+    const forRemoved = published.filter((event) => event.resourceId === removed.id);
+    assert.equal(forRemoved.length, 1);
+    assert.equal(forRemoved[0]?.type, "raw_listing.captured");
+    assert.deepEqual(forRemoved[0].data, { listing_id: b.id, run_id: secondMiss.runId, kind: "removed" });
+    assert.deepEqual(published, memory.appended);
   });
 
   test("never counts an incomplete run", async () => {
@@ -685,11 +799,45 @@ describe("DiscoveryService: due sources and the sourcing window", () => {
   });
 });
 
-describe("DiscoveryService: marking raw listings", () => {
-  test("a failed attempt below the max goes back to pending", async () => {
-    const { service } = setup();
+describe("DiscoveryService: claiming and marking raw listings", () => {
+  test("claims the latest version of a listing and publishes the superseded event of the older one", async () => {
+    const { service, memory, adapter, published, nextDay, source } = setup();
+    const saved = await source();
+    adapter.returns([page("a", "first")]);
+    await service.runSource(saved.id);
+    nextDay();
+    adapter.returns([page("a", "second")]);
+    await service.runSource(saved.id);
+    const [older, newer] = memory.rawListings;
+    assert.ok(older && newer);
+    published.length = 0;
+
+    const claim = await service.claimPendingRawListing();
+
+    assert.equal(claim?.id, newer.id);
+    assert.equal(published.length, 1);
+    assert.equal(published[0]?.type, "raw_listing.superseded");
+    assert.equal(published[0].resourceId, older.id);
+    assert.deepEqual(published[0].data, { listing_id: older.listingId, raw_listing_id: newer.id });
+  });
+
+  test("marking processed publishes raw_listing.processed once", async () => {
+    const { service, published } = setup();
+    await service.markRawListingProcessed("raw-1");
+    assert.equal(published.length, 1);
+    assert.equal(published[0]?.type, "raw_listing.processed");
+    assert.equal(published[0].resourceId, "raw-1");
+    assert.deepEqual(published[0].data, { listing_id: "listing-1" });
+  });
+
+  test("a failed attempt below the max goes back to pending, and raw_listing.failed is published once", async () => {
+    const { service, published } = setup();
     // The fake raw listing has had one attempt, of three.
     assert.deepEqual(await service.markRawListingFailed("raw-1", "wrong shape"), { attempts: 2, willRetry: true });
+    assert.equal(published.length, 1);
+    assert.equal(published[0]?.type, "raw_listing.failed");
+    assert.equal(published[0].resourceId, "raw-1");
+    assert.deepEqual(published[0].data, { listing_id: "listing-1", error: "wrong shape", attempt: 2, will_retry: true });
   });
 
   test("asks for no priorities when no listing is given", async () => {

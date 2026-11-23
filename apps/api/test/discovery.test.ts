@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, test } from "node:test";
 import { events, listing, rawListing, run, source } from "@magic-events/db";
 import { asc, eq, sql } from "drizzle-orm";
+import { createDomainEvents } from "../src/adapters/events/node-events.ts";
 import { createDiscoveryRepository } from "../src/adapters/storage/discovery-repository.ts";
 import { createTransactionalDb } from "../src/adapters/storage/transactions.ts";
 import type {
@@ -14,6 +15,7 @@ import type {
 } from "../src/core/discovery/ports.ts";
 import { DiscoveryService } from "../src/core/discovery/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
+import type { DomainEvent, DomainEventPublisher } from "../src/core/shared/domain-events.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
 import type { Transactions } from "../src/core/shared/transactions.ts";
 import { createHarness, testSettings, type Harness } from "./helpers/harness.ts";
@@ -48,17 +50,32 @@ let harness: Harness;
 // Discovery wired with the Transactions it shares its database handle with, as Data processing uses it.
 let discovery: Discovery;
 let transactions: Transactions;
+// Every domain event delivered to a subscriber, through the harness's services and the Discovery wired here.
+const delivered: DomainEvent[] = [];
 
 const pages: SaveSourceInput = { name: "Organiser pages", kind: "web_page", locationSlug: "hermanus", priority: 10 };
 
 before(async () => {
   const fetchers = [fakeFetcher("web_page"), fakeFetcher("rss_feed")];
-  harness = await createHarness({ fetchers, clock });
+  const domainEvents = createDomainEvents(silent);
+  domainEvents.subscribe("*", (event) => {
+    delivered.push(event);
+  });
+  harness = await createHarness({ fetchers, clock, domainEvents });
   const wired = createTransactionalDb(harness.db);
   transactions = wired.transactions;
+  // Held back until the transaction commits, as app.ts wires it.
+  const events: DomainEventPublisher = {
+    publish(event) {
+      wired.afterCommit(() => {
+        domainEvents.publish(event);
+      });
+    },
+  };
   const url = process.env.TEST_DATABASE_URL ?? "";
   discovery = new DiscoveryService({
     repository: createDiscoveryRepository(wired.db),
+    events,
     catalogue: harness.services.catalogue,
     fetchers,
     settings: testSettings(url).discovery,
@@ -74,6 +91,7 @@ after(async () => {
 beforeEach(async () => {
   await harness.db.execute(sql`truncate table ${events}, ${rawListing}, ${listing}, ${run}, ${source} cascade`);
   for (const kind of Object.keys(next)) Reflect.deleteProperty(next, kind);
+  delivered.length = 0;
   now = new Date("2026-11-23T08:00:00Z");
   await harness.services.catalogue.saveLocation({
     name: "Hermanus",
@@ -631,5 +649,61 @@ describe("Discovery: the hand-off to Data processing", () => {
 
     assert.deepEqual(priorities, { [id("h")]: 20, [id("l")]: 10 });
     assert.deepEqual(await harness.services.discovery.getListingPriorities([]), {});
+  });
+});
+
+describe("Discovery: domain events are published", () => {
+  test("a run publishes one raw_listing.captured per new raw listing, exactly as appended to the log", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "A"), page("b", "B")]);
+
+    const summary = await harness.services.discovery.runSource(saved.id);
+
+    const logged = await eventsOf("raw_listing.captured");
+    assert.equal(logged.length, 2);
+    assert.deepEqual(
+      delivered.map((event) => event.type),
+      ["raw_listing.captured", "raw_listing.captured"],
+    );
+    for (const row of logged) {
+      const matching = delivered.filter((event) => event.id === row.id);
+      assert.equal(matching.length, 1);
+      assert.deepEqual(matching[0], {
+        id: row.id,
+        type: "raw_listing.captured",
+        resourceId: row.resourceId,
+        data: row.data,
+        recordedAt: row.recordedAt.toISOString(),
+      });
+      assert.equal(row.data.run_id, summary.runId);
+    }
+  });
+
+  test("an event published inside a transaction that rolls back is never delivered", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "first")]);
+    await harness.services.discovery.runSource(saved.id);
+    later(24);
+    returns("web_page", [page("a", "second")]);
+    await harness.services.discovery.runSource(saved.id);
+    delivered.length = 0;
+
+    await assert.rejects(
+      claimed((claim) => {
+        assert.ok(claim);
+        return Promise.reject(new Error("The worker crashed"));
+      }),
+      /The worker crashed/,
+    );
+
+    assert.equal(delivered.length, 0);
+    assert.equal((await eventsOf("raw_listing.superseded")).length, 0);
+
+    // Claimed again and committed, the superseded event is delivered once.
+    await claimed((claim) => Promise.resolve(claim));
+    assert.deepEqual(
+      delivered.map((event) => event.type),
+      ["raw_listing.superseded"],
+    );
   });
 });
