@@ -207,6 +207,6 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 
 - [ ] Does the `events` log carry the domain events above, and could the experience change history be read from it instead of its own table?
 - [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
-- [ ] Must every experience have a position? Without one it can never match a radius search.
+- [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
 - [ ] Does a raw listing's content live in Postgres or in object storage behind a reference?
 - [ ] How does Catalogue get the vocabulary it filters on, and how do clients list it?
