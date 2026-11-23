@@ -48,7 +48,7 @@ const environmentSchema = z.object({
   PROCESSING_WORKERS: whole(1).default(1),
   LANGUAGE_MODEL_PROVIDER: z.enum(["anthropic"]).default("anthropic"),
   LANGUAGE_MODEL: z.string().min(1).default("claude-opus-5-5"),
-  LANGUAGE_MODEL_TIMEOUT_SECONDS: whole(1).default(120),
+  LANGUAGE_MODEL_TIMEOUT_SECONDS: whole(1).default(600),
   ANTHROPIC_API_KEY: z.string().min(1).optional(),
   ANTHROPIC_EFFORT: z.enum(["low", "medium", "high", "xhigh", "max"]).default("medium"),
 });

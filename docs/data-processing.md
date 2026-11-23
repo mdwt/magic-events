@@ -426,7 +426,7 @@ System settings are environment variables, read through the settings provider (s
 | `PROCESSING_WORKERS` | 1 | How many processing workers run at once |
 | `LANGUAGE_MODEL_PROVIDER` | `anthropic` | Which language model adapter is used, by Data processing and Discovery |
 | `LANGUAGE_MODEL` | `claude-opus-5-5` | The model name handed to that adapter |
-| `LANGUAGE_MODEL_TIMEOUT_SECONDS` | 120 | How long to wait for an answer before the raw listing fails |
+| `LANGUAGE_MODEL_TIMEOUT_SECONDS` | 600 | How long to wait for an answer before the raw listing fails. A page of 20 experiences takes about 40 seconds, and a page of 50 or a year's calendar takes several minutes |
 
 Catalogue's embedding settings:
 
