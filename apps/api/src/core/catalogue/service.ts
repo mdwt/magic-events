@@ -342,7 +342,10 @@ export class CatalogueService implements Catalogue {
           if (change === null) {
             this.#logger.debug(log, "Generated sessions further ahead");
           } else {
-            this.#logger.info({ ...log, version: experience.version, change, booking: experience.booking }, "Kept up");
+            this.#logger.info(
+              { ...log, version: experience.version, change, status: experience.status, booking: experience.booking },
+              change === "past" ? "Experience is over; set to Past" : "Booking closed; its close time has passed",
+            );
           }
         } catch (error) {
           this.#logger.error({ experienceId: stored.id, err: error }, "Upkeep of an experience failed");
