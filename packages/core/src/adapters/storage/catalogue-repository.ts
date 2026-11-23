@@ -912,17 +912,35 @@ function attributeMatches(filter: AttributeFilter): SQL | undefined {
   );
 }
 
-// Without a query text: by the first matching session, then title. With one: by the reciprocal rank fusion of the
-// semantic list and the keyword list, then by the first matching session, as in docs/data-processing.md. The
-// query text never adds or removes a result.
+// By tier first, most premium first, when the query ranks by it. Then, without a query text: by the first matching
+// session, then title. With one: by the reciprocal rank fusion of the semantic list and the keyword list, then by
+// the first matching session, as in docs/data-processing.md. The query text never adds or removes a result.
 function searchOrder(db: Db, query: ExperienceSearchQuery): SQL[] {
   const firstSession = db
     .select({ first: min(experienceSession.startDate) })
     .from(experienceSession)
     .where(and(eq(experienceSession.experienceId, experience.id), sessionInRange(query)));
   const byDate = [sql`${firstSession} asc`, asc(experience.title), asc(experience.id)];
-  if (query.query === undefined) return byDate;
-  return [sql`${fusedScore(query.query, query.queryEmbedding)} desc`, ...byDate];
+  // Most premium first, always: by the tier's place among its options, before relevance and dates.
+  const byTier = query.rankBy === undefined ? [] : [sql`${rankOf(query.rankBy)} asc`];
+  if (query.query === undefined) return [...byTier, ...byDate];
+  return [...byTier, sql`${fusedScore(query.query, query.queryEmbedding)} desc`, ...byDate];
+}
+
+// An experience's place among the attribute's options, from 1. One with no value, or a value that is none of them,
+// takes the fallback's place, or comes after every option when there is no fallback.
+function rankOf(rankBy: NonNullable<ExperienceSearchQuery["rankBy"]>): SQL {
+  const fallback = rankBy.fallback === null ? rankBy.options.length + 1 : rankBy.options.indexOf(rankBy.fallback) + 1;
+  const options = sql`array[${sql.join(
+    rankBy.options.map((option) => sql`${option}::text`),
+    sql`, `,
+  )}]`;
+  return sql`coalesce((
+    select min(array_position(${options}, ${experienceAttributeValue.value} #>> '{}'))
+    from ${experienceAttributeValue}
+    where ${experienceAttributeValue.experienceId} = ${experience.id}
+      and ${experienceAttributeValue.attributeKey} = ${rankBy.attribute}
+  ), ${fallback}::int)`;
 }
 
 // How far down a list a place counts in reciprocal rank fusion.

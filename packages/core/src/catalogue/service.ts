@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { DataProcessing } from "../data-processing/ports.ts";
+import type { AttributeDefinition, DataProcessing } from "../data-processing/ports.ts";
 import type { Clock } from "../shared/clock.ts";
 import type { DomainEventPublisher } from "../shared/domain-events.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
@@ -96,7 +96,7 @@ export class CatalogueService implements Catalogue {
   }
 
   async searchExperiences(input: SearchExperiencesInput): Promise<SearchExperiencesResult> {
-    const resolved = await this.#resolve(input);
+    const resolved = await this.#resolve(input, { ranked: true });
     this.#logger.debug({ query: resolved }, "Searching experiences");
 
     const started = performance.now();
@@ -262,9 +262,15 @@ export class CatalogueService implements Catalogue {
     const since = new Date(input.since);
     const details: ErrorDetail[] = [];
     if (Number.isNaN(since.getTime())) {
-      details.push({ path: "since", message: "since must be an ISO timestamp." });
+      details.push({
+        path: "since",
+        message: "Give since, when you last searched, as a date and time with its time zone, such as 2027-02-01T09:30:00Z.",
+      });
     } else if (since > this.#clock()) {
-      details.push({ path: "since", message: "since must not be in the future." });
+      details.push({
+        path: "since",
+        message: "since is in the future. Give the time you last searched, such as 2027-02-01T09:30:00Z.",
+      });
     }
     if (details.length > 0) {
       this.#logger.warn({ details }, "Changes refused");
@@ -595,45 +601,71 @@ export class CatalogueService implements Catalogue {
   ): Promise<{ lat: number; lng: number } | null> {
     if (input.location === undefined) {
       if (input.near !== undefined) return input.near;
-      details.push({ path: "location", message: "Give the place: location, such as hermanus, or near, a point." });
+      details.push({
+        path: "location",
+        message:
+          "Say where to search: give location, a place such as hermanus, or near, a point such as " +
+          '{ "lat": -34.4187, "lng": 19.2345 }.',
+      });
       return null;
     }
     if (input.near !== undefined) {
-      details.push({ path: "near", message: "Give location or near, not both." });
+      details.push({ path: "near", message: "Give location or near, not both: the search is around one place." });
       return null;
     }
     const location = await this.#repository.findLocation({ slug: input.location });
     if (location === null) {
-      details.push({ path: "location", message: `There is no location ${input.location}.` });
+      details.push({
+        path: "location",
+        message:
+          `The feed does not cover a place called ${input.location}. Give a place it covers, such as hermanus, ` +
+          "or a point with near.",
+      });
       return null;
     }
     return { lat: location.latitude, lng: location.longitude };
   }
 
-  // Applies the defaults and checks the rules, so the repository runs a query that is already sound.
-  async #resolve(input: SearchExperiencesInput): Promise<ExperienceSearchQuery> {
+  // Applies the defaults and checks the rules, so the repository runs a query that is already sound. A ranked
+  // search is ordered by tier first, from Data processing's definition of it.
+  async #resolve(input: SearchExperiencesInput, options: { ranked?: boolean } = {}): Promise<ExperienceSearchQuery> {
     const details: ErrorDetail[] = [];
     const near = await this.#pointOf(input, details);
     const radiusKm = input.radiusKm ?? this.#settings.searchDefaultRadiusKm;
     if (radiusKm > this.#settings.searchMaxRadiusKm) {
-      details.push({ path: "radiusKm", message: `radiusKm must be at most ${this.#settings.searchMaxRadiusKm} km.` });
+      details.push({
+        path: "radiusKm",
+        message:
+          `The radius can be at most ${this.#settings.searchMaxRadiusKm} km. Give a smaller radiusKm, or leave it ` +
+          `out for ${this.#settings.searchDefaultRadiusKm} km.`,
+      });
     }
     if (input.to < input.from) {
-      details.push({ path: "to", message: "to must not be before from." });
+      details.push({
+        path: "to",
+        message: "The stay ends before it starts: to is before from. Give the first day as from and the last day as to.",
+      });
     }
     const attributes = input.attributes ?? {};
     for (const [key, filter] of Object.entries(attributes)) {
       if (typeof filter !== "object" || Array.isArray(filter)) continue;
       if (filter.min === undefined && filter.max === undefined) {
-        details.push({ path: `attributes.${key}`, message: `The range on ${key} needs min or max.` });
+        details.push({
+          path: `attributes.${key}`,
+          message: `The range for ${key} is empty. Give min, max or both, such as { "max": 12 }.`,
+        });
       } else if (filter.min !== undefined && filter.max !== undefined && filter.min > filter.max) {
-        details.push({ path: `attributes.${key}.min`, message: `The range on ${key} has min above max.` });
+        details.push({
+          path: `attributes.${key}.min`,
+          message: `The range for ${key} has min above max. Swap them, or give only one.`,
+        });
       }
     }
     // The definitions are Data processing's. A filter that fits none of them could never match, so it is refused.
-    if (Object.keys(attributes).length > 0) {
-      details.push(...checkAttributeFilters(attributes, await this.#dataProcessing.listAttributes()));
-    }
+    const filtered = Object.keys(attributes).length > 0;
+    const definitions = filtered || options.ranked === true ? await this.#dataProcessing.listAttributes() : [];
+    if (filtered) details.push(...checkAttributeFilters(attributes, definitions));
+    const rankBy = options.ranked === true ? tierOrder(definitions) : null;
     // So are the tags and seasons. An unknown slug would match nothing, with no error.
     const tags = input.tags ?? [];
     if (tags.length > 0) details.push(...checkTagFilters(tags, await this.#dataProcessing.listTagSlugs()));
@@ -655,6 +687,7 @@ export class CatalogueService implements Catalogue {
       attributes,
       tags,
       ...(input.query === undefined ? {} : { query: input.query }),
+      ...(rankBy === null ? {} : { rankBy }),
       limit: input.limit,
       offset: input.offset,
     };
@@ -671,6 +704,19 @@ function isBookable(
     experience.booking === "open" &&
     (experience.bookingUrl !== null || experience.pageUrl !== null)
   );
+}
+
+// The attribute search orders its results by, most premium first. Its options are Data processing's rows.
+const TIER = "tier";
+
+// The tier's options in their order, and its default, which an experience with no tier counts as. Null when no tier
+// option attribute is defined.
+function tierOrder(definitions: AttributeDefinition[]): NonNullable<ExperienceSearchQuery["rankBy"]> | null {
+  const tier = definitions.find((definition) => definition.key === TIER && definition.type === "option");
+  if (tier === undefined || tier.options.length === 0) return null;
+  const options = tier.options.map((option) => option.key);
+  const fallback = typeof tier.defaultValue === "string" && options.includes(tier.defaultValue) ? tier.defaultValue : null;
+  return { attribute: TIER, options, fallback };
 }
 
 // What Data processing is shown to decide whether an extracted experience is this one.

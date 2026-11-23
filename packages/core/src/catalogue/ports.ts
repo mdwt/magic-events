@@ -30,24 +30,37 @@ export const BOOKING_STATUSES = ["none", "not_yet", "open", "sold_out", "closed"
 export const SESSION_PRECISIONS = ["day", "month", "year"] as const;
 
 const day = z.iso.date();
+// Paging, for a search and for changed-since alike.
+const limitSchema = z.number({ error: "Give limit as a whole number from 1 to 100." }).int().min(1).max(100);
+const offsetSchema = z.number({ error: "Give offset as a whole number, 0 or more." }).int().min(0);
 
 // A filter on one attribute. Text is an option's key or a text value, and a list matches any of its values.
 // A range is for number attributes, such as minimum age. A range with only a max also matches an experience that
 // has no value for the attribute: nothing recorded means no lower limit, so "at most 12" still finds it. A range
 // with a min matches only a recorded value.
-export const attributeFilterSchema = z.union([
-  z.string().min(1).max(200),
-  z.array(z.string().min(1).max(200)).min(1).max(50),
-  z.boolean(),
-  z.number(),
-  z.strictObject({ min: z.number().optional(), max: z.number().optional() }),
-]);
+export const attributeFilterSchema = z.union(
+  [
+    z.string().min(1).max(200),
+    z.array(z.string().min(1).max(200)).min(1).max(50),
+    z.boolean(),
+    z.number(),
+    z.strictObject({
+      min: z.number().optional().describe("The lowest value to match. A range with a min matches only experiences that have a value."),
+      max: z.number().optional().describe("The highest value to match. A range with only a max also matches experiences with no value."),
+    }),
+  ],
+  {
+    error:
+      'Give an attribute filter as an option, such as "music", a list of options, true or false, a number, or a ' +
+      'range, such as { "max": 12 }.',
+  },
+);
 export type AttributeFilter = z.infer<typeof attributeFilterSchema>;
 
 // The one search. REST and MCP both take exactly this, so a person and an agent get the same behaviour.
 export const searchExperiencesInputSchema = z.strictObject({
   location: z
-    .string()
+    .string({ error: "Give location as a place's slug, such as hermanus." })
     .trim()
     .min(1)
     .max(100)
@@ -57,39 +70,58 @@ export const searchExperiencesInputSchema = z.strictObject({
         "centre. Give this or near, not both.",
     ),
   near: z
-    .strictObject({
-      lat: z.number().min(-90).max(90).describe("Latitude in decimal degrees."),
-      lng: z.number().min(-180).max(180).describe("Longitude in decimal degrees."),
-    })
+    .strictObject(
+      {
+        lat: z
+          .number({ error: "Give near.lat, the latitude, as a number from -90 to 90, such as -34.4187." })
+          .min(-90)
+          .max(90)
+          .describe("Latitude in decimal degrees."),
+        lng: z
+          .number({ error: "Give near.lng, the longitude, as a number from -180 to 180, such as 19.2345." })
+          .min(-180)
+          .max(180)
+          .describe("Longitude in decimal degrees."),
+      },
+      { error: 'Give near as a point, such as { "lat": -34.4187, "lng": 19.2345 }.' },
+    )
     .optional()
     .describe(
       "The point to search around, such as the centre of Hermanus (-34.4187, 19.2345), when the place is not a " +
         "location. Give this or location, not both.",
     ),
   radiusKm: z
-    .number()
+    .number({ error: "Give radiusKm as a number of kilometres above 0, such as 30." })
     .positive()
     .optional()
     .describe(
       "How far from the location's centre or the point to search, in kilometres. The default is used when it is " +
         "left out.",
     ),
-  from: day.describe("The first day of the stay, as YYYY-MM-DD."),
-  to: day.describe("The last day of the stay, as YYYY-MM-DD. Must not be before the first day."),
+  from: z.iso
+    .date({ error: "Give from, the first day of the stay, as a date such as 2027-06-20." })
+    .describe("The first day of the stay, as YYYY-MM-DD."),
+  to: z.iso
+    .date({ error: "Give to, the last day of the stay, as a date such as 2027-06-27." })
+    .describe("The last day of the stay, as YYYY-MM-DD. Must not be before the first day."),
   status: z
-    .array(z.enum(SEARCHABLE_STATUSES))
+    .array(z.enum(SEARCHABLE_STATUSES, { error: "Give each status as expected, announced, confirmed or postponed." }), {
+      error: 'Give status as a list, such as ["confirmed"].',
+    })
     .min(1)
     .optional()
     .describe("Only experiences with one of these statuses. All four are returned when it is left out."),
   bookable: z
-    .boolean()
+    .boolean({ error: "Give bookable as true or false." })
     .optional()
     .describe(
       "True returns only experiences that can be booked now: confirmed, with booking open, and with a booking link " +
         "or, failing that, their own page to book through.",
     ),
   attributes: z
-    .record(z.string().min(1).max(64), attributeFilterSchema)
+    .record(z.string().min(1).max(64), attributeFilterSchema, {
+      error: 'Give attributes as filters by attribute key, such as { "category": "music" }.',
+    })
     .optional()
     .describe(
       "Filters by attribute key, such as category, format, audience, setting, scale or minimum_age. " +
@@ -99,7 +131,9 @@ export const searchExperiencesInputSchema = z.strictObject({
         "error lists what can be used.",
     ),
   tags: z
-    .array(z.string().min(1).max(64))
+    .array(z.string({ error: "Give each tag as its slug, such as jazz." }).min(1).max(64), {
+      error: 'Give tags as a list of 1 to 50 tag slugs, such as ["jazz", "whales"].',
+    })
     .min(1)
     .max(50)
     .optional()
@@ -108,7 +142,11 @@ export const searchExperiencesInputSchema = z.strictObject({
         "matches. A slug that is no tag or season is refused, and the error names the closest ones.",
     ),
   query: z
-    .string()
+    .string({
+      error:
+        'Give query as plain words, up to 500 characters, such as "quiet, romantic, something to do with art", or ' +
+        "leave it out.",
+    })
     .trim()
     .min(1)
     .max(500)
@@ -117,63 +155,127 @@ export const searchExperiencesInputSchema = z.strictObject({
       "What the traveller likes, in plain words. It only orders the results, best match first, " +
         "and never adds or removes one. Put anything that must hold in the filters.",
     ),
-  limit: z.number().int().min(1).max(100).default(20).describe("How many experiences to return."),
-  offset: z.number().int().min(0).default(0).describe("How many experiences to skip, for paging."),
+  limit: limitSchema.default(20).describe("How many experiences to return."),
+  offset: offsetSchema.default(0).describe("How many experiences to skip, for paging."),
 });
 export type SearchExperiencesInput = z.infer<typeof searchExperiencesInputSchema>;
 
 const attributeValueSchema = z.union([z.string(), z.number(), z.boolean()]);
 
 export const sessionResultSchema = z.object({
-  startDate: day,
-  endDate: day,
+  startDate: day.describe(
+    "The first day it is on, as YYYY-MM-DD. For month or year precision, the month's or year's first day.",
+  ),
+  endDate: day.describe(
+    "The last day of this stretch, as YYYY-MM-DD: the start day for a single day. For month or year precision, the " +
+      "month's or year's last day.",
+  ),
   precision: z
     .enum(SESSION_PRECISIONS)
     .describe("Month or year means the experience is on in that month or year and its days are not announced yet."),
-  startTime: z.string().nullable(),
-  endTime: z.string().nullable(),
-  label: z.string().nullable(),
-  soldOut: z.boolean(),
+  startTime: z
+    .string()
+    .nullable()
+    .describe("When it starts, as HH:MM in the experience's timezone. Empty when not stated."),
+  endTime: z
+    .string()
+    .nullable()
+    .describe("When it ends, as HH:MM in the experience's timezone. Empty when not stated."),
+  label: z
+    .string()
+    .nullable()
+    .describe('The source\'s name for this date, such as "Opening night". Empty when there is none.'),
+  soldOut: z.boolean().describe("True when this date is sold out, though others may not be."),
 });
 export type SessionResult = z.infer<typeof sessionResultSchema>;
 
 // An experience as the repository returns it for a search.
 export const experienceRecordSchema = z.object({
-  id: z.uuid(),
-  title: z.string(),
-  slug: z.string(),
-  summary: z.string().nullable(),
-  description: z.string().nullable(),
-  type: z.enum(EXPERIENCE_TYPES),
-  status: z.enum(SEARCHABLE_STATUSES),
-  booking: z.enum(BOOKING_STATUSES),
-  location: z.object({ slug: z.string(), name: z.string() }),
-  venue: z.object({
-    name: z.string().nullable(),
-    address: z.string().nullable(),
-    city: z.string().nullable(),
-    position: z.object({ lat: z.number(), lng: z.number() }).nullable(),
-  }),
+  id: z.uuid().describe("The experience's lasting ID. It stays the same across searches and changes."),
+  title: z.string().describe("Its name."),
+  slug: z.string().describe("A lasting, readable name for it, unique in the feed."),
+  summary: z.string().nullable().describe("A sentence or two on what it is. Empty when the source gives none."),
+  description: z
+    .string()
+    .nullable()
+    .describe("What the source says about it, at more length. Empty when there is none."),
+  type: z
+    .enum(EXPERIENCE_TYPES)
+    .describe(
+      "How its dates are known. single: once, in one stretch. run: several set dates. recurring: repeats by a " +
+        "rule, such as every Saturday.",
+    ),
+  status: z
+    .enum(SEARCHABLE_STATUSES)
+    .describe(
+      "expected: an annual event expected to come round again, with only a month or a year and no announcement " +
+        "yet; its dates are likely, not promised. announced: announced, though dates or details may change. " +
+        "confirmed: dates fixed and going ahead. postponed: not on its dates, new dates unknown.",
+    ),
+  booking: z
+    .enum(BOOKING_STATUSES)
+    .describe(
+      "none: nothing to book, such as a market. not_yet: will be bookable; onSaleAt says when, if known. open: can " +
+        "be booked now. sold_out: nothing is left. closed: booking has ended.",
+    ),
+  location: z
+    .object({
+      slug: z.string().describe("The location's slug, as search takes it, such as hermanus."),
+      name: z.string().describe("The location's name, such as Hermanus."),
+    })
+    .describe("The place in the feed it belongs to."),
+  venue: z
+    .object({
+      name: z.string().nullable().describe("The venue's name. Empty when not stated."),
+      address: z.string().nullable().describe("The venue's street address. Empty when not stated."),
+      city: z.string().nullable().describe("The town or city the venue is in. Empty when not stated."),
+      position: z
+        .object({
+          lat: z.number().describe("Latitude in decimal degrees."),
+          lng: z.number().describe("Longitude in decimal degrees."),
+        })
+        .nullable()
+        .describe(
+          "The venue's own coordinates, when the source states them. When empty, distanceKm is measured from the " +
+            "location's centre.",
+        ),
+    })
+    .describe("Where it takes place."),
   distanceKm: z.number().describe("The distance from the search point, in kilometres."),
-  timezone: z.string(),
-  openingHours: z.string().nullable(),
+  timezone: z.string().describe("The timezone its times are in, such as Africa/Johannesburg."),
+  openingHours: z
+    .string()
+    .nullable()
+    .describe("Opening hours in the source's words, for something open over a period. Empty when not stated."),
   price: z
-    .object({ min: z.number().nullable(), max: z.number().nullable(), currency: z.string().nullable() })
+    .object({
+      min: z.number().nullable().describe("The lowest price, in currency."),
+      max: z.number().nullable().describe("The highest price, in currency."),
+      currency: z.string().nullable().describe("The currency's code, such as ZAR."),
+    })
     .describe("The lowest and highest price. A min and max of 0 mean it is free; empty means the source states no price."),
-  onSaleAt: z.iso.datetime().nullable(),
-  bookingClosesAt: z.iso.datetime().nullable(),
-  bookingUrl: z.string().nullable(),
-  imageUrl: z.string().nullable(),
+  onSaleAt: z.iso.datetime().nullable().describe("When booking opens, as an ISO timestamp. Empty when not known."),
+  bookingClosesAt: z.iso
+    .datetime()
+    .nullable()
+    .describe("When booking closes, as an ISO timestamp. Empty when not known."),
+  bookingUrl: z.string().nullable().describe("Where to book it. Empty when the source gives no booking link."),
+  imageUrl: z.string().nullable().describe("An image of it, from its source. Empty when there is none."),
   pageUrl: z.string().nullable().describe("The experience's own page, when it has one."),
   attributes: z
     .record(z.string(), z.array(attributeValueSchema))
     .describe("The experience's values by attribute key, such as its categories."),
-  tags: z.array(z.string()),
+  tags: z
+    .array(z.string())
+    .describe(
+      "Its tag slugs, such as jazz or whales, and season slugs, such as whale-season. A season is given only when " +
+        "all of its dates fall inside the season.",
+    ),
   sessions: z
     .array(sessionResultSchema)
     .describe("The sessions that fall inside the dates asked for. The experience is on no other day in that range."),
-  version: z.number().int(),
-  updatedAt: z.iso.datetime(),
+  version: z.number().int().describe("Goes up by one with every real change to the experience."),
+  updatedAt: z.iso.datetime().describe("When it last changed, as an ISO timestamp."),
 });
 export type ExperienceRecord = z.infer<typeof experienceRecordSchema>;
 
@@ -188,12 +290,16 @@ export const experienceResultSchema = experienceRecordSchema.extend({
 });
 export type ExperienceResult = z.infer<typeof experienceResultSchema>;
 
-export const searchExperiencesResultSchema = z.object({
-  items: z.array(experienceResultSchema),
-  total: z.number().int().describe("How many experiences match, across all pages."),
-  limit: z.number().int(),
-  offset: z.number().int(),
-});
+export const searchExperiencesResultSchema = z
+  .object({
+    items: z
+      .array(experienceResultSchema)
+      .describe("The experiences on this page: best match first when a query text is given, otherwise by date."),
+    total: z.number().int().describe("How many experiences match, across all pages."),
+    limit: z.number().int().describe("The most this page holds, as asked for."),
+    offset: z.number().int().describe("How many were skipped before this page, as asked for."),
+  })
+  .describe("The experiences that are on near the place during the dates and pass every filter.");
 export type SearchExperiencesResult = z.infer<typeof searchExperiencesResultSchema>;
 
 // The search as the repository receives it: every default applied and every rule already checked.
@@ -214,6 +320,10 @@ export interface ExperienceSearchQuery {
   // The query text's embedding, and the model that made it. Left out when the model did not answer in time, and
   // the results are then ordered by keyword alone.
   queryEmbedding?: { vector: number[]; model: string };
+  // The attribute the results are ordered by before anything else, in the order of its options: the tier, most
+  // premium first. An experience with no value counts as `fallback`, or comes last when that is null. Left out when
+  // no such attribute is defined, and the order is then as without it.
+  rankBy?: { attribute: string; options: string[]; fallback: string | null };
   limit: number;
   offset: number;
 }
@@ -422,10 +532,13 @@ export const experienceChangesInputSchema = searchExperiencesInputSchema
         "removed ones.",
     ),
     since: z.iso
-      .datetime({ offset: true })
+      .datetime({
+        offset: true,
+        error: "Give since, when you last searched, as a date and time with its time zone, such as 2027-02-01T09:30:00Z.",
+      })
       .describe("When you last searched, as an ISO timestamp such as 2027-02-01T09:30:00Z. Only later changes are reported."),
-    limit: z.number().int().min(1).max(100).default(20).describe("How many changed experiences to return."),
-    offset: z.number().int().min(0).default(0).describe("How many changed experiences to skip, for paging."),
+    limit: limitSchema.default(20).describe("How many changed experiences to return."),
+    offset: offsetSchema.default(0).describe("How many changed experiences to skip, for paging."),
   });
 export type ExperienceChangesInput = z.infer<typeof experienceChangesInputSchema>;
 
@@ -450,7 +563,7 @@ export const experienceChangeSchema = z.object({
         "The sessions inside the dates asked for. When movedOut is true it has none there, and these are the " +
           "sessions it has now, all outside the dates: where it moved to. Empty when it has no dates left.",
       ),
-  }),
+  }).describe("The experience as it is now, as a search returns it."),
   movedOut: z
     .boolean()
     .describe(
@@ -463,16 +576,19 @@ export const experienceChangeSchema = z.object({
 });
 export type ExperienceChange = z.infer<typeof experienceChangeSchema>;
 
-export const experienceChangesResultSchema = z.object({
-  items: z.array(experienceChangeSchema).describe("The experiences that changed, the most recent change first."),
-  total: z.number().int().describe("How many experiences changed, across all pages."),
-  limit: z.number().int(),
-  offset: z.number().int(),
-});
+export const experienceChangesResultSchema = z
+  .object({
+    items: z.array(experienceChangeSchema).describe("The experiences that changed, the most recent change first."),
+    total: z.number().int().describe("How many experiences changed, across all pages."),
+    limit: z.number().int().describe("The most this page holds, as asked for."),
+    offset: z.number().int().describe("How many were skipped before this page, as asked for."),
+  })
+  .describe("The experiences that changed since the time given, among those the search parameters select.");
 export type ExperienceChangesResult = z.infer<typeof experienceChangesResultSchema>;
 
 // Changed-since as the repository receives it: every default applied and every rule already checked.
-export interface ExperienceChangesQuery extends Omit<ExperienceSearchQuery, "query" | "queryEmbedding"> {
+// Changed-since keeps its own order, most recent change first, so it is not ranked by tier.
+export interface ExperienceChangesQuery extends Omit<ExperienceSearchQuery, "query" | "queryEmbedding" | "rankBy"> {
   since: Date;
 }
 
