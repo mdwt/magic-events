@@ -2,7 +2,7 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#zolani-mahola-karen-zoid",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
     "title": "Zolani Mahola & The Feminine Force featuring Karen Zoid",
@@ -30,7 +30,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -51,10 +51,10 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#spoegwolf",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
-    "title": "Spoegwolf LIVE at Stanford Hills Estate",
+    "title": "Spoegwolf with Deon Meiring",
     "summary": "Spoegwolf returns for its annual summer show at Stanford Hills Estate, with Deon Meiring opening.",
     "description": "Join us at Stanford Hills Estate as Spoegwolf returns to the beautiful South African coast for its annual summer show. With festive lights, Christmas trees and a whole lot of singing, this is the perfect way to kick off the December holidays. Gates open: 15:00. Deon Meiring: 17:00. Spoegwolf: 18:00. All ages are welcome, and children under five can enter free of charge. Outside food and drinks are not permitted.",
     "type": "single",
@@ -79,7 +79,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -97,7 +97,7 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#neon-dreams-byrne",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
     "title": "Neon Dreams & Byrne: Dreaming Out Loud Festival",
@@ -126,7 +126,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -142,7 +142,7 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#albert-frost-dan-patlansky",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
     "title": "Albert Frost & Dan Patlansky Live",
@@ -171,7 +171,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -193,10 +193,10 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#watershed",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
-    "title": "Watershed: Beating Hearts Tour LIVE at Stanford Hills Estate",
+    "title": "Watershed: Beating Hearts Tour",
     "summary": "Watershed brings its Beating Hearts Tour to Stanford Hills, with special guest Keenan Eksteen.",
     "description": "Watershed, one of South Africa’s best-loved live bands, brings its Beating Hearts Tour to Stanford Hills for an afternoon of live music in the Overberg. Just a stone’s throw from Hermanus, the estate’s rolling lawns and mountain views make a beautiful setting for a summer concert. Joining Watershed is special guest Keenan Eksteen. Gates open at 15:00.",
     "type": "single",
@@ -221,7 +221,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -237,10 +237,10 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#jeremy-loops",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
-    "title": "Loop into Summer with Jeremy Loops, live at Stanford Hills",
+    "title": "Loop into Summer with Jeremy Loops",
     "summary": "Jeremy Loops plays his much-loved annual summer show at Stanford Hills Estate.",
     "description": "Catch South African live music sensation Jeremy Loops at Stanford Hills Estate. Set among the rolling hills of Stanford, this much-loved annual show has become a highlight of Jeremy’s summer tour—and a firm favourite on the festive-season calendar. This show sells out year after year, so book your tickets early. Gates open at 15:00. Show: 18:00–20:00.",
     "type": "single",
@@ -266,7 +266,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -282,10 +282,10 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#matthew-mole",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
-    "title": "Make Boxing Day Sing with Matthew Mole LIVE at Stanford Hills",
+    "title": "Matthew Mole with Tree 63 and Anica",
     "summary": "A Boxing Day Sunset Session with Matthew Mole, Tree 63 and Anica at Stanford Hills Estate.",
     "description": "Celebrate the magic of summer at Stanford Hills Sunset Sessions. Join us for an afternoon of live music, delicious food and a full cash bar. All ages are welcome, and children under five can enter free of charge. Outside food and drinks are not permitted. Doors open: 15:00. Anica: 16:00–16:45. Tree 63: 17:00–18:00. Matthew Mole: 18:30–20:00. Event ends: 20:00.",
     "type": "single",
@@ -311,7 +311,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -328,10 +328,10 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#will-linley",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
-    "title": "Summer Sounds Like Will Linley, live at Stanford Hills",
+    "title": "Summer Sounds Like Will Linley",
     "summary": "A family-friendly outdoor summer concert with Will Linley at Stanford Hills Estate.",
     "description": "Join us for a magical summer afternoon as Will Linley takes the stage at beautiful Stanford Hills Estate. Set in the heart of the Overberg, this family-friendly outdoor concert brings together live music, scenic views and feel-good summer vibes. Gates open at 15:00. Show: 18:00–20:00.",
     "type": "single",
@@ -357,7 +357,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -374,7 +374,7 @@
   {
     "source": "Stanford Hills Estate",
     "sourceListingId": "https://stanfordhills.co.za/events/#jesse-clegg-ross-learmonth",
-    "url": "https://stanfordhills.co.za/events/",
+    "url": null,
     "rawFile": "raw/stanford-hills-estate/events.txt",
     "fetchedAt": "2026-11-23T13:38:53Z",
     "title": "Jesse Clegg & Ross Learmonth: Two Voices. One Sunset.",
@@ -402,7 +402,7 @@
       "Stanford Hills Sunset Sessions"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
