@@ -43,7 +43,7 @@ Every domain event is one row in the repo's append-only `events` table.
 
 | Domain event | When | Read by | Carries |
 | --- | --- | --- | --- |
-| `experience.processed` | A raw listing produced a new or changed experience | Catalogue | Experience ID, version, all published fields, sessions, attribute values, tags, source links |
+| `experience.processed` | A raw listing produced a new or changed experience | Catalogue | Experience ID, version, all published fields, sessions, attribute values (each with its attribute's key, name and type), tags, source links |
 
 ## Organizations
 

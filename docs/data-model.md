@@ -191,7 +191,7 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |
 | Client access | Read only. Clients cannot create or change experiences |
-| Attributes and tags | A system-defined list in the database: attributes with a name, a type and a default value, their options, and tags. Catalogue filters on it and clients list it from it |
+| Attributes and tags | Data processing owns the definitions: a system-defined list in the database of attributes with a name, a type and a default value, their options, and tags. Catalogue owns each experience's attribute values and tags, which are what clients query |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status, booking and past are separate, as defined under Experience status |
@@ -203,6 +203,5 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 ## Open questions
 
 - [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant? Users and membership already live in Better Auth's tables, so does Organizations still raise `user.added`, `user.role_changed` and `user.removed`, or does Better Auth make them unnecessary?
-- [ ] Attributes and tags are held by Data processing, but Catalogue filters on them and clients list them, and no domain reads another's tables. Which domain holds them, or are they shared?
 - [ ] Only `location.added` exists. If a location's details change, Discovery's copy goes stale. Is a `location.changed` domain event needed?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
