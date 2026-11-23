@@ -25,8 +25,8 @@ interface Document {
   paths: Record<string, Record<string, Operation>>;
 }
 
-// Every method and path the server answers, as "get /v1/tenants/{slug}", read from Fastify's route tree. HEAD is added
-// by Fastify for every GET, and the catch-all OPTIONS route is @fastify/cors's: neither is an operation of the API.
+// Every method and path the server answers, as "post /v1/experiences/search", read from Fastify's route tree. HEAD is
+// added by Fastify for every GET, and the catch-all OPTIONS route is @fastify/cors's: neither is an operation of the API.
 async function registeredRoutes(): Promise<string[]> {
   const settings = testSettings(NO_DATABASE);
   const database = createDb(NO_DATABASE, { max: 1 });

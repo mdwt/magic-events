@@ -69,7 +69,7 @@ UC1 as written, a search within a radius around Hermanus, works. It is exact for
 
 **The situation.** The MCP specification's own way to sign in is OAuth 2.1: a client such as Claude connects by sending the user through a sign-in page, and no key is copied by hand. Better Auth has a plugin for it.
 
-**What version 1 does instead.** REST and MCP authenticate the same way, with an API key sent as `Authorization: Bearer`. A key belongs to one user and is marked as a person's or an agent's. A system admin issues and revokes keys.
+**What version 1 does instead.** REST and MCP authenticate the same way, with an API key sent as `Authorization: Bearer`. A key belongs to one user and is marked as a person's or an agent's. A system admin issues and revokes keys from the command line.
 
 **What it costs.**
 
