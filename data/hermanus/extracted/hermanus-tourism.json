@@ -12,11 +12,34 @@
     "status": "confirmed",
     "booking": "none",
     "sessions": [],
-    "recurrence": { "rule": "FREQ=MONTHLY;BYDAY=1FR", "start": "2026-12-04", "endTime": "20:00" },
-    "venue": { "name": "Hermanus galleries (26 galleries in the village)", "city": "Hermanus" },
-    "hints": ["Art", "Hermanus First Friday"],
-    "attributes": { "category": ["visual_arts"], "format": "exhibition", "audience": "all_ages", "setting": "indoor", "scale": "local" },
-    "tags": ["painting", "sculpture", "ceramics", "photography"],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1FR",
+      "start": "2026-12-04",
+      "endTime": "20:00"
+    },
+    "venue": {
+      "name": "Hermanus galleries (26 galleries in the village)",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Art",
+      "Hermanus First Friday"
+    ],
+    "attributes": {
+      "category": [
+        "visual_arts"
+      ],
+      "format": "exhibition",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "painting",
+      "sculpture",
+      "ceramics",
+      "photography"
+    ],
     "profile": "On the first Friday of every month the 26 art galleries of Hermanus stay open until 8pm for an evening ArtWalk through the village. Visitors pick up an ArtWalk map at any gallery and stroll between galleries showing fine art, sculpture, ceramics, photography and jewellery. It suits art lovers and anyone in Hermanus looking for an easy evening out on foot."
   },
   {
@@ -32,11 +55,30 @@
     "status": "confirmed",
     "booking": "none",
     "sessions": [],
-    "recurrence": { "rule": "FREQ=WEEKLY;BYDAY=SA", "start": "2026-11-28", "startTime": "09:00", "endTime": "14:00" },
-    "venue": { "name": "Corner of St Peter's Church, next to the Windsor Hotel", "city": "Hermanus" },
-    "hints": ["Festivals & Markets"],
-    "attributes": { "category": ["visual_arts"], "format": "market", "setting": "outdoor", "scale": "local" },
-    "tags": ["craft"],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Corner of St Peter's Church, next to the Windsor Hotel",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Festivals & Markets"
+    ],
+    "attributes": {
+      "category": [
+        "visual_arts"
+      ],
+      "format": "market",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
     "profile": "A weekly Saturday market in central Hermanus, held from 9am to 2pm next to St Peter's Church and the Windsor Hotel, weather permitting. Visitors browse the stalls on a Saturday morning in town. It suits anyone walking the town centre on a Saturday."
   },
   {
@@ -52,34 +94,37 @@
     "status": "confirmed",
     "booking": "none",
     "sessions": [],
-    "recurrence": { "rule": "FREQ=WEEKLY;BYDAY=SA", "start": "2026-11-28", "startTime": "08:00" },
-    "venue": { "name": "Forest Adventures", "address": "Camphill Rd, Hemel & Aarde Valley, Hermanus", "city": "Hermanus" },
-    "price": { "min": 0, "max": 0, "currency": "ZAR" },
-    "hints": ["Festivals & Markets", "parkrun"],
-    "attributes": { "category": ["outdoor_and_adventure"], "format": "race", "audience": "all_ages", "setting": "outdoor", "scale": "local" },
-    "tags": ["road-running"],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00"
+    },
+    "venue": {
+      "name": "Forest Adventures",
+      "address": "Camphill Rd, Hemel & Aarde Valley, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Festivals & Markets",
+      "parkrun"
+    ],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "road-running"
+    ],
     "profile": "A free, timed 5km run or walk held every Saturday at 8am at Forest Adventures on Camphill Road in the Hemel-en-Aarde Valley, rain or shine. Participants walk, jog or run at their own pace and are timed. It is family and dog friendly and suits everyone from beginners to serious runners."
-  },
-  {
-    "source": "Hermanus Tourism",
-    "sourceListingId": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/#Benguela Cove Parkrun",
-    "url": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/",
-    "rawFile": "raw/hermanus-tourism/festivals-and-markets.txt",
-    "fetchedAt": "2026-11-23T13:36:59Z",
-    "title": "Benguela Cove parkrun",
-    "summary": "Every Saturday morning at 8:00am, the free Benguela Cove Park Run 5km among vineyards and stunning views. Please register before you first come along.",
-    "description": "Join us every Saturday morning at 8:00am for the Benguela Cove Park Run 5km. This is the ultimate way to start your weekend surrounded by breathtaking vineyards and stunning views. What does it cost to join? Nothing – it’s free! but please register before you first come along https://www.parkrun.co.za/benguelacove/. This community event welcomes walkers, joggers, runners, volunteers, spectators, and leashed furry friends. Bring the whole family to enjoy exercise, fresh air, and natural beauty. Please note the Park Run is weather dependant.",
-    "type": "recurring",
-    "status": "confirmed",
-    "booking": "none",
-    "sessions": [],
-    "recurrence": { "rule": "FREQ=WEEKLY;BYDAY=SA", "start": "2026-11-28", "startTime": "08:00" },
-    "venue": { "name": "Benguela Cove" },
-    "price": { "min": 0, "max": 0, "currency": "ZAR" },
-    "bookingUrl": "https://www.parkrun.co.za/benguelacove/",
-    "hints": ["Festivals & Markets", "parkrun"],
-    "attributes": { "category": ["outdoor_and_adventure"], "format": "race", "audience": "all_ages", "setting": "outdoor", "scale": "local" },
-    "tags": ["road-running"],
-    "profile": "A free, timed 5km parkrun held every Saturday at 8am among the vineyards of Benguela Cove, weather permitting. Walkers, joggers and runners take part, and spectators and leashed dogs are welcome; first-timers register with parkrun beforehand. It suits families and anyone wanting a scenic start to the weekend."
   }
 ]
