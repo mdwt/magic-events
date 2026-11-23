@@ -91,13 +91,13 @@ Version 1 defines five kinds and builds three: RSS feed, PDF calendar and web pa
 | Ticketmaster | Ticketmaster Discovery | API with a free key. Filters by point | One event, as JSON | Ticketmaster's event ID | Field mapping |
 | RSS feed | Hermanus Times | Fetches the feed address in the source's settings | One post: its item in the feed, as XML, with the post's full text | The item's GUID | Language model |
 | PDF calendar | whalecoast.info annual and monthly events PDFs. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
-| Web page | The Overstrand weekly diary, Quicket's public search pages, organiser sites (FynArts, the Whale Festival), Wesgro, AllEvents.in, Xplorio | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model, given the page's visible text and its structured data |
+| Web page | The Overstrand weekly diary, Quicket's public search pages, organiser sites (FynArts, the Whale Festival), Wesgro, AllEvents.in, Xplorio | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model, given the page's visible text, its structured data and its map links |
 
 A kind is named for how a source is fetched, never for the software its site runs on. Two kinds have an API: Quicket and Ticketmaster. RSS feeds, PDF calendars and web pages are fetched as feeds, files and pages.
 
 Adding another RSS feed, web page or PDF calendar is adding a source row with its address in the settings. It needs no new code.
 
-A web page's content is what it says: its visible text and its structured data (JSON-LD). Many listing sites put their events in structured data, and Quicket's public search pages put them nowhere else. Both are used for the page's fingerprint and both are given to the language model.
+A web page's content is what it says: its visible text, its structured data (JSON-LD), and its links to a map that carry coordinates, such as a Directions link to `maps?q=-34.42,19.23`. Many listing sites put their events in structured data, and Quicket's public search pages put them nowhere else. A map link's address is not visible text, and it is often the only place a page states where its venue is. All three are used for the page's fingerprint and given to the language model.
 
 Quicket's events come in through its public search pages, which need no key and are fetched as web pages. The Quicket kind, which uses its API, is not built in version 1. Ticketmaster's public site returns no events for Hermanus or the Overstrand, so nothing is lost by leaving its kind out.
 
@@ -298,7 +298,7 @@ Catalogue calls neither of these two for fetching or the hand-off. It calls Data
 | What a location covers | A location has a centre and no radius. Extraction keeps experiences in the location and in neighbouring towns within about half an hour by road, as an instruction to the language model |
 | Recurring experiences with no feed | They come in from the organisers' own pages and the pages a browser scrape captures. A research source, where a language model researches the location on the web, is for the next version |
 | Last verified | Not in version 1. Discovery knows when each listing was last seen, and Catalogue is not told. Stamping last verified on source links is for the next version |
-| Fingerprint of a web page | Taken from its visible text and its structured data, so tokens, timestamps and adverts in the HTML do not make every fetch look like a change |
+| Fingerprint of a web page | Taken from its visible text, its structured data and its map links, so tokens, timestamps and adverts in the HTML do not make every fetch look like a change |
 | Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
 | Raw listing | One version of a listing's content, whole as fetched. Saved only when the listing is new or changed |
 | Adapters | Behind one port, the fetch port. Adapters fetch; Discovery saves; Data processing extracts |

@@ -346,7 +346,12 @@ describe("an update with precedence fill", () => {
         booking: "closed",
         summary: "Filled summary.",
         description: "Another description.",
-        venue: { name: "Somewhere else", address: "1 Main Road", city: "Hermanus" },
+        venue: {
+          name: "Somewhere else",
+          address: "1 Main Road",
+          city: "Hermanus",
+          position: { lat: -34.41, lng: 19.25 },
+        },
         price: { min: 99, currency: "ZAR" },
         imageUrl: "https://other.example.com/jazz.jpg",
         pageUrl: "https://other.example.com/jazz",
@@ -364,7 +369,12 @@ describe("an update with precedence fill", () => {
     assert.equal(saved.booking, "not_yet");
     assert.equal(saved.summary, "Filled summary.");
     assert.equal(saved.description, "Local and visiting players on the cliff path.");
-    assert.deepEqual(saved.venue, { name: "Gearing's Point", address: "1 Main Road", city: "Hermanus", position: null });
+    assert.deepEqual(saved.venue, {
+      name: "Gearing's Point",
+      address: "1 Main Road",
+      city: "Hermanus",
+      position: { lat: -34.41, lng: 19.25 },
+    });
     assert.deepEqual(saved.price, { min: 99, max: null, currency: "ZAR" });
     assert.equal(saved.imageUrl, "https://other.example.com/jazz.jpg");
     assert.equal(saved.pageUrl, "https://other.example.com/jazz");
@@ -416,6 +426,20 @@ describe("an update with precedence fill", () => {
       }),
     );
     assert.equal(result.experience.pageUrl, "https://whatson.example.com/jazz-on-the-cliffs");
+  });
+
+  test("leaves a venue position that is already stored", async () => {
+    const catalogue = fakeCatalogue();
+    const id = await created(catalogue);
+    const result = await catalogue.service.saveExperience(
+      input({
+        experienceId: id,
+        venue: { name: "Gearing's Point", position: { lat: -34.5, lng: 19.3 } },
+        source: { listingId: LISTING_B, rawListingId: RAW_B },
+        precedence: "fill",
+      }),
+    );
+    assert.deepEqual(result.experience.venue.position, { lat: -34.42, lng: 19.24 });
   });
 
   test("adding the link of a new listing is a real change, even when it fills nothing", async () => {

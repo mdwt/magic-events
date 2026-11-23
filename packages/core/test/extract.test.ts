@@ -74,6 +74,54 @@ describe("Extractors", () => {
     assert.doesNotMatch(request.text, /track\(\)/);
   });
 
+  test("a web page's links to a map that carry coordinates reach the model after its structured data", async () => {
+    const { extractor, model } = extractorFor("web_page");
+    await extractor.extract(
+      input({
+        // As Quicket's event pages link to their venue.
+        content:
+          '<html><body><h1>Nomadic Orchestra</h1><a href="http://maps.google.co.za/maps?q=-34.3681325,18.8223162">' +
+          'Directions</a><a href="https://www.google.com/maps/search/Hermanus">Map</a></body></html>',
+      }),
+    );
+    const [request] = model.of("extract");
+    assert.ok(request);
+    assert.match(request.text, /Map links:\nhttp:\/\/maps\.google\.co\.za\/maps\?q=-34\.3681325,18\.8223162$/);
+    assert.doesNotMatch(request.text, /maps\/search\/Hermanus/);
+  });
+
+  test("keeps a venue position the listing states near the location, and drops a far or impossible one with a warning", async () => {
+    const warnings: unknown[] = [];
+    const logger: Logger = { ...silent, warn: (fields) => warnings.push(fields) };
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          // Kleinmond, about 30 km from Hermanus.
+          answered({ title: "Near", venueLatitude: -34.3395729, venueLongitude: 19.0191822 }),
+          // Johannesburg.
+          answered({ title: "Far", venueName: "Ellis Park", venueLatitude: -26.1975, venueLongitude: 28.0606 }),
+          answered({ title: "Impossible", venueLatitude: -134.4, venueLongitude: 19.2 }),
+          answered({ title: "Half", venueLatitude: -34.42, venueLongitude: null }),
+        ),
+      ],
+    });
+    const extractor = createExtractors({ languageModel: model, horizonMonths: 24, logger }).get("web_page");
+    assert.ok(extractor);
+    const experiences = await extractor.extract(input());
+    assert.deepEqual(
+      experiences.map((experience) => [experience.title, experience.venue]),
+      [
+        ["Near", { city: "Hermanus", position: { lat: -34.3395729, lng: 19.0191822 } }],
+        ["Far", { name: "Ellis Park", city: "Hermanus" }],
+        ["Impossible", { city: "Hermanus" }],
+        ["Half", { city: "Hermanus" }],
+      ],
+    );
+    assert.equal(warnings.length, 2);
+    assert.match(JSON.stringify(warnings[0]), /km from Hermanus/);
+    assert.match(JSON.stringify(warnings[1]), /is not a position/);
+  });
+
   test("a feed post reaches the model as its title, link, date, categories and body as text", async () => {
     const { extractor, model } = extractorFor("rss_feed");
     await extractor.extract(

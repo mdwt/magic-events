@@ -34,6 +34,8 @@ export function answered(overrides: Partial<AnswerExperience> = {}): AnswerExper
     venueName: "",
     venueAddress: "",
     city: "Hermanus",
+    venueLatitude: null,
+    venueLongitude: null,
     priceMin: null,
     priceMax: null,
     currency: "",

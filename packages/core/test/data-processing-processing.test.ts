@@ -25,7 +25,15 @@ describe("processNext", () => {
 
   test("extracts, classifies, saves, appends to the warehouse and marks the raw listing processed", async () => {
     const model = fakeLanguageModel({
-      extract: [extraction(answered({ url: "https://fynarts.example.com/festival-2027" }))],
+      extract: [
+        extraction(
+          answered({
+            url: "https://fynarts.example.com/festival-2027",
+            venueLatitude: -34.4187,
+            venueLongitude: 19.2345,
+          }),
+        ),
+      ],
       classify: [
         {
           attributes: [
@@ -58,6 +66,7 @@ describe("processNext", () => {
     assert.equal(saved.status, "announced");
     assert.equal(saved.booking, "not_yet");
     assert.equal(saved.pageUrl, "https://fynarts.example.com/festival-2027");
+    assert.deepEqual(saved.venue, { city: "Hermanus", position: { lat: -34.4187, lng: 19.2345 } });
     assert.deepEqual(saved.sessions, [
       {
         startDate: "2027-06-12",

@@ -51,7 +51,8 @@ export type ExtractedExperience = {
   sessions: ExtractedSession[];
   recurrence?: ExtractedRecurrence;
   openingHours?: string;
-  venue?: { name?: string; address?: string; city?: string };
+  // The position is the venue's, as the listing states it.
+  venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };
   price?: { min?: number; max?: number; currency?: string };
   // ISO timestamps.
   onSaleAt?: string;
@@ -93,7 +94,7 @@ export class UnreadableListing extends Error {
 // ---- The answer's shape, as the language model gives it ----
 
 // Structured output allows few optional fields and few unions, so every text field is required and empty
-// when the item does not give it. Only the recurrence and the prices can be null.
+// when the item does not give it. Only the recurrence, the venue's coordinates and the prices can be null.
 const answerSessionSchema = z.object({
   start: z.string().describe("YYYY-MM-DD. For month or year precision, the first day of the month or year."),
   end: z.string().describe("The last day, YYYY-MM-DD, for several days in a row. Empty for a single day."),
@@ -128,6 +129,14 @@ const answerExperienceSchema = z.object({
   venueName: z.string(),
   venueAddress: z.string(),
   city: z.string(),
+  venueLatitude: z
+    .number()
+    .nullable()
+    .describe("The venue's latitude in decimal degrees, only as the item states it; null otherwise."),
+  venueLongitude: z
+    .number()
+    .nullable()
+    .describe("The venue's longitude in decimal degrees, only as the item states it; null otherwise."),
   priceMin: z.number().nullable(),
   priceMax: z.number().nullable(),
   currency: z.string().describe("ISO 4217, such as ZAR, or empty."),
@@ -347,11 +356,17 @@ export function settleExperience(
   if (openingHours !== undefined) experience.openingHours = openingHours;
 
   const venue = { name: given(answer.venueName), address: given(answer.venueAddress), city: given(answer.city) };
-  if (venue.name !== undefined || venue.address !== undefined || venue.city !== undefined) {
+  // Both coordinates or neither. Whether they are plausible is checked against the location by the extractor.
+  const position =
+    answer.venueLatitude !== null && answer.venueLongitude !== null
+      ? { lat: answer.venueLatitude, lng: answer.venueLongitude }
+      : undefined;
+  if (venue.name !== undefined || venue.address !== undefined || venue.city !== undefined || position !== undefined) {
     experience.venue = {};
     if (venue.name !== undefined) experience.venue.name = venue.name;
     if (venue.address !== undefined) experience.venue.address = venue.address;
     if (venue.city !== undefined) experience.venue.city = venue.city;
+    if (position !== undefined) experience.venue.position = position;
   }
 
   const min = settlePrice(answer.priceMin);
@@ -376,6 +391,31 @@ export function settleExperience(
   if (url !== undefined) experience.url = url;
 
   return { experience };
+}
+
+// How far from the source's location a venue may be. Sources list what is within about half an hour's drive, so
+// a position further than this is a misreading, such as a swapped sign or another venue's coordinates.
+export const MAX_VENUE_DISTANCE_KM = 100;
+
+function kilometresBetween(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
+  const radians = (degrees: number) => (degrees * Math.PI) / 180;
+  const dLat = radians(b.lat - a.lat);
+  const dLng = radians(b.lng - a.lng);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(radians(a.lat)) * Math.cos(radians(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+
+// Why a venue's position cannot be right, or undefined when it can.
+export function positionProblem(position: { lat: number; lng: number }, location: Location): string | undefined {
+  const { lat, lng } = position;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
+    return `(${String(lat)}, ${String(lng)}) is not a position`;
+  }
+  const distance = kilometresBetween(position, { lat: location.latitude, lng: location.longitude });
+  if (distance > MAX_VENUE_DISTANCE_KM) {
+    return `(${String(lat)}, ${String(lng)}) is ${String(Math.round(distance))} km from ${location.name}`;
+  }
+  return undefined;
 }
 
 // The window an experience must fall in: not over by the later of the fetch day and today, and starting no later
@@ -553,6 +593,13 @@ class LanguageModelExtractor implements Extractor {
       if (span.first > bounds.horizonEnd) {
         this.#logger.debug({ title: answered.title, first: span.first }, "Extracted experience is beyond the horizon");
         continue;
+      }
+      const position = settled.experience.venue?.position;
+      const problem = position === undefined ? undefined : positionProblem(position, input.location);
+      if (problem !== undefined) {
+        // A wrong position is worse than none: the experience is kept, searched from the location's centre.
+        this.#logger.warn({ title: answered.title, problem }, "Venue position dropped");
+        delete settled.experience.venue?.position;
       }
       kept.push(settled.experience);
     }

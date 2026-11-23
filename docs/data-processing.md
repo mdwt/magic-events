@@ -100,7 +100,7 @@ interface ExtractedExperience {
     skipped?: string[];                 // dates the rule gives on which the listing says it is not on
   };
   openingHours?: string;
-  venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };
+  venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };   // position: only as the listing states it
   price?: { min?: number; max?: number; currency: string };
   onSaleAt?: string;
   bookingClosesAt?: string;
@@ -123,6 +123,12 @@ interface ExtractedSession {
 ```
 
 The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those. A listing that describes several experiences is the own page of none of them, so the extractor drops a `url` that is the listing's own address when it returns more than one.
+
+### Venue position
+
+An extractor returns the venue's latitude and longitude only when the listing itself states them: in its structured data (JSON-LD `geo`, or `latitude` and `longitude`), in a map link that carries them, or written in its text. It never works them out from an address, a venue's name or what the model knows of the place, so an experience whose listing states no coordinates is searched from its location's centre (see Position in [data-model.md](data-model.md)).
+
+The extractor checks the position in code: it must be a real latitude and longitude, no further than 100 km from the source's location. A position that fails is dropped with a warning, and the experience is kept without it. A lead listing sets the position, and a fill listing only fills it when it is empty, like the venue's other fields.
 
 ### Dates
 

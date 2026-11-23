@@ -45,13 +45,14 @@ Set them from what the item says or shows, by these rules, the first that applie
 A session that is sold out or cancelled on its own, while others are not, is marked on that session.
 
 Structured data
-A web page may end with its structured data (JSON-LD), after the line "Structured data (JSON-LD):". When it is there, it is the most reliable statement of names, dates, venues, prices and links. Its times are often in UTC, written with a Z or an offset, such as 2027-03-06T07:00:00Z. Give every date and time in the place's local time, converting from UTC with the timezone in the request; a time in UTC can fall on a different local date. Use the visible text for what the structured data leaves out.
+A web page may end with its structured data (JSON-LD), after the line "Structured data (JSON-LD):". When it is there, it is the most reliable statement of names, dates, venues, prices and links. Its times are often in UTC, written with a Z or an offset, such as 2027-03-06T07:00:00Z. Give every date and time in the place's local time, converting from UTC with the timezone in the request; a time in UTC can fall on a different local date. Use the visible text for what the structured data leaves out. After it may come the page's links to a map that carry coordinates, after the line "Map links:".
 
 The fields
 - title: the experience's own name, as the item gives it, without the source's decoration ("Tickets", "SOLD OUT", the date).
 - summary: one sentence the item gives, or a short faithful summary of what it says. Empty when it says nothing beyond the title.
 - description: what the item says about it, in its own words, shortened only by leaving out what is not about the experience. Keep the language the item is written in.
 - venueName, venueAddress, city: as the item gives them. city is the town it is in.
+- venueLatitude and venueLongitude: the venue's coordinates in decimal degrees, only when the item itself states them: in its structured data (geo, latitude and longitude), in a map link that carries them (such as maps?q=-34.4187,19.2345 or @-34.4187,19.2345), or written in the text. Convert degrees, minutes and seconds to decimal degrees; south and west are negative. Never work them out from an address, a venue's name or what you know of the place: when the item does not state them, both are null.
 - openingHours: for something that is open over a period, the hours as the item states them, such as "Tue to Sun 09:00 to 17:00".
 - priceMin and priceMax: the lowest and highest ticket price as numbers, and currency as an ISO 4217 code, such as ZAR for prices in rand (R). For one price, give it as both. A free experience has 0 and 0. Leave them empty (null) when no price is given.
 - onSaleAt and bookingClosesAt: when tickets go on sale, and when booking closes, as an ISO 8601 date and time with the place's UTC offset, such as 2027-03-01T09:00:00+02:00. Empty when not given.

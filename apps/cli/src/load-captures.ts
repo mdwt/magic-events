@@ -66,7 +66,9 @@ const capturedExperienceSchema = z.object({
     })
     .nullish(),
   openingHours: text,
-  venue: z.object({ name: text, address: text, city: text }).nullish(),
+  venue: z
+    .object({ name: text, address: text, city: text, position: z.object({ lat: z.number(), lng: z.number() }).nullish() })
+    .nullish(),
   price: z.object({ min: z.number().nullish(), max: z.number().nullish(), currency: text }).nullish(),
   onSaleAt: text,
   bookingClosesAt: text,
@@ -208,6 +210,8 @@ function extractionAnswer(experience: CapturedExperience): AnswerExperience {
     venueName: experience.venue?.name ?? "",
     venueAddress: experience.venue?.address ?? "",
     city: experience.venue?.city ?? "",
+    venueLatitude: experience.venue?.position?.lat ?? null,
+    venueLongitude: experience.venue?.position?.lng ?? null,
     priceMin: experience.price?.min ?? null,
     priceMax: experience.price?.max ?? null,
     currency: experience.price?.currency ?? "",

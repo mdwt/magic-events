@@ -36,10 +36,27 @@ export function structuredData(html: string): string[] {
     });
 }
 
-// Everything the page says: its visible text, then its structured data.
+// A latitude and a longitude in decimal degrees, as a map link carries them, with the comma written or encoded.
+const COORDINATES = /-?\d{1,2}\.\d+(,|%2C)\s*-?\d{1,3}\.\d+/i;
+
+// The page's links to a map that carry coordinates, such as a "Directions" link to maps?q=-34.42,19.23. Their
+// addresses are not visible text, and they are often the only place a page states where its venue is.
+export function mapLinks(html: string): string[] {
+  const $ = load(html);
+  const links = $("a[href]")
+    .toArray()
+    .map((element) => ($(element).attr("href") ?? "").trim())
+    .filter((href) => /map/i.test(href) && COORDINATES.test(href));
+  return [...new Set(links)];
+}
+
+// Everything the page says: its visible text, then its structured data and its map links.
 export function pageContent(html: string): string {
   const text = visibleText(html);
   const data = structuredData(html);
-  if (data.length === 0) return text;
-  return [text, "Structured data (JSON-LD):", ...data].filter((part) => part.length > 0).join("\n");
+  const maps = mapLinks(html);
+  const parts = [text];
+  if (data.length > 0) parts.push("Structured data (JSON-LD):", ...data);
+  if (maps.length > 0) parts.push("Map links:", ...maps);
+  return parts.filter((part) => part.length > 0).join("\n");
 }
