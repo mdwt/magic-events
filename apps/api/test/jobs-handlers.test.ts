@@ -1,13 +1,14 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
+import type { Catalogue, EmbedExperiencesResult } from "../src/core/catalogue/ports.ts";
 import type { DataProcessing, ProcessingOutcome } from "../src/core/data-processing/ports.ts";
 import type { Discovery, RunSummary, Source } from "../src/core/discovery/ports.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
-import type { DiscoverySettings, ProcessingSettings } from "../src/core/shared/settings.ts";
-import { DRAIN_SAFETY_NET_CRON, startJobs } from "../src/scheduler/jobs.ts";
+import type { CatalogueSettings, DiscoverySettings, ProcessingSettings } from "../src/core/shared/settings.ts";
+import { DRAIN_SAFETY_NET_CRON, EMBED_SAFETY_NET_CRON, startJobs } from "../src/scheduler/jobs.ts";
 import { FakeJobQueue } from "./helpers/fake-job-queue.ts";
 
-// The job handlers on an in-memory queue, with fakes of Discovery and Data processing. No database.
+// The job handlers on an in-memory queue, with fakes of Catalogue, Discovery and Data processing. No database.
 
 const silent: Logger = { debug: () => {}, info: () => {}, warn: () => {}, error: () => {}, child: () => silent };
 
@@ -79,6 +80,9 @@ function fakeDiscovery(overrides: Partial<Discovery>): Discovery {
     listSources: notUsed,
     findDueSources: notUsed,
     runSource: notUsed,
+    runLocation: notUsed,
+    getListing: notUsed,
+    requeueListings: notUsed,
     claimPendingRawListing: notUsed,
     markRawListingProcessed: notUsed,
     markRawListingFailed: notUsed,
@@ -91,9 +95,27 @@ function fakeDataProcessing(processNext: DataProcessing["processNext"]): DataPro
   return {
     processNext,
     processPending: notUsed,
+    reprocess: notUsed,
     saveAttribute: notUsed,
     saveTag: notUsed,
     saveSeason: notUsed,
+  };
+}
+
+function fakeCatalogue(overrides: Partial<Catalogue>): Catalogue {
+  return {
+    searchExperiences: notUsed,
+    saveLocation: notUsed,
+    getLocation: notUsed,
+    getExperience: notUsed,
+    findExperiencesByListing: notUsed,
+    findMatchCandidates: notUsed,
+    saveExperience: notUsed,
+    removeSourceLink: notUsed,
+    getChangesSince: notUsed,
+    keepUp: notUsed,
+    embedExperiences: notUsed,
+    ...overrides,
   };
 }
 
@@ -110,28 +132,44 @@ function outcomesInOrder(outcomes: ProcessingOutcome[]): { processNext: DataProc
 }
 
 async function start(options: {
+  catalogue?: Partial<Catalogue>;
   discovery?: Partial<Discovery>;
   processNext?: DataProcessing["processNext"];
   processing?: Partial<ProcessingSettings>;
+  catalogueSettings?: Partial<CatalogueSettings>;
 }) {
   const queue = new FakeJobQueue();
   const jobs = await startJobs({
     queue,
+    catalogue: fakeCatalogue(options.catalogue ?? {}),
     discovery: fakeDiscovery(options.discovery ?? {}),
     dataProcessing: fakeDataProcessing(options.processNext ?? notUsed),
     discoverySettings,
     processingSettings: { workers: 1, horizonMonths: 24, ...options.processing },
+    catalogueSettings: {
+      searchDefaultRadiusKm: 25,
+      searchMaxRadiusKm: 200,
+      sessionHorizonMonths: 24,
+      upkeepCron: "0 * * * *",
+      ...options.catalogueSettings,
+    },
     logger: silent,
   });
   return { queue, jobs };
 }
 
 describe("startJobs", () => {
-  test("registers the three jobs, starts the queue and sets the two cron schedules", async () => {
+  test("registers the jobs, starts the queue and sets their cron schedules", async () => {
     const { queue, jobs } = await start({});
     assert.deepEqual(
       [...queue.handlers.keys()].sort(),
-      ["discovery.fetch-source", "discovery.find-due-sources", "processing.process-pending"],
+      [
+        "catalogue.embed-experiences",
+        "catalogue.keep-up",
+        "discovery.fetch-source",
+        "discovery.find-due-sources",
+        "processing.process-pending",
+      ],
     );
     assert.equal(queue.started, true);
     assert.deepEqual(queue.schedules.get("discovery.find-due-sources"), {
@@ -361,5 +399,169 @@ describe("processing.process-pending", () => {
     assert.ok(error instanceof Error);
     assert.match(error.message, /stopped before/);
     assert.equal(calls, 2);
+  });
+});
+
+// Hands out the rounds in order, then rounds with nothing left.
+function roundsInOrder(rounds: EmbedExperiencesResult[]): { embedExperiences: Catalogue["embedExperiences"]; calls: () => number } {
+  let calls = 0;
+  return {
+    embedExperiences: () => {
+      calls += 1;
+      return Promise.resolve(rounds.shift() ?? { embedded: 0, failed: 0, remaining: 0 });
+    },
+    calls: () => calls,
+  };
+}
+
+describe("catalogue.embed-experiences", () => {
+  test("runs every 15 minutes under the key a drain queues it with", async () => {
+    const { queue } = await start({});
+    assert.equal(EMBED_SAFETY_NET_CRON, "*/15 * * * *");
+    assert.deepEqual(queue.schedules.get("catalogue.embed-experiences"), {
+      name: "catalogue.embed-experiences",
+      cron: EMBED_SAFETY_NET_CRON,
+      payload: {},
+      key: "embeddings",
+    });
+  });
+
+  test("embeds round after round until nothing remains, and succeeds", async () => {
+    const rounds = roundsInOrder([
+      { embedded: 100, failed: 0, remaining: 150 },
+      { embedded: 99, failed: 1, remaining: 51 },
+      { embedded: 51, failed: 0, remaining: 0 },
+    ]);
+    const { queue } = await start({ catalogue: { embedExperiences: rounds.embedExperiences } });
+    assert.equal(await queue.runScheduled("catalogue.embed-experiences"), undefined);
+    assert.equal(rounds.calls(), 3);
+  });
+
+  test("finishes at once when nothing is due", async () => {
+    const rounds = roundsInOrder([]);
+    const { queue } = await start({ catalogue: { embedExperiences: rounds.embedExperiences } });
+    assert.equal(await queue.runScheduled("catalogue.embed-experiences"), undefined);
+    assert.equal(rounds.calls(), 1);
+  });
+
+  test("a round in which the model failed on every text fails the job, so the queue tries again", async () => {
+    const rounds = roundsInOrder([
+      { embedded: 100, failed: 0, remaining: 3 },
+      { embedded: 0, failed: 3, remaining: 3 },
+      { embedded: 3, failed: 0, remaining: 0 },
+    ]);
+    const { queue } = await start({ catalogue: { embedExperiences: rounds.embedExperiences } });
+    const error = await queue.runScheduled("catalogue.embed-experiences");
+    assert.ok(error instanceof Error);
+    assert.match(error.message, /failed on all 3 experiences/);
+    // The third round is left for the retry.
+    assert.equal(rounds.calls(), 2);
+  });
+
+  test("a system error from Catalogue fails the job", async () => {
+    const { queue } = await start({
+      catalogue: { embedExperiences: () => Promise.reject(new Error("connection lost")) },
+    });
+    const error = await queue.runScheduled("catalogue.embed-experiences");
+    assert.ok(error instanceof Error);
+    assert.equal(error.message, "connection lost");
+  });
+
+  test("stopping the queue stops between rounds, and the job fails so it is run again", async () => {
+    let calls = 0;
+    const queueHolder: { queue?: FakeJobQueue } = {};
+    const embedExperiences = async (): Promise<EmbedExperiencesResult> => {
+      calls += 1;
+      if (calls === 2) await queueHolder.queue?.stop();
+      return { embedded: 100, failed: 0, remaining: 100 };
+    };
+    const { queue } = await start({ catalogue: { embedExperiences } });
+    queueHolder.queue = queue;
+    const error = await queue.runScheduled("catalogue.embed-experiences");
+    assert.ok(error instanceof Error);
+    assert.match(error.message, /stopped before/);
+    assert.equal(calls, 2);
+  });
+
+  test("its policy retries five times, a minute after the first failure and doubling, one job at a time", async () => {
+    const { queue } = await start({});
+    assert.deepEqual(queue.handler("catalogue.embed-experiences").policy, {
+      retries: 5,
+      retryDelaySeconds: 60,
+      retryBackoff: true,
+      timeoutSeconds: 30 * 60,
+      concurrency: 1,
+    });
+  });
+
+  test("is queued once, under its key, by a drain that processed something", async () => {
+    const pending = outcomesInOrder([outcome("1"), outcome("2")]);
+    const { queue } = await start({ processNext: pending.processNext });
+    await queue.runScheduled("processing.process-pending");
+    await queue.runScheduled("processing.process-pending");
+    assert.deepEqual(queue.jobs("catalogue.embed-experiences"), [
+      { name: "catalogue.embed-experiences", payload: {}, key: "embeddings", delaySeconds: undefined },
+    ]);
+  });
+
+  test("is queued by a drain that processed something before a raw listing failed", async () => {
+    const pending = outcomesInOrder([outcome("1"), outcome("2", true)]);
+    const { queue } = await start({ processNext: pending.processNext });
+    assert.ok((await queue.runScheduled("processing.process-pending")) instanceof Error);
+    assert.equal(queue.jobs("catalogue.embed-experiences").length, 1);
+  });
+
+  test("is not queued by a drain that processed nothing", async () => {
+    const pending = outcomesInOrder([outcome("1", true)]);
+    const { queue } = await start({ processNext: pending.processNext });
+    await queue.runScheduled("processing.process-pending");
+    const empty = outcomesInOrder([]);
+    const second = await start({ processNext: empty.processNext });
+    await second.queue.runScheduled("processing.process-pending");
+    assert.equal(queue.jobs("catalogue.embed-experiences").length, 0);
+    assert.equal(second.queue.jobs("catalogue.embed-experiences").length, 0);
+  });
+});
+
+describe("catalogue.keep-up", () => {
+  test("runs on the cron of its setting, keyed by its name", async () => {
+    const { queue } = await start({ catalogueSettings: { upkeepCron: "30 2 * * *" } });
+    assert.deepEqual(queue.schedules.get("catalogue.keep-up"), {
+      name: "catalogue.keep-up",
+      cron: "30 2 * * *",
+      payload: {},
+      key: "catalogue.keep-up",
+    });
+  });
+
+  test("runs Catalogue's upkeep once, and succeeds", async () => {
+    let calls = 0;
+    const keepUp = () => {
+      calls += 1;
+      return Promise.resolve({ past: 2, bookingsClosed: 1, sessionsGenerated: 12 });
+    };
+    const { queue } = await start({ catalogue: { keepUp } });
+    assert.equal(await queue.runScheduled("catalogue.keep-up"), undefined);
+    assert.equal(calls, 1);
+  });
+
+  test("a system error from Catalogue fails the job, and it is tried twice more a minute apart", async () => {
+    let calls = 0;
+    const keepUp = () => {
+      calls += 1;
+      return Promise.reject(new Error("connection lost"));
+    };
+    const { queue } = await start({ catalogue: { keepUp } });
+    const error = await queue.runScheduled("catalogue.keep-up");
+    assert.ok(error instanceof Error);
+    assert.equal(error.message, "connection lost");
+    assert.deepEqual(queue.handler("catalogue.keep-up").policy, {
+      retries: 2,
+      retryDelaySeconds: 60,
+      retryBackoff: false,
+      timeoutSeconds: 30 * 60,
+      concurrency: 1,
+    });
+    assert.equal(calls, 1);
   });
 });
