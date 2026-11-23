@@ -117,9 +117,9 @@ REST and MCP are two adapters on the same inbound ports, so a person and an agen
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
-| Discovery | Run discovery for a location | Fetch from a source; store raw records; announce RawRecordCaptured |
-| Data processing | Process a raw record; process a submitted experience | Store processed experiences; load the data warehouse; announce ExperienceProcessed |
-| Catalogue | Search experiences; get changes since; submit an experience; manage locations | Store published experiences and their history; announce ExperienceSubmitted and LocationAdded |
+| Discovery | Run discovery for a location | Fetch from a source; store raw records; announce `raw_listing.captured` |
+| Data processing | Process a raw record; process a submitted experience | Store processed experiences; load the data warehouse; announce `experience.processed` |
+| Catalogue | Search experiences; get changes since; submit an experience; manage locations | Store published experiences and their history; announce `submission.created` and `location.added` |
 | Identity | Authenticate a caller; authorise an action | Store credentials; know each user's tenant and role |
 | Organizations | Manage tenants; manage users and roles | Store tenants and users; announce tenant and user changes |
 
@@ -129,15 +129,15 @@ Domains never reach into each other's data. One domain raises a domain event whe
 
 | Domain event | Raised by | Listened to by | Means |
 | --- | --- | --- | --- |
-| LocationAdded | Catalogue | Discovery | A new place is covered; start finding experiences there |
-| RawRecordCaptured | Discovery | Data processing | A source returned an experience record, as fetched |
-| ExperienceSubmitted | Catalogue | Data processing | An organiser created or changed one of their experiences |
-| ExperienceProcessed | Data processing | Catalogue | A clean, categorised, tagged experience is ready, either new or changed |
-| TenantCreated | Organizations | Identity | A new tenant exists and can have users |
-| UserAdded | Organizations | Identity | A person joined a tenant with a role; issue credentials |
-| RoleChanged | Organizations | Identity | A user's role changed; update what they may do |
-| UserRemoved | Organizations | Identity | Revoke that user's access |
-| TenantSuspended | Organizations | Identity | Revoke access for everyone in the tenant |
+| `location.added` | Catalogue | Discovery | A new place is covered; start finding experiences there |
+| `raw_listing.captured` | Discovery | Data processing | A source returned an experience record, as fetched |
+| `submission.created` | Catalogue | Data processing | An organiser created or changed one of their experiences |
+| `experience.processed` | Data processing | Catalogue | A clean, categorised, tagged experience is ready, either new or changed |
+| `tenant.created` | Organizations | Identity | A new tenant exists and can have users |
+| `user.added` | Organizations | Identity | A person joined a tenant with a role; issue credentials |
+| `user.role_changed` | Organizations | Identity | A user's role changed; update what they may do |
+| `user.removed` | Organizations | Identity | Revoke that user's access |
+| `tenant.suspended` | Organizations | Identity | Revoke access for everyone in the tenant |
 
 ## Use cases
 
@@ -165,22 +165,22 @@ Eight months later, the agent refines the trip and books activities. They want o
 An organiser adds their festival in Hermanus so travel agents can find it.
 
 1. **Identity** authenticates the organiser and authorises experience creation for their tenant.
-2. **Catalogue** records the submission against the organiser's tenant and raises ExperienceSubmitted.
-3. **Data processing** cleans, categorises and tags it, checks it against experiences already discovered, and raises ExperienceProcessed.
+2. **Catalogue** records the submission against the organiser's tenant and raises `submission.created`.
+3. **Data processing** cleans, categorises and tags it, checks it against experiences already discovered, and raises `experience.processed`.
 4. **Catalogue** publishes it, and the experience appears in searches like UC1. There is no system admin review in v1.
 
 ### UC4: The system discovers experiences in a location
 
 1. **Discovery** runs on its schedule for each covered location and fetches from that location's sources.
-2. **Discovery** stores each raw record as received and raises RawRecordCaptured.
-3. **Data processing** cleans and de-duplicates the records, categorises and tags them, prepares them for the data warehouse, and raises ExperienceProcessed.
+2. **Discovery** stores each raw record as received and raises `raw_listing.captured`.
+3. **Data processing** cleans and de-duplicates the records, categorises and tags them, prepares them for the data warehouse, and raises `experience.processed`.
 4. **Catalogue** publishes new experiences and records changes to existing ones, which feeds UC2.
 
 ### UC5: A system admin onboards a travel agency
 
 1. **Identity** authenticates the system admin and authorises tenant management.
-2. **Organizations** creates the tenant as a travel agency, sets its configuration, and raises TenantCreated.
-3. **Organizations** adds the agency's first user with the client role and raises UserAdded.
+2. **Organizations** creates the tenant as a travel agency, sets its configuration, and raises `tenant.created`.
+3. **Organizations** adds the agency's first user with the client role and raises `user.added`.
 4. **Identity** issues that user's credentials for REST and MCP.
 
 ## Glossary
@@ -188,7 +188,7 @@ An organiser adds their festival in Hermanus so travel agents can find it.
 | Term | Meaning |
 | --- | --- |
 | Experience | Something a traveller can go to or do: a concert, a match, a market, a show with many dates, an exhibition, a festival months away, or a season such as whale watching |
-| Domain event | Something that happened inside the system that another domain may care about, such as ExperienceProcessed. Not an experience. |
+| Domain event | Something that happened inside the system that another domain may care about, such as `experience.processed`. Not an experience. |
 | Raw record | An experience as a source returned it, before any processing |
 | Source | A place Discovery finds experiences, such as a ticketing site, tourism listing or venue page |
 | Location | A place the system covers and clients search by, such as Hermanus |
@@ -215,7 +215,7 @@ An organiser adds their festival in Hermanus so travel agents can find it.
 - [ ] The client role includes creating and maintaining experiences, so travel agencies and travel apps can submit experiences too. Is that intended, or does tenant kind limit submission to organisers?
 - [ ] How does the system learn that a discovered experience was cancelled or dropped by its source? UC2 returns cancellations, but no flow produces one for discovered experiences.
 - [ ] When an organiser's experience matches an already discovered experience (UC3 step 3), which version is published, and can the organiser then edit it?
-- [ ] How does an organiser change or cancel their own experience? ExperienceSubmitted covers create and change; nothing covers cancel or delete.
+- [ ] How does an organiser change or cancel their own experience? `submission.created` covers create and change; nothing covers cancel or delete.
 - [ ] Can an organiser submit an experience in a location the system does not cover?
 - [ ] When a tenant is suspended, do its organiser experiences stay published?
 - [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.

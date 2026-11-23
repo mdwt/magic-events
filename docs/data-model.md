@@ -22,10 +22,10 @@ Each domain owns its resources. Only that domain's repositories write its tables
 ```mermaid
 flowchart LR
   ORG[Organizations] -- tenant and user events --> ID[Identity]
-  CAT[Catalogue] -- LocationAdded --> DIS[Discovery]
-  DIS -- RawRecordCaptured --> DP[Data processing]
-  CAT -- ExperienceSubmitted --> DP
-  DP -- ExperienceProcessed --> CAT
+  CAT[Catalogue] -- location.added --> DIS[Discovery]
+  DIS -- raw_listing.captured --> DP[Data processing]
+  CAT -- submission.created --> DP
+  DP -- experience.processed --> CAT
 ```
 
 | Domain | Aggregate | Repository | What it holds |
@@ -52,7 +52,7 @@ A place the system covers. System-managed and shared by every tenant.
 
 - **Holds:** name, slug, country, region, timezone, centre point.
 - **Rules:** the slug is unique. A location belongs to no tenant. Moving its centre changes no experience.
-- **Raises:** LocationAdded.
+- **Raises:** `location.added`.
 
 ### Experience
 
@@ -89,7 +89,7 @@ An organiser's request to create or change an experience. The experience itself 
 
 - **Holds:** tenant, experience (empty until first published), the submitted details, status, rejection reason, submitted and processed times.
 - **Status:** pending, processed, rejected. A rejection has a reason.
-- **Raises:** ExperienceSubmitted.
+- **Raises:** `submission.created`.
 
 ### Experience status
 
@@ -138,11 +138,12 @@ The single set of attributes and tags every experience is described with. System
 
 ### Incoming listing
 
-One row for each RawRecordCaptured or ExperienceSubmitted that Data processing receives.
+One row for each `raw_listing.captured` or `submission.created` that Data processing receives.
 
 - **Holds:** where it came from (discovery or submission) and its ID there, received time, status, attempts, error, the experience it produced.
 - **Status:** pending, processed, rejected, failed.
 - **Rules:** the origin plus its ID is unique, so a domain event delivered twice is processed once.
+- **Raises:** `incoming_listing.rejected` when a listing or submission can't become an experience.
 
 ### Processed experience
 
@@ -151,7 +152,7 @@ The canonical experience Data processing builds, before Catalogue publishes it. 
 - **Listing link:** source, the source's listing ID, the raw listing it came from, the matching rule that linked it, and when.
 - **Rules:** a source's listing ID links to one experience. If a source has no listing ID, its web address is used instead.
 - **Matching:** a listing whose source and ID are already linked updates that experience. Otherwise Data processing compares place, dates, title and venue against existing experiences, and either links the listing or creates a new experience. Organiser submissions are matched the same way.
-- **Raises:** ExperienceProcessed.
+- **Raises:** `experience.processed`.
 
 ## Discovery
 
@@ -174,18 +175,18 @@ A listing exactly as the source returned it on a run: a JSON response, an HTML p
 
 - **Holds:** run, source, location, the source's listing ID, address, fetched time, content type, the content itself, a fingerprint of the content.
 - **Rules:** never changed after it is saved. If the fingerprint matches the last copy of the same listing, nothing is passed on.
-- **Raises:** RawRecordCaptured, in the same transaction as the save.
+- **Raises:** `raw_listing.captured`, in the same transaction as the save.
 
 ### Covered location
 
-Discovery's copy of a Catalogue location, built from LocationAdded, so it knows where to look.
+Discovery's copy of a Catalogue location, built from `location.added`, so it knows where to look.
 
 ## Organizations
 
 ### Tenant
 
 - **Holds:** name, slug, kind (travel agency, travel app, event organiser), status (active, suspended), configuration.
-- **Raises:** TenantCreated, TenantSuspended, UserAdded, RoleChanged, UserRemoved.
+- **Raises:** `tenant.created`, `tenant.suspended`, `user.added`, `user.role_changed`, `user.removed`.
 
 Users, membership and roles use Better Auth's own tables in v1, with no abstraction over them.
 
@@ -195,25 +196,14 @@ Better Auth's tables hold users, sessions and accounts. Identity also records wh
 
 ## Domain event log
 
-The repo's append-only `events` table, ordered by global position. Each domain records how far it has read the log, so it can stop and resume without missing or repeating a domain event.
-
-| Domain event | Raised by | Read by |
-| --- | --- | --- |
-| LocationAdded | Catalogue | Discovery |
-| RawRecordCaptured | Discovery | Data processing |
-| ExperienceSubmitted | Catalogue | Data processing |
-| ExperienceProcessed | Data processing | Catalogue |
-| TenantCreated | Organizations | Identity |
-| UserAdded | Organizations | Identity |
-| RoleChanged | Organizations | Identity |
-| UserRemoved | Organizations | Identity |
-| TenantSuspended | Organizations | Identity |
+The repo's append-only `events` table, ordered by global position. Each domain records how far it has read the log, so it can stop and resume without missing or repeating a domain event. Names, payloads and the envelope are defined in [domain-events.md](domain-events.md).
 
 ## Decisions
 
 | Decision | |
 | --- | --- |
 | Terms | "Experience" is the thing a traveller goes to; "event" means domain event only |
+| Domain event names | `resource.verb`, lowercase, verb in the past tense |
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant. Organiser ownership lives on the submission |
 | Vocabulary | One system-managed set of attributes and tags |
