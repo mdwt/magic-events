@@ -12,9 +12,16 @@ interface Side {
   title: string;
   venue: string;
   city: string;
-  // A day, or for a recurring experience the first day of its rule.
+  // A day, or for a recurring experience the first day of its rule, or the first day of a month.
   start: string;
   rule?: string;
+  // Known only to the month that starts on `start`.
+  month?: true;
+}
+
+function lastDay(start: string): string {
+  const [year, month] = start.split("-").map(Number) as [number, number];
+  return new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10);
 }
 
 function verdict(extracted: Side, stored: Side): string {
@@ -23,7 +30,7 @@ function verdict(extracted: Side, stored: Side): string {
     type: extracted.rule ? "recurring" : "single",
     status: "confirmed",
     booking: "none",
-    sessions: extracted.rule ? [] : [{ start: extracted.start, precision: "day" }],
+    sessions: extracted.rule ? [] : [{ start: extracted.start, precision: extracted.month ? "month" : "day" }],
     ...(extracted.rule ? { recurrence: { rule: extracted.rule, start: extracted.start } } : {}),
     venue: { name: extracted.venue, city: extracted.city },
     hints: [],
@@ -36,13 +43,14 @@ function verdict(extracted: Side, stored: Side): string {
     venueName: stored.venue,
     city: stored.city,
     firstDate: stored.start,
-    lastDate: stored.rule ? null : stored.start,
+    lastDate: stored.rule ? null : stored.month ? lastDay(stored.start) : stored.start,
     sessions: [],
-    onlyMonthOrYear: false,
+    onlyMonthOrYear: stored.month === true,
     recurrenceRule: stored.rule ?? null,
     listingIds: [],
   };
-  const span = { start: extracted.start, end: extracted.rule ? "2028-11-23" : extracted.start };
+  const end = extracted.rule ? "2028-11-23" : extracted.month ? lastDay(extracted.start) : extracted.start;
+  const span = { start: extracted.start, end };
   const question = readMatchQuestion(matchText(experience, span, [candidate]));
   assert.ok(question, "the question could not be read back");
   return matchPlainly(question).verdict;
@@ -140,6 +148,50 @@ describe("Plain matching", () => {
       verdict(
         { ...landskein, venue: "Landskein Wines - The Parlour", title: "New Year's Eve Family Day" },
         { ...landskein, title: "New Years´s Eve Family Day at Landskein" },
+      ),
+      "sure",
+    );
+  });
+
+  test("a series known by its month never takes one act's dated concert in it, whichever comes first", () => {
+    const sunsetSessions = { title: "Sunset Sessions", venue: "Stanford Hills Estate", city: "Stanford", start: "2026-12-01", month: true as const };
+    for (const [title, day] of [
+      ["Jeremy Loops Live at Stanford Hills Sunset Sessions", "2026-12-23"],
+      ["Jesse Clegg and Ross Learmonth Live at Stanford Hills Sunset Sessions", "2026-12-30"],
+      ["Matthew Mole at Stanford Hills Sunset Sessions", "2026-12-26"],
+      ["Will Linley Live at Stanford Hills Sunset Sessions", "2026-12-28"],
+      // A concert on the first of the month starts the same day as the month.
+      ["Jeremy Loops Live at Stanford Hills Sunset Sessions", "2026-12-01"],
+    ] as const) {
+      const concert = { title, venue: "Stanford Hills Estate", city: "Stanford", start: day };
+      assert.notEqual(verdict(concert, sunsetSessions), "sure", title);
+      assert.notEqual(verdict(sunsetSessions, concert), "sure", title);
+    }
+  });
+
+  test("a festival known by its month is matched to its dated listing only when the titles have the same words", () => {
+    // The capture has Kalfiefees only for August 2027; the days and the shorter title here are made up.
+    const august = { title: "Kalfiefees Hermanus Kunstefees 2027", venue: "", city: "Hermanus", start: "2027-08-01", month: true as const };
+    assert.equal(verdict({ title: "Kalfiefees Kunstefees", venue: "", city: "Hermanus", start: "2027-08-12" }, august), "sure");
+    assert.equal(
+      verdict({ title: "Kalfiefees Kunstefees: Opening Night", venue: "", city: "Hermanus", start: "2027-08-12" }, august),
+      "unsure",
+    );
+  });
+
+  test("a title naming only the kind of event never matches a particular one plainly", () => {
+    const saturdays = { start: "2026-11-28", rule: "FREQ=WEEKLY;BYDAY=SA" };
+    const parkRun = { ...saturdays, title: "ParkRun", venue: "Hemel-en-Aarde and Benguela Cove", city: "Hermanus" };
+    const hermanus = { ...saturdays, title: "Hermanus parkrun", venue: "Camphill Road, Hemel-en-Aarde", city: "Hermanus" };
+    const groeneweide = { ...saturdays, title: "Groeneweide Parkrun", venue: "Groeneweide Farm", city: "Gansbaai" };
+    assert.notEqual(verdict(parkRun, hermanus), "sure");
+    assert.notEqual(verdict(hermanus, parkRun), "sure");
+    assert.notEqual(verdict(parkRun, groeneweide), "sure");
+    // The same parkrun named by two sources still is.
+    assert.equal(
+      verdict(
+        { ...saturdays, title: "ParkRun Benguela Cove Hermanus", venue: "Benguela Cove", city: "Hermanus" },
+        { ...saturdays, title: "Benguela Cove parkrun", venue: "Benguela Cove Lagoon Wine Estate", city: "Hermanus" },
       ),
       "sure",
     );

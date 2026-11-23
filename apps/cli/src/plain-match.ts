@@ -1,4 +1,4 @@
-import { normaliseTitle } from "@magic-events/core/data-processing/match.ts";
+import { normaliseTitle, ONLY_MONTH_OR_YEAR } from "@magic-events/core/data-processing/match.ts";
 
 // Matching without the model, when it is plain. The captures command answers the language model's match question
 // with this before it asks the real model. Data processing asks only when no candidate has the same normalised
@@ -38,25 +38,36 @@ export interface MatchQuestion {
   place: string;
   start: string;
   recurring: boolean;
-  candidates: { id: string; title: string; place: string; first: string; recurring: boolean }[];
+  // True when its dates are known only to the month or year.
+  monthOrYear: boolean;
+  candidates: { id: string; title: string; place: string; first: string; recurring: boolean; monthOrYear: boolean }[];
 }
+
+const COARSE = ONLY_MONTH_OR_YEAR.replace(/[()]/g, "\\$&");
 
 // The question as Data processing writes it (matchText in match.ts), read back.
 export function readMatchQuestion(question: string): MatchQuestion | undefined {
   const title = /^Title: (.*)$/m.exec(question)?.[1];
   const place = /^Venue: (.*)$/m.exec(question)?.[1];
-  const dates = /^Dates: (\S+) to (\S+?)(, repeating .*)?$/m.exec(question);
+  const dates = new RegExp(`^Dates: (\\S+) to (\\S+?)(${COARSE})?(, repeating .*)?$`, "m").exec(question);
   if (title === undefined || place === undefined || !dates) return undefined;
-  const candidates = [...question.matchAll(/^- ID (\S+): (.*); venue: (.*); dates: (\S+) to (\S+?)(, repeating .*)?$/gm)].map(
-    (found) => ({
-      id: found[1] ?? "",
-      title: found[2] ?? "",
-      place: found[3] ?? "",
-      first: found[4] ?? "",
-      recurring: found[6] !== undefined,
-    }),
-  );
-  return { title, place, start: dates[1] ?? "", recurring: dates[3] !== undefined, candidates };
+  const line = new RegExp(`^- ID (\\S+): (.*); venue: (.*); dates: (\\S+) to (\\S+?)(${COARSE})?(, repeating .*)?$`, "gm");
+  const candidates = [...question.matchAll(line)].map((found) => ({
+    id: found[1] ?? "",
+    title: found[2] ?? "",
+    place: found[3] ?? "",
+    first: found[4] ?? "",
+    monthOrYear: found[6] !== undefined,
+    recurring: found[7] !== undefined,
+  }));
+  return {
+    title,
+    place,
+    start: dates[1] ?? "",
+    monthOrYear: dates[3] !== undefined,
+    recurring: dates[4] !== undefined,
+    candidates,
+  };
 }
 
 export type PlainVerdict = { verdict: "sure"; id: string } | { verdict: "unsure" | "none" };
@@ -78,7 +89,10 @@ function ownWords(words: Set<string>, others: Set<string>, places: Set<string>):
 // When each title has words of its own, they may name different organisers, operators or venues, such as
 // "Hermanus Whale Cruises boat-based whale watching" and "Boat-based whale watching with Southern Right Charters",
 // so it is never sure. Nor is it for a recurring experience that only one title adds to, since two operators can
-// run the same trip every day from the same harbour.
+// run the same trip every day from the same harbour, or that shares only one word, since "ParkRun" names no
+// particular parkrun. And when one side's dates are known only to the month or year and the other's to the day, the
+// titles must have the same words: a series such as "Sunset Sessions" in December is not one act's dated concert
+// in it, such as "Jeremy Loops Live at Stanford Hills Sunset Sessions".
 export function matchPlainly(question: MatchQuestion): PlainVerdict {
   const words = strongWords(question.title);
   const place = strongWords(question.place);
@@ -101,12 +115,13 @@ export function matchPlainly(question: MatchQuestion): PlainVerdict {
     const others = ownWords(theirs, words, places);
     const sameWords = ours.length === 0 && others.length === 0;
     const oneAdds = (ours.length === 0) !== (others.length === 0);
+    const samePrecision = question.monthOrYear === candidate.monthOrYear;
     const sure =
       sameKind &&
       !placesDiffer &&
-      shared >= 1 &&
+      shared >= (question.recurring ? 2 : 1) &&
       ((sameWords && (shared >= 2 || (sameStart && samePlace))) ||
-        (oneAdds && !question.recurring && sameStart && samePlace));
+        (oneAdds && samePrecision && !question.recurring && sameStart && samePlace));
     // What might be the same, and is not sure, is unsure: the model is asked, or with the model off it stays two.
     const close =
       (sameKind && !placesDiffer && cover >= 0.8 && shared >= 2) ||
