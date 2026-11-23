@@ -211,7 +211,7 @@ describe("saving an experience", () => {
     const [loaded] = await catalogue.findExperiencesByListing(LISTING_B);
     assert.equal(loaded?.title, "Jazz on the Cliffs");
     assert.equal(loaded.status, "confirmed");
-    assert.deepEqual(loaded.sessions, [{ startDate: "2027-03-13", endDate: "2027-03-13" }]);
+    assert.deepEqual(loaded.sessions, [{ startDate: "2027-03-13", endDate: "2027-03-13", startTime: "18:00" }]);
     assert.deepEqual([...loaded.listingIds].sort(), [LISTING_A, LISTING_B].sort());
     assert.equal(result.experience.summary, "Filled from the second listing.");
     // Its tags are added to the stored ones, as its attribute keys are.
