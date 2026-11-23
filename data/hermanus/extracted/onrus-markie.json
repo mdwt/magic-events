@@ -1,0 +1,39 @@
+[
+  {
+    "source": "Onrus Markie (Facebook)",
+    "sourceListingId": "https://www.facebook.com/OnrusMarkie/",
+    "url": "https://www.facebook.com/OnrusMarkie/",
+    "rawFile": "raw/onrus-markie/facebook-onrusmarkie.txt",
+    "fetchedAt": "2026-11-23T13:37:19Z",
+    "title": "Onrus Markie",
+    "summary": "A monthly neighbourhood market on the 1st Saturday of the month from 9 to 12 at De Wet Saal, Roos St., Onrus.",
+    "description": "A monthly neighbourhood market on the 1st Sat. of the month from 9-12 at De Wet Saal, Roos St., Onrus",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1SA",
+      "start": "2026-12-05",
+      "startTime": "09:00",
+      "endTime": "12:00"
+    },
+    "venue": {
+      "name": "De Wet Saal (De Wet Hall)",
+      "address": "6 Roos Street, Onrus",
+      "city": "Onrus"
+    },
+    "hints": [
+      "Page · Event"
+    ],
+    "attributes": {
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "market",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A neighbourhood market held on the first Saturday of every month from 9am to midday at the De Wet Hall on Roos Street in Onrus. Visitors browse the stalls and meet locals on a Saturday morning. It suits anyone staying around Onrus and Vermont at the start of a month."
+  }
+]
