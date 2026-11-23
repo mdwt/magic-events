@@ -370,6 +370,59 @@ describe("A title that names no experience", () => {
   });
 });
 
+describe("Expected", () => {
+  test("is kept for an annual event whose coming edition has only a month", async () => {
+    // Xplorio's events page: "It is held at the Fernkloof Nature Reserve in September every year".
+    const content = readFileSync(new URL("./fixtures/sources/xplorio-events.html", import.meta.url), "utf8");
+    const { extractor } = extractorFor(
+      "web_page",
+      extraction(
+        answered({
+          title: "Hermanus Flower and Eco Fair",
+          status: "expected",
+          booking: "none",
+          venueName: "Fernkloof Nature Reserve",
+          sessions: [session({ start: "2027-09-01", end: "2027-09-30", precision: "month" })],
+        }),
+      ),
+    );
+    const [fair] = await extractor.extract(input({ content }));
+    assert.equal(fair?.status, "expected");
+    assert.equal(fair.booking, "none");
+  });
+
+  test("is announced when the dates have a day or a pattern, and confirmed when tickets are on sale", () => {
+    assert.equal(settled({ status: "expected" }).status, "announced");
+    assert.equal(
+      settled({
+        status: "expected",
+        type: "recurring",
+        sessions: [],
+        recurrence: {
+          rule: "FREQ=YEARLY;BYMONTH=9",
+          start: "2027-09-01",
+          end: "",
+          startTime: "",
+          endTime: "",
+          skipped: [],
+        },
+      }).status,
+      "announced",
+    );
+    const onSale = settled({
+      status: "expected",
+      booking: "open",
+      sessions: [session({ start: "2027-09-01", end: "", precision: "month" })],
+    });
+    assert.deepEqual([onSale.status, onSale.booking], ["confirmed", "open"]);
+  });
+
+  test("the instructions set it only for an edition not yet announced", () => {
+    assert.match(EXTRACTION_INSTRUCTIONS, /Status expected/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /announces this edition for it[^\n]*status announced/);
+  });
+});
+
 describe("An event that structured data gives one start and one end", () => {
   // Quicket's search page for Hermanus as fetched on 23 November 2026, cut to four of its events. Its visible text
   // is empty: the events are in its structured data and nowhere else.

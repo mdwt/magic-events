@@ -44,8 +44,9 @@ export type ExtractedExperience = {
   summary?: string;
   description?: string;
   type: "single" | "run" | "recurring";
-  // Expected is never set from a listing, and Removed and Past are Catalogue's.
-  status: "announced" | "confirmed" | "postponed" | "cancelled";
+  // Expected is for a recurring event whose coming edition has only a month or a year and is not announced yet.
+  // Removed and Past are Catalogue's.
+  status: "expected" | "announced" | "confirmed" | "postponed" | "cancelled";
   booking: "none" | "not_yet" | "open" | "sold_out" | "closed";
   // One for a single, one per date for a run, only the extra dates for a recurring experience.
   sessions: ExtractedSession[];
@@ -111,7 +112,7 @@ const answerExperienceSchema = z.object({
   summary: z.string(),
   description: z.string(),
   type: z.enum(["single", "run", "recurring"]),
-  status: z.enum(["announced", "confirmed", "postponed", "cancelled"]),
+  status: z.enum(["expected", "announced", "confirmed", "postponed", "cancelled"]),
   booking: z.enum(["none", "not_yet", "open", "sold_out", "closed"]),
   sessions: z.array(answerSessionSchema),
   recurrence: z
@@ -253,8 +254,18 @@ function settleBooking(
   if (status === "postponed" || status === "cancelled") {
     return { status, booking: booking === "none" ? "none" : "closed" };
   }
-  if ((booking === "open" || booking === "sold_out") && status === "announced") return { status: "confirmed", booking };
+  if ((booking === "open" || booking === "sold_out") && (status === "announced" || status === "expected")) {
+    return { status: "confirmed", booking };
+  }
   return { status, booking };
+}
+
+// Expected is for an edition with only a month or a year: an experience with a day, or with a pattern it repeats
+// by, has its dates announced.
+function settleExpected(experience: ExtractedExperience): ExtractedExperience["status"] {
+  if (experience.status !== "expected") return experience.status;
+  const daysKnown = experience.recurrence !== undefined || experience.sessions.some((one) => one.precision === "day");
+  return daysKnown ? "announced" : "expected";
 }
 
 // A rule Catalogue can generate sessions from. The library reads a rule with no FREQ as yearly, so FREQ is required.
@@ -347,6 +358,7 @@ export function settleExperience(
     hints: [...new Set(answer.hints.map((hint) => hint.trim()).filter((hint) => hint !== ""))],
   };
   if (recurrence !== undefined) experience.recurrence = recurrence;
+  experience.status = settleExpected(experience);
 
   const summary = given(answer.summary);
   if (summary !== undefined) experience.summary = summary;

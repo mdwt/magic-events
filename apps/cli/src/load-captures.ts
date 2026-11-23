@@ -183,8 +183,7 @@ function extractionAnswer(experience: CapturedExperience): AnswerExperience {
     summary: experience.summary ?? "",
     description: experience.description ?? "",
     type: experience.type,
-    // Expected is not a status a listing gives: an edition a source expects is announced.
-    status: experience.status === "expected" ? "announced" : experience.status,
+    status: experience.status,
     booking: experience.booking,
     sessions: experience.sessions.map((session) => ({
       start: session.start,

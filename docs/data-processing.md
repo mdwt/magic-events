@@ -499,7 +499,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty |
 | Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
 | Processing again | Processed is not final. A listing's latest version can be processed again at any time. A system admin sends listings back with `pipeline reprocess`: one listing, the listings an experience was built from, a source's or a location's |
-| Status and booking from a listing | Set by the rules under Status and booking from a listing. Expected is never set from a listing |
+| Status and booking from a listing | Set by the rules under Status and booking from a listing. Expected is set for a recurring event whose coming edition has only a month or a year and is not announced yet |
 | Profile and versions | A change to the profile alone does not bump the version or write a change row, so a reworded profile is never reported by changed-since |
 | When the leading listing goes | The experience keeps the values it has. The next source taking over, as Sources that disagree describes, is for phase 2 |
 | Dates | An extractor returns the dates a listing gives and no others: listed dates as sessions, a stated pattern as a recurrence. It never fills in the days between a first and a last date, and never works a pattern out into dates |
@@ -517,7 +517,7 @@ None. The working list is in [issues.md](issues.md).
 
 ## Status and booking from a listing
 
-Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. These are the rules the extractors are given. Expected is never set from a listing.
+Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. These are the rules the extractors are given, the first that applies. Expected is set only for an edition that has nothing but a month or a year; an experience with a day or a recurrence that the model calls Expected is saved as Announced.
 
 | What the listing says or shows | Status | Booking |
 | --- | --- | --- |
@@ -527,7 +527,8 @@ Extraction reads what a listing says and sets the experience's status and bookin
 | Sold out | Confirmed | Sold out |
 | Exact dates, and tickets go on sale later | Announced | Not yet |
 | Exact dates, and nothing to book | Confirmed | None |
-| Only a month or a year | Announced | Not set by this |
+| An event that comes round again, with only a month or a year for its coming edition and nothing that announces it: "usually", "every year in", "dates to be confirmed", or an annual event described with no dates for the next one | Expected | Not yet when tickets will go on sale, otherwise None |
+| Only a month or a year, for an edition the listing announces | Announced | Not set by this |
 
 ## Adapters
 
