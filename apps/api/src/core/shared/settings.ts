@@ -36,6 +36,9 @@ export interface CatalogueSettings {
   searchMaxRadiusKm: number;
   // How far ahead the sessions of an open-ended recurring experience are generated.
   sessionHorizonMonths: number;
+  // When Catalogue's upkeep runs, as a cron expression in UTC: finished experiences to Past, bookings whose close
+  // time has passed to Closed, and the sessions of open-ended recurring experiences generated further ahead.
+  upkeepCron: string;
 }
 
 export interface DiscoverySettings {
@@ -80,6 +83,20 @@ export interface LanguageModelSettings {
   anthropicEffort: "low" | "medium" | "high" | "xhigh" | "max";
 }
 
+// Catalogue's embedding model, which embeds experiences and the query texts of searches.
+export interface EmbeddingSettings {
+  // Which embedding adapter is used.
+  provider: "bedrock";
+  // The model name handed to that adapter, for experiences and query texts alike.
+  model: string;
+  // How many experiences one round of embedding takes.
+  batchSize: number;
+  // How long a search waits for its query's embedding before it ranks by keyword alone.
+  queryTimeoutSeconds: number;
+  // The Bedrock adapter's own setting. Needed only where embeddings are made.
+  awsRegion: string | undefined;
+}
+
 export interface Settings {
   api: ApiSettings;
   database: DatabaseSettings;
@@ -88,4 +105,5 @@ export interface Settings {
   discovery: DiscoverySettings;
   processing: ProcessingSettings;
   languageModel: LanguageModelSettings;
+  embedding: EmbeddingSettings;
 }

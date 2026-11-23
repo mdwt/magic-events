@@ -50,10 +50,12 @@ try {
   try {
     running.jobs = await startJobs({
       queue: createJobQueue({ databaseUrl: settings.database.url, logger }),
+      catalogue: services.catalogue,
       discovery: services.discovery,
       dataProcessing: services.dataProcessing,
       discoverySettings: settings.discovery,
       processingSettings: settings.processing,
+      catalogueSettings: settings.catalogue,
       logger,
     });
   } catch (error) {

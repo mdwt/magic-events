@@ -1,5 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
+  experienceChangesInputSchema,
+  experienceChangesResultSchema,
   searchExperiencesInputSchema,
   searchExperiencesResultSchema,
   type Catalogue,
@@ -25,6 +27,29 @@ Each result has its status (expected, announced, confirmed or postponed), whethe
 confirmed with booking open), its venue, distance, price, categories and other attributes, and tags. Results are \
 paged with limit and offset, and total says how many match across all pages.`;
 
+const CHANGES_DESCRIPTION = `Find out what changed for a place and dates you searched before. Use it when you check \
+back on a trip, weeks or months after planning it, instead of searching again and comparing the results yourself.
+
+Give the same search parameters as your earlier search_experiences call (near, radiusKm, from, to, and any status, \
+bookable, attributes and tags), without query, and since: when you last searched, as an ISO timestamp such as \
+2027-02-01T09:30:00Z. since must not be in the future. Only experiences that changed after since are returned; one \
+that did not change is left out, so an empty answer means nothing changed.
+
+Each result has the experience as search returns it, with its sessions inside the dates, and change: the change that \
+matters most to a planner, with when it happened. The kinds:
+- new: published since then; you have not seen it before.
+- confirmed: its dates are now fixed and it is going ahead.
+- rescheduled: a date was added, moved or removed, or it has new dates after being postponed.
+- postponed: it is not happening on its dates, and new dates are not known yet.
+- cancelled: its organisers called it off.
+- removed: no source lists it any more, and why is not known. Treat it as not happening unless you confirm otherwise.
+- changed: anything else, such as the price, the venue or booking opening or closing.
+changes lists every change since then, newest first, so nothing is hidden.
+
+Cancelled and removed experiences appear here, with that status, although search_experiences no longer returns them: \
+this is how you learn that something you planned around is off. Experiences that are over are never reported. The \
+most recent change comes first, and results are paged with limit and offset.`;
+
 export function registerCatalogueTools(server: McpServer, deps: ToolDeps, catalogue: Catalogue): void {
   registerTool(server, deps, {
     name: "search_experiences",
@@ -34,5 +59,14 @@ export function registerCatalogueTools(server: McpServer, deps: ToolDeps, catalo
     inputSchema: searchExperiencesInputSchema,
     outputSchema: searchExperiencesResultSchema,
     handler: (input) => catalogue.searchExperiences(input),
+  });
+  registerTool(server, deps, {
+    name: "get_experience_changes",
+    action: "experiences.changes",
+    title: "Get experience changes",
+    description: CHANGES_DESCRIPTION,
+    inputSchema: experienceChangesInputSchema,
+    outputSchema: experienceChangesResultSchema,
+    handler: (input) => catalogue.getChangesSince(input),
   });
 }

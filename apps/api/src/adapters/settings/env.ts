@@ -45,12 +45,18 @@ const environmentSchema = z.object({
   QUICKET_API_KEY: z.string().min(1).optional(),
   TICKETMASTER_API_KEY: z.string().min(1).optional(),
   CATALOGUE_SESSION_HORIZON_MONTHS: whole(1).default(24),
+  CATALOGUE_UPKEEP_CRON: z.string().min(1).default("0 * * * *"),
   PROCESSING_WORKERS: whole(1).default(1),
   LANGUAGE_MODEL_PROVIDER: z.enum(["anthropic"]).default("anthropic"),
   LANGUAGE_MODEL: z.string().min(1).default("claude-opus-5-5"),
   LANGUAGE_MODEL_TIMEOUT_SECONDS: whole(1).default(600),
   ANTHROPIC_API_KEY: z.string().min(1).optional(),
   ANTHROPIC_EFFORT: z.enum(["low", "medium", "high", "xhigh", "max"]).default("medium"),
+  EMBEDDING_PROVIDER: z.enum(["bedrock"]).default("bedrock"),
+  EMBEDDING_MODEL: z.string().min(1).default("amazon.titan-embed-text-v2:0"),
+  EMBEDDING_BATCH_SIZE: whole(1).default(100),
+  EMBEDDING_QUERY_TIMEOUT_SECONDS: z.coerce.number().positive().default(5),
+  AWS_REGION: z.string().min(1).optional(),
 });
 
 const VARIABLES = Object.keys(environmentSchema.shape);
@@ -96,6 +102,7 @@ export function loadSettings(env: NodeJS.ProcessEnv = process.env): Settings {
       searchDefaultRadiusKm: e.SEARCH_DEFAULT_RADIUS_KM,
       searchMaxRadiusKm: e.SEARCH_MAX_RADIUS_KM,
       sessionHorizonMonths: e.CATALOGUE_SESSION_HORIZON_MONTHS,
+      upkeepCron: e.CATALOGUE_UPKEEP_CRON,
     },
     discovery: {
       defaultFetchIntervalHours: e.DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS,
@@ -120,6 +127,13 @@ export function loadSettings(env: NodeJS.ProcessEnv = process.env): Settings {
       timeoutSeconds: e.LANGUAGE_MODEL_TIMEOUT_SECONDS,
       anthropicApiKey: e.ANTHROPIC_API_KEY,
       anthropicEffort: e.ANTHROPIC_EFFORT,
+    },
+    embedding: {
+      provider: e.EMBEDDING_PROVIDER,
+      model: e.EMBEDDING_MODEL,
+      batchSize: e.EMBEDDING_BATCH_SIZE,
+      queryTimeoutSeconds: e.EMBEDDING_QUERY_TIMEOUT_SECONDS,
+      awsRegion: e.AWS_REGION,
     },
   };
 }

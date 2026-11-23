@@ -10,6 +10,7 @@ import type {
 import { CatalogueService } from "../../src/core/catalogue/service.ts";
 import type { DomainEvent, DomainEventPublisher } from "../../src/core/shared/domain-events.ts";
 import type { Logger } from "../../src/core/shared/logger.ts";
+import { EMBEDDING_SETTINGS, FakeEmbeddingModel } from "./fake-embedding-model.ts";
 
 // Catalogue's save side with no database: a repository that keeps what it is handed in memory, a clock that a
 // test sets, and a logger that keeps its warnings.
@@ -59,11 +60,18 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
           : [...experiences.values()].filter((one) => one.listingIds.includes(by.listingId));
       return Promise.resolve(structuredClone(found));
     },
+    findExperienceId: (by) => {
+      const found = [...experiences.values()].find((one) => ("id" in by ? one.id === by.id : one.slug === by.slug));
+      return Promise.resolve(found?.id ?? null);
+    },
     findMatchCandidateIds: () => Promise.resolve([]),
     findTakenSlugs: (base) =>
       Promise.resolve(
         [...experiences.values()].map((one) => one.slug).filter((slug) => slug === base || slug.startsWith(`${base}-`)),
       ),
+    // Embedding has its own tests.
+    findExperiencesToEmbed: () => Promise.resolve({ items: [], total: 0 }),
+    storeEmbeddings: () => Promise.resolve(0),
     saveExperiences: (batch) => {
       const appended: DomainEvent[] = [];
       if (batch.some((write) => failing.has(write.experience.id))) return Promise.reject(new Error("the save failed"));
@@ -114,7 +122,9 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
   const service = new CatalogueService({
     repository,
     events,
-    settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
+    settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
+    embeddings: new FakeEmbeddingModel(),
+    embeddingSettings: EMBEDDING_SETTINGS,
     logger,
     clock: () => clock.now,
   });

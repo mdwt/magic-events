@@ -25,7 +25,7 @@ test("the defaults apply when only the required variables are set", () => {
     },
     database: { url: REQUIRED.DATABASE_URL },
     identity: { authSecret: REQUIRED.BETTER_AUTH_SECRET, apiKeyRateLimitMax: 120, apiKeyRateLimitWindowSeconds: 60 },
-    catalogue: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
+    catalogue: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     discovery: {
       defaultFetchIntervalHours: 168,
       defaultMissedRunsBeforeRemoval: 3,
@@ -46,6 +46,13 @@ test("the defaults apply when only the required variables are set", () => {
       timeoutSeconds: 600,
       anthropicApiKey: undefined,
       anthropicEffort: "medium",
+    },
+    embedding: {
+      provider: "bedrock",
+      model: "amazon.titan-embed-text-v2:0",
+      batchSize: 100,
+      queryTimeoutSeconds: 5,
+      awsRegion: undefined,
     },
   });
 });
@@ -87,6 +94,9 @@ test("each invalid value stops startup and names its variable", () => {
     CORS_ORIGIN: "not a url",
     API_KEY_RATE_LIMIT_WINDOW_SECONDS: "99999999",
     SEARCH_DEFAULT_RADIUS_KM: "-5",
+    EMBEDDING_PROVIDER: "openai",
+    EMBEDDING_BATCH_SIZE: "0",
+    EMBEDDING_QUERY_TIMEOUT_SECONDS: "0",
   };
   for (const [name, value] of Object.entries(invalid)) {
     assert.throws(() => loadSettings({ ...REQUIRED, [name]: value }), new RegExp(`The settings .*\\n  ${name}: `), name);

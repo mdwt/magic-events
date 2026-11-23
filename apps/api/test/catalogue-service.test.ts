@@ -10,6 +10,7 @@ import type {
 import { CatalogueService } from "../src/core/catalogue/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
+import { EMBEDDING_SETTINGS, FakeEmbeddingModel } from "./helpers/fake-embedding-model.ts";
 
 const silent: Logger = {
   debug: () => {},
@@ -68,20 +69,25 @@ function fakeRepository(items: ExperienceRecord[] = []) {
     },
     // Search never saves; the save side has its own tests.
     loadExperiences: () => Promise.resolve([]),
+    findExperienceId: () => Promise.resolve(null),
     findMatchCandidateIds: () => Promise.resolve([]),
     findTakenSlugs: () => Promise.resolve([]),
     saveExperiences: () => Promise.resolve([]),
     findChangesSince: () => Promise.resolve({ items: [], total: 0 }),
     findUpkeepCandidates: () => Promise.resolve([]),
+    findExperiencesToEmbed: () => Promise.resolve({ items: [], total: 0 }),
+    storeEmbeddings: () => Promise.resolve(0),
   };
   return { repository, queries };
 }
 
-function service(repository: CatalogueRepository) {
+function service(repository: CatalogueRepository, embeddings = new FakeEmbeddingModel()) {
   return new CatalogueService({
     repository,
     events: { publish: () => {} },
-    settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
+    settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
+    embeddings,
+    embeddingSettings: EMBEDDING_SETTINGS,
     logger: silent,
   });
 }
@@ -139,7 +145,10 @@ describe("CatalogueService.searchExperiences", () => {
       offset: 10,
     });
 
-    assert.deepEqual(queries[0], {
+    // The query text's embedding comes along with it; test/embedding-service.test.ts covers it.
+    const { queryEmbedding, ...rest } = queries[0] ?? {};
+    assert.equal(queryEmbedding?.model, "fake-embedding-model");
+    assert.deepEqual(rest, {
       near: base.near,
       radiusKm: 200,
       from: "2027-06-10",
