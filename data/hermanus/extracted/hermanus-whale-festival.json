@@ -1,1 +1,45 @@
-[]
+[
+  {
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "source": "Hermanus Whale Festival",
+    "sourceListingId": "https://hermanuswhalefestival.co.za/#Hermanus Whale Festival",
+    "url": "https://hermanuswhalefestival.co.za/",
+    "rawFile": "raw/hermanus-whale-festival/home.txt",
+    "fetchedAt": "2026-11-23T13:28:51Z",
+    "title": "Hermanus Whale Festival",
+    "summary": "Hermanus's yearly eco-marine festival for the return of the southern right whales, expected in October 2027. It was last held from 2 to 4 October 2026; the 2027 dates have not been announced.",
+    "description": "The Hermanus Whale Festival is the world's only Eco-Marine Festival, celebrating the arrival of the Southern Right Whales to the shores of Hermanus each year. The festival combines world-class land-based whale watching with ocean conservation, environmental education, live entertainment, local food, markets, family activities, marine exhibitions, and community-driven experiences. The 2026 festival took place from 2–4 October 2026, with the Eco-Marine Village on the waterfront, a live music stage at Gearing's Point, a street parade, a fun run, beach volleyball at Grotto Beach and a children's treasure hunt.",
+    "sessions": [
+      {
+        "start": "2027-10",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Since 1991",
+      "Program",
+      "Activities"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "nature_and_wildlife",
+        "music",
+        "community_and_causes"
+      ],
+      "format": "festival",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "major"
+    },
+    "tags": [
+      "whales"
+    ],
+    "profile": "The Hermanus Whale Festival is the town's yearly eco-marine festival in whale season, with land-based whale watching, an Eco-Marine Village on the waterfront, live music at Gearing's Point, a street parade, a fun run, markets and children's activities. It was last held from 2 to 4 October 2026, and the 2027 festival is expected in October, with dates still to be announced. It suits families and visitors of all ages who want to see Hermanus at its busiest in whale season."
+  }
+]
