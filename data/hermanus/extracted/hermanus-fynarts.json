@@ -5,7 +5,7 @@
     "url": "https://www.hermanusfynarts.co.za/event-details-1/2027-hermanus-fynarts-festival-2027-06-24-09-00",
     "rawFile": "raw/hermanus-fynarts/2027-hermanus-fynarts-festival.txt",
     "fetchedAt": "2026-11-23T13:27:49Z",
-    "title": "2027 Hermanus FynArts Festival",
+    "title": "Hermanus FynArts Festival",
     "summary": "The 2027 Hermanus FynArts festival runs from 24 June 2027 to 4 July 2027: 11 packed days of arts and culture in Hermanus.",
     "description": "Sign up to the FynArts newsletter or RSVP to this events to be notified about the particulars of the 2027 Hermanus FynArts festival happening from 24 June 2027 to 4 July 2027 - 11 packed days of arts and culture in Hermanus, Western Cape, South Africa.",
     "type": "single",
@@ -19,7 +19,6 @@
       }
     ],
     "venue": {
-      "name": "Location is TBD",
       "city": "Hermanus"
     },
     "imageUrl": "https://static.wixstatic.com/media/cd395f_7b17dda108ac40f38a76f1af86558379~mv2.png/v1/fill/w_680,h_576,al_c/cd395f_7b17dda108ac40f38a76f1af86558379~mv2.png",
@@ -64,7 +63,7 @@
       }
     ],
     "venue": {
-      "name": "Old Harbour, Hermanus",
+      "name": "Old Harbour",
       "city": "Hermanus"
     },
     "imageUrl": "https://static.wixstatic.com/media/cd395f_1775014dc9484b33bb4659f19c8bddbb~mv2.jpg/v1/fill/w_750,h_500,al_c,q_85/cd395f_1775014dc9484b33bb4659f19c8bddbb~mv2.jpg",

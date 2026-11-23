@@ -7,7 +7,7 @@
     "fetchedAt": "2026-11-23T13:37:19Z",
     "title": "Onrus Markie",
     "summary": "A monthly neighbourhood market on the 1st Saturday of the month from 9 to 12 at De Wet Saal, Roos St., Onrus.",
-    "description": "A monthly neighbourhood market on the 1st Sat. of the month from 9-12 at De Wet Saal, Roos St., Onrus",
+    "description": "A monthly neighbourhood market on the 1st Sat. of the month from 9-12 at De Wet Saal, Roos St., Onrus.",
     "type": "recurring",
     "status": "confirmed",
     "booking": "none",
@@ -19,7 +19,7 @@
       "endTime": "12:00"
     },
     "venue": {
-      "name": "De Wet Saal (De Wet Hall)",
+      "name": "De Wet Hall",
       "address": "6 Roos Street, Onrus",
       "city": "Onrus"
     },

@@ -5,7 +5,7 @@
     "url": "https://pnccelebration.co.za/",
     "rawFile": "raw/hemel-en-aarde-wines/pnccelebration.txt",
     "fetchedAt": "2026-11-23T13:32:05Z",
-    "title": "Between Heaven and Earth Pinot Noir & Chardonnay Celebration 2027",
+    "title": "Between Heaven and Earth Pinot Noir & Chardonnay Celebration",
     "summary": "The producers of the Hemel-en-Aarde host a full-day Pinot Noir and Chardonnay celebration at Nidderdale on Saturday 30 January 2027, from 11:00 till late.",
     "description": "Each year, as harvest drew near, the winemakers of the Hemel-en-Aarde came together to taste, to talk and to awaken their senses for the vintage ahead. In 2014 they opened the doors, and the celebration became one of the most anticipated dates on the South African wine calendar. In time, Chardonnay took its place beside Pinot Noir. Now, the tradition begins a new chapter. The day includes a welcome with Chardonnay and fresh flavours of land and sea, the Discovery Tasting with all fourteen producers, a seafood lunch at the long tables, and the In-Between and Heaven, till late.",
     "type": "single",
@@ -21,7 +21,7 @@
     "venue": {
       "name": "Nidderdale",
       "address": "Nidderdale, Hemel-en-Aarde Valley, Hermanus",
-      "city": "Hemel-en-Aarde valley"
+      "city": "Hemel-en-Aarde"
     },
     "price": {
       "min": 6500,

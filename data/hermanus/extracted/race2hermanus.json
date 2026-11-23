@@ -5,7 +5,7 @@
     "url": "https://r2h.bikeruntri.co.za/",
     "rawFile": "raw/race2hermanus/home.txt",
     "fetchedAt": "2026-11-23T13:34:19Z",
-    "title": "Race2Hermanus Triathlon 2027",
+    "title": "Race2Hermanus Triathlon",
     "summary": "Race2Hermanus, part of the SA Triathlon Series, on Sunday 2 May 2027 in Hermanus, with Ultra, Standard and Sprint distances.",
     "description": "Ultra: swim 2km, bike 80km, run 17km. Standard: swim 1.5km, bike 40km, run 11km. Sprint: swim 750m, bike 20km, run 5km. Solo, team and aquabike entries. Early bird until 31 Jan 2027, normal entry 1 Feb - 3 Apr 2027, late entry 4 - 25 Apr 2027. Entries are not yet open for R2H 2027.",
     "type": "single",
@@ -19,7 +19,6 @@
       }
     ],
     "venue": {
-      "name": "TBC - Hermanus",
       "city": "Hermanus",
       "position": {
         "lat": -34.4167,

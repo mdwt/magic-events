@@ -5,7 +5,7 @@
     "url": "https://lighthouse2lighthouse.co.za/wednesday-walks/official-walk-2026-2/",
     "rawFile": "raw/lighthouse2lighthouse/official-walk-2027.txt",
     "fetchedAt": "2026-11-23T13:34:54Z",
-    "title": "Lighthouse 2 Lighthouse Ladies Official Walk 2027",
+    "title": "Lighthouse 2 Lighthouse Ladies Official Walk",
     "summary": "A 4-day, 100 km fundraising walk for women from the lighthouse at Agulhas towards Danger Point Lighthouse, raising funds for Overstrand charities.",
     "description": "The 4-day 100km hike can only be completed within the limited time if you are fit. You must therefore be fit enough to walk 30km on one day. The terrain varies, but is mostly on hard and sandy beaches. Walkers collect the official T-shirt and tog bag on Wednesday (Collection Day) and leave Hermanus by bus early on Thursday morning for Agulhas, the starting point. Accommodation for the 3 nights is at Die Dam. The total fee is R10,000 for the walk: R4,200 is the non-refundable registration fee and R5,800 is the minimum amount you need to raise as part of the fundraising drive.",
     "type": "single",
@@ -48,5 +48,106 @@
       "charity"
     ],
     "profile": "The Lighthouse 2 Lighthouse Ladies Official Walk is a 4-day, 100 km hike for women from Agulhas along the coast towards Danger Point, from 11 to 14 March 2027. Walkers travel from Hermanus by bus, cover up to 30 km a day on hard and sandy beaches, and stay three nights at Die Dam. Registration is R4 200 plus a fundraising target for Overstrand charities, so it suits fit women who want a multi-day coastal challenge for a cause."
+  },
+  {
+    "source": "Lighthouse2Lighthouse",
+    "rawFile": "raw/lighthouse2lighthouse/main-walk-27-ticket.txt",
+    "fetchedAt": "2026-11-23T13:35:12Z",
+    "sourceListingId": "https://lighthouse2lighthouse.co.za/product/main-walk-27/#Family Walk (2026)",
+    "url": null,
+    "title": "Lighthouse 2 Lighthouse Family Walk",
+    "summary": "Lighthouse 2 Lighthouse Ladies' family walk on Sunday 13 December 2026, R50, one of the walks that raise funds for Overstrand charities.",
+    "description": "Family Walk (2026) – 13 December 2026. R50,00. Lighthouse2Lighthouse is a registered non-profit organisation that hosts walking events to raise funds for selected charities in the Overstrand.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-13",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 50,
+      "max": 50,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Tickets",
+      "You may also like"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "outdoor_and_adventure",
+        "community_and_causes"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "hiking",
+      "charity"
+    ],
+    "profile": "A family walk run by Lighthouse 2 Lighthouse Ladies, the Hermanus non-profit that walks to raise money for Overstrand charities, on 13 December 2026. Tickets are R50 and are sold on the organiser's shop. It suits families who want an easy outdoor outing that supports local causes."
+  },
+  {
+    "source": "Lighthouse2Lighthouse",
+    "rawFile": "raw/lighthouse2lighthouse/main-walk-27-ticket.txt",
+    "fetchedAt": "2026-11-23T13:35:12Z",
+    "sourceListingId": "https://lighthouse2lighthouse.co.za/product/main-walk-27/#Practice Walk",
+    "url": null,
+    "title": "Lighthouse 2 Lighthouse Practice Walk",
+    "summary": "Training walks for the Lighthouse 2 Lighthouse Ladies' 100 km walk, on 29 November 2026 and 24 January 2027, R120 each.",
+    "description": "Practice Walk 4 (2026) – 29 November 2026, R120,00. Practice Walk 5 (2027) – 24 January 2027, R120,00. Participating in the Practice Walks is an option – it gives you an idea of the pace we walk as well as the different types of terrain and distances we will be walking.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-29",
+        "precision": "day",
+        "label": "Practice Walk 4"
+      },
+      {
+        "start": "2027-01-24",
+        "precision": "day",
+        "label": "Practice Walk 5"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 120,
+      "max": 120,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Tickets",
+      "You may also like",
+      "Related products"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "outdoor_and_adventure",
+        "community_and_causes"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "hiking",
+      "charity"
+    ],
+    "profile": "Practice walks for the Lighthouse 2 Lighthouse Ladies' four-day 100 km charity walk, on 29 November 2026 and 24 January 2027, at R120 each. Walkers get a feel for the pace, the terrain and the distances of the main walk on the beaches between Agulhas and Danger Point. It suits fit walkers training for the March 2027 walk or anyone who wants a long coastal walk in a group."
   }
 ]

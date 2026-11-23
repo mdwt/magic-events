@@ -33,7 +33,7 @@
     "summary": "In December and January the Hermanus Country Market also holds its popular Summer Night Markets from 5pm to 9pm on Wednesday evenings.",
     "description": "In December & January we also hold our popular Summer Night Markets from 5pm to 9pm on Wednesday evenings.",
     "type": "recurring",
-    "status": "expected",
+    "status": "confirmed",
     "booking": "none",
     "sessions": [],
     "recurrence": { "rule": "FREQ=WEEKLY;BYDAY=WE;BYMONTH=12,1", "start": "2026-12-02", "startTime": "17:00", "endTime": "21:00" },
