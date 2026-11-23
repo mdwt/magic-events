@@ -10,15 +10,12 @@ same feed, over a REST API or an MCP endpoint. Version 1 covers Hermanus, South 
 
 ## Highlights
 
-- **Built to be extended.** Ports and adapters throughout: the models, the job queue, storage and every kind of source
-  can each be swapped by writing one adapter.
-- **A language model reads the listings.** Claude extracts experiences from web pages, RSS feeds and PDF calendars,
-  then classifies them with configurable categories and tags.
-- **Search ranked by meaning.** Experiences and queries are embedded with Amazon Titan, and results are ordered by
-  meaning combined with keyword search.
-- **Built for checking back.** Every change is recorded, so a planner can ask what's new, moved or cancelled.
-- **One feed for people and agents.** REST and MCP give the same answers with the same API keys.
-- **Light to run.** Postgres is the only infrastructure.
+- **Extensible.** Ports and adapters: swap a model, the queue, storage or a source with one adapter.
+- **LLM extraction and classification.** Claude reads each listing and tags it.
+- **Semantic search.** Results are ranked with Amazon Titan embeddings, plus keyword search.
+- **Change tracking.** Ask what's new, moved or cancelled since your last search.
+- **REST and MCP.** One feed for people and agents.
+- **Just Postgres.** No other infrastructure.
 
 ## How it works
 
