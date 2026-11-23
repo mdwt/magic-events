@@ -358,8 +358,21 @@ export interface ExperienceMatch {
   lastDate: string | null;
   // Its sessions' dates, in order, capped to the first fifty.
   sessions: { startDate: string; endDate: string }[];
+  // True when its dates are known only to the month or year: it has sessions, every one of month or year
+  // precision, and no recurrence.
+  onlyMonthOrYear: boolean;
   recurrenceRule: string | null;
   listingIds: string[];
+}
+
+// What a search for match candidates is given. The dates are YYYY-MM-DD, both days included.
+export interface MatchCandidatesInput {
+  locationId: string;
+  title: string;
+  from: string;
+  to: string;
+  // Wider dates for an experience whose dates are known only to the month or year.
+  monthOrYear?: { from: string; to: string };
 }
 
 // ---- Changed since ----
@@ -528,9 +541,10 @@ export interface Catalogue {
 
   // The experiences a listing is linked to, whatever their status.
   findExperiencesByListing(listingId: string): Promise<ExperienceMatch[]>;
-  // Experiences in the same location with a session overlapping the dates and a similar title.
-  // Cancelled, Removed and Past experiences are never candidates.
-  findMatchCandidates(input: { locationId: string; title: string; from: string; to: string }): Promise<ExperienceMatch[]>;
+  // Experiences in the same location with a session overlapping the dates and a similar title. When `monthOrYear`
+  // is given, an experience whose dates are known only to the month or year is also a candidate when a session
+  // overlaps those wider dates. Cancelled, Removed and Past experiences are never candidates.
+  findMatchCandidates(input: MatchCandidatesInput): Promise<ExperienceMatch[]>;
   // Creates or updates an experience with its sessions, attribute values, tags and source link. It bumps the
   // version, writes the change row and appends the domain event when something really changed.
   saveExperience(input: SaveExperienceInput): Promise<SaveExperienceResult>;
@@ -582,13 +596,7 @@ export interface CatalogueRepository {
   // The ID of the experience with this ID or this slug, or null when there is none.
   findExperienceId(by: { id: string } | { slug: string }): Promise<string | null>;
   // The IDs of the match candidates, best match first.
-  findMatchCandidateIds(query: {
-    locationId: string;
-    title: string;
-    from: string;
-    to: string;
-    limit: number;
-  }): Promise<string[]>;
+  findMatchCandidateIds(query: MatchCandidatesInput & { limit: number }): Promise<string[]>;
   // The slugs that are the base or start with it and a hyphen.
   findTakenSlugs(base: string): Promise<string[]>;
   // Stores the saves in one transaction. Returns the domain events it appended, as stored, in the order of the

@@ -304,6 +304,50 @@ describe("Matching", () => {
     assert.equal(model.of("match").length, 0);
   });
 
+  test("a month that another source gives differently still finds the stored experience, and matches it in code", async () => {
+    const october = stored({
+      id: "e-october",
+      title: "Hermanus Whale Festival",
+      firstDate: "2027-10-01",
+      lastDate: "2027-10-31",
+      onlyMonthOrYear: true,
+      listingIds: [OTHER_LISTING],
+    });
+    const september = answered({
+      title: "Hermanus Whale Festival",
+      sessions: [session({ start: "2027-09", end: "", precision: "month" })],
+    });
+    const { service, state, model, candidateQueries } = setup({
+      model: fakeLanguageModel({ extract: [extraction(september)] }),
+      experiences: [october],
+    });
+    await service.processNext();
+    // The candidates are searched for across the year, since the month is all that is known.
+    assert.deepEqual(candidateQueries, [
+      {
+        locationId: "00000000-0000-4000-8000-000000000001",
+        title: "Hermanus Whale Festival",
+        from: "2027-01-01",
+        to: "2027-12-31",
+        monthOrYear: { from: "2027-01-01", to: "2027-12-31" },
+      },
+    ]);
+    assert.equal(state.saves[0]?.experienceId, "e-october");
+    assert.equal(model.of("match").length, 0);
+  });
+
+  test("day dates search the dates themselves, and the year only for experiences known to the month", async () => {
+    const { service, candidateQueries } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered())] }),
+      candidates: [],
+    });
+    await service.processNext();
+    assert.deepEqual(
+      candidateQueries.map(({ from, to, monthOrYear }) => ({ from, to, monthOrYear })),
+      [{ from: "2027-06-12", to: "2027-06-21", monthOrYear: { from: "2027-01-01", to: "2027-12-31" } }],
+    );
+  });
+
   test("when no title matches, the model picks among the candidates", async () => {
     const candidate = stored({ id: "e-other", title: "FynArts Festival of the Arts", listingIds: [OTHER_LISTING] });
     const model = fakeLanguageModel({ extract: [extraction(answered())], match: [{ experienceId: "e-other" }] });

@@ -2,6 +2,7 @@ import type {
   Catalogue,
   ExperienceMatch,
   Location,
+  MatchCandidatesInput,
   SaveExperienceInput,
   StoredExperience,
 } from "../../../src/catalogue/ports.ts";
@@ -155,6 +156,7 @@ export function stored(overrides: Partial<ExperienceMatch> = {}): ExperienceMatc
     firstDate: "2027-06-12",
     lastDate: "2027-06-21",
     sessions: [{ startDate: "2027-06-12", endDate: "2027-06-21" }],
+    onlyMonthOrYear: false,
     recurrenceRule: null,
     listingIds: [LISTING],
     ...overrides,
@@ -238,6 +240,8 @@ export function setup(
   // What each claim returned, so a failed one can go back to pending.
   const claimed = new Map<string, ClaimedRawListing>();
   const logs: { level: string; context: Record<string, unknown>; message: string }[] = [];
+  // What each search for match candidates was given.
+  const candidateQueries: MatchCandidatesInput[] = [];
   let created = 0;
 
   const transactions: Transactions = {
@@ -291,11 +295,13 @@ export function setup(
     getExperience: () => Promise.reject(new Error("not used")),
     findExperiencesByListing: (listingId) =>
       Promise.resolve([...state.experiences.values()].filter((one) => one.listingIds.includes(listingId))),
-    findMatchCandidates: () =>
-      Promise.resolve(
+    findMatchCandidates: (input) => {
+      candidateQueries.push(input);
+      return Promise.resolve(
         options.candidates ??
           [...state.experiences.values()].filter((one) => !["cancelled", "removed", "past"].includes(one.status)),
-      ),
+      );
+    },
     saveExperience(input) {
       if (options.saveFails) return Promise.reject(options.saveFails);
       state.saves.push(input);
@@ -377,5 +383,6 @@ export function setup(
     failures,
     logs,
     state,
+    candidateQueries,
   };
 }

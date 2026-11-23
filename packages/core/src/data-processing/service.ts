@@ -37,6 +37,8 @@ import {
   matchInCode,
   matchLinked,
   matchText,
+  nearDates,
+  onlyMonthOrYear,
   pickedCandidate,
   precedenceOf,
   type Span,
@@ -440,12 +442,15 @@ export class DataProcessingService implements DataProcessing {
     const byLink = matchLinked(experience, comparable);
     if (byLink) return byLink;
 
+    // Dates known only to the month or year need only be near, on whichever side they are (see datesFit).
+    const near = nearDates(span);
+    const dates = onlyMonthOrYear(experience) ? { from: near.start, to: near.end } : { from: span.start, to: span.end };
     const candidates = (
       await this.#catalogue.findMatchCandidates({
         locationId: input.location.id,
         title: experience.title,
-        from: span.start,
-        to: span.end,
+        ...dates,
+        monthOrYear: { from: near.start, to: near.end },
       })
     ).filter((candidate) => !taken.has(candidate.id) && !isFinal(candidate));
     if (candidates.length === 0) return undefined;

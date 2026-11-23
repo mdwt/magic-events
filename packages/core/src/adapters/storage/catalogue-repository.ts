@@ -346,6 +346,30 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       const theirs = sql`tsvector_to_array(to_tsvector('english', ${experience.title}))`;
       const ours = sql`tsvector_to_array(to_tsvector('english', ${query.title}::text))`;
       const shared = sql<number>`cardinality(array(select unnest(${theirs}) intersect select unnest(${ours})))`;
+      const sessionWhere = (where: SQL | undefined) =>
+        db
+          .select({ one: sql`1` })
+          .from(experienceSession)
+          .where(and(eq(experienceSession.experienceId, experience.id), where));
+      const inDates = exists(
+        sessionWhere(and(lte(experienceSession.startDate, query.to), gte(experienceSession.endDate, query.from))),
+      );
+      // An experience whose dates are known only to the month or year, with no recurrence and no session of day
+      // precision, may instead have a session in the wider dates given for that.
+      const near = query.monthOrYear;
+      const dates =
+        near === undefined
+          ? inDates
+          : or(
+              inDates,
+              and(
+                isNull(experience.recurrenceRule),
+                notExists(sessionWhere(eq(experienceSession.precision, "day"))),
+                exists(
+                  sessionWhere(and(lte(experienceSession.startDate, near.to), gte(experienceSession.endDate, near.from))),
+                ),
+              ),
+            );
       const rows = await db
         .select({ id: experience.id })
         .from(experience)
@@ -354,18 +378,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
             eq(experience.locationId, query.locationId),
             inArray(experience.status, [...SEARCHABLE_STATUSES]),
             sql`${theirs} && ${ours}`,
-            exists(
-              db
-                .select({ one: sql`1` })
-                .from(experienceSession)
-                .where(
-                  and(
-                    eq(experienceSession.experienceId, experience.id),
-                    lte(experienceSession.startDate, query.to),
-                    gte(experienceSession.endDate, query.from),
-                  ),
-                ),
-            ),
+            dates,
           ),
         )
         .orderBy(desc(shared), asc(experience.title), asc(experience.id))

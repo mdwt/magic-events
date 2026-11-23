@@ -17,6 +17,7 @@ import {
   type ExperienceToEmbed,
   type ExperienceWrite,
   type Location,
+  type MatchCandidatesInput,
   type SaveExperienceInput,
   type SaveExperienceResult,
   type SaveLocationInput,
@@ -139,12 +140,7 @@ export class CatalogueService implements Catalogue {
     return experiences.map(toMatch);
   }
 
-  async findMatchCandidates(input: {
-    locationId: string;
-    title: string;
-    from: string;
-    to: string;
-  }): Promise<ExperienceMatch[]> {
+  async findMatchCandidates(input: MatchCandidatesInput): Promise<ExperienceMatch[]> {
     const ids = await this.#repository.findMatchCandidateIds({ ...input, limit: MAX_CANDIDATES });
     if (ids.length === 0) return [];
     const byId = new Map((await this.#repository.loadExperiences({ ids })).map((one) => [one.id, one]));
@@ -676,6 +672,10 @@ function toMatch(experience: StoredExperience): ExperienceMatch {
     firstDate: sessions[0]?.startDate ?? null,
     lastDate,
     sessions: sessions.slice(0, MATCH_SESSIONS).map(({ startDate, endDate }) => ({ startDate, endDate })),
+    onlyMonthOrYear:
+      experience.recurrence === null &&
+      sessions.length > 0 &&
+      sessions.every((session) => session.precision !== "day"),
     recurrenceRule: experience.recurrence?.rule ?? null,
     listingIds: experience.listingIds,
   };

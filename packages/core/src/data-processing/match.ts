@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ExperienceMatch } from "../catalogue/ports.ts";
-import { overlaps } from "./dates.ts";
+import { addMonths, overlaps } from "./dates.ts";
 import type { ExtractedExperience } from "./extract.ts";
 
 // Matching: whether an extracted experience is one Catalogue already has. Catalogue supplies the source links and
@@ -40,14 +40,50 @@ function datesOverlap(span: Span, match: ExperienceMatch): boolean {
   return overlaps(span, { start: match.firstDate, end: match.lastDate ?? span.end });
 }
 
-// The same title once normalised, with overlapping dates, is the same experience. No model is asked.
+// True when the extracted experience's dates are known only to the month or year: it has sessions, every one of
+// month or year precision, and no recurrence.
+export function onlyMonthOrYear(experience: ExtractedExperience): boolean {
+  return (
+    experience.recurrence === undefined &&
+    experience.sessions.length > 0 &&
+    experience.sessions.every((session) => session.precision !== "day")
+  );
+}
+
+// How many months either side of a year boundary dates may be and still be near.
+const NEAR_MONTHS = 3;
+
+// The dates near a span, for dates known only to the month or year: the whole of every year the span touches,
+// and a few months either side of it, so September and October 2027 are near, and December 2027 and January 2028
+// too, but two yearly editions are not.
+export function nearDates(span: Span): Span {
+  const yearStart = `${span.start.slice(0, 4)}-01-01`;
+  const yearEnd = `${span.end.slice(0, 4)}-12-31`;
+  const before = addMonths(span.start, -NEAR_MONTHS);
+  const after = addMonths(span.end, NEAR_MONTHS);
+  return { start: before < yearStart ? before : yearStart, end: after > yearEnd ? after : yearEnd };
+}
+
+// Whether a candidate's dates fit the extracted experience's. They must overlap, unless the dates on either side
+// are known only to the month or year: then they need only be near, since two sources often give such an
+// experience different months. Dates of day precision on both sides must overlap, so two editions of a weekly or
+// yearly experience on different days stay two experiences.
+export function datesFit(experience: ExtractedExperience, span: Span, candidate: ExperienceMatch): boolean {
+  if (datesOverlap(span, candidate)) return true;
+  if (!onlyMonthOrYear(experience) && !candidate.onlyMonthOrYear) return false;
+  return datesOverlap(nearDates(span), candidate);
+}
+
+// The same title once normalised, with dates that fit, is the same experience. No model is asked.
 export function matchInCode(
   experience: ExtractedExperience,
   span: Span,
   candidates: ExperienceMatch[],
 ): ExperienceMatch | undefined {
   const title = normaliseTitle(experience.title);
-  return candidates.find((candidate) => normaliseTitle(candidate.title) === title && datesOverlap(span, candidate));
+  return candidates.find(
+    (candidate) => normaliseTitle(candidate.title) === title && datesFit(experience, span, candidate),
+  );
 }
 
 // Among the experiences the listing already links to, the one with the same title. Their dates may have moved,

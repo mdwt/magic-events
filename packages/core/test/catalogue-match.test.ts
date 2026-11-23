@@ -98,6 +98,30 @@ describe("findMatchCandidates", () => {
     assert.deepEqual(await candidates("Country market", "2027-01-02", "2027-01-02"), ["Hermanus Country Market"]);
   });
 
+  test("an experience known only to the month is also found by a session in the wider dates given for that", async () => {
+    const year = { from: "2027-01-01", to: "2027-12-31" };
+    const find = async (title: string, monthOrYear?: { from: string; to: string }) =>
+      (
+        await catalogue.findMatchCandidates({
+          locationId: hermanus.id,
+          title,
+          from: "2027-11-10",
+          to: "2027-11-10",
+          ...(monthOrYear ? { monthOrYear } : {}),
+        })
+      ).map((one) => one.title);
+    assert.deepEqual(await find("FynArts festival", year), ["FynArts"]);
+    assert.deepEqual(await find("FynArts festival"), []);
+    assert.deepEqual(await find("FynArts festival", { from: "2027-10-01", to: "2028-12-31" }), []);
+    // Day sessions, and a recurrence, must still overlap the dates themselves.
+    assert.deepEqual(await find("Whale Festival", year), []);
+    // 10 November 2027 is a Wednesday, and the market is on Saturdays.
+    assert.deepEqual(await find("Country market", year), []);
+
+    const [fynArts] = await catalogue.findMatchCandidates({ locationId: hermanus.id, title: "FynArts", from: "2027-09-01", to: "2027-09-01" });
+    assert.equal(fynArts?.onlyMonthOrYear, true);
+  });
+
   test("leaves out other locations and Cancelled, Removed and Past experiences", async () => {
     const found = await catalogue.findMatchCandidates({
       locationId: stanford.id,
@@ -127,6 +151,7 @@ describe("findMatchCandidates", () => {
     assert.equal(match.firstDate, "2027-09-24");
     assert.equal(match.lastDate, "2027-09-26");
     assert.deepEqual(match.sessions, [{ startDate: "2027-09-24", endDate: "2027-09-26" }]);
+    assert.equal(match.onlyMonthOrYear, false);
     assert.equal(match.recurrenceRule, null);
     assert.equal(match.listingIds.length, 1);
   });
