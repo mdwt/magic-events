@@ -311,6 +311,15 @@ async function main(): Promise<void> {
     await runAdmin(command, { organizations, identity }, (line) => {
       console.log(line);
     });
+  } catch (error) {
+    // Logged as well as printed, so the log shows every refusal: a refused command at warn with its reason, any other
+    // failure at error in full.
+    if (error instanceof AppError) {
+      logger.warn({ command: command.command, code: error.code, reason: error.message, details: error.details ?? [] }, "Admin command refused");
+    } else {
+      logger.error({ command: command.command, err: error }, "Admin command failed");
+    }
+    throw error;
   } finally {
     await close();
   }

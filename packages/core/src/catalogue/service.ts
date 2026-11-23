@@ -104,7 +104,8 @@ export class CatalogueService implements Catalogue {
     const queryEmbedding = resolved.query === undefined ? null : await this.#queryEmbedding(resolved.query);
     const query = queryEmbedding === null ? resolved : { ...resolved, queryEmbedding };
     const { items, total } = await this.#repository.searchExperiences(query);
-    this.#logger.debug(
+    // At info, one line per search, so a running server shows what each client searched for and found.
+    this.#logger.info(
       {
         count: items.length,
         total,
