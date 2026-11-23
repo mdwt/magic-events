@@ -565,7 +565,7 @@ Every failure becomes a `LanguageModelFailed`, and nothing else is thrown:
 | `ANTHROPIC_API_KEY` | None; needed where the model is called | The Anthropic API key |
 | `ANTHROPIC_EFFORT` | `medium` | How hard the model thinks: `low`, `medium`, `high`, `xhigh` or `max` |
 
-The adapter is `adapters/language-model/anthropic.ts`. Measured on real sources on 23 Nov 2026: a week's diary of 20 experiences took about 40 seconds, and a two-page monthly calendar of 48 took about 95.
+The adapter is `packages/core/src/adapters/language-model/anthropic.ts`. Measured on real sources on 23 Nov 2026: a week's diary of 20 experiences took about 40 seconds, and a two-page monthly calendar of 48 took about 95.
 
 ### Bedrock adapter (embedding model)
 
@@ -598,4 +598,4 @@ async function embedOne(text: string): Promise<number[]> {
 }
 ```
 
-The adapter is `adapters/embedding/bedrock.ts`, the only code that imports the AWS SDK. Measured on 23 Nov 2026: one text took about 1.3 to 2.0 seconds, so a search with a query text takes that much longer, inside the 5 second limit.
+The adapter is `packages/core/src/adapters/embedding/bedrock.ts`, the only code that imports the AWS SDK. Measured on 23 Nov 2026: one text took about 1.3 to 2.0 seconds, so a search with a query text takes that much longer, inside the 5 second limit.
