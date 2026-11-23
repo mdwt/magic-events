@@ -25,8 +25,28 @@ test("the defaults apply when only the required variables are set", () => {
     },
     database: { url: REQUIRED.DATABASE_URL },
     identity: { authSecret: REQUIRED.BETTER_AUTH_SECRET, apiKeyRateLimitMax: 120, apiKeyRateLimitWindowSeconds: 60 },
-    catalogue: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200 },
-    discovery: { defaultFetchIntervalHours: 168, defaultMissedRunsBeforeRemoval: 3, defaultMaxProcessingAttempts: 3 },
+    catalogue: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
+    discovery: {
+      defaultFetchIntervalHours: 168,
+      defaultMissedRunsBeforeRemoval: 3,
+      defaultMaxProcessingAttempts: 3,
+      scheduleCron: "*/15 * * * *",
+      runTimeoutMinutes: 60,
+      fetchRetries: 5,
+      fetchRetryBackoffMinutes: 15,
+      fetchTimeoutSeconds: 30,
+      userAgent: "Mozilla/5.0 (compatible; magic-events/1.0)",
+      horizonMonths: 24,
+      credentials: { QUICKET_API_KEY: undefined, TICKETMASTER_API_KEY: undefined },
+    },
+    processing: { workers: 1, horizonMonths: 24 },
+    languageModel: {
+      provider: "anthropic",
+      model: "claude-opus-5-5",
+      timeoutSeconds: 600,
+      anthropicApiKey: undefined,
+      anthropicEffort: "medium",
+    },
   });
 });
 
