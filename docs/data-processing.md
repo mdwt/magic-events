@@ -46,7 +46,7 @@ A listing can change twice before it is processed, so two of its versions can be
 
 ### Processing again
 
-Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions. What sets a listing back to pending is an open question.
+Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions. A system admin sends listings back to pending with `pipeline reprocess`.
 
 ## Extractors
 
@@ -281,7 +281,7 @@ After saving, Data processing appends each experience it saved to the data wareh
 - **Inside the raw listing's transaction.** A raw listing that fails leaves no rows.
 - **A copy, kept as history.** Catalogue's store stays the one that search and changed-since are served from.
 
-Who reads the warehouse is an open question in [architecture.md](architecture.md).
+Nobody reads the warehouse in version 1. It is loaded for the next version.
 
 ## Embeddings and semantic ranking
 
@@ -467,7 +467,10 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Matching | By the listing's existing source links first, then by comparing candidates. The same normalised title and overlapping dates is a match in code. Otherwise the language model picks one candidate or none |
 | Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. When that link is removed, the next one takes over |
 | Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
-| Processing again | Processed is not final. A listing's latest version can be processed again at any time |
+| Processing again | Processed is not final. A listing's latest version can be processed again at any time. A system admin sends listings back with `pipeline reprocess`: one listing, the listings an experience was built from, a source's or a location's |
+| Status and booking from a listing | Set by the rules under Status and booking from a listing. Expected is never set from a listing |
+| Profile and versions | A change to the profile alone does not bump the version or write a change row, so a reworded profile is never reported by changed-since |
+| When the leading listing goes | The experience keeps the values it has. The next source taking over, as Sources that disagree describes, is for phase 2 |
 | Dates | An extractor returns the dates a listing gives and no others: listed dates as sessions, a stated pattern as a recurrence. It never fills in the days between a first and a last date, and never works a pattern out into dates |
 | Seasons | Predefined rows per location, not experiences. An experience is given the seasons its dates fall inside, as tags |
 | Already over | An extractor leaves out experiences whose last date is before the fetch time |
@@ -479,13 +482,11 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 
 ## Open questions
 
-Three questions are still open. Each has a proposed answer that is not agreed yet.
+None. The working list is in [issues.md](issues.md).
 
-- [ ] **Status and booking from a listing.** Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. Which status and booking does each of those get? *Proposed:* the rules in the table below, given to the extractors. Expected is never set from a listing.
-- [ ] **What sends a listing to be processed again.** Processed is not final (see Processing again), but nothing yet says what sets a listing back to pending. *Proposed:* a system admin action sets the latest version of chosen listings, by source or by kind, back to pending.
-- [ ] **Profile and versions.** The profile is written again on every processing (see Profile), in different words each time, and Catalogue bumps the version on every real change, so a reworded profile would be reported by changed-since. *Proposed:* a change to the profile alone does not bump the version or write a change row.
+## Status and booking from a listing
 
-The proposed rules for status and booking:
+Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. These are the rules the extractors are given. Expected is never set from a listing.
 
 | What the listing says or shows | Status | Booking |
 | --- | --- | --- |

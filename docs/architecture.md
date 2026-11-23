@@ -159,7 +159,7 @@ Work that no client asks for is a job: finding the sources that are due, fetchin
 | --- | --- | --- |
 | Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask the language model |
 | Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; move finished experiences to Past; generate the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; move finished experiences to Past; generate the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts; get the attribute definitions from Data processing |
 | Identity | Authenticate a caller; authorise an action | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
 | Organizations | Manage tenants; manage users and roles; get a tenant | Store tenants |
 
@@ -184,9 +184,10 @@ A domain that needs another domain's data calls that domain's service through it
 | Discovery | Catalogue | The location of each source |
 | Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
 | Data processing | Catalogue | A listing's location, matching listings to experiences, saving experiences, removing source links |
+| Catalogue | Data processing | The attribute definitions, to check a search's attribute filters against them |
 | Identity | Organizations | A user's tenant and whether it is active |
 
-Catalogue and Organizations call nobody, so there are no cycles. The hand-off from fetching to processing is the raw listing's status: Discovery saves it as pending, and Data processing marks it processed or failed.
+A service that needs something another service has calls it. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions from Data processing. Organizations calls nobody. The hand-off from fetching to processing is the raw listing's status: Discovery saves it as pending, and Data processing marks it processed or failed.
 
 ## Use cases
 
@@ -256,14 +257,20 @@ Because every run fetches the same listings again, a change at the source months
 | Who does a credential belong to? | A user. Every credential is an API key that belongs to one user, and the key records whether a person or an agent uses it. An agent's key acts as its user |
 | How does a caller sign in? | With an API key, on REST and MCP alike. Version 1 has no OAuth and no sign-up |
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
-| How does a client search by place? | With a point and a radius the client chooses. Distance is worked out at query time |
+| How does a client search by place? | With a location's slug, such as `hermanus`, which searches around its centre, or with a point. The radius is the client's, with a default. Distance is worked out at query time |
+| How are attribute filters checked? | Against Data processing's attribute definitions, which Catalogue reads through its service. A key that is no attribute, an attribute that cannot be filtered on, or a value that is none of its options is refused, and the error lists what can be used |
+| What does a range filter do with an experience that has no value? | A range with only a max keeps it: nothing recorded means no lower limit, so `minimum_age: { max: 12 }` still finds it. A range with a min matches a recorded value only |
+| Which endpoints need an API key? | All of them except the health check, which a load balancer or an uptime check calls with no key |
+| How are requests rate limited? | Per address, in memory, and per API key, both set high by default. Version 1 runs as one instance, and the limits are there to stop a runaway client, not to meter use |
+| How long is change history kept? | For good in version 1. Nothing prunes it, so a planner can check back after any number of months |
+| Who reads the data warehouse? | Nobody in version 1. Data processing loads it, and it is there for the next version |
 | Where are sources managed? | In Discovery. Each source has one location |
 | What happens when a listing disappears from its source? | After the configured number of successful, complete runs without it, its source link is removed. An experience with no source links left is set to Removed. Cancelled is only for an experience its organisers cancelled |
 | What happens when an experience is over? | Catalogue sets it to Past, and search leaves it out |
 | How are an experience's dates stored? | As sessions, one for every stretch it is on. A show with set dates has one session per date, and a recurring experience has a rule that Catalogue generates sessions from. Search by dates matches sessions only, so an experience is never returned for a date it is not on |
 | Is a season an experience? | No. Seasons are predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates fall inside them |
 | How do domains share data? | By calling each other's services. Nothing is copied or kept in sync |
-| Which sources does version 1 fetch? | Five kinds, with one adapter and one extractor each: Quicket, Ticketmaster, RSS feeds, PDF calendars and web pages. A kind is named for how a source is fetched |
+| Which sources does version 1 fetch? | Three kinds, with one adapter and one extractor each: RSS feeds, PDF calendars and web pages. A kind is named for how a source is fetched. The Quicket and Ticketmaster API kinds are not built in version 1, because there is no API access: Quicket's events come in through its public pages, as web pages |
 | How does an experience stay up to date? | Discovery keeps a record of every listing and fetches it again on every run. A changed listing is processed again and updates its experiences |
 | What is a raw listing? | One version of a listing's content, whole as fetched. Data processing extracts zero or more experiences from it |
 | Are categories and tags fixed? | No. They are configurable definitions with a default set. Classification improves by adding definitions and descriptions, with no code change |
@@ -276,5 +283,4 @@ Because every run fetches the same listings again, a change at the source months
 
 ## Open questions
 
-- [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.
-- [ ] How long is change history kept? UC2 checks back eight months later.
+None. The working list is in [issues.md](issues.md).

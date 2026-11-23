@@ -83,7 +83,7 @@ A raw listing's content is never changed after it is saved. Only its status chan
 
 ## Source kinds
 
-Version 1 has five kinds. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research, and each address was checked on 23 Nov 2026 (see [hermanus-sources.md](hermanus-sources.md)).
+Version 1 defines five kinds and builds three: RSS feed, PDF calendar and web page. The Quicket and Ticketmaster kinds use an API, and version 1 has no API access to either, so their adapters and extractors are not built. That is the decision for version 1. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research, and each address was checked on 23 Nov 2026 (see [hermanus-sources.md](hermanus-sources.md)).
 
 | Kind | Sources it covers | How it is fetched | One listing is | Listing ID | Extracted by |
 | --- | --- | --- | --- | --- | --- |
@@ -99,7 +99,9 @@ Adding another RSS feed, web page or PDF calendar is adding a source row with it
 
 A web page's content is what it says: its visible text and its structured data (JSON-LD). Many listing sites put their events in structured data, and Quicket's public search pages put them nowhere else. Both are used for the page's fingerprint and both are given to the language model.
 
-Quicket is covered twice. Its public search pages need no key and are fetched as web pages. The Quicket kind, which uses its API, waits for a key.
+Quicket's events come in through its public search pages, which need no key and are fetched as web pages. The Quicket kind, which uses its API, is not built in version 1. Ticketmaster's public site returns no events for Hermanus or the Overstrand, so nothing is lost by leaving its kind out.
+
+A page that only fills in with JavaScript does not answer a plain request, so the web page adapter cannot fetch it. Such pages are read with the agent-browser CLI, a headless Chrome, and loaded through the pipeline as captured pages (see [sources.md](sources.md)). Putting a headless browser inside the adapter is for the next version.
 
 The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown) and the sources it found closed (Facebook events, Eventbrite search) have no kind.
 
@@ -107,8 +109,8 @@ The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown)
 
 | Kind | A run is | Language model in the fetch | Language model in extraction |
 | --- | --- | --- | --- |
-| Quicket | Incremental: only what changed since the last run (see Open questions) | No | No |
-| Ticketmaster | Complete | No | No |
+| Quicket | Not built in version 1 | No | No |
+| Ticketmaster | Not built in version 1 | No | No |
 | RSS feed | Never complete. A feed holds only the latest posts, so a post that leaves the feed is not a removed listing | No | Yes |
 | PDF calendar | Complete | Yes, to find the current file | Yes |
 | Web page | Complete. An address that answers not found is a missing listing. Any other failure fails the run | No | Yes |
@@ -263,7 +265,7 @@ The language model settings (`LANGUAGE_MODEL_PROVIDER`, `LANGUAGE_MODEL`, `LANGU
 | Discovery | Catalogue | The location of each source |
 | Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
 
-Catalogue calls neither, so the dependencies have no cycles.
+Catalogue calls neither of these two for fetching or the hand-off. It calls Data processing for the attribute definitions (see How domains talk in [architecture.md](architecture.md)).
 
 ## Decisions
 
@@ -278,7 +280,13 @@ Catalogue calls neither, so the dependencies have no cycles.
 | Failed fetches | Tried again by the job queue five times with a doubling wait, starting at 15 minutes. Then the source waits one interval and starts again |
 | Horizon | Experiences are sourced from today to 24 months ahead. An experience that starts later is left out until a later run |
 | Language model | Discovery uses the language model port to find the current calendar file. PDFs are stored whole and read by the language model in processing, so no PDF text is extracted here |
-| Source kinds | Five in version 1: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |
+| Source kinds | Five are defined: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |
+| API kinds | Not built in version 1. There is no API access to Quicket or Ticketmaster. Quicket's events come in through its public pages, as web pages, whose runs are complete |
+| Pages that need a browser | Read with the agent-browser CLI and loaded as captured pages. A headless browser inside the web page adapter is for the next version |
+| What a location covers | A location has a centre and no radius. Extraction keeps experiences in the location and in neighbouring towns within about half an hour by road, as an instruction to the language model |
+| Recurring experiences with no feed | They come in from the organisers' own pages and the pages a browser scrape captures. A research source, where a language model researches the location on the web, is for the next version |
+| Last verified | Not in version 1. Discovery knows when each listing was last seen, and Catalogue is not told. Stamping last verified on source links is for the next version |
+| Fingerprint of a web page | Taken from its visible text and its structured data, so tokens, timestamps and adverts in the HTML do not make every fetch look like a change |
 | Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
 | Raw listing | One version of a listing's content, whole as fetched. Saved only when the listing is new or changed |
 | Adapters | Behind one port, the fetch port. Adapters fetch; Discovery saves; Data processing extracts |
@@ -289,8 +297,4 @@ Catalogue calls neither, so the dependencies have no cycles.
 
 ## Open questions
 
-- [ ] The location has only a centre point, but the sources cover Hermanus and the wider Overstrand (Stanford, Gansbaai, Kleinmond). Does a location need a radius for adapters to filter by?
-- [ ] Many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where a language model researches the location on the web (see Language model in Discovery).
-- [ ] Quicket's runs are incremental and only complete runs count as a miss, so a listing Quicket removes is never noticed, and an unchanged Quicket listing is never verified again. Does the Quicket adapter also make a complete run at some interval?
-- [ ] A planner checking back wants to know an experience was verified recently. Discovery knows when each listing was last seen, but an unchanged listing is not processed, so Catalogue never hears of it. *Proposed:* after each run, Discovery tells the Catalogue service which listings it saw, and Catalogue stamps last verified on their source links.
-- [ ] A web page's HTML can differ on every fetch (tokens, timestamps, adverts), so its fingerprint always differs and every run processes it again. Is the fingerprint taken from the page's visible text instead?
+None. The working list is in [issues.md](issues.md).

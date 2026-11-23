@@ -26,10 +26,11 @@ flowchart LR
   DIS[Discovery] --> CAT[Catalogue]
   DP[Data processing] --> DIS
   DP --> CAT
+  CAT --> DP
   ID[Identity] --> ORG[Organizations]
 ```
 
-Arrows point from the service that calls to the service it calls. Catalogue and Organizations call nobody, so there are no cycles.
+Arrows point from the service that calls to the service it calls. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions from Data processing to check a search's filters. Organizations calls nobody.
 
 | Domain | Repository | What it holds |
 | --- | --- | --- |
@@ -244,6 +245,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Position | An experience's own position, the venue's coordinates, is optional. One with no position is searched from its location's centre |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
+| Change kind | A change row has one kind. When one version changes several things, it is the first that applies of cancelled, removed, postponed, rescheduled, confirmed and changed |
 | Auth | Better Auth and its own tables in v1 |
 | Tenant | Our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's user table, and its organization plugin is not used. The seed creates the tenants, their users and their API keys. There is no sign-up |
 | Domain dependencies | Services call each other's services. No table holds a copy of another domain's data, and no domain event is needed for the hand-off between domains |
@@ -252,4 +254,4 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 
 ## Open questions
 
-- [ ] A change row has one kind, but one version can both confirm an experience and move its dates. Which kind does changed-since report?
+None. The working list is in [issues.md](issues.md).
