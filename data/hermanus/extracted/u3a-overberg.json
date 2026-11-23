@@ -38,10 +38,7 @@
       "format": "talk",
       "audience": "adults",
       "setting": "indoor",
-      "scale": "local",
-      "language": [
-        "english"
-      ]
+      "scale": "local"
     },
     "tags": [
       "history"
