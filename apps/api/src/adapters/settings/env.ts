@@ -35,6 +35,19 @@ const environmentSchema = z.object({
   DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS: whole(1).default(168),
   DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL: whole(1).default(3),
   DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS: whole(1).default(3),
+  DISCOVERY_SCHEDULE_INTERVAL_SECONDS: whole(1).default(60),
+  DISCOVERY_FETCH_TIMEOUT_SECONDS: whole(1).default(30),
+  DISCOVERY_HORIZON_MONTHS: whole(1).default(24),
+  QUICKET_API_KEY: z.string().min(1).optional(),
+  TICKETMASTER_API_KEY: z.string().min(1).optional(),
+  CATALOGUE_SESSION_HORIZON_MONTHS: whole(1).default(24),
+  PROCESSING_IDLE_INTERVAL_SECONDS: whole(1).default(30),
+  PROCESSING_WORKERS: whole(1).default(1),
+  LANGUAGE_MODEL_PROVIDER: z.enum(["anthropic"]).default("anthropic"),
+  LANGUAGE_MODEL: z.string().min(1).default("claude-opus-5-5"),
+  LANGUAGE_MODEL_TIMEOUT_SECONDS: whole(1).default(120),
+  ANTHROPIC_API_KEY: z.string().min(1).optional(),
+  ANTHROPIC_EFFORT: z.enum(["low", "medium", "high", "xhigh", "max"]).default("medium"),
 });
 
 const VARIABLES = Object.keys(environmentSchema.shape);
@@ -79,11 +92,28 @@ export function loadSettings(env: NodeJS.ProcessEnv = process.env): Settings {
     catalogue: {
       searchDefaultRadiusKm: e.SEARCH_DEFAULT_RADIUS_KM,
       searchMaxRadiusKm: e.SEARCH_MAX_RADIUS_KM,
+      sessionHorizonMonths: e.CATALOGUE_SESSION_HORIZON_MONTHS,
     },
     discovery: {
       defaultFetchIntervalHours: e.DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS,
       defaultMissedRunsBeforeRemoval: e.DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL,
       defaultMaxProcessingAttempts: e.DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS,
+      scheduleIntervalSeconds: e.DISCOVERY_SCHEDULE_INTERVAL_SECONDS,
+      fetchTimeoutSeconds: e.DISCOVERY_FETCH_TIMEOUT_SECONDS,
+      horizonMonths: e.DISCOVERY_HORIZON_MONTHS,
+      credentials: { QUICKET_API_KEY: e.QUICKET_API_KEY, TICKETMASTER_API_KEY: e.TICKETMASTER_API_KEY },
+    },
+    processing: {
+      idleIntervalSeconds: e.PROCESSING_IDLE_INTERVAL_SECONDS,
+      workers: e.PROCESSING_WORKERS,
+      horizonMonths: e.DISCOVERY_HORIZON_MONTHS,
+    },
+    languageModel: {
+      provider: e.LANGUAGE_MODEL_PROVIDER,
+      model: e.LANGUAGE_MODEL,
+      timeoutSeconds: e.LANGUAGE_MODEL_TIMEOUT_SECONDS,
+      anthropicApiKey: e.ANTHROPIC_API_KEY,
+      anthropicEffort: e.ANTHROPIC_EFFORT,
     },
   };
 }

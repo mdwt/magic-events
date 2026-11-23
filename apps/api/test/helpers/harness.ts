@@ -5,7 +5,7 @@ import { sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import { createLogger } from "../../src/adapters/logging/pino.ts";
 import { loadSettings } from "../../src/adapters/settings/env.ts";
-import { buildApp, type Services } from "../../src/app.ts";
+import { buildApp, type Overrides, type Services } from "../../src/app.ts";
 import type { CallerKind } from "../../src/core/identity/ports.ts";
 import type { Role, TenantStatus } from "../../src/core/organizations/ports.ts";
 import type { Settings } from "../../src/core/shared/settings.ts";
@@ -48,7 +48,8 @@ async function emptyEveryTable(db: Db): Promise<void> {
   await db.execute(sql`truncate table ${names} restart identity cascade`);
 }
 
-export async function createHarness(): Promise<Harness> {
+// The overrides put a fake in place of the language model, the source adapters or the clock.
+export async function createHarness(overrides: Overrides = {}): Promise<Harness> {
   const url = process.env.TEST_DATABASE_URL;
   if (url === undefined || url === "") throw new Error("Set TEST_DATABASE_URL to run the database tests.");
   await ensureDatabase(url);
@@ -58,7 +59,12 @@ export async function createHarness(): Promise<Harness> {
   await emptyEveryTable(database.db);
 
   const settings = testSettings(url);
-  const { app, services } = await buildApp({ settings, db: database.db, logger: createLogger(settings.api) });
+  const { app, services } = await buildApp({
+    settings,
+    db: database.db,
+    logger: createLogger(settings.api),
+    overrides,
+  });
   await app.ready();
 
   return {

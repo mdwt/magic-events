@@ -53,8 +53,31 @@ export interface SaveSeasonInput {
   periods: SeasonPeriod[];
 }
 
+// What became of one raw listing.
+export interface ProcessingOutcome {
+  rawListingId: string;
+  listingId: string;
+  sourceName: string;
+  // "failed" carries the error. A failed raw listing is retried until it reaches its source's max processing attempts.
+  outcome: "processed" | "failed";
+  // How many experiences it produced, and how many of those were new or really changed.
+  experiences: number;
+  created: number;
+  changed: number;
+  // How many experiences lost their link to this listing.
+  unlinked: number;
+  error: string | null;
+}
+
 // Inbound port: what Data processing offers.
 export interface DataProcessing {
+  // Claims one pending raw listing and processes it in one transaction: extract, classify, match, save, append
+  // to the data warehouse, mark. Returns null when nothing is pending. A failure never throws: nothing from that
+  // raw listing is saved, it is marked failed, and the outcome says so.
+  processNext(): Promise<ProcessingOutcome | null>;
+  // Processes pending raw listings one after another until none is left, or until the limit is reached.
+  processPending(options?: { limit?: number }): Promise<ProcessingOutcome[]>;
+
   // Creates the attribute with its options, or updates the one that has this key. Options left out are removed.
   saveAttribute(input: AttributeDefinition): Promise<AttributeDefinition>;
   // Creates the tag, or updates the one that has this slug.

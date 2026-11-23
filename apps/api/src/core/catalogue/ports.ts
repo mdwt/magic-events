@@ -175,6 +175,161 @@ export interface ExperienceSearchQuery {
   offset: number;
 }
 
+// ---- Saving experiences ----
+
+// Every experience comes from Data processing, which saves it here. Clients only read.
+
+// The statuses Data processing may set. Removed and Past are set by Catalogue alone.
+export const SAVABLE_STATUSES = ["expected", "announced", "confirmed", "postponed", "cancelled"] as const;
+export type SavableStatus = (typeof SAVABLE_STATUSES)[number];
+
+export const EXPERIENCE_STATUSES = [...SAVABLE_STATUSES, "removed", "past"] as const;
+export type ExperienceStatus = (typeof EXPERIENCE_STATUSES)[number];
+
+export const CHANGE_KINDS = [
+  "new",
+  "confirmed",
+  "rescheduled",
+  "postponed",
+  "cancelled",
+  "removed",
+  "past",
+  "changed",
+] as const;
+export type ChangeKind = (typeof CHANGE_KINDS)[number];
+
+export type AttributeValue = string | number | boolean;
+
+// A date a source lists. Dates are YYYY-MM-DD and times HH:MM.
+export interface SessionInput {
+  // A day, or the first day of the month or year for a session with month or year precision.
+  startDate: string;
+  // The last day, for several days in a row. Left out, it is the start day, or the end of the month or year.
+  endDate?: string;
+  precision: "day" | "month" | "year";
+  startTime?: string;
+  endTime?: string;
+  label?: string;
+  soldOut?: boolean;
+  cancelled?: boolean;
+}
+
+// The rule a recurring experience repeats by. Catalogue generates its sessions from it.
+export interface RecurrenceInput {
+  // An iCalendar recurrence rule, such as FREQ=WEEKLY;BYDAY=SA
+  rule: string;
+  start: string;
+  // Left out when the recurrence is open-ended.
+  end?: string;
+  startTime?: string;
+  endTime?: string;
+  // Dates the rule gives on which the experience is not on.
+  skipped?: string[];
+}
+
+export interface SaveExperienceInput {
+  // The experience this updates, as matched by Data processing. Left out, a new experience is created.
+  experienceId?: string;
+  locationId: string;
+  title: string;
+  summary?: string;
+  description?: string;
+  // The short text classification writes, which a search's query text is ranked against.
+  profile?: string;
+  type: (typeof EXPERIENCE_TYPES)[number];
+  status: SavableStatus;
+  booking: (typeof BOOKING_STATUSES)[number];
+  openingHours?: string;
+  venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };
+  price?: { min?: number; max?: number; currency?: string };
+  // ISO timestamps.
+  onSaleAt?: string;
+  bookingClosesAt?: string;
+  bookingUrl?: string;
+  imageUrl?: string;
+  // The dates the listing lists: one for a single, one per date for a run, only the extra dates for a recurring one.
+  sessions: SessionInput[];
+  recurrence?: RecurrenceInput;
+  // The experience's values by attribute key, already checked against the definitions.
+  attributes: Record<string, AttributeValue[]>;
+  // Tag slugs and season slugs.
+  tags: string[];
+  // The listing this was built from. The experience gets a source link to it.
+  source: { listingId: string; rawListingId: string };
+  // How this listing's values meet the ones already stored, decided by Data processing from the source priorities.
+  // "lead": this listing is the experience's highest-priority one, so its values replace the stored ones.
+  // "fill": a higher-priority listing leads, so this one only fills fields that are empty, and never the dates
+  // of an experience that already has some.
+  precedence: "lead" | "fill";
+}
+
+// An experience as it is stored, with everything that belongs to it.
+export interface StoredExperience {
+  id: string;
+  version: number;
+  locationId: string;
+  title: string;
+  slug: string;
+  summary: string | null;
+  description: string | null;
+  profile: string | null;
+  type: (typeof EXPERIENCE_TYPES)[number];
+  status: ExperienceStatus;
+  booking: (typeof BOOKING_STATUSES)[number];
+  timezone: string;
+  openingHours: string | null;
+  venue: {
+    name: string | null;
+    address: string | null;
+    city: string | null;
+    position: { lat: number; lng: number } | null;
+  };
+  price: { min: number | null; max: number | null; currency: string | null };
+  onSaleAt: string | null;
+  bookingClosesAt: string | null;
+  bookingUrl: string | null;
+  imageUrl: string | null;
+  recurrence: Required<Pick<RecurrenceInput, "rule" | "start">> & {
+    end: string | null;
+    startTime: string | null;
+    endTime: string | null;
+    skipped: string[];
+  } | null;
+  // Every session, listed and generated, in date order.
+  sessions: (SessionResult & { status: "scheduled" | "cancelled"; origin: "listed" | "generated" })[];
+  attributes: Record<string, AttributeValue[]>;
+  tags: string[];
+  // The listings it is linked to.
+  listingIds: string[];
+}
+
+export interface SaveExperienceResult {
+  experience: StoredExperience;
+  // True when this save created the experience.
+  created: boolean;
+  // True when this save made a new version. A save that changes nothing makes none.
+  changed: boolean;
+  // The kind of the change row written, when there is one.
+  change: ChangeKind | null;
+}
+
+// What Data processing needs to decide whether an extracted experience is one Catalogue already has.
+export interface ExperienceMatch {
+  id: string;
+  title: string;
+  type: (typeof EXPERIENCE_TYPES)[number];
+  status: ExperienceStatus;
+  venueName: string | null;
+  city: string | null;
+  // The start of its first session and the end of its last. Empty when it has no sessions.
+  firstDate: string | null;
+  lastDate: string | null;
+  // Its sessions' dates, in order, capped to the first fifty.
+  sessions: { startDate: string; endDate: string }[];
+  recurrenceRule: string | null;
+  listingIds: string[];
+}
+
 // ---- Ports ----
 
 // Inbound port: what Catalogue offers.
@@ -184,6 +339,19 @@ export interface Catalogue {
   // Creates the location, or updates the one that has this slug.
   saveLocation(input: SaveLocationInput): Promise<Location>;
   getLocation(by: { id: string } | { slug: string }): Promise<Location | null>;
+
+  // The experiences a listing is linked to, whatever their status.
+  findExperiencesByListing(listingId: string): Promise<ExperienceMatch[]>;
+  // Experiences in the same location with a session overlapping the dates and a similar title.
+  // Cancelled, Removed and Past experiences are never candidates.
+  findMatchCandidates(input: { locationId: string; title: string; from: string; to: string }): Promise<ExperienceMatch[]>;
+  // Creates or updates an experience with its sessions, attribute values, tags and source link. It bumps the
+  // version, writes the change row and appends the domain event when something really changed.
+  saveExperience(input: SaveExperienceInput): Promise<SaveExperienceResult>;
+  // Removes a listing's link from one experience, or from every experience it links to when none is named.
+  // An experience left with no links is set to Removed, unless it is already Past or Cancelled.
+  // Returns the IDs of the experiences that lost the link.
+  removeSourceLink(input: { listingId: string; experienceId?: string; rawListingId: string }): Promise<string[]>;
 }
 
 // Outbound port: what Catalogue needs.
