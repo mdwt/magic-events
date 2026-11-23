@@ -10,15 +10,12 @@ same feed, over a REST API or an MCP endpoint. Version 1 covers Hermanus, South 
 
 ## Highlights
 
-- **Extensible.** Every outside dependency sits behind a port. Change a model provider, the job queue, storage or a
-  source by writing one adapter, and nothing else moves.
-- **LLM extraction and classification.** A language model reads each raw listing, whatever its format, and turns it
-  into clean, categorised experiences.
-- **Semantic search.** Describe what a traveller likes in plain words, and results come back ranked by meaning, backed
-  by keyword search.
-- **Change tracking.** Come back months later and see only what's new, moved or cancelled.
-- **REST and MCP.** People and AI agents work from the same feed, with the same keys and the same answers.
-- **Just Postgres.** The data, the embeddings and the job queue all live in one database.
+- **Extensible.** Everything external sits behind a port. Swap a model, a queue or a source with one adapter.
+- **Messy listings in, clean experiences out.** A language model extracts and classifies whatever a source publishes.
+- **Search by meaning.** Embeddings rank results by what a traveller loves, not just the words they type.
+- **Never miss a change.** Check back months later and see only what's new, moved or cancelled.
+- **For people and agents.** One feed, over REST and MCP.
+- **Just Postgres.** Data, embeddings and jobs in one database.
 
 ## How it works
 
