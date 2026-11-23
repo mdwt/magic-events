@@ -1,7 +1,7 @@
 import type { Location } from "../catalogue/ports.ts";
-import type { RecentRun } from "./due.ts";
+import type { LastRun } from "./due.ts";
 
-export type { RecentRun };
+export type { LastRun };
 
 // Discovery: finds experiences and captures the raw data as received.
 // Every source belongs to one location, and locations are Catalogue's. Discovery gets a source's location by
@@ -196,9 +196,11 @@ export interface DiscoveryRepository {
   upsertSource(input: Omit<Source, "id">): Promise<Source>;
   listSources(): Promise<Source[]>;
   findSource(sourceId: string): Promise<SourceForRun | null>;
-  // Each source's runs since its last successful run, that run included, most recent first, by source ID.
-  // A source with no runs has an empty list.
-  findRecentRuns(sourceIds: string[]): Promise<Record<string, RecentRun[]>>;
+  // Each source's most recent run, by source ID, or null for a source that has never run.
+  findLastRuns(sourceIds: string[]): Promise<Record<string, LastRun | null>>;
+  // Closes runs still running that started before `startedBefore` as failed with the error, in one statement:
+  // those of one source, or of every source when none is named. Returns how many it closed.
+  closeStaleRuns(input: { sourceId?: string; startedBefore: Date; finishedAt: Date; error: string }): Promise<number>;
   saveSyncState(sourceId: string, syncState: Record<string, unknown>): Promise<void>;
 
   startRun(sourceId: string, startedAt: Date): Promise<string>;

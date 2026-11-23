@@ -1,7 +1,7 @@
 import { events, listing, rawListing, run, source, type Db, type Tx } from "@magic-events/db";
-import { and, asc, count, desc, eq, gt, gte, inArray, lte, max, ne, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, lt, lte, ne, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
-import type { DiscoveryRepository, ListingVersion, RecentRun, Source } from "../../core/discovery/ports.ts";
+import type { DiscoveryRepository, LastRun, ListingVersion, Source } from "../../core/discovery/ports.ts";
 
 type SourceRow = typeof source.$inferSelect;
 
@@ -76,27 +76,37 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
       return row ? { ...toSource(row), syncState: row.syncState } : null;
     },
 
-    async findRecentRuns(sourceIds) {
-      const bySource: Record<string, RecentRun[]> = Object.fromEntries(sourceIds.map((id) => [id, []]));
+    async findLastRuns(sourceIds) {
+      const bySource: Record<string, LastRun | null> = Object.fromEntries(sourceIds.map((id) => [id, null]));
       if (sourceIds.length === 0) return bySource;
-      const success = alias(run, "success");
-      const lastSuccess = db
-        .select({ startedAt: max(success.startedAt) })
-        .from(success)
-        .where(and(eq(success.sourceId, run.sourceId), eq(success.status, "succeeded")));
-      // Every source's runs since its last success in one query.
+      // Every source's latest run in one query.
       const rows = await db
-        .select({ sourceId: run.sourceId, status: run.status, startedAt: run.startedAt, finishedAt: run.finishedAt })
+        .selectDistinctOn([run.sourceId], {
+          sourceId: run.sourceId,
+          id: run.id,
+          status: run.status,
+          startedAt: run.startedAt,
+        })
         .from(run)
+        .where(inArray(run.sourceId, sourceIds))
+        .orderBy(run.sourceId, desc(run.startedAt), desc(run.id));
+      for (const { sourceId, ...last } of rows) bySource[sourceId] = last;
+      return bySource;
+    },
+
+    async closeStaleRuns({ sourceId, startedBefore, finishedAt, error }) {
+      const closed = await db
+        .update(run)
+        .set({ status: "failed", finishedAt, error })
         .where(
           and(
-            inArray(run.sourceId, sourceIds),
-            gte(run.startedAt, sql`coalesce((${lastSuccess}), '-infinity'::timestamptz)`),
+            eq(run.status, "running"),
+            lt(run.startedAt, startedBefore),
+            sourceId === undefined ? undefined : eq(run.sourceId, sourceId),
           ),
         )
-        .orderBy(desc(run.startedAt), desc(run.id));
-      for (const { sourceId, ...recent } of rows) bySource[sourceId]?.push(recent);
-      return bySource;
+        .returning({ id: run.id });
+      return closed.length;
     },
 
     async saveSyncState(sourceId, syncState) {

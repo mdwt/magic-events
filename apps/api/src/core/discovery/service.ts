@@ -3,7 +3,7 @@ import type { Clock } from "../shared/clock.ts";
 import { AppError } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { DiscoverySettings } from "../shared/settings.ts";
-import { isDue, nextFetch, type DueInput, type RecentRun } from "./due.ts";
+import { isDue, staleBefore } from "./due.ts";
 import { errorMessage, fingerprint, sourcingWindow } from "./fetching.ts";
 import type {
   ClaimedRawListing,
@@ -94,16 +94,17 @@ export class DiscoveryService implements Discovery {
     return this.#repository.listSources();
   }
 
-  // One source after another, so two fetches never run at once.
-  async runDueSources(): Promise<RunSummary[]> {
+  async findDueSources(): Promise<Source[]> {
     const now = this.#clock();
+    // A run that crashed never blocks its source: past the run timeout it is closed as failed.
+    await this.#closeStaleRuns(now);
     const active = (await this.#repository.listSources()).filter((source) => source.active);
-    const runs = await this.#repository.findRecentRuns(active.map((source) => source.id));
-    const due = active.filter((source) => isDue(this.#dueInput(source, runs[source.id] ?? []), now));
+    const lastRuns = await this.#repository.findLastRuns(active.map((source) => source.id));
+    const due = active.filter((source) =>
+      isDue({ fetchIntervalHours: source.fetchIntervalHours, lastRun: lastRuns[source.id] ?? null }, now),
+    );
     this.#logger.debug({ active: active.length, due: due.length }, "Found the sources that are due");
-    const summaries: RunSummary[] = [];
-    for (const source of due) summaries.push(await this.runSource(source.id));
-    return summaries;
+    return due;
   }
 
   async runSource(sourceId: string): Promise<RunSummary> {
@@ -111,6 +112,28 @@ export class DiscoveryService implements Discovery {
     if (!source) throw new AppError("not_found", `No source with the ID "${sourceId}".`);
     const location = await this.#catalogue.getLocation({ id: source.locationId });
     if (!location) throw new Error(`Source ${source.id} has a location Catalogue does not have: ${source.locationId}`);
+
+    await this.#closeStaleRuns(this.#clock(), source.id);
+    const last = (await this.#repository.findLastRuns([source.id]))[source.id] ?? null;
+    if (last?.status === "running") {
+      // Never two fetches of one source at once. The run in progress is left alone.
+      this.#logger.warn(
+        { sourceId: source.id, source: source.name, runId: last.id },
+        "The source is already being fetched",
+      );
+      return {
+        runId: last.id,
+        sourceId: source.id,
+        sourceName: source.name,
+        status: "failed",
+        complete: false,
+        listingsFound: 0,
+        listingsNewOrChanged: 0,
+        listingsUnchanged: 0,
+        listingsRemoved: 0,
+        error: "The source is already being fetched.",
+      };
+    }
 
     const startedAt = this.#clock();
     const runId = await this.#repository.startRun(source.id, startedAt);
@@ -141,7 +164,7 @@ export class DiscoveryService implements Discovery {
       error,
       finishedAt: this.#clock(),
     });
-    if (error !== null) await this.#logFailure(source, error, logger);
+    if (error !== null) logger.warn({ error }, "The run failed");
 
     // Only a successful, complete run says what the source no longer lists. A feed or an incremental fetch does not.
     let removed = 0;
@@ -233,30 +256,14 @@ export class DiscoveryService implements Discovery {
     return this.#repository.findListingPriorities([...new Set(listingIds)]);
   }
 
-  #dueInput(source: Source, runs: RecentRun[]): DueInput {
-    return {
-      fetchIntervalHours: source.fetchIntervalHours,
-      runs,
-      fetchRetries: this.#settings.fetchRetries,
-      fetchRetryBackoffMinutes: this.#settings.fetchRetryBackoffMinutes,
-    };
-  }
-
-  // Says which retry comes next and when, or that the retries are used up.
-  async #logFailure(source: Source, error: string, logger: Logger): Promise<void> {
-    const runs = await this.#repository.findRecentRuns([source.id]);
-    const next = nextFetch(this.#dueInput(source, runs[source.id] ?? []));
-    if (next.kind === "retry") {
-      logger.warn(
-        { error, nextRetry: next.retry, retries: this.#settings.fetchRetries, nextAt: next.at.toISOString() },
-        "The run failed and will be tried again",
-      );
-    } else if (next.kind === "regular") {
-      logger.error(
-        { error, retries: this.#settings.fetchRetries, nextAt: next.at.toISOString() },
-        "The run failed; retries used up, waiting for the next regular fetch",
-      );
-    }
+  async #closeStaleRuns(now: Date, sourceId?: string): Promise<void> {
+    const closed = await this.#repository.closeStaleRuns({
+      ...(sourceId === undefined ? {} : { sourceId }),
+      startedBefore: staleBefore(now, this.#settings.runTimeoutMinutes),
+      finishedAt: now,
+      error: "The run did not finish.",
+    });
+    if (closed > 0) this.#logger.warn({ closed, sourceId }, "Closed runs that did not finish as failed");
   }
 
   async #fetch(source: SourceForRun, location: Location, now: Date, logger: Logger): Promise<FetchResult> {

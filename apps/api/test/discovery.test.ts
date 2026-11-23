@@ -338,50 +338,84 @@ describe("Discovery: listings that disappear", () => {
 });
 
 describe("Discovery: sources that are due", () => {
-  test("runs the active sources whose interval has passed or that never ran, and skips one that is running", async () => {
+  test("finds the active sources whose interval has passed or that never ran, not one being fetched", async () => {
     const services = harness.services.discovery;
     const daily = await services.saveSource({ ...pages, name: "Daily", fetchIntervalHours: 24 });
     const weekly = await services.saveSource({ ...pages, name: "Weekly", fetchIntervalHours: 168 });
+    const failing = await services.saveSource({ ...pages, name: "Failing", fetchIntervalHours: 24 });
     await services.saveSource({ ...pages, name: "Never ran" });
     await services.saveSource({ ...pages, name: "Inactive", active: false });
     const busy = await services.saveSource({ ...pages, name: "Busy", fetchIntervalHours: 1 });
     await services.runSource(daily.id);
     await services.runSource(weekly.id);
-    await harness.db.insert(run).values({ sourceId: busy.id, startedAt: now, status: "running" });
+    next.web_page = () => Promise.reject(new Error("GET https://example.com answered 503 Service Unavailable"));
+    await services.runSource(failing.id);
 
-    later(24);
-    const due = await services.runDueSources();
+    later(23);
+    // Started 30 minutes ago: in progress, not stale.
+    await harness.db.insert(run).values({ sourceId: busy.id, startedAt: new Date(now.getTime() - 30 * 60 * 1000) });
+    assert.deepEqual(
+      (await services.findDueSources()).map((one) => one.name),
+      ["Never ran"],
+    );
 
-    assert.deepEqual(due.map((one) => one.sourceName).sort(), ["Daily", "Never ran"]);
-    // Both just ran, so nothing is due an hour later.
     later(1);
-    assert.deepEqual(await services.runDueSources(), []);
+    assert.deepEqual(
+      (await services.findDueSources()).map((one) => one.name),
+      // Busy's run is now 90 minutes old, past the run timeout, so it was closed.
+      ["Busy", "Daily", "Failing", "Never ran"],
+    );
   });
 
-  test("a failed fetch is tried again after its backoff, not a whole interval later", async () => {
+  test("closes a run that did not finish as failed, so its source is due again", async () => {
     const services = harness.services.discovery;
-    const saved = await services.saveSource({ ...pages, name: "Flaky", fetchIntervalHours: 168 });
-    returns("web_page", [page("a", "A")]);
-    await services.runSource(saved.id);
-    later(168);
-    next.web_page = () => Promise.reject(new Error("GET https://example.com answered 503 Service Unavailable"));
-    assert.deepEqual(
-      (await services.runDueSources()).map((one) => one.status),
-      ["failed"],
-    );
+    const crashed = await services.saveSource({ ...pages, name: "Crashed", fetchIntervalHours: 1 });
+    const other = await services.saveSource({ ...pages, name: "Other", fetchIntervalHours: 1 });
+    const [left] = await harness.db
+      .insert(run)
+      .values([
+        { sourceId: crashed.id, startedAt: now },
+        { sourceId: other.id, startedAt: now },
+      ])
+      .returning();
+    assert.ok(left);
 
-    later(0.2);
-    assert.deepEqual(await services.runDueSources(), []);
-    // 15 minutes after the failed run finished.
-    later(0.05);
-    returns("web_page", [page("a", "A")]);
-    assert.deepEqual(
-      (await services.runDueSources()).map((one) => one.status),
-      ["succeeded"],
-    );
-    // The success ends the retries: the next fetch is a whole interval later.
+    // The default run timeout is 60 minutes.
     later(1);
-    assert.deepEqual(await services.runDueSources(), []);
+    assert.deepEqual(await services.findDueSources(), []);
+    later(0.1);
+    assert.deepEqual(
+      (await services.findDueSources()).map((one) => one.name),
+      ["Crashed", "Other"],
+    );
+    const rows = await harness.db.select().from(run);
+    assert.ok(rows.every((one) => one.status === "failed" && one.error === "The run did not finish."));
+    assert.ok(rows.every((one) => one.finishedAt?.getTime() === now.getTime()));
+  });
+
+  test("runSource on a source being fetched starts no second run and leaves the first alone", async () => {
+    const services = harness.services.discovery;
+    const saved = await services.saveSource(pages);
+    const [inProgress] = await harness.db.insert(run).values({ sourceId: saved.id, startedAt: now }).returning();
+    assert.ok(inProgress);
+
+    later(0.5);
+    const summary = await services.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.runId, inProgress.id);
+    assert.equal(summary.error, "The source is already being fetched.");
+    const rows = await harness.db.select().from(run);
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0]?.status, "running");
+
+    // Past the run timeout, the next runSource closes it and fetches.
+    later(1);
+    returns("web_page", [page("a", "A")]);
+    assert.equal((await services.runSource(saved.id)).status, "succeeded");
+    const [closed] = await harness.db.select().from(run).where(eq(run.id, inProgress.id));
+    assert.equal(closed?.status, "failed");
+    assert.equal(closed.error, "The run did not finish.");
   });
 
   test("lists every source", async () => {

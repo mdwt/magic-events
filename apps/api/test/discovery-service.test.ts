@@ -16,7 +16,7 @@ import type {
   SourceFetcher,
   SourceForRun,
 } from "../src/core/discovery/ports.ts";
-import type { RecentRun } from "../src/core/discovery/due.ts";
+import type { LastRun } from "../src/core/discovery/due.ts";
 import { DiscoveryService } from "../src/core/discovery/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
@@ -60,7 +60,8 @@ const settings: DiscoverySettings = {
   defaultFetchIntervalHours: 24,
   defaultMissedRunsBeforeRemoval: 3,
   defaultMaxProcessingAttempts: 5,
-  scheduleIntervalSeconds: 60,
+  scheduleCron: "*/15 * * * *",
+  runTimeoutMinutes: 60,
   fetchTimeoutSeconds: 30,
   userAgent: "test",
   fetchRetries: 5,
@@ -72,7 +73,7 @@ const settings: DiscoverySettings = {
 interface FakeRun extends Omit<RunOutcome, "status" | "finishedAt"> {
   id: string;
   sourceId: string;
-  status: RecentRun["status"];
+  status: LastRun["status"];
   startedAt: Date;
   finishedAt: Date | null;
 }
@@ -110,20 +111,25 @@ function memoryRepository() {
     },
     listSources: () => Promise.resolve([...sources.values()]),
     findSource: (id) => Promise.resolve(sources.get(id) ?? null),
-    findRecentRuns(sourceIds) {
-      const bySource: Record<string, RecentRun[]> = {};
+    findLastRuns(sourceIds) {
+      const bySource: Record<string, LastRun | null> = {};
       for (const sourceId of sourceIds) {
-        const recent: RecentRun[] = [];
-        const newestFirst = runs
+        const [newest] = runs
           .filter((one) => one.sourceId === sourceId)
           .sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime());
-        for (const one of newestFirst) {
-          recent.push({ status: one.status, startedAt: one.startedAt, finishedAt: one.finishedAt });
-          if (one.status === "succeeded") break;
-        }
-        bySource[sourceId] = recent;
+        bySource[sourceId] = newest ? { id: newest.id, status: newest.status, startedAt: newest.startedAt } : null;
       }
       return Promise.resolve(bySource);
+    },
+    closeStaleRuns({ sourceId, startedBefore, finishedAt, error }) {
+      const stale = runs.filter(
+        (one) =>
+          one.status === "running" &&
+          one.startedAt < startedBefore &&
+          (sourceId === undefined || one.sourceId === sourceId),
+      );
+      for (const one of stale) Object.assign(one, { status: "failed", finishedAt, error });
+      return Promise.resolve(stale.length);
     },
     saveSyncState(sourceId, syncState) {
       syncStates.push(syncState);
@@ -580,7 +586,7 @@ describe("DiscoveryService.runSource: listings that disappear", () => {
 });
 
 describe("DiscoveryService: due sources and the sourcing window", () => {
-  test("runs the active sources that are due, one after another: never run, then by interval and retries", async () => {
+  test("finds the active sources that never ran or whose interval has passed since their last run started", async () => {
     const { service, adapter, later, source } = setup({ start: "2026-11-23T08:00:00Z" });
     const steady = await source({ name: "Steady", fetchIntervalHours: 24 });
     const flaky = await source({ name: "Flaky", fetchIntervalHours: 24 });
@@ -592,23 +598,62 @@ describe("DiscoveryService: due sources and the sourcing window", () => {
     adapter.returns([]);
     await service.runSource(steady.id);
 
-    const names = async () => (await service.runDueSources()).map((one) => one.sourceName).sort();
+    const names = async () => (await service.findDueSources()).map((one) => one.name).sort();
+    // A failed run waits for its interval like any other: retrying is the job queue's work.
     assert.deepEqual(await names(), ["Never ran"]);
-    // Flaky keeps failing.
-    adapter.fails("GET https://example.com answered 503 Service Unavailable");
-    // The first retry waits 15 minutes after the failed run finished.
-    later(14);
-    assert.deepEqual(await names(), []);
+    later(24 * 60 - 1);
+    assert.deepEqual(await names(), ["Never ran"]);
     later(1);
-    assert.deepEqual(await names(), ["Flaky"]);
-    // It failed again, so the second retry waits 30 minutes.
-    later(29);
-    assert.deepEqual(await names(), []);
-    later(1);
-    assert.deepEqual(await names(), ["Flaky"]);
-    // A day after they ran, every source is due again.
-    later(24 * 60);
     assert.deepEqual(await names(), ["Flaky", "Never ran", "Steady"]);
+  });
+
+  test("a run in progress makes its source not due, until it is past the run timeout", async () => {
+    const { service, memory, later, source } = setup({ start: "2026-11-23T08:00:00Z" });
+    const saved = await source({ fetchIntervalHours: 1 });
+    // A run a crash left running.
+    await memory.repository.startRun(saved.id, new Date("2026-11-23T08:00:00Z"));
+
+    later(60);
+    assert.deepEqual(await service.findDueSources(), []);
+    later(1);
+    const due = await service.findDueSources();
+
+    assert.deepEqual(
+      due.map((one) => one.id),
+      [saved.id],
+    );
+    assert.equal(memory.runs[0]?.status, "failed");
+    assert.equal(memory.runs[0].error, "The run did not finish.");
+  });
+
+  test("runSource does not start a second run of a source that is being fetched", async () => {
+    const { service, memory, adapter, later, source } = setup({ start: "2026-11-23T08:00:00Z" });
+    const saved = await source();
+    const running = await memory.repository.startRun(saved.id, new Date("2026-11-23T08:00:00Z"));
+
+    later(30);
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.runId, running);
+    assert.equal(summary.error, "The source is already being fetched.");
+    assert.equal(memory.runs.length, 1);
+    assert.equal(memory.runs[0]?.status, "running");
+    assert.equal(adapter.calls.length, 0);
+  });
+
+  test("runSource closes its source's run that did not finish, then fetches", async () => {
+    const { service, memory, adapter, later, source } = setup({ start: "2026-11-23T08:00:00Z" });
+    const saved = await source();
+    await memory.repository.startRun(saved.id, new Date("2026-11-23T08:00:00Z"));
+
+    later(61);
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "succeeded");
+    assert.equal(memory.runs[0]?.status, "failed");
+    assert.equal(memory.runs[0].error, "The run did not finish.");
+    assert.equal(adapter.calls.length, 1);
   });
 
   test("a source run by hand runs whether or not it is due", async () => {
