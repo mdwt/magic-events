@@ -34,7 +34,7 @@ the system works, it is also in the document that owns the subject.
 
 | # | Issue | Area | How it was closed |
 | --- | --- | --- | --- |
-| 1 | The Docker engine was down, and port 5432 belongs to another project | Environment | The project has its own Postgres on port 5434, on the `pgvector/pgvector:pg18` image, under the compose project name `magic-events`. The main checkout's `.env` still points at 5432 and needs the same change after the merge |
+| 1 | The Docker engine was down, and port 5432 belongs to another project | Environment | The project has its own Postgres on port 5434, on the `pgvector/pgvector:pg18` image, under the compose project name `magic-events`. The main checkout's `.env` points there too since the merge of 23 Nov 2026 |
 | 2 | Which table holds the tenant | Organizations | Our own `tenant` table. Better Auth's organization plugin is not used. There is no sign-up: the seed creates the tenants, their users on Better Auth's `user` table with `tenant_id` and `role`, and their API keys. A system admin creates a tenant and adds its users through the command line, `pnpm cli:admin` (see 62) |
 | 3 | Who an agent's credential belongs to | Identity | A user. Every credential is an API key that belongs to one user, and the key records whether a person or an agent uses it. A system admin issues and revokes keys through the command line (see 62) |
 | 4 | MCP sign-in with OAuth | Identity | No OAuth in version 1. MCP authenticates with an API key, like REST |
