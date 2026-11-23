@@ -51,7 +51,7 @@ An example:
 A domain event is published as soon as the change it records is saved.
 
 - **The service publishes.** The domain's repository appends the event to the log in the same transaction as the change. The domain's service then publishes that same event. Every domain event is published, with no exception.
-- **After the change is saved.** An event published inside a transaction goes out when the transaction commits, and is dropped when it rolls back. No subscriber hears of a change that was never saved. One raw listing is processed in one transaction, so its events go out together at the end.
+- **After the change is saved.** An event published inside a transaction goes out when the transaction commits, and is dropped when it rolls back. No subscriber hears of a change that was never saved. One raw listing is processed in one transaction, so its events go out together at the end. Its work runs in a savepoint of that transaction: when the work fails, the savepoint rolls back and drops the work's events, and the transaction goes on to record the failure and publish that.
 - **What is published** is the event exactly as its row in the log: its ID, type, resource ID, data and the time it was recorded.
 - **Publishing is a port.** The domains publish through the domain event port and name no technology. The port also lets other code subscribe to one type of event or to all of them.
 - **The first adapter is Node's event emitter.** It needs no broker and nothing to run. Its limit is that it reaches subscribers in the same process only: a second server, or a separate worker, hears nothing.

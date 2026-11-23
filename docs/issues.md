@@ -6,7 +6,7 @@ the system works, it is also in the document that owns the subject.
 
 2026-11-23 · Meiring
 
-**Status:** `In progress` being built now · `To do` decided, and starts once the core has moved to `packages/core` ·
+**Status:** `In progress` being built now · `To do` decided, and starts when the work it waits on is committed ·
 `Open` needs something from outside the code · `Phase 2` noted, and not part of version 1 · `Closed` decided, and
 built where it needed building.
 
@@ -18,12 +18,11 @@ built where it needed building.
 | 34 | An experience's own page address is not saved | Catalogue | In progress | Decided: an experience holds its own page address when its listing gives one. Being added from extraction through to search results |
 | 35 | Venue coordinates are not extracted | Data processing | In progress | Decided: coordinates are extracted whenever the listing states them, in its structured data, a map link or its text. Being built. Venues whose listing states none are issue 45 |
 | 36 | A Quicket event on several dates becomes one long session | Data processing | In progress | Quicket's structured data gives one start and one end, so search returns the event for the days in between. Being fixed in extraction, so no session covers a day the listing does not say it is on |
-| 41 | A failed raw listing can be claimed again before its attempt is counted | Data processing | In progress | With more than one processing worker, another could claim it between the rollback and the mark. Being closed, with a test of two workers racing |
 | 45 | A venue whose listing states no coordinates has no position | Data processing | Open | Such an experience is searched from its location's centre. Geocoding its address, through Google behind a port, needs a Google API key in the environment |
-| 46 | A text the embedding model always refuses stays due for ever | Catalogue | To do | The embedding job fails on it every 15 minutes. An experience whose text keeps failing is to be set aside after a few tries, so the job stops failing on it |
-| 47 | Changed-since misses an experience whose sessions moved out of the client's dates | Catalogue | To do | It matches an experience on its sessions as stored now, so one rescheduled out of the dates searched is never reported, which is the change a planner most needs. It is to match on the sessions it had inside the dates before the change as well |
+| 46 | A text the embedding model always refuses stays due for ever | Catalogue | In progress | The embedding job fails on it every 15 minutes. An experience whose text keeps failing is to be set aside after a few tries, so the job stops failing on it |
+| 47 | Changed-since misses an experience whose sessions moved out of the client's dates | Catalogue | In progress | It matches an experience on its sessions as stored now, so one rescheduled out of the dates searched is never reported, which is the change a planner most needs. It is to match on the sessions it had inside the dates before the change as well |
 | 48 | Extraction took a season for an experience, and stored titles that name nothing | Data processing | To do | The real run saved "Southern Right Whales in Walker Bay" as an experience, and titles such as "Hermanus 2026" and "Time". The extraction instructions and the checks on what comes back are to leave out seasons and refuse a title that does not name an experience |
-| 49 | A Wix page's fingerprint changes between fetches | Discovery | To do | The FynArts page's fingerprint changed between two fetches three minutes apart, so issue 23's answer does not hold for every site and the page is processed again on every run. What changes in its visible text or structured data is to be found and left out of the fingerprint |
+| 49 | A Wix page's fingerprint changes between fetches | Discovery | In progress | The FynArts page's fingerprint changed between two fetches three minutes apart, so issue 23's answer does not hold for every site and the page is processed again on every run. What changes in its visible text or structured data is to be found and left out of the fingerprint |
 
 ## Phase 2
 
@@ -64,7 +63,7 @@ built where it needed building.
 | 23 | A web page's fingerprint changes on every fetch | Discovery | As built: the fingerprint is taken from the page's visible text and its structured data. It does not hold for every site: see 49 |
 | 24 | A range filter leaves out experiences that have no value | Catalogue | A range with only a max also matches an experience with no value, so `minimum_age: { max: 12 }` finds it. A range with a min matches a recorded value only |
 | 26 | A key's rate limit is fixed when the key is issued | Identity | Left as it is. The limit is a default, 10000 requests a minute, and is not a blocker |
-| 27 | Seed values the documents do not give | Seed | As seeded. They are rows in `apps/api/src/seed/data/` and can be changed and seeded again |
+| 27 | Seed values the documents do not give | Seed | As seeded. They are rows in `apps/cli/src/seed/data/` and can be changed and seeded again |
 | 28 | The Quicket and Ticketmaster API adapters are not built | Discovery | Not built in version 1: there is no API access. Quicket's events come in through its public pages |
 | 29 | A newsletter archive fits no source kind | Discovery | Not a source in version 1 |
 | 30 | The terms of AllEvents.in and Quicket were not checked | Discovery | Dropped |
@@ -73,6 +72,7 @@ built where it needed building.
 | 38 | Postponed to Confirmed without new dates is allowed | Catalogue | Not an issue. A postponed experience cannot be booked, and a source that confirms it again is taken at its word |
 | 39 | Two fetches of one source at the same instant can both start a run | Discovery | Left as it is. The job queue keeps one fetch job per source waiting at a time |
 | 43 | Moving experiences to Past and extending recurring sessions is not built | Catalogue | Built: the upkeep job sets finished experiences to Past, closes bookings whose close time has passed, and generates recurring sessions further ahead |
+| 41 | A failed raw listing can be claimed again before its attempt is counted | Data processing | Fixed. The work runs in a savepoint, so a failure rolls back only the work, and the failed attempt is counted in the same transaction while the claim's lock is still held. A test with two workers racing proves it, and fails on the old code |
 | 44 | Nothing runs lint, type checks and tests automatically | Tooling | Built: `.github/workflows/ci.yml` runs lint, the type checks and the tests for every project on every push and pull request, against Postgres with pgvector. It has not run on GitHub yet, because nothing has been pushed |
 | 51 | Changed-since does not report an experience that changed and then became Past | Catalogue | As designed. An experience that is over is never reported |
 | 52 | Changed-since reports cancelled and removed experiences whatever `status` and `bookable` say | Catalogue | As designed. They are what a planner checking back must not miss |
