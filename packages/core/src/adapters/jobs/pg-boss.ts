@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { PgBoss, type Job, type QueueOptions } from "pg-boss";
 import type { JobHandler, JobName, JobPolicy, JobQueue, Jobs } from "../../shared/jobs.ts";
+import { logContext } from "../../shared/log-context.ts";
 import type { Logger } from "../../shared/logger.ts";
 
 // The job queue on Postgres, through pg-boss. pg-boss keeps its jobs, queues and schedules in a schema of its own,
@@ -49,12 +50,18 @@ export function createJobQueue(deps: {
   async function run(handler: JobHandler, job: Job<Jobs[JobName]>): Promise<void> {
     const attempt = job.retryCount + 1;
     const signal = AbortSignal.any([job.signal, stopping.signal]);
-    try {
-      await handler.run(job.data, { id: job.id, attempt, signal });
-    } catch (error) {
-      logFailure(handler.name, handler.policy, job, error);
-      throw error;
-    }
+    const started = performance.now();
+    // Every line the job writes carries its name and ID, as a request's lines carry its request ID.
+    await logContext.run({ job: handler.name, jobId: job.id }, async () => {
+      logger.debug({ job: handler.name, jobId: job.id, attempt }, "Job started");
+      try {
+        await handler.run(job.data, { id: job.id, attempt, signal });
+      } catch (error) {
+        logFailure(handler.name, handler.policy, job, error);
+        throw error;
+      }
+      logger.debug({ job: handler.name, jobId: job.id, attempt, durationMs: Math.round(performance.now() - started) }, "Job finished");
+    });
     // pg-boss failed the job when it ran past its timeout, whatever the handler did after.
     if (job.signal.aborted && !stopping.signal.aborted) {
       logFailure(handler.name, handler.policy, job, job.signal.reason);
