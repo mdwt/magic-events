@@ -408,6 +408,12 @@ describe("the OpenAPI document", () => {
         assert.ok(document.paths[path]?.[method]?.responses[status], `${method} ${path} does not document ${status}`);
       }
     }
+    for (const status of ["406", "413", "415"]) {
+      assert.ok(document.paths["/mcp"]?.post?.responses[status], `post /mcp does not document ${status}`);
+    }
+    for (const method of ["get", "delete"] as const) {
+      assert.ok(document.paths["/mcp"]?.[method]?.responses["405"], `${method} /mcp does not document 405`);
+    }
     for (const path of ["/v1/tenants", "/v1/tenants/{slug}/users"] as const) {
       assert.ok(document.paths[path]?.post?.responses["409"], `post ${path} does not document 409`);
     }
