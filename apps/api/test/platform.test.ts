@@ -145,6 +145,30 @@ describe("authentication", () => {
   });
 });
 
+describe("the rate limit per address", () => {
+  let app: FastifyInstance;
+
+  before(async () => {
+    const settings = testSettings(process.env.TEST_DATABASE_URL ?? "");
+    settings.api.rateLimitMax = 1;
+    ({ app } = await buildApp({ settings, db: harness.db, logger: createLogger(settings.api) }));
+    await app.ready();
+  });
+
+  after(() => app.close());
+
+  test("answers 429 rate_limited in the error format, with Retry-After", async () => {
+    assert.equal((await app.inject({ method: "GET", url: "/health" })).statusCode, 200);
+    const response = await app.inject({ method: "GET", url: "/health" });
+    assert.equal(response.statusCode, 429);
+    const error = errorOf(response);
+    assert.equal(error.code, "rate_limited");
+    const seconds = Number(response.headers["retry-after"]);
+    assert.ok(seconds > 0);
+    assert.match(error.message, new RegExp(`${seconds} seconds`));
+  });
+});
+
 describe("the error format", () => {
   test("malformed JSON is invalid_input", async () => {
     const response = await harness.app.inject({

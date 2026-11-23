@@ -125,8 +125,12 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
     global: false,
     max: settings.rateLimitMax,
     timeWindow: settings.rateLimitWindowSeconds * 1000,
-    errorResponseBuilder: () =>
-      new AppError("rate_limited", "Too many requests from this address. Wait before trying again."),
+    errorResponseBuilder: (_request, context) => {
+      const seconds = Math.max(1, Math.ceil(context.ttl / 1000));
+      return new AppError("rate_limited", `Too many requests from this address. Try again in ${seconds} seconds.`, undefined, {
+        retryAfterSeconds: seconds,
+      });
+    },
   });
   app.addHook("onRequest", app.rateLimit());
   addAuthenticationHook(app, deps.services.identity);
