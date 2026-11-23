@@ -85,10 +85,10 @@ describe("MCP search_experiences", () => {
     const tool = tools.find((one) => one.name === "search_experiences");
     assert.ok(tool, "search_experiences is listed");
     assert.equal(tool.inputSchema.type, "object");
-    for (const field of ["near", "radiusKm", "from", "to", "status", "bookable", "attributes", "tags", "query"]) {
+    for (const field of ["location", "near", "radiusKm", "from", "to", "status", "bookable", "attributes", "tags", "query"]) {
       assert.ok(field in tool.inputSchema.properties, `input has ${field}`);
     }
-    assert.deepEqual([...(tool.inputSchema.required ?? [])].sort(), ["from", "near", "to"]);
+    assert.deepEqual([...(tool.inputSchema.required ?? [])].sort(), ["from", "to"]);
     assert.ok(tool.outputSchema, "the tool has an output schema");
     for (const field of ["items", "total", "limit", "offset"]) {
       assert.ok(field in tool.outputSchema.properties, `output has ${field}`);
@@ -150,7 +150,7 @@ describe("MCP get_experience_changes", () => {
     assert.ok(tool, "get_experience_changes is listed");
     assert.ok("since" in tool.inputSchema.properties);
     assert.equal("query" in tool.inputSchema.properties, false);
-    assert.deepEqual([...(tool.inputSchema.required ?? [])].sort(), ["from", "near", "since", "to"]);
+    assert.deepEqual([...(tool.inputSchema.required ?? [])].sort(), ["from", "since", "to"]);
     for (const field of ["items", "total", "limit", "offset"]) {
       assert.ok(tool.outputSchema && field in tool.outputSchema.properties, `output has ${field}`);
     }

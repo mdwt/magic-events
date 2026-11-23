@@ -31,9 +31,9 @@ const TECHNOLOGY = [
 // The one exception: Identity and Organizations use Better Auth directly, with no port over it.
 const BETTER_AUTH = ["better-auth", "better-auth/*", "@better-auth/*"];
 
-// Which domains a domain may call, from "How domains talk". Catalogue and Organizations call nobody.
+// Which domains a domain may call, from "How domains talk". Organizations calls nobody.
 const CALLS = {
-  catalogue: [],
+  catalogue: ["data-processing"],
   organizations: [],
   discovery: ["catalogue"],
   "data-processing": ["discovery", "catalogue"],

@@ -69,9 +69,12 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
   const fetchers =
     overrides.fetchers ?? createSourceFetchers({ languageModel, settings: settings.discovery, logger });
 
-  const catalogue = new CatalogueService({
+  // Catalogue and Data processing call each other, and Catalogue is built first, so it reaches Data processing's
+  // service through this.
+  const catalogue: Catalogue = new CatalogueService({
     repository: createCatalogueRepository(db),
     events,
+    dataProcessing: { listAttributes: () => dataProcessing.listAttributes() },
     settings: settings.catalogue,
     embeddings,
     embeddingSettings: settings.embedding,
@@ -94,7 +97,7 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
     logger,
     clock,
   });
-  const dataProcessing = new DataProcessingService({
+  const dataProcessing: DataProcessing = new DataProcessingService({
     repository: createDataProcessingRepository(db),
     catalogue,
     discovery,

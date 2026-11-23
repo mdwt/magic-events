@@ -29,6 +29,7 @@ import {
   max,
   min,
   ne,
+  notExists,
   notInArray,
   or,
   sql,
@@ -767,20 +768,16 @@ function cancelledOrRemoved(db: Db, query: ExperienceChangesQuery): SQL | undefi
 function placeAndClassification(db: Db, query: ExperienceSearchQuery): (SQL | undefined)[] {
   return [
     lte(distanceKm(query.near), sql`${query.radiusKm}::double precision`),
-    ...Object.entries(query.attributes).map(([key, filter]) =>
-      exists(
-        db
-          .select({ one: sql`1` })
-          .from(experienceAttributeValue)
-          .where(
-            and(
-              eq(experienceAttributeValue.experienceId, experience.id),
-              eq(experienceAttributeValue.attributeKey, key),
-              attributeMatches(filter),
-            ),
-          ),
-      ),
-    ),
+    ...Object.entries(query.attributes).map(([key, filter]) => {
+      const ofAttribute = and(
+        eq(experienceAttributeValue.experienceId, experience.id),
+        eq(experienceAttributeValue.attributeKey, key),
+      );
+      const values = () => db.select({ one: sql`1` }).from(experienceAttributeValue);
+      const matches = exists(values().where(and(ofAttribute, attributeMatches(filter))));
+      // Nothing recorded means no lower limit, so an experience with no value passes a range that has only a max.
+      return isMaxOnlyRange(filter) ? or(matches, notExists(values().where(ofAttribute))) : matches;
+    }),
     query.tags.length === 0
       ? undefined
       : exists(
@@ -790,6 +787,10 @@ function placeAndClassification(db: Db, query: ExperienceSearchQuery): (SQL | un
             .where(and(eq(experienceTag.experienceId, experience.id), inArray(experienceTag.tag, query.tags))),
         ),
   ];
+}
+
+function isMaxOnlyRange(filter: AttributeFilter): boolean {
+  return typeof filter === "object" && !Array.isArray(filter) && filter.min === undefined && filter.max !== undefined;
 }
 
 // One stored value against one attribute's filter. Values are jsonb, one row per value.

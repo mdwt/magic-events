@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import type { DataProcessing } from "../data-processing/ports.ts";
 import type { Clock } from "../shared/clock.ts";
 import type { DomainEventPublisher } from "../shared/domain-events.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
@@ -41,6 +42,7 @@ import {
   type Draft,
 } from "./save.ts";
 import { reportedChange } from "./changes.ts";
+import { checkAttributeFilters } from "./filters.ts";
 import type {
   ExperienceChange,
   ExperienceChangesInput,
@@ -65,10 +67,13 @@ export class CatalogueService implements Catalogue {
   readonly #events: DomainEventPublisher;
   readonly #embeddings: EmbeddingModel;
   readonly #embeddingSettings: EmbeddingSettings;
+  readonly #dataProcessing: Pick<DataProcessing, "listAttributes">;
 
   constructor(deps: {
     repository: CatalogueRepository;
     events: DomainEventPublisher;
+    // Data processing's service, for the attribute definitions a search's filters are checked against.
+    dataProcessing: Pick<DataProcessing, "listAttributes">;
     settings: CatalogueSettings;
     embeddings: EmbeddingModel;
     embeddingSettings: EmbeddingSettings;
@@ -76,6 +81,7 @@ export class CatalogueService implements Catalogue {
     clock?: Clock;
   }) {
     this.#repository = deps.repository;
+    this.#dataProcessing = deps.dataProcessing;
     this.#events = deps.events;
     this.#settings = deps.settings;
     this.#embeddings = deps.embeddings;
@@ -85,7 +91,7 @@ export class CatalogueService implements Catalogue {
   }
 
   async searchExperiences(input: SearchExperiencesInput): Promise<SearchExperiencesResult> {
-    const resolved = this.#resolve(input);
+    const resolved = await this.#resolve(input);
     this.#logger.debug({ query: resolved }, "Searching experiences");
 
     const started = performance.now();
@@ -266,7 +272,7 @@ export class CatalogueService implements Catalogue {
     }
 
     // The same rules as a search. The input has no query text, so none is resolved.
-    const search = this.#resolve(input);
+    const search = await this.#resolve(input);
     const query: ExperienceChangesQuery = {
       near: search.near,
       radiusKm: search.radiusKm,
@@ -542,9 +548,33 @@ export class CatalogueService implements Catalogue {
     return addMonths(today, this.#settings.sessionHorizonMonths);
   }
 
+  // The point a search is around: the one given, or the centre of the location given. Null, with the reason added
+  // to the details, when neither or both are given or the location does not exist.
+  async #pointOf(
+    input: Pick<SearchExperiencesInput, "near" | "location">,
+    details: ErrorDetail[],
+  ): Promise<{ lat: number; lng: number } | null> {
+    if (input.location === undefined) {
+      if (input.near !== undefined) return input.near;
+      details.push({ path: "location", message: "Give the place: location, such as hermanus, or near, a point." });
+      return null;
+    }
+    if (input.near !== undefined) {
+      details.push({ path: "near", message: "Give location or near, not both." });
+      return null;
+    }
+    const location = await this.#repository.findLocation({ slug: input.location });
+    if (location === null) {
+      details.push({ path: "location", message: `There is no location ${input.location}.` });
+      return null;
+    }
+    return { lat: location.latitude, lng: location.longitude };
+  }
+
   // Applies the defaults and checks the rules, so the repository runs a query that is already sound.
-  #resolve(input: SearchExperiencesInput): ExperienceSearchQuery {
+  async #resolve(input: SearchExperiencesInput): Promise<ExperienceSearchQuery> {
     const details: ErrorDetail[] = [];
+    const near = await this.#pointOf(input, details);
     const radiusKm = input.radiusKm ?? this.#settings.searchDefaultRadiusKm;
     if (radiusKm > this.#settings.searchMaxRadiusKm) {
       details.push({ path: "radiusKm", message: `radiusKm must be at most ${this.#settings.searchMaxRadiusKm} km.` });
@@ -561,7 +591,11 @@ export class CatalogueService implements Catalogue {
         details.push({ path: `attributes.${key}.min`, message: `The range on ${key} has min above max.` });
       }
     }
-    if (details.length > 0) {
+    // The definitions are Data processing's. A filter that fits none of them could never match, so it is refused.
+    if (Object.keys(attributes).length > 0) {
+      details.push(...checkAttributeFilters(attributes, await this.#dataProcessing.listAttributes()));
+    }
+    if (details.length > 0 || near === null) {
       this.#logger.warn({ details }, "Search refused");
       throw new AppError("invalid_input", details.map((detail) => detail.message).join(" "), details);
     }
@@ -569,7 +603,7 @@ export class CatalogueService implements Catalogue {
     // Bookable means Confirmed with booking Open. Status values that leave out Confirmed then match nothing.
     const statuses = input.status ?? [...SEARCHABLE_STATUSES];
     return {
-      near: input.near,
+      near,
       radiusKm,
       from: input.from,
       to: input.to,

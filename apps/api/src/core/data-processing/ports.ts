@@ -91,6 +91,9 @@ export interface DataProcessing {
   // Discovery. It only sends them back; the processing job, or processPending, processes them.
   reprocess(target: ReprocessTarget): Promise<RequeueResult>;
 
+  // Every attribute definition with its options, by key. Catalogue checks a search's attribute filters against
+  // them.
+  listAttributes(): Promise<AttributeDefinition[]>;
   // Creates the attribute with its options, or updates the one that has this key. Options left out are removed.
   saveAttribute(input: AttributeDefinition): Promise<AttributeDefinition>;
   // Creates the tag, or updates the one that has this slug.

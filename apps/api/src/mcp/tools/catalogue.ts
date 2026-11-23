@@ -11,15 +11,18 @@ import { registerTool, type ToolDeps } from "../tool.ts";
 const DESCRIPTION = `Find what is on near a place while a traveller is there: festivals, concerts, sports matches, \
 markets, theatre runs, exhibitions and seasonal experiences such as whale watching.
 
-Give the point to search around (near), the first and last day of the stay (from, to) and, if you like, a radius in \
-kilometres. Dates match an experience's sessions, the stretches of time it is actually on, so a show that is on only \
+Give the place, the first and last day of the stay (from, to) and, if you like, a radius in kilometres. The place is \
+location, a location's slug such as hermanus, which searches around its centre; or near, a point, when the place is \
+not a location. Dates match an experience's sessions, the stretches of time it is actually on, so a show that is on only \
 on Thursdays is not returned for a stay with no Thursday in it. Each result carries only the sessions that fall \
 inside the stay. A session with month or year precision means the experience is on in that month or year and its \
 days are not announced yet.
 
 Put everything that must hold in the filters: the dates, the place and radius, the audience (attributes.audience, \
 such as family or adults), a minimum age (attributes.minimum_age, as { min, max }), the categories, the tags, and \
-bookable when only experiences that can be booked now will do. Filters are exact and are never loosened. Put what \
+bookable when only experiences that can be booked now will do. Filters are exact and are never loosened. A maximum \
+alone, such as attributes.minimum_age: { max: 12 }, also keeps experiences with no minimum age recorded. An attribute \
+or an option that does not exist is refused, and the error lists the ones that do. Put what \
 the traveller likes, in plain words, in query, such as "quiet, romantic, something to do with art": it only orders \
 the results, best match first, and never adds or removes one.
 
@@ -30,7 +33,7 @@ paged with limit and offset, and total says how many match across all pages.`;
 const CHANGES_DESCRIPTION = `Find out what changed for a place and dates you searched before. Use it when you check \
 back on a trip, weeks or months after planning it, instead of searching again and comparing the results yourself.
 
-Give the same search parameters as your earlier search_experiences call (near, radiusKm, from, to, and any status, \
+Give the same search parameters as your earlier search_experiences call (location or near, radiusKm, from, to, and any status, \
 bookable, attributes and tags), without query, and since: when you last searched, as an ISO timestamp such as \
 2027-02-01T09:30:00Z. since must not be in the future. Only experiences that changed after since are returned; one \
 that did not change is left out, so an empty answer means nothing changed.

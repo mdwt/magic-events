@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { DomainEvent, DomainEventData } from "../shared/domain-events.ts";
 
 // Catalogue: the experiences as clients see them, and the locations the system covers.
-// It calls no other domain.
+// It calls Data processing for the attribute definitions, to check a search's filters against them.
 
 // ---- Locations ----
 
@@ -32,7 +32,9 @@ export const SESSION_PRECISIONS = ["day", "month", "year"] as const;
 const day = z.iso.date();
 
 // A filter on one attribute. Text is an option's key or a text value, and a list matches any of its values.
-// A range is for number attributes, such as minimum age.
+// A range is for number attributes, such as minimum age. A range with only a max also matches an experience that
+// has no value for the attribute: nothing recorded means no lower limit, so "at most 12" still finds it. A range
+// with a min matches only a recorded value.
 export const attributeFilterSchema = z.union([
   z.string().min(1).max(200),
   z.array(z.string().min(1).max(200)).min(1).max(50),
@@ -44,17 +46,34 @@ export type AttributeFilter = z.infer<typeof attributeFilterSchema>;
 
 // The one search. REST and MCP both take exactly this, so a person and an agent get the same behaviour.
 export const searchExperiencesInputSchema = z.strictObject({
+  location: z
+    .string()
+    .trim()
+    .min(1)
+    .max(100)
+    .optional()
+    .describe(
+      "The place to search around, as a location's slug, such as hermanus. The search is around the location's " +
+        "centre. Give this or near, not both.",
+    ),
   near: z
     .strictObject({
       lat: z.number().min(-90).max(90).describe("Latitude in decimal degrees."),
       lng: z.number().min(-180).max(180).describe("Longitude in decimal degrees."),
     })
-    .describe("The point to search around, such as the centre of Hermanus (-34.4187, 19.2345)."),
+    .optional()
+    .describe(
+      "The point to search around, such as the centre of Hermanus (-34.4187, 19.2345), when the place is not a " +
+        "location. Give this or location, not both.",
+    ),
   radiusKm: z
     .number()
     .positive()
     .optional()
-    .describe("How far from the point to search, in kilometres. The default is used when it is left out."),
+    .describe(
+      "How far from the location's centre or the point to search, in kilometres. The default is used when it is " +
+        "left out.",
+    ),
   from: day.describe("The first day of the stay, as YYYY-MM-DD."),
   to: day.describe("The last day of the stay, as YYYY-MM-DD. Must not be before the first day."),
   status: z
@@ -71,7 +90,10 @@ export const searchExperiencesInputSchema = z.strictObject({
     .optional()
     .describe(
       "Filters by attribute key, such as category, format, audience, setting, scale or minimum_age. " +
-        "Every attribute given must match. A list matches any of its values, and { min, max } is a number range.",
+        "Every attribute given must match. A list matches any of its values, and { min, max } is a number range. " +
+        "A range with only a max, such as minimum_age: { max: 12 }, also matches experiences with no value " +
+        "recorded. A key that is not an attribute, or a value that is not one of its options, is refused, and the " +
+        "error lists what can be used.",
     ),
   tags: z
     .array(z.string().min(1).max(64))
@@ -162,6 +184,7 @@ export type SearchExperiencesResult = z.infer<typeof searchExperiencesResultSche
 
 // The search as the repository receives it: every default applied and every rule already checked.
 export interface ExperienceSearchQuery {
+  // The point given, or the centre of the location given.
   near: { lat: number; lng: number };
   radiusKm: number;
   from: string;
@@ -470,7 +493,9 @@ export interface EmbedExperiencesResult {
 
 // Inbound port: what Catalogue offers.
 export interface Catalogue {
-  // Experiences near a point that have a session inside the dates, with the sessions that matched.
+  // Experiences near a location's centre or a point that have a session inside the dates, with the sessions that
+  // matched. Fails with invalid_input when the location does not exist or an attribute filter does not fit the
+  // attribute definitions.
   searchExperiences(input: SearchExperiencesInput): Promise<SearchExperiencesResult>;
   // Creates the location, or updates the one that has this slug.
   saveLocation(input: SaveLocationInput): Promise<Location>;

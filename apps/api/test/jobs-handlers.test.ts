@@ -96,6 +96,7 @@ function fakeDataProcessing(processNext: DataProcessing["processNext"]): DataPro
     processNext,
     processPending: notUsed,
     reprocess: notUsed,
+    listAttributes: notUsed,
     saveAttribute: notUsed,
     saveTag: notUsed,
     saveSeason: notUsed,

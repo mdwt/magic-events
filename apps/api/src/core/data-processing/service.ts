@@ -480,6 +480,10 @@ export class DataProcessingService implements DataProcessing {
     };
   }
 
+  async listAttributes(): Promise<AttributeDefinition[]> {
+    return (await this.#repository.listDefinitions()).attributes;
+  }
+
   async saveAttribute(input: AttributeDefinition): Promise<AttributeDefinition> {
     const details: ErrorDetail[] = [];
     if (input.type !== "option" && input.options.length > 0) {

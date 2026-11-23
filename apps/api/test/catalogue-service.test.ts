@@ -8,6 +8,7 @@ import type {
   SearchExperiencesInput,
 } from "../src/core/catalogue/ports.ts";
 import { CatalogueService } from "../src/core/catalogue/service.ts";
+import type { AttributeDefinition } from "../src/core/data-processing/ports.ts";
 import { AppError } from "../src/core/shared/errors.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
 import { EMBEDDING_SETTINGS, FakeEmbeddingModel } from "./helpers/fake-embedding-model.ts";
@@ -81,10 +82,32 @@ function fakeRepository(items: ExperienceRecord[] = []) {
   return { repository, queries };
 }
 
+const option = (key: string) => ({ key, name: key, description: key });
+const attribute = (key: string, type: AttributeDefinition["type"], options: string[] = []): AttributeDefinition => ({
+  key,
+  name: key,
+  description: key,
+  type,
+  defaultValue: null,
+  multiple: false,
+  filterable: true,
+  options: options.map(option),
+});
+
+// The definitions the service is handed by Data processing.
+const DEFINITIONS: AttributeDefinition[] = [
+  attribute("category", "option", ["visual_arts", "nature_and_wildlife", "music"]),
+  attribute("minimum_age", "number"),
+  attribute("wheelchair_accessible", "boolean"),
+  attribute("dress_code", "text"),
+  { ...attribute("internal_note", "text"), filterable: false },
+];
+
 function service(repository: CatalogueRepository, embeddings = new FakeEmbeddingModel()) {
   return new CatalogueService({
     repository,
     events: { publish: () => {} },
+    dataProcessing: { listAttributes: () => Promise.resolve(DEFINITIONS) },
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     embeddings,
     embeddingSettings: EMBEDDING_SETTINGS,
@@ -99,6 +122,9 @@ const base: SearchExperiencesInput = {
   limit: 20,
   offset: 0,
 };
+
+// The same search with no place given.
+const placeless: SearchExperiencesInput = { from: base.from, to: base.to, limit: base.limit, offset: base.offset };
 
 async function refusal(promise: Promise<unknown>): Promise<AppError> {
   try {
@@ -216,6 +242,98 @@ describe("CatalogueService.searchExperiences", () => {
       error.details?.map((detail) => detail.path),
       ["radiusKm", "to"],
     );
+  });
+
+  test("a location's slug searches around its centre, with the default radius", async () => {
+    const { repository, queries } = fakeRepository();
+    const catalogue = service(repository);
+    await catalogue.saveLocation({
+      name: "Hermanus",
+      slug: "hermanus",
+      country: "ZA",
+      region: "Western Cape",
+      timezone: "Africa/Johannesburg",
+      latitude: -34.4187,
+      longitude: 19.2345,
+    });
+    await catalogue.searchExperiences({ ...placeless, location: "hermanus" });
+
+    assert.deepEqual(queries[0]?.near, { lat: -34.4187, lng: 19.2345 });
+    assert.equal(queries[0].radiusKm, 25);
+  });
+
+  test("refuses a location that does not exist, a search with no place, and one with both", async () => {
+    const { repository, queries } = fakeRepository();
+    const unknown = await refusal(service(repository).searchExperiences({ ...placeless, location: "atlantis" }));
+    assert.deepEqual(unknown.details, [{ path: "location", message: "There is no location atlantis." }]);
+
+    const neither = await refusal(service(repository).searchExperiences(placeless));
+    assert.deepEqual(
+      neither.details?.map((detail) => detail.path),
+      ["location"],
+    );
+
+    const both = await refusal(service(repository).searchExperiences({ ...base, location: "hermanus" }));
+    assert.deepEqual(
+      both.details?.map((detail) => detail.path),
+      ["near"],
+    );
+    assert.equal(queries.length, 0);
+  });
+
+  test("refuses an attribute that is not defined or cannot be filtered on, and names the ones that can", async () => {
+    const { repository, queries } = fakeRepository();
+    const error = await refusal(
+      service(repository).searchExperiences({ ...base, attributes: { colour: "blue", internal_note: "vip" } }),
+    );
+
+    const filterable = "category, minimum_age, wheelchair_accessible, dress_code";
+    assert.deepEqual(error.details, [
+      { path: "attributes.colour", message: `There is no attribute colour. The attributes to filter on are: ${filterable}.` },
+      {
+        path: "attributes.internal_note",
+        message: `internal_note cannot be filtered on. The attributes to filter on are: ${filterable}.`,
+      },
+    ]);
+    assert.equal(queries.length, 0);
+  });
+
+  test("refuses a value that does not fit the attribute, and names an option attribute's options", async () => {
+    const { repository, queries } = fakeRepository();
+    const error = await refusal(
+      service(repository).searchExperiences({
+        ...base,
+        attributes: {
+          category: ["music", "sport"],
+          minimum_age: "twelve",
+          wheelchair_accessible: "yes",
+          dress_code: { max: 3 },
+        },
+      }),
+    );
+
+    assert.deepEqual(error.details, [
+      {
+        path: "attributes.category",
+        message: "category has no option sport. Its options are: visual_arts, nature_and_wildlife, music.",
+      },
+      { path: "attributes.minimum_age", message: "minimum_age is a number: give a number or a range, { min, max }." },
+      { path: "attributes.wheelchair_accessible", message: "wheelchair_accessible is true or false." },
+      { path: "attributes.dress_code", message: "dress_code is not a number, so it takes no range." },
+    ]);
+    assert.equal(queries.length, 0);
+  });
+
+  test("accepts filters that fit their attributes", async () => {
+    const { repository, queries } = fakeRepository();
+    const attributes = {
+      category: "music",
+      minimum_age: 12,
+      wheelchair_accessible: true,
+      dress_code: ["smart", "casual"],
+    };
+    await service(repository).searchExperiences({ ...base, attributes });
+    assert.deepEqual(queries[0]?.attributes, attributes);
   });
 
   test("bookable asks for Confirmed with booking Open", async () => {

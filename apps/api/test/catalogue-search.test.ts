@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
 import type { Catalogue, SearchExperiencesInput, SearchExperiencesResult } from "../src/core/catalogue/ports.ts";
+import { AppError } from "../src/core/shared/errors.ts";
+import { attributes } from "../src/seed/data/attributes.ts";
 import { insertExperienceFixture, type ExperienceFixture } from "../src/seed/experience-fixture.ts";
 import { createHarness, type Harness } from "./helpers/harness.ts";
 
@@ -33,6 +35,8 @@ const saturdays = ["2027-06-05", "2027-06-12", "2027-06-19", "2027-06-26"];
 before(async () => {
   harness = await createHarness();
   catalogue = harness.services.catalogue;
+  // The default attribute definitions, which a search's filters are checked against.
+  for (const definition of attributes) await harness.services.dataProcessing.saveAttribute(definition);
   const hermanus = await catalogue.saveLocation({
     name: "Hermanus",
     slug: "hermanus",
@@ -188,6 +192,20 @@ describe("search by place", () => {
     assert.ok(result.items.some((item) => item.title === "Cape Town Jazz Night"));
   });
 
+  test("a location's slug searches around its centre, with the default radius", async () => {
+    const result = await search({ near: undefined, location: "hermanus" });
+    assert.deepEqual(
+      result.items.map((item) => item.title),
+      IN_RANGE,
+    );
+    const wider = await found({ near: undefined, location: "hermanus", radiusKm: 70 });
+    assert.ok(wider.includes("Stellenbosch Wine Harvest"));
+    await assert.rejects(
+      search({ near: undefined, location: "atlantis" }),
+      (error: unknown) => error instanceof AppError && error.code === "invalid_input",
+    );
+  });
+
   test("finds what is at the search point itself, without a rounding error", async () => {
     const titles = await found({ near: { lat: -34.421, lng: 19.244 }, radiusKm: 0.001 });
     assert.deepEqual(titles, ["Hermanus Whale Festival"]);
@@ -307,15 +325,39 @@ describe("search by attributes and tags", () => {
   test("a number equals, and a range compares numbers", async () => {
     assert.deepEqual(await found({ attributes: { minimum_age: 12 } }), ["Gansbaai Shark Cage Diving"]);
     assert.deepEqual(await found({ attributes: { minimum_age: { min: 14 } } }), ["Thursday Theatre"]);
-    assert.deepEqual(await found({ attributes: { minimum_age: { max: 14 } } }), ["Gansbaai Shark Cage Diving"]);
     assert.deepEqual(await found({ attributes: { minimum_age: { min: 10, max: 20 } } }), [
       "Thursday Theatre",
       "Gansbaai Shark Cage Diving",
     ]);
   });
 
-  test("a range on a text attribute matches nothing", async () => {
-    assert.deepEqual(await found({ attributes: { audience: { min: 0 } } }), []);
+  test("a range with only a max also finds the experiences that have no value", async () => {
+    // Suitable for a 14-year-old: the dive from 12, and everything with no minimum age. Not the theatre, from 16.
+    assert.deepEqual(
+      await found({ attributes: { minimum_age: { max: 14 } } }),
+      IN_RANGE.filter((title) => title !== "Thursday Theatre"),
+    );
+    // A range with a min matches a recorded value only.
+    assert.deepEqual(await found({ attributes: { minimum_age: { min: 0 } } }), [
+      "Thursday Theatre",
+      "Gansbaai Shark Cage Diving",
+    ]);
+  });
+
+  test("a filter that fits no attribute definition is refused, with what can be used", async () => {
+    const refused = (input: Partial<SearchExperiencesInput>) =>
+      assert.rejects(search(input), (error: unknown) => {
+        assert.ok(error instanceof AppError);
+        assert.equal(error.code, "invalid_input");
+        return true;
+      });
+    await refused({ attributes: { colour: "blue" } });
+    await refused({ attributes: { category: "no_such_category" } });
+    await refused({ attributes: { audience: { min: 0 } } });
+
+    const error = await search({ attributes: { colour: "blue" } }).catch((caught: unknown) => caught);
+    assert.ok(error instanceof AppError);
+    assert.match(error.message, /There is no attribute colour\. The attributes to filter on are: .*category.*minimum_age/);
   });
 
   test("tags match any of the given slugs", async () => {

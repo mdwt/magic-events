@@ -8,6 +8,7 @@ import {
   type ExperienceChangesInput,
   type SaveExperienceInput,
 } from "../src/core/catalogue/ports.ts";
+import { attributes } from "../src/seed/data/attributes.ts";
 import { input as listing } from "./helpers/catalogue-fake.ts";
 import { createHarness, type Harness } from "./helpers/harness.ts";
 
@@ -75,6 +76,8 @@ const price = { min: 200, max: 400, currency: "ZAR" };
 before(async () => {
   harness = await createHarness({ clock: () => clock.now });
   catalogue = harness.services.catalogue;
+  // The default attribute definitions, which a filter is checked against.
+  for (const definition of attributes) await harness.services.dataProcessing.saveAttribute(definition);
   ({ id: locationId } = await catalogue.saveLocation({
     name: "Hermanus",
     slug: "hermanus",

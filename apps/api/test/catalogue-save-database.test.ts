@@ -328,6 +328,7 @@ describe("in a surrounding transaction", () => {
           });
         },
       },
+      dataProcessing: harness.services.dataProcessing,
       settings: settings.catalogue,
       embeddings: new FakeEmbeddingModel(),
       embeddingSettings: settings.embedding,
