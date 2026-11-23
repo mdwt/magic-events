@@ -34,6 +34,10 @@ the subject.
 | 21 | Quicket never makes a complete run | Discovery | Open |
 | 22 | Catalogue never hears that a listing was verified | Discovery | Open |
 | 23 | A web page's fingerprint changes on every fetch | Discovery | Open |
+| 24 | A range filter leaves out experiences that have no value | Catalogue | Open |
+| 25 | A database outage during a key check answers 401, not 500 | Identity | Open |
+| 26 | A key's rate limit is fixed when the key is issued | Identity | Open |
+| 27 | Seed values the documents do not give | Seed | Provisional |
 
 ## 1. The Docker engine was down, and port 5432 belongs to another project
 
@@ -131,6 +135,35 @@ its own.
 
 **Open.** The limit on requests per address is counted inside the one API process. With more than one instance, each
 counts on its own. The per-key limit is in the database and is not affected.
+
+## 24. A range filter leaves out experiences that have no value
+
+**Open.** A range on a number attribute, such as `minimum_age: { max: 12 }`, matches only experiences that have a
+minimum age recorded. Most experiences have none, because a source rarely states one, so an agent filtering for a
+12-year-old loses nearly everything.
+
+- **Decide:** whether an experience with no value passes a `max` range, a `min` range, both or neither.
+
+## 25. A database outage during a key check answers 401, not 500
+
+**Open.** Better Auth's key check catches every error inside it and reports the key as invalid. If the database is down,
+a caller with a good key is told it is not authenticated. `GET /health` is the only endpoint that shows the outage.
+
+## 26. A key's rate limit is fixed when the key is issued
+
+**Open.** Better Auth copies the rate limit onto the key when it is created. Changing `API_KEY_RATE_LIMIT_MAX` or
+`API_KEY_RATE_LIMIT_WINDOW_SECONDS` later changes new keys only.
+
+## 27. Seed values the documents do not give
+
+**Provisional.** These are rows, and they can be changed in `apps/api/src/seed/data/` and seeded again.
+
+| Value | Seeded as |
+| --- | --- |
+| High season | 15 December to 15 January, each year |
+| School holidays 2028 | The Department of Basic Education's proposed 2028 calendar. 2026 and 2027 are from the gazetted calendars |
+| Source priority | 20 for Quicket and Ticketmaster, 10 for the Hermanus Times |
+| Season slugs | `whale-season` and `south-african-school-holidays`, so they do not collide with the tags `whales` and `school-holidays` |
 
 ## 13 to 23. Carried over from the documents
 
