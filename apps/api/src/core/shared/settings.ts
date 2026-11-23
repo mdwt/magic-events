@@ -47,6 +47,8 @@ export interface DiscoverySettings {
   scheduleIntervalSeconds: number;
   // How long an adapter waits for a source to answer.
   fetchTimeoutSeconds: number;
+  // The User-Agent every adapter sends, so a source can see who is fetching.
+  userAgent: string;
   // How far ahead experiences are sourced.
   horizonMonths: number;
   // The API keys of sources, by the name of the setting a source row names, such as QUICKET_API_KEY.
