@@ -179,6 +179,12 @@ Changed-since takes the same search parameters as a search, without the query te
 - **The change that matters most to a planner:** the first that applies of cancelled, removed, postponed, rescheduled, confirmed, new and changed. An experience first published since then is New, unless it has since been cancelled or removed.
 - **Every change since then,** newest first.
 
+Each change says what it changed and what that was before, read from its change row:
+
+- **Fields:** the experience's fields it changed, by their names in the result: title, status, booking, type, sessions, price, venue, openingHours, onSaleAt, bookingClosesAt, bookingUrl, pageUrl, imageUrl, summary, description and attributes. A change to the recurrence is a change to the sessions. Tags and seasons, the profile, the embedding, the source links and the version are never named, so a change to those alone names nothing.
+- **Previous:** what each named field a planner acts on was before, in the shape the result gives it now, so the experience beside it is the value after: a status or a booking as its word, a price as min, max and currency, a venue as the result's venue, a link or a time as text or empty, attributes by key. Previous sessions are the ones it was on, not cancelled, during the dates asked for, as the result shows sessions; one the change row does not say was sold out has no sold-out flag. Summary, description and the image are named with no earlier value: long text says little a planner acts on and would make every answer long. A change row that holds only an old recurrence rule gives no earlier sessions, since its dates were never stored.
+- **New** has no fields and no previous values: there was nothing before.
+
 Status and bookable narrow only the experiences that are going ahead. A Cancelled or Removed experience that matches the place, dates, attributes and tags is always reported. It is matched on its sessions in the dates, whatever each session's status.
 
 An experience the client saw for its dates and that has since moved out of them is reported too, because that is the change a planner most needs to hear:
