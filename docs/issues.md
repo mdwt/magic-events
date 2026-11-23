@@ -202,14 +202,16 @@ needs it today.
 ## 32. A failed fetch is not tried again until the source is next due
 
 **Closed, 2026-11-23.** Decided: a failed fetch is tried again five times with a doubling wait, starting at 15
-minutes. When the retries are used up the source waits one fetch interval and starts again. The rule is in
+minutes. When the retries are used up the source waits one fetch interval and starts again. The retries are the job
+queue's work: a fetch is a job on a pg-boss queue, behind the job queue port. The rule is in
 [discovery.md](discovery.md), under "When a fetch fails".
 
 ## 33. Sources are due on their own clocks, not at a fixed time of the week
 
 **Closed, 2026-11-23.** Decided: a schedule per source is right. Each source is due one fetch interval after its last
-run started. The schedule looks for due sources every 15 minutes, not every minute. The schedule, the retries and the
-processing workers move to a durable workflow engine in the next version.
+run started. A job looks for due sources every 15 minutes, not every minute. Background work runs on a job queue behind
+a port, with pg-boss as the first adapter (see Background jobs in [architecture.md](architecture.md)). A durable
+workflow engine replaces it in the next version, by writing one adapter.
 
 ## 13 to 23. Carried over from the documents
 

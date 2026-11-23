@@ -100,6 +100,7 @@ flowchart TB
     EM[Embedding model]
     DW[Data warehouse]
     STO[Storage]
+    JQ[Job queue]
   end
   REST --> ID
   MCP --> ID
@@ -108,6 +109,7 @@ flowchart TB
   SCH --> DIS
   SCH --> DP
   SCH --> CAT
+  SCH --> JQ
   DIS --> CAT
   DP --> DIS
   DP --> CAT
@@ -130,10 +132,27 @@ Models from outside providers sit behind ports like everything else. The domains
 | --- | --- | --- |
 | Language model | Data processing, to extract and classify experiences. Discovery, to find the current calendar file | Claude, through the Anthropic API |
 | Embedding model | Catalogue, to embed experience profiles and search query texts | Amazon Titan Text Embeddings V2, through Amazon Bedrock |
+| Job queue | The scheduler, to run background work on a schedule and to try failed work again | pg-boss, on queues in the same Postgres database |
 
-The ports and their adapters are defined in [data-processing.md](data-processing.md).
+The model ports and their adapters are defined in [data-processing.md](data-processing.md). The job queue is described under Background jobs, below.
 
-REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker, Catalogue's embedding worker, and Catalogue's move of finished experiences to Past and its generating of recurring sessions further ahead, without passing through Identity, because no client is involved.
+REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler is the third inbound side. It starts discovery, processing, Catalogue's embedding worker, and Catalogue's move of finished experiences to Past and its generating of recurring sessions further ahead, without passing through Identity, because no client is involved.
+
+### Background jobs
+
+Work that no client asks for is a job: finding the sources that are due, fetching one source, processing the raw listings that are pending. The scheduler runs inside the server.
+
+- **The job queue is a port.** It keeps jobs, runs them, puts a job on a schedule and tries a failed job again. It names no technology.
+- **A job handler says what a job does.** It is written against the domains' inbound ports and the job queue port, and nothing else. A handler calls a service the way a REST route does, and holds no business rules.
+- **pg-boss is the first adapter.** It keeps the queues in the same Postgres database, in a schema of its own, so version 1 needs no other infrastructure. It is the only code that imports pg-boss.
+- **Either side can be changed without the other.** Another queue, such as a durable workflow engine, is one new adapter: the handlers and the domains stay as they are. A handler can be changed or added without touching the queue.
+- **The domains do not know the queue exists.** A service never adds a job. The hand-off from fetching to processing is still the raw listing's status, so the pipeline can also be run by hand, with no queue at all.
+
+| Job | When | Does |
+| --- | --- | --- |
+| Find due sources | Every 15 minutes | Asks Discovery which sources are due and adds a fetch job for each |
+| Fetch a source | When a source is due | Runs Discovery for that source. A failed fetch is tried again by the queue (see [discovery.md](discovery.md)). A fetch that found something adds a processing job |
+| Process pending | After a fetch that found something, and once an hour | Has Data processing process pending raw listings until none is left |
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
@@ -148,10 +167,11 @@ REST and MCP are two adapters on the same inbound ports, so a person and an agen
 Static analysis checks these, so they hold by tooling and not by convention.
 
 - A domain's core, which is its service, its ports and its types, imports no adapter, no provider's SDK and no database client.
-- Everything outside the system is reached through an outbound port: sources, the language model, the embedding model, storage and the data warehouse. An adapter implements the port and is the only code that imports its technology.
+- Everything outside the system is reached through an outbound port: sources, the language model, the embedding model, storage, the data warehouse and the job queue. An adapter implements the port and is the only code that imports its technology.
 - An adapter imports the port it implements and the ports it is built with. Only the code that wires the system together at startup imports an adapter.
 - A domain calls another domain only through that domain's inbound port, and only along the arrows in How domains talk.
-- The settings provider and the language model port are shared and belong to no domain, so using them makes no domain depend on another.
+- The settings provider, the language model port and the job queue port are shared and belong to no domain, so using them makes no domain depend on another.
+- REST, MCP and the scheduler call the core through its inbound ports. They import no adapter, no database client and no queue library.
 - One exception: Better Auth. Identity and Organizations use it and its tables directly, with no port over it.
 
 ## How domains talk
@@ -220,7 +240,8 @@ Because every run fetches the same listings again, a change at the source months
 | Client | The user role. A person, or an agent acting for them, inside a tenant |
 | System admin | The system role that operates the platform |
 | Port | A domain's own definition of what it offers (inbound) or what it needs (outbound), with no technology in it |
-| Adapter | A plug that connects a port to the outside world, such as REST, MCP, a scheduler, a source, storage or the data warehouse |
+| Adapter | A plug that connects a port to the outside world, such as REST, MCP, a scheduler, a source, storage, the data warehouse or the job queue |
+| Job | A piece of background work the scheduler runs: finding due sources, fetching a source, processing pending raw listings |
 
 ## Decisions
 
@@ -246,6 +267,7 @@ Because every run fetches the same listings again, a change at the source months
 | Which domain events are defined? | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). They are a record of what happened, and nothing reads them |
 | Where is the system configured? | System settings are environment variables read through one settings provider, and each domain's document lists its own. Per-source settings are on the source row. Categories and tags are definition rows |
 | How are model providers kept swappable? | Each model is reached through a port, and the domains name no provider. Version 1's adapters are Claude through the Anthropic API for the language model, and Amazon Titan through Amazon Bedrock for the embedding model |
+| How does background work run? | As jobs on a job queue, behind a port. Version 1's adapter is pg-boss, with its queues in the same Postgres database. The job handlers and the domains do not depend on it, so the queue can be replaced by writing one adapter |
 | Is everything outside the system behind a port? | Yes, with one exception: Better Auth, which Identity and Organizations use directly. The rules are under Architecture, and static analysis checks them |
 
 ## Open questions

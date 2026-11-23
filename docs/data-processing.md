@@ -22,9 +22,11 @@ Data processing owns the extractors, the classifier, the matching decision, and 
 
 ## Steps
 
-One raw listing is processed in one transaction, from claim to mark. If the worker crashes, the transaction rolls back and the raw listing is pending again.
+One raw listing is processed in one transaction, from claim to mark. If the server stops part way, the transaction rolls back and the raw listing is pending again.
 
-1. **Claim.** The processing worker runs on a loop and claims a pending raw listing through the Discovery service. Only the latest version of a listing can be claimed (see Versions of a listing). It keeps going while raw listings are pending and waits the idle interval when there are none. The idle interval and the number of workers are settings (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
+Processing runs as a job (see Background jobs in [architecture.md](architecture.md)). The job is added after a fetch that found something new, changed or gone, and once an hour as a safety net. It processes pending raw listings until none is left. When a raw listing fails, the job stops and the queue runs it again later, so a failing raw listing is not tried again at once.
+
+1. **Claim.** Data processing claims a pending raw listing through the Discovery service. Only the latest version of a listing can be claimed (see Versions of a listing). The job keeps going while raw listings are pending. How many are processed side by side is a setting (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
 2. **Extract.** The extractor for the source's kind reads the content and returns zero or more extracted experiences (see Extractors).
 3. **Classify.** Each extracted experience is given its attribute values, tags, seasons and profile (see Classification).
 4. **Match.** Each extracted experience is matched to an existing experience or becomes a new one (see Matching).
@@ -422,8 +424,7 @@ System settings are environment variables, read through the settings provider (s
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `PROCESSING_IDLE_INTERVAL_SECONDS` | 300 | How long the processing worker waits before looking again when nothing is pending: 5 minutes |
-| `PROCESSING_WORKERS` | 1 | How many processing workers run at once |
+| `PROCESSING_WORKERS` | 1 | How many raw listings the processing job works on side by side |
 | `LANGUAGE_MODEL_PROVIDER` | `anthropic` | Which language model adapter is used, by Data processing and Discovery |
 | `LANGUAGE_MODEL` | `claude-opus-5-5` | The model name handed to that adapter |
 | `LANGUAGE_MODEL_TIMEOUT_SECONDS` | 600 | How long to wait for an answer before the raw listing fails. A page of 20 experiences takes about 40 seconds, and a page of 50 or a year's calendar takes several minutes |
