@@ -4,8 +4,11 @@
 export interface ApiSettings {
   host: string;
   port: number;
+  // The one browser origin allowed to call the API.
   corsOrigin: string;
-  logLevel: "fatal" | "error" | "warn" | "info" | "debug" | "trace";
+  // The host names the MCP endpoint answers to, which guards it against DNS rebinding.
+  allowedHosts: string[];
+  logLevel: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
   // Readable log lines for a person at a terminal. Off in production, where logs are JSON.
   logPretty: boolean;
   // Requests one address may make in a window, before any credential is checked.
