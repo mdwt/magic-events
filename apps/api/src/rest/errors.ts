@@ -12,6 +12,7 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
   unauthenticated: 401,
   forbidden: 403,
   not_found: 404,
+  method_not_allowed: 405,
   conflict: 409,
   content_too_large: 413,
   unsupported_media_type: 415,
@@ -65,6 +66,11 @@ export const bodyErrorResponses = {
 // For a route that creates something whose name must not be taken.
 export const conflictResponse = {
   409: errorSchema("conflict", "It already exists: the details name the field that is taken."),
+};
+
+// For a route that exists only to refuse a method. Allow names the methods the address answers.
+export const methodNotAllowedResponse = {
+  405: errorSchema("method_not_allowed", "The address does not answer this method. Allow names the ones it does."),
 };
 
 // For a route that names something in its address, which may not exist.

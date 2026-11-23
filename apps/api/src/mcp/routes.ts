@@ -5,7 +5,8 @@ import { z } from "zod";
 import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
 import type { Identity } from "@magic-events/core/identity/ports.ts";
 import type { Organizations } from "@magic-events/core/organizations/ports.ts";
-import { errorResponses } from "../rest/errors.ts";
+import { AppError } from "@magic-events/core/shared/errors.ts";
+import { errorResponses, methodNotAllowedResponse } from "../rest/errors.ts";
 import { createMcpServer } from "./server.ts";
 
 // The MCP endpoint: Streamable HTTP, stateless. Every POST gets a fresh server and transport, answered as JSON.
@@ -128,26 +129,23 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
     schema: {
       tags: TAGS,
       description: "Not offered: this MCP endpoint is stateless and has no event stream or session to end.",
-      response: { 405: jsonRpcError, ...errorResponses },
+      response: { ...methodNotAllowedResponse, ...errorResponses },
     },
   };
-  const methodNotAllowed = { jsonrpc: "2.0" as const, error: { code: -32000, message: "Method not allowed." }, id: null };
+  // In the API's one error format, as every other refusal of this endpoint at the HTTP level.
+  const refuse = (_request: FastifyRequest, reply: FastifyReply): never => {
+    reply.header("allow", "POST");
+    throw new AppError(
+      "method_not_allowed",
+      "This MCP endpoint takes POST only: it is stateless, with no event stream to open or session to end.",
+    );
+  };
 
-  app.get(
-    "/mcp",
-    { ...notAllowed, schema: { ...notAllowed.schema, operationId: "mcpGet", summary: "Not offered" } },
-    (_request, reply) => {
-      reply.code(405).header("allow", "POST");
-      return methodNotAllowed;
-    },
-  );
+  app.get("/mcp", { ...notAllowed, schema: { ...notAllowed.schema, operationId: "mcpGet", summary: "Not offered" } }, refuse);
   app.delete(
     "/mcp",
     { ...notAllowed, schema: { ...notAllowed.schema, operationId: "mcpDelete", summary: "Not offered" } },
-    (_request, reply) => {
-      reply.code(405).header("allow", "POST");
-      return methodNotAllowed;
-    },
+    refuse,
   );
 
   return Promise.resolve();

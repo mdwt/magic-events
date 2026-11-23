@@ -3,6 +3,8 @@ export type ErrorCode =
   | "forbidden"
   | "invalid_input"
   | "not_found"
+  // The address exists, but does not answer this HTTP method.
+  | "method_not_allowed"
   // What the call would create already exists, such as a taken slug or email address.
   | "conflict"
   | "rate_limited"

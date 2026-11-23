@@ -97,6 +97,23 @@ describe("authentication", () => {
     }
   });
 
+  test("with a valid key, a known path asked with another method is 405 with Allow", async () => {
+    for (const [method, url, allow] of [
+      ["PUT", "/v1/tenants", "GET, HEAD, POST"],
+      ["DELETE", "/v1/tenants/blue", "GET, HEAD, PATCH"],
+      ["GET", "/v1/experiences/search?x=1", "POST"],
+    ] as const) {
+      const response = await harness.app.inject({ method, url, headers: bearer(key) });
+      assert.equal(response.statusCode, 405, `${method} ${url}`);
+      assert.equal(response.headers.allow, allow, `${method} ${url}`);
+      const error = errorOf(response);
+      assert.equal(error.code, "method_not_allowed");
+      assert.match(error.message, new RegExp(method));
+    }
+    // Without a key it is 401, as for a path that does not exist.
+    assert.equal((await harness.app.inject({ method: "PUT", url: "/v1/tenants" })).statusCode, 401);
+  });
+
   test("with a valid key, an unknown path is not_found in the error format", async () => {
     const response = await harness.app.inject({ method: "GET", url: "/no/such/path", headers: bearer(key) });
     assert.equal(response.statusCode, 404);
@@ -432,12 +449,12 @@ describe("MCP", () => {
     assert.equal(response.headers["www-authenticate"], 'Bearer realm="magic-events"');
   });
 
-  test("GET and DELETE answer 405 in JSON-RPC form, after authentication", async () => {
+  test("GET and DELETE answer 405 with Allow, in the error format, after authentication", async () => {
     for (const method of ["GET", "DELETE"] as const) {
       const response = await harness.app.inject({ method, url: "/mcp", headers: bearer(key) });
       assert.equal(response.statusCode, 405);
       assert.equal(response.headers.allow, "POST");
-      assert.deepEqual(response.json(), { jsonrpc: "2.0", error: { code: -32000, message: "Method not allowed." }, id: null });
+      assert.equal(errorOf(response).code, "method_not_allowed");
     }
   });
 

@@ -59,6 +59,28 @@ function sendError(
   return reply.code(answer.status).type("application/json").send(errorBody(answer, request.id));
 }
 
+// Records the methods every route answers, so that a request to a known address with another method can be answered
+// 405 with Allow rather than 404. Added before any route is registered.
+function recordRouteMethods(app: FastifyInstance): (url: string) => string[] {
+  const routes: { pattern: RegExp; methods: string[] }[] = [];
+  app.addHook("onRoute", (route) => {
+    // @fastify/cors's catch-all OPTIONS route answers every address.
+    if (route.url === "*") return;
+    const segments = route.url.split("/").map((segment) =>
+      segment.startsWith(":") ? "[^/]+" : segment.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    );
+    routes.push({
+      pattern: new RegExp(`^${segments.join("/")}$`),
+      methods: Array.isArray(route.method) ? route.method : [route.method],
+    });
+  });
+  return (url) => {
+    const path = url.split("?")[0] ?? url;
+    const methods = routes.filter((route) => route.pattern.test(path)).flatMap((route) => route.methods);
+    return [...new Set(methods)].sort();
+  };
+}
+
 export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
   const { settings } = deps;
 
@@ -90,6 +112,7 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
   // Before anything else, so every later hook and route runs inside the request's log context.
   addLogContextHooks(app);
   requireActionOnEveryRoute(app);
+  const methodsAt = recordRouteMethods(app);
   app.addHook("onRequest", (request, reply, done) => {
     reply.header("x-request-id", request.id).header("cache-control", "no-store");
     done();
@@ -134,9 +157,16 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
   });
 
   app.setErrorHandler((error, request, reply) => sendError(error, request, reply, deps.isUnavailable));
-  app.setNotFoundHandler((request, reply) =>
-    sendError(new AppError("not_found", MESSAGES.notFound), request, reply, deps.isUnavailable),
-  );
+  // Reached only once the caller is authenticated, so a caller without a valid key learns nothing of the paths.
+  app.setNotFoundHandler((request, reply) => {
+    const allowed = methodsAt(request.url);
+    if (allowed.length === 0) {
+      return sendError(new AppError("not_found", MESSAGES.notFound), request, reply, deps.isUnavailable);
+    }
+    reply.header("allow", allowed.join(", "));
+    const message = `This address does not answer ${request.method}. Use ${allowed.join(" or ")}.`;
+    return sendError(new AppError("method_not_allowed", message), request, reply, deps.isUnavailable);
+  });
 
   await app.register(platformRoutes, { checkDatabase: deps.checkDatabase });
   await app.register(mcpRoutes, {
