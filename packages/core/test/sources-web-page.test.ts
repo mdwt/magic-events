@@ -81,6 +81,16 @@ before(async () => {
   }
   const moved = fixture(`village-news/second/${villageNews[0] ?? ""}`).toString("utf8").replaceAll("3 December", "4 December");
   server.route(`/village-news/moved/${villageNews[0] ?? ""}`, { body: moved });
+  // Two fetches of Stanford Tourism's event page, cut down: its JSON-LD writes the organiser's email address with
+  // different HTML entities each time.
+  server.route("/wordpress-event", { body: fixture("wordpress-event.html") });
+  server.route("/wordpress-event-refetched", { body: fixture("wordpress-event-refetched.html") });
+  // Two fetches of the Hermanus Golf Club's Google calendar, cut down: a new DTSTAMP and a new order each time.
+  const calendar = { type: "text/calendar; charset=utf-8" };
+  server.route("/calendar", { ...calendar, body: fixture("golf-calendar.ics") });
+  server.route("/calendar-refetched", { ...calendar, body: fixture("golf-calendar-refetched.ics") });
+  const calendarMoved = fixture("golf-calendar-refetched.ics").toString("utf8").replace("DTSTART;VALUE=DATE:20260828", "DTSTART;VALUE=DATE:20260829");
+  server.route("/calendar-moved", { ...calendar, body: calendarMoved });
   server.route("/old-address", { redirectTo: "/weekend" });
   server.route("/gone", { status: 410, body: "Gone" });
   server.route("/broken", { status: 500, body: "Internal error" });
@@ -190,6 +200,39 @@ describe("web_page adapter", () => {
 
     assert.ok(sharedLines(pages).size > 0);
     assert.equal(sharedLines(pages.slice(0, 9)).size, 0);
+  });
+
+  test("decodes the entities in structured data, so the same text written two ways reads the same", async () => {
+    const result = await fetcher.fetch(
+      input({ urls: [server.url("/wordpress-event"), server.url("/wordpress-event-refetched")] }),
+    );
+    const [page, refetched] = result.listings;
+
+    assert.notEqual(page?.content, refetched?.content);
+    assert.equal(print(page), print(refetched));
+    assert.equal(pageContent(page?.content ?? ""), pageContent(refetched?.content ?? ""));
+    assert.match(pageContent(page?.content ?? ""), /"email":"info@stanfordinbloom\.co\.za"/);
+  });
+
+  test("reads a calendar file without its DTSTAMP and with its events in a fixed order", async () => {
+    const result = await fetcher.fetch(input({ urls: [server.url("/calendar"), server.url("/calendar-refetched")] }));
+    const [first, refetched] = result.listings;
+    const text = pageContent(first?.content ?? "");
+
+    assert.notEqual(first?.content, refetched?.content);
+    assert.equal(print(first), print(refetched));
+    assert.equal(text, pageContent(refetched?.content ?? ""));
+    assert.doesNotMatch(text, /DTSTAMP/);
+    assert.equal(text.match(/^BEGIN:VEVENT$/gm)?.length, 17);
+    assert.match(text, /^SUMMARY:Ladies Competition: Individual Bogey Plus - Enid Metcalf Trophy$/m);
+    assert.match(text, /^RECURRENCE-ID;VALUE=DATE:/m);
+  });
+
+  test("a calendar event whose date changes changes the calendar's fingerprint", async () => {
+    const result = await fetcher.fetch(input({ urls: [server.url("/calendar-refetched"), server.url("/calendar-moved")] }));
+    const [before, moved] = result.listings;
+
+    assert.notEqual(print(before), print(moved));
   });
 
   test("follows a redirect and keeps the address it was given", async () => {

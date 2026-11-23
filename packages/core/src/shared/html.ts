@@ -1,4 +1,5 @@
 import { load } from "cheerio";
+import { calendarContent, isCalendar } from "./icalendar.ts";
 
 // What a web page says, as text. Discovery takes a page's fingerprint from it, so a page whose markup changes on
 // every fetch is not seen as changed, and Data processing hands it to the language model.
@@ -31,8 +32,17 @@ export function visibleText(html: string, options: { withoutFrame?: boolean } = 
     .join("\n");
 }
 
-// The page's structured data: its JSON-LD blocks, each on one line. Many listing sites put their events here,
-// and some, such as Quicket's search pages, put them nowhere else.
+// Text with its HTML entities decoded, as visible text already is. A site can write the same text with different
+// entities on each request: WordPress hides an email address from spam robots by writing each of its letters as
+// an entity or not, at random.
+function decodeEntities(text: string): string {
+  if (!text.includes("&")) return text;
+  // Read as text, never as markup: a < in the value is written as an entity first.
+  return load(text.replaceAll("<", "&lt;"), null, false).text();
+}
+
+// The page's structured data: its JSON-LD blocks, each on one line, with the entities in their values decoded.
+// Many listing sites put their events here, and some, such as Quicket's search pages, put them nowhere else.
 export function structuredData(html: string): string[] {
   const $ = load(html);
   return $('script[type="application/ld+json"]')
@@ -41,7 +51,7 @@ export function structuredData(html: string): string[] {
     .filter((text) => text.length > 0)
     .map((text) => {
       try {
-        return JSON.stringify(JSON.parse(text));
+        return JSON.stringify(JSON.parse(text, (_, value: unknown) => (typeof value === "string" ? decodeEntities(value) : value)));
       } catch {
         // Not valid JSON: kept as written, with its whitespace collapsed.
         return text.replace(/\s+/g, " ");
@@ -91,6 +101,8 @@ export function sharedLines(pages: readonly string[]): Set<string> {
 }
 
 function content(html: string, withoutFrame: boolean, siteLines: ReadonlySet<string> = new Set()): string {
+  // A calendar file fetched as a page says what it says in its own lines, not in markup.
+  if (isCalendar(html)) return calendarContent(html);
   const text = visibleText(html, { withoutFrame })
     .split("\n")
     .filter((line) => !siteLines.has(line))
