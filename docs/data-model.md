@@ -241,6 +241,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Types | Single is one session. A run is one session per listed date, in a row or not. Recurring has a recurrence, from which Catalogue generates the sessions, with skipped and extra dates |
 | Seasons | Not an experience and not an experience type. Predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates fall inside them |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
+| Position | An experience's own position, the venue's coordinates, is optional. One with no position is searched from its location's centre |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
 | Auth | Better Auth and its own tables in v1 |
@@ -252,4 +253,3 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 ## Open questions
 
 - [ ] A change row has one kind, but one version can both confirm an experience and move its dates. Which kind does changed-since report?
-- [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?

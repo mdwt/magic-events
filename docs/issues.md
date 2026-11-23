@@ -15,7 +15,7 @@ the subject.
 | 2 | Which table holds the tenant | Organizations | Closed |
 | 3 | Who an agent's credential belongs to | Identity | Closed |
 | 4 | MCP sign-in with OAuth | Identity | Closed |
-| 5 | An experience with no position of its own | Catalogue | Provisional |
+| 5 | An experience with no position of its own | Catalogue | Closed |
 | 6 | Search cannot check attribute filters against the definitions | Catalogue | Open |
 | 7 | Semantic ranking is not built | Catalogue | To do |
 | 8 | Search takes a point, not a location | Catalogue | Open |
@@ -93,11 +93,8 @@ an agent uses the key is recorded on the key, so an agent's key acts as its user
 
 ## 5. An experience with no position of its own
 
-**Provisional.** From the open question in [data-model.md](data-model.md): an experience always has a location, but the
-venue's coordinates are optional, and radius search uses them.
-
-- **Built:** search uses the location's centre when the experience has no position, so it is still found.
-- **The other way:** every experience must have its own position, and one without is not saved.
+**Closed, 2026-11-23.** Decided: as built. An experience with no position of its own is searched from its location's
+centre, so it is still found. The venue's coordinates stay optional.
 
 ## 6. Search cannot check attribute filters against the definitions
 
