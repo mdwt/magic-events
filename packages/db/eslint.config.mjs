@@ -5,11 +5,15 @@ import tseslint from "typescript-eslint";
 export default defineConfig([
   globalIgnores(["migrations/**"]),
   js.configs.recommended,
-  tseslint.configs.strict,
+  tseslint.configs.strictTypeChecked,
   {
-    languageOptions: { globals: { process: "readonly", console: "readonly", URL: "readonly" } },
+    languageOptions: {
+      parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
+    },
     rules: {
-      "no-console": "off",
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
     },
   },
+  { files: ["**/*.mjs"], extends: [tseslint.configs.disableTypeChecked] },
 ]);
