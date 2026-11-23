@@ -301,6 +301,7 @@ fetches real websites and calls the language model without being asked.
 | [docs/sources.md](docs/sources.md) | The sources the system holds for Hermanus |
 | [docs/hermanus-sources.md](docs/hermanus-sources.md) | Which Hermanus sites answer a plain fetch, checked one by one |
 | [docs/end-to-end.md](docs/end-to-end.md) | What version 1 must do, as scenarios a tester runs from the outside |
+| [docs/test-report.md](docs/test-report.md) | The end-to-end testing of 23 November 2026: what was tested, the results and the evidence |
 | [docs/v1-decisions.md](docs/v1-decisions.md) | What version 1 leaves out, and why |
 | [docs/issues.md](docs/issues.md) | The issues and open questions being worked on |
 

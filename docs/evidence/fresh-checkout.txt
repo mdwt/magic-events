@@ -1,0 +1,37 @@
+== commit b35dbcd, files 752
+== pnpm install --frozen-lockfile
++ typescript 7.0.2
+
+Done in 2.7s using pnpm v12.4.1
+install exit 0
+NOTICE:  database "magic_events_fresh" does not exist, skipping
+== pnpm quickstart
+quickstart exit 0
+Restored the snapshot into magic_events_fresh. Next: pnpm db:seed, which creates the users and prints their API keys.
+Default data seeded: Hermanus, 9 attributes, 65 tags, 7 seasons, 12 sources, 2 tenants, 3 users.
+NEW API KEYS, SHOWN ONCE. They are stored only as a hash and cannot be shown again.
+keys printed: 5
+== typecheck, lint, build
+typecheck exit 0
+lint exit 0
+build exit 0
+== the server
+{"status":"ok"}
+search total 43 ['Private whale watching charter with Southern Right Charters', 'Boat-based whale watching with Southern Right Charters', 'Hermanus Whale Cruises boat-based whale watching']
+changes total 9 ['cancelled', 'changed', 'changed', 'changed', 'changed', 'confirmed', 'postponed', 'removed', 'rescheduled']
+search with no key: 401
+   4 "msg":"Request completed"
+   1 "msg":"The jobs stopped"
+   1 "msg":"The jobs started"
+   1 "msg":"Stopping"
+   1 "msg":"Stopped"
+   1 "msg":"Server started"
+   1 "msg":"Server listening at http://192.168.0.113:4300"
+   1 "msg":"Server listening at http://127.0.0.1:4300"
+   1 "msg":"Searched experiences"
+   1 "msg":"Request refused"
+   1 "msg":"Authentication refused"
+== restore again
+The database magic_events_fresh already has tables, so nothing was loaded. To replace it with the snapshot: pnpm db:restore --replace
+== done
+
