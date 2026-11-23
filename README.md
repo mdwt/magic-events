@@ -58,6 +58,14 @@ pnpm dev                    # the API on port 4000 and the web app on port 3000
 | `pnpm db:seed`, `pnpm db:seed:samples` | Seeds the default data, and the sample experiences |
 | `pnpm db:studio` | Opens Drizzle Studio |
 
+## Continuous integration
+
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every push and every pull request. It installs with the
+pnpm version in `packageManager` and a frozen lockfile, on the Node version in `engines`, then runs `pnpm lint`,
+`pnpm typecheck` and `pnpm test` as separate steps, for every project. The API's tests run against a Postgres service
+with pgvector, the same image as `docker-compose.yml`, and need no API key: the language model and the embedding model
+are fakes in the tests. A newer push to the same branch cancels the run still going.
+
 ## Workflow
 
 Large changes are made in a separate git worktree with a clean install, committed as they go, and squash-merged into

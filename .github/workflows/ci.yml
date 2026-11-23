@@ -1,0 +1,66 @@
+# Lint, type checks and tests for every project, on every push and every pull request.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# A newer run of the same branch or pull request cancels the one still running.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    # The API's tests need Postgres with pgvector: the image docker-compose.yml runs, on the port .env.example names.
+    services:
+      postgres:
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_USER: magic
+          POSTGRES_PASSWORD: magic
+          POSTGRES_DB: magic_events
+        ports:
+          - 5434:5432
+        options: >-
+          --health-cmd "pg_isready -U magic -d magic_events"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # The tests create and migrate the test database themselves. No language model or embedding key is set: the tests
+    # use fakes and local stand-in servers, and the real adapters fail without a key rather than call a provider.
+    env:
+      DATABASE_URL: postgres://magic:magic@localhost:5434/magic_events
+      TEST_DATABASE_URL: postgres://magic:magic@localhost:5434/magic_events_test
+      BETTER_AUTH_SECRET: ci-secret-that-is-at-least-32-characters-long
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # The Node version that engines in package.json asks for.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+
+      # The pnpm version that packageManager in package.json names, with its store cached on the lockfile.
+      - uses: pnpm/action-setup@v6
+        with:
+          cache: true
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
