@@ -2,7 +2,8 @@
   "locationSlug": "hermanus",
   "skip": [
     "stanford-hills-estate",
-    "overstrand-diary"
+    "overstrand-diary",
+    "hermanus-co-za"
   ],
   "sources": [
     {
@@ -221,6 +222,27 @@
       "name": "Nosy Rosy directory",
       "priority": 5,
       "active": true
+    },
+    {
+      "slug": "wesgro",
+      "name": "Wesgro event pages",
+      "priority": 10,
+      "active": true,
+      "urls": []
+    },
+    {
+      "slug": "facebook",
+      "name": "Facebook events",
+      "priority": 10,
+      "active": false,
+      "urls": []
+    },
+    {
+      "slug": "village-news",
+      "name": "The Village NEWS What's On",
+      "priority": 10,
+      "active": true,
+      "urls": []
     }
   ]
 }
