@@ -1,0 +1,3589 @@
+[
+  {
+    "source": "Facebook events",
+    "sourceListingId": "919252221186125",
+    "url": "https://www.facebook.com/events/919252221186125/",
+    "rawFile": "raw/facebook/919252221186125-met-opera-carmen-encore.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: Carmen (Bizet) Encore",
+    "summary": "An encore cinema screening of Sir Richard Eyre's production of Bizet's Carmen from the Metropolitan Opera.",
+    "description": "Don't miss this revival of Sir Richard Eyre's dynamic production. Mezzo-soprano Clémentine Margaine plays opera's ultimate seductress, while Roberto Alagna returns to the role of Don José",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-23",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-carmen-bizet-encore",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "A big-screen encore of the Metropolitan Opera's Carmen, with Clémentine Margaine and Roberto Alagna, shown at the Road House Cinema in Whale Coast Mall, Hermanus. Visitors watch a full opera production in a cinema seat. It suits opera lovers and anyone curious to see a Met staging without travelling to New York."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1048789411240812",
+    "url": "https://www.facebook.com/events/1048789411240812/",
+    "rawFile": "raw/facebook/1048789411240812-met-opera-the-magic-flute.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "The Met Opera: The Magic Flute",
+    "summary": "Mozart's fantastical opera in David McVicar's production, screened at Road House Cinema Whale Coast Mall.",
+    "description": "Mozart's fantastical opera glitters in David McVicar's enchanting production. A star cast including Julia Bullock as Pamina, Amitai Pati as Tamino, Huw Montague Rendall as Papageno, Kathryn Lewek as the Queen of the Night, and Soloman Howard as Sarastro, led by French conductor Marie Jacquot in her Covent Garden debut.\n21 December | 18:30 Road house Cinema Whale Coast Mall",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-21",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-the-magic-flute-recorded",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "A cinema screening of Mozart's The Magic Flute in David McVicar's production, at the Road House Cinema in Whale Coast Mall, Hermanus. The cast includes Julia Bullock and Kathryn Lewek. It suits opera lovers looking for an evening at the cinema during the festive season."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1993109854743371",
+    "url": "https://www.facebook.com/events/1993109854743371/",
+    "rawFile": "raw/facebook/1993109854743371-met-opera-la-fanciulla-del-west-evening.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: La Fanciulla del West",
+    "summary": "Puccini's drama of the Wild West in a new staging by Richard Jones, screened from the Met in a matinee and an evening show.",
+    "description": "Puccini's exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company's first new production of La Fanciulla del West in more than 30 years.\nSoprano Vida Miknevičiūtė makes her Met company debut singing the role of Minnie, the tough tavern owner with a heart of gold who finds love when she least expects it.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-02-01",
+        "precision": "day",
+        "startTime": "12:30",
+        "endTime": "15:30",
+        "label": "Matinee"
+      },
+      {
+        "start": "2027-02-01",
+        "precision": "day",
+        "startTime": "18:00",
+        "label": "Evening"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-la-fanciulla-del-west",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "The Metropolitan Opera's new production of Puccini's La Fanciulla del West, screened at the Road House Cinema in Whale Coast Mall, Hermanus, as a matinee and an evening show on the same day. Soprano Vida Miknevičiūtė sings Minnie. It suits opera lovers and those who prefer an afternoon showing."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1016747927894857",
+    "url": "https://www.facebook.com/events/1016747927894857/",
+    "rawFile": "raw/facebook/1016747927894857-met-opera-silent-night.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: Silent Night",
+    "summary": "Kevin Puts's Pulitzer Prize-winning opera inspired by the 1914 Christmas truce, screened from the Met.",
+    "description": "Following his smash-hit company debut with The Hours, composer Kevin Puts returns to the Met with his Pulitzer Prize–winning opera, inspired by the true events of the 1914 Christmas truce.\nA poignant depiction of shared humanity in the most inhumane circumstances, Puts's grand, cinematic opera—with a libretto in English, French, and German by Mark Campbell—has been widely acclaimed since its 2011 premiere",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-04-05",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-silent-night",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "A cinema screening of Kevin Puts's Pulitzer Prize-winning opera Silent Night, inspired by the 1914 Christmas truce, from the Metropolitan Opera. It shows at the Road House Cinema in Whale Coast Mall, Hermanus. It suits opera lovers and those interested in contemporary opera and history."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2002369787062721",
+    "url": "https://www.facebook.com/events/2002369787062721/",
+    "rawFile": "raw/facebook/2002369787062721-met-opera-manon-evening.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: Manon",
+    "summary": "Soprano Nadine Sierra takes the title role of Massenet's Manon, live from the Met stage to cinemas.",
+    "description": "Following her radiant performance in Gounod's Roméo et Juliette superstar soprano Nadine Sierra takes on another alluring French heroine, the irresistible title character of Massenet's passionate drama, live from the Met stage to cinemas worldwide.\nLeading tenor Matthew Polenzani is her idealistic lover, the Chevalier des Grieux, with rising-star baritone Andrzej Filończyk as her stalwart",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-04-12",
+        "precision": "day",
+        "startTime": "12:00",
+        "label": "Matinee"
+      },
+      {
+        "start": "2027-04-12",
+        "precision": "day",
+        "startTime": "17:30",
+        "label": "Evening"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-manon",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "Massenet's Manon from the Metropolitan Opera, with Nadine Sierra and Matthew Polenzani, screened at the Road House Cinema in Whale Coast Mall, Hermanus, as a matinee and an evening show. Visitors watch the full production on the big screen. It suits opera lovers."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1705057370787859",
+    "url": "https://www.facebook.com/events/1705057370787859/",
+    "rawFile": "raw/facebook/1705057370787859-met-opera-otello-evening.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: Otello",
+    "summary": "Verdi's Shakespearean tragedy with tenor Brian Jagde in the title role, live to cinemas worldwide.",
+    "description": "One of today's leading dramatic tenors, Brian Jagde, takes on the tour-de-force title role of what many consider the ultimate Italian opera, live to cinemas worldwide.\nVerdi's monumental Shakespearean tragedy also features soprano Ailyn Pérez in her company role debut as the long-suffering Desdemona, alongside baritone Artur Ruciński as the sinister Iago. Michele Mariotti leads the full forces of the Met Orchestra and Chorus in the exhilarating score.\n03 May 2027 | 18:00 Road House Cinema Whale Coast Mall",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-05-03",
+        "precision": "day",
+        "startTime": "12:30",
+        "label": "Matinee"
+      },
+      {
+        "start": "2027-05-03",
+        "precision": "day",
+        "startTime": "18:00",
+        "label": "Evening"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-otello",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "Verdi's Otello from the Metropolitan Opera, with Brian Jagde, Ailyn Pérez and Artur Ruciński, screened at the Road House Cinema in Whale Coast Mall, Hermanus, as a matinee and an evening show. It suits opera lovers and fans of Shakespeare on stage."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1185947237079248",
+    "url": "https://www.facebook.com/events/1185947237079248/",
+    "rawFile": "raw/facebook/1185947237079248-met-opera-tosca-encore-evening.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: Tosca (Puccini) Encore",
+    "summary": "Lise Davidsen stars as Tosca in David McVicar's production, in an encore cinema screening.",
+    "description": "Extraordinary Norwegian soprano Lise Davidsen stars as the passionate diva in David McVicar's thrilling production, broadcast live from the Metropolitan Opera stage to cinemas on November 23.\nBritish-Italian tenor Freddie De Tommaso makes his eagerly anticipated company debut as Tosca's revolutionary lover, Cavaradossi, and powerhouse American baritone Quinn Kelsey is the sadistic chief of police Scarpia. Maestro Xian Zhang conducts the electrifying score, which features some of Puccini's most memorable melodies.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-05-24",
+        "precision": "day",
+        "startTime": "12:30",
+        "label": "Matinee"
+      },
+      {
+        "start": "2027-05-24",
+        "precision": "day",
+        "startTime": "18:00",
+        "label": "Evening"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera--puccini-tosca",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "An encore screening of the Metropolitan Opera's Tosca, with Lise Davidsen, Freddie De Tommaso and Quinn Kelsey, at the Road House Cinema in Whale Coast Mall, Hermanus, as a matinee and an evening show. It suits opera lovers and newcomers to Puccini."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1047719610951593",
+    "url": "https://www.facebook.com/events/1047719610951593/",
+    "rawFile": "raw/facebook/1047719610951593-met-opera-parsifal.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Met Opera: Parsifal",
+    "summary": "François Girard's production of Wagner's Parsifal returns to the big screen, conducted by Yannick Nézet-Séguin.",
+    "description": "A profound philosophical meditation on compassion and reconciliation, this transcendent rendering of a medieval knight's heroic quest for the Holy Grail returns to the big screen in François Girard's celebrated production\nYannick Nézet-Séguin conducts a cast of Wagnerian superstars, including tenor Piotr Beczała in the title role, mezzo-soprano Elīna Garanča as the enigmatic Kundry, baritone Peter Mattei as the ailing Amfortas",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-06-13",
+        "precision": "day",
+        "startTime": "14:30"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-parsifal",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts",
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "Wagner's Parsifal from the Metropolitan Opera, conducted by Yannick Nézet-Séguin with Piotr Beczała and Elīna Garanča, screened at the Road House Cinema in Whale Coast Mall, Hermanus. It is a long afternoon of opera on the big screen. It suits Wagner lovers and dedicated opera-goers."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "927968263530183",
+    "url": "https://www.facebook.com/events/927968263530183/",
+    "rawFile": "raw/facebook/927968263530183-andre-rieu-let-it-snow-concert-film.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "André Rieu: Let It Snow Concert Film!",
+    "summary": "André Rieu's 2026 Christmas Concert, Let It Snow, on the big screen with the Johann Strauss Orchestra.",
+    "description": "This holiday season, celebrate the most wonderful time of the year on the big screen with André Rieu's 2026 Christmas Concert – Let It Snow.\nThis heartwarming festive spectacular, filled with beloved Christmas classics, enchanting waltzes, and magical surprises, will leave you smiling long after the final encore. Joined by his world-famous Johann Strauss Orchestra, exceptional sopranos, and a powerful 120-voice male choir, André brings the spirit of Christmas to life in an unforgettable musical event. Overflowing with music, laughter, and holiday cheer, this concert is perfect for the whole family.\nRoad House Cinema Whale Coast Mall\nSaturday 05 December\n18:00\nGet your tickets now!",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "18:00"
+      },
+      {
+        "start": "2026-12-06",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/andre-rieus-2026-christmas-concert-let-it-snow",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "film",
+        "holidays_and_celebrations"
+      ],
+      "format": "screening",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "classical",
+      "christmas"
+    ],
+    "profile": "A concert film of André Rieu's 2026 Christmas concert, with the Johann Strauss Orchestra, sopranos and a 120-voice male choir, shown twice at the Road House Cinema in Whale Coast Mall, Hermanus. Visitors hear Christmas classics and waltzes on the big screen. The listing calls it perfect for the whole family."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1120383377242497",
+    "url": "https://www.facebook.com/events/1120383377242497/",
+    "rawFile": "raw/facebook/1120383377242497-whale-coast-mall-premiere-night-focker-in-law.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Whale Coast Mall: Premiere Night! Focker In-Law",
+    "summary": "A premiere night screening of Focker-In-Law ahead of its global release, with welcome drinks, pre-show pampering and local prizes.",
+    "description": "Thursday, 26 November is officially our next Premiere Night out at Whale Coast mall!\nWe'll be screening the hilarious Focker-In-Law ahead of its global release, so get ready for a night packed with pure laughter, welcome drinks, pre-show pampering, and awesome local prizes.\nGather your favourite people and get ready for a brilliant evening out on the big screen!\nRoad House Cinema at Whale Coast Mall and The Neelsie\nThursday, 26 November 2026\nTime: 18:30. Movie starts at 20:00",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-26",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/focker-in-law",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "comedy"
+    ],
+    "profile": "A premiere-night screening of the comedy Focker-In-Law ahead of its global release, at the Road House Cinema in Whale Coast Mall, Hermanus. Guests arrive from 18:30 for welcome drinks, pre-show pampering and prizes, and the film starts at 20:00. It suits groups of friends wanting a night out at the movies."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1637170281133766",
+    "url": "https://www.facebook.com/events/1637170281133766/",
+    "rawFile": "raw/facebook/1637170281133766-alan-committie-av-a-laugh-ta.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "LIVE IN HERMANUS: Alan Committie - AV-A-LAUGH-TA",
+    "summary": "Alan Committie's high-energy stand-up special AV-A-LAUGH-TA, live at Road House Cinema Whale Coast Mall.",
+    "description": "Alan Committie is blasting into the festive season with A-VA-LAUGH-TA.\nTrue to form, audiences can expect a high-energy stand-up special designed to banish the blues with interstellar wordplay, physical comedy, and Committie's trademark take-downs of the crowd, as this award-winning comic tries to make sense of a year where everything feels a bit… alien.\nRoad House Cinema Whale Coast Mall Hermanus\nSaturday 28 November\n19:30\nGrab your tickets now!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/alan-c-av-a-laugh-ta",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "performing_arts"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "comedy"
+    ],
+    "profile": "Award-winning comedian Alan Committie performs his stand-up show AV-A-LAUGH-TA live at the Road House Cinema in Whale Coast Mall, Hermanus. Expect wordplay, physical comedy and crowd take-downs. It suits adults looking for an evening of live comedy."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2154647178480636",
+    "url": "https://www.facebook.com/events/2154647178480636/",
+    "rawFile": "raw/facebook/2154647178480636-whale-coast-mall-ladies-night-the-debut.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Whale Coast Mall: Final 2026 Ladies Night! The Debut.",
+    "summary": "The final Ladies' Night of 2026, with pre-movie mingling, drinks and popcorn before a screening of The Debut.",
+    "description": "THE FINAL LADIES' NIGHT OF 2026!\nIndulge in a well-deserved evening of laughter, pre-movie mingling, refreshing drinks, and popcorn, all capped off with an unforgettable big-screen cinematic experience in pure comfort.\nDate: Thursday, 10 December 2026\nTime: 19:45 (Arrive early for pre-show treats and mingling!)\nVenue: Exclusive to Road House Cinema, Whale Coast Mall, Hermanus\nSeats for our signature Ladies' Night sell fast, and this is your last chance to experience it before the year closes. Treat yourself and your tribe to the ultimate night out!\nBookings are now open!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-10",
+        "precision": "day",
+        "startTime": "19:45"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/the-debut",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "film"
+      ],
+      "format": "screening",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Road House Cinema's last Ladies' Night of 2026 at Whale Coast Mall, Hermanus: pre-movie mingling, drinks and popcorn, then a screening of The Debut. It suits groups of women friends wanting an evening out."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1618754999977576",
+    "url": "https://www.facebook.com/events/1618754999977576/",
+    "rawFile": "raw/facebook/1618754999977576-ballyhoo-50-year-celebration.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Ballyhoo: The 50 Year Celebration LIVE IN HERMANUS!",
+    "summary": "South African music legends Ballyhoo celebrate five decades with their 50 Years Celebration Tour.",
+    "description": "South African music legends Ballyhoo celebrate an extraordinary five decades in the music industry with their spectacular 50 Years Celebration Tour.\nThis unforgettable live show is a celebration of the music, memories, and timeless spirit of rock 'n' roll that has connected generations of fans. Join Ballyhoo this December and be part of a remarkable musical milestone—50 years of songs, stories, and unforgettable performances.\nRoad House Cinema Whale Coast Mall\nWednesday 30 December\n19:30\nTickets open soon!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "not_yet",
+    "sessions": [
+      {
+        "start": "2026-12-30",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema, Whale Coast Mall",
+      "address": "Shop G57, Whale Coast Mall, R43, Main Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/ballyhoo-the-50-year-celebration",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "South African band Ballyhoo play their 50 Years Celebration show live at the Road House Cinema in Whale Coast Mall, Hermanus. The evening celebrates five decades of their rock 'n' roll songs and stories. Tickets were not yet on sale when read. It suits fans of South African rock and anyone in town between Christmas and New Year."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1009617595533747",
+    "url": "https://www.facebook.com/events/1009617595533747/",
+    "rawFile": "raw/facebook/1009617595533747-vrede-gedigvoorlesing.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "V R E D E 'n gedigvoorlesing",
+    "summary": "A poetry reading by Nadine Claassen at Walker Bay Modern Art.",
+    "description": "Vind lafenis in woorde en kom luister na die klank van digkuns.\nVoorgelees deur Nadine Claassen\nKontak vir bespreking, beperkte sitplekke.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "11:00"
+      }
+    ],
+    "venue": {
+      "name": "Walker Bay Modern Art",
+      "address": "167 Main Road",
+      "city": "Hermanus"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "culture_and_heritage"
+      ],
+      "format": "talk",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local",
+      "language": [
+        "afrikaans"
+      ]
+    },
+    "tags": [
+      "books"
+    ],
+    "profile": "An hour-long Afrikaans poetry reading, V R E D E, read by Nadine Claassen at Walker Bay Modern Art in Hermanus. Seating is limited and booked by contacting the organiser. It suits Afrikaans speakers who enjoy poetry."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1115349068154590",
+    "url": "https://www.facebook.com/events/1115349068154590/",
+    "rawFile": "raw/facebook/1115349068154590-pride-fun-walk.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "PRIDE FUN WALK",
+    "summary": "The Hermanus Pride fun walk from Only Specials Lifestyle Hub through town to FICKS, where the party starts.",
+    "description": "Join us for our PRIDE FUN WALK from Only Specials Lifestyle Hub through town to FICKS, where our party will start.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "16:00",
+        "endTime": "16:30"
+      }
+    ],
+    "venue": {
+      "name": "Only Specials Café",
+      "address": "14 Aberdeen Street",
+      "city": "Hermanus"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Hermanus Pride's fun walk, a half-hour walk from Only Specials Lifestyle Hub through the town to FICKS, where the Pride party begins. Anyone can join the walk. It suits LGBT visitors and allies in Hermanus on Pride day."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "29065912869762783",
+    "url": "https://www.facebook.com/events/29065912869762783/",
+    "rawFile": "raw/facebook/29065912869762783-hermanus-pride-market.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Hermanus Pride Market - Saturday 5 December at Only Specials Lifestyle Hub",
+    "summary": "A free-entry Pride market with LGBT vendors offering Christmas gifts, food, drinks and cocktails.",
+    "description": "Pride is coming to Hermanus! Join to celebrate by supporting LGBT small businesses at our Hermanus Pride Market on Saturday Dec 5 from 10 am to 4 pm at Only Special Lifestyles Hub.\nFREE entry\nEnjoy LGBT vendors offering unique Christmas gifts, food, drinks and cocktails!\nAfter the market we will enjoy the Hermanus pride march and party! We are family!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "16:00"
+      }
+    ],
+    "venue": {
+      "name": "Only Specials Lifestyle Hub",
+      "address": "14 Aberdeen St",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/401497-hermanus-pride-market-saturday-5-december-at-only-specials-lifestyle-hub",
+    "hints": [
+      "Foods"
+    ],
+    "attributes": {
+      "category": [
+        "community_and_causes",
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "craft"
+    ],
+    "profile": "A Pride market at Only Specials Lifestyle Hub in Hermanus where LGBT small businesses sell Christmas gifts, food, drinks and cocktails. Entry is free, and the day carries on with the Pride march and party. It suits LGBT visitors, allies and Christmas shoppers."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1844316683247674",
+    "url": "https://www.facebook.com/events/1844316683247674/",
+    "rawFile": "raw/facebook/1844316683247674-hermanus-pride-party.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "HERMANUS PRIDE PARTY",
+    "summary": "The annual Hermanus Pride party at Ficks, with music, food and drinks.",
+    "description": "Join us for our annual HERMANUS PRIDE PARTY at the most iconic spot in Hermanus with great vibe, music, food and drinks.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "17:00",
+        "endTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "Ficks",
+      "address": "8 Marine Drive, Westcliff",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/406758-hermanus-pride-party",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "community_and_causes",
+        "music"
+      ],
+      "format": "party",
+      "audience": "adults",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The annual Hermanus Pride party at Ficks on Marine Drive, with music, food and drinks. It follows the Pride market and fun walk on the same day. It suits LGBT visitors and allies looking for an evening party by the sea."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1142450042054761",
+    "url": "https://www.facebook.com/events/1142450042054761/",
+    "rawFile": "raw/facebook/1142450042054761-ertjiesvlei-plaaskuier.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Ertjiesvlei Plaaskuier",
+    "summary": "A farm day in the Hemel-en-Aarde valley with food stalls, Overberg wines, produce, music, children's games, an art exhibition and a Christmas wreath workshop.",
+    "description": "Ertjiesvlei Plaaskuier\nErtjiesvlei, Hemel-en-Aarde Vallei\n5 Desember 2026\n10:00 - 16:00\n• Sosaties, Boerewors en Roosterkoek\n• Overberg Wyne\n• Kaasborde en Vyekonfyt\n• Olywe en Bokmelkkaas\n• Brode en Vrugtekoeke\n• Blomme\n• Musiek\n• Organiese Groente\n• Vars Vrugte en Bessies\n• Koffie en Tee\n• Tuisgemaakte Gemmerbier\n• Koeksisters en Melktert\n• Pannekoek\n• Speletjies vir kinders\nEn vele meer.\nIets nuut op die program:\n• Kunsuitstalling deur die kunstenaars Annemarie du Plooy en Ans Lamprecht\n• Kerskrans werkswinkel om 11:30",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "16:00"
+      }
+    ],
+    "venue": {
+      "name": "Ertjiesvlei",
+      "city": "Hemel-en-Aarde Valley"
+    },
+    "hints": [
+      "Foods"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine",
+      "christmas"
+    ],
+    "profile": "A farm day at Ertjiesvlei in the Hemel-en-Aarde valley, hosted with NG Kerk Hermanus. Visitors browse stalls of sosaties, boerewors, cheese, olives, breads, organic vegetables, berries, flowers and Overberg wines, with music, pancakes and games for children, an art exhibition and a Christmas wreath workshop at 11:30. It suits families and anyone wanting a relaxed country market day."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1155674100231965",
+    "url": "https://www.facebook.com/events/1155674100231965/",
+    "rawFile": "raw/facebook/1155674100231965-tekkies-and-bowties.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Tekkies & Bowties",
+    "summary": "A sunset soirée with a Mediterranean feast cooked on fire, raising funds for Hermanus Animal Welfare Society.",
+    "description": "TEKKIES & BOWTIES\nJoin us for a FUN Sunset Soiree to raise funds for Hermanus Animal Welfare Society\nSaturday 28 November 2026\n6.00 for 6.30pm\nHigh Season Farm Hermanus\nR550 per person\nGood food. Good friends. Good cause.\nModern Mediterranean Feast.\nDuane Genders will serenade us.\nTo buy tickets:\n+27 82 442 6545\ninfo@southernstroll.com\nChef Ashley Dokter-Mosotho will be \"Cooking on Fire\" creating delicious dishes for our guests.\nHe was the Winner of Nyama Battle: The Mother City and Runner-up of Kokkedoor Vuur & Vlam.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "High Season Farm",
+      "address": "R320 Hemel And Aarde Rd",
+      "city": "Hemel-en-Aarde Valley"
+    },
+    "price": {
+      "min": 550,
+      "max": 550,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "charity"
+    ],
+    "profile": "A sunset soirée at High Season Farm in the Hemel-en-Aarde valley that raises funds for the Hermanus Animal Welfare Society. Chef Ashley Dokter-Mosotho cooks a modern Mediterranean feast on fire and Duane Genders sings. Tickets are R550 per person, booked by phone or email. It suits adults who want a good dinner for a good cause."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1160127066579919",
+    "url": "https://www.facebook.com/events/1160127066579919/",
+    "rawFile": "raw/facebook/1160127066579919-onrus-open-beach-volleyball.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Onrus Open",
+    "summary": "A 2-a-side open beach volleyball tournament on Onrus Beach, with a social event at Milk on the Beach afterwards.",
+    "description": "THE ONRUS OPEN IS HERE!\nGrab your teammate and join us for the Onrus Open 2-a-Side Beach Volleyball Tournament at Onrus Beach!\nSaturday, 19 December 2026\nRegistration: 08:30\nFirst whistle: 09:00\nFREE ENTRY\nAmazing prizes up for grabs!\nMen's, women's and mixed teams will all compete together in one open tournament, with separate prizes awarded to the highest-ranking men's, women's and mixed teams.\nAfter the tournament, players and supporters are invited to join us for a social event at Milk on the Beach. Stay for a drink, something to eat and a relaxed end to an action-packed day!\nTo enter your team, WhatsApp Rocco on 082 800 1600.\nBrought to you by Overberg Beach Volleyball Association and Milk on the Beach, proudly supported by Seeff Hermanus and Pierre & Pauli Productions.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-19",
+        "precision": "day",
+        "startTime": "08:30"
+      }
+    ],
+    "venue": {
+      "name": "Onrus beach",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "sport"
+      ],
+      "format": "match_or_tournament",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Onrus Open, a free-entry 2-a-side beach volleyball tournament on Onrus Beach for men's, women's and mixed teams, with prizes. Registration is at 08:30 and play starts at 09:00; teams enter by WhatsApp. Players and supporters meet afterwards at Milk on the Beach. It suits volleyball players and beachgoers who want to watch."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1416535993171679",
+    "url": "https://www.facebook.com/events/1416535993171679/",
+    "rawFile": "raw/facebook/1416535993171679-christmas-fun-fare-sandbaai.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Christmas Fun Fare",
+    "summary": "An evening of Christmas magic, family fun and festive cheer hosted by Mulberry Bush Pre-School.",
+    "description": "We are so excited to finally share this with you\nGet ready for an unforgettable evening of Christmas magic, family fun and festive cheer!\nTickets are available at the office or grab yours at the gate on the night.\nMore information to follow.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "city": "Sandbaai"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "community_and_causes"
+      ],
+      "format": "fair_or_expo",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A Christmas fun fair evening in Sandbaai hosted by Mulberry Bush Pre-School, promising Christmas magic and family fun. Tickets are sold at the school office or at the gate. It suits families with young children."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1417488589543233",
+    "url": "https://www.facebook.com/events/1417488589543233/",
+    "rawFile": "raw/facebook/1417488589543233-titan-trail-run-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "TITAN Trail Run | Benguela Cove Lagoon Wine Estate",
+    "summary": "A TITAN Events trail run at Benguela Cove Lagoon Wine Estate.",
+    "description": "Let's Hit the Trails\nIf you love running, a bit of adventure, and the kind of routes that make your legs work but leave you smiling at the finish, you're in the right place.\nTitan… See more",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-06",
+        "precision": "day",
+        "startTime": "07:00"
+      }
+    ],
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.3451,
+        "lng": 19.13572
+      }
+    },
+    "bookingUrl": "https://racepass.com/za/races/titan-trail-run-benguela-cove",
+    "hints": [
+      "Fitness & workouts"
+    ],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "trail-running"
+    ],
+    "profile": "A TITAN Events trail run on the routes of Benguela Cove Lagoon Wine Estate near Hermanus, starting at 07:00. Entries are on RacePass. It suits runners who like a demanding but fun trail course."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1517333000214081",
+    "url": "https://www.facebook.com/events/1517333000214081/",
+    "rawFile": "raw/facebook/1517333000214081-hermanus-carols-2026.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Hermanus Carols 2026 by Rotary Club of Hermanus and sponsored by Hermanus Harcourts",
+    "summary": "Carols with a Nativity play, the Zwelihle Choir, Father Christmas, kids' activities and food stalls.",
+    "description": "Nativity Play, Zwelihle Choir, Carols, Father Christmas, Kids' activities, Food Stalls",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-15",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Attie Bishop Stadium",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "faith_and_spirituality",
+        "community_and_causes"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "choral",
+      "charity"
+    ],
+    "profile": "Hermanus Carols, hosted by the Rotary Club of Hermanus at Attie Bishop Stadium: carol singing, a Nativity play, the Zwelihle Choir, a visit from Father Christmas, kids' activities and food stalls. Tickets are on WebTickets. It suits families and anyone wanting a community Christmas evening."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1636269894232971",
+    "url": "https://www.facebook.com/events/1636269894232971/",
+    "rawFile": "raw/facebook/1636269894232971-gian-groen-skybar-hermanus.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Gian Groen | SKYBAR Hermanus",
+    "summary": "Acclaimed singer-songwriter Gian Groen in an intimate unplugged performance at Skybar.",
+    "description": "An evening of exceptional music awaits at Skybar, Hermanus, when acclaimed singer-songwriter Gian Groen takes to the stage for an intimate unplugged performance on Thursday, 10 December.\nWith only his songs, stories and acoustic sound, Gian will share the music that has earned him a place among South Africa's most respected Afrikaans songwriters.\nAudiences can expect an authentic performance filled with heartfelt lyrics, memorable melodies and the personal stories behind the songs.\nPaired with delicious food, great company and the welcoming atmosphere of Skybar, this promises to be a memorable night.\nBook now and experience Gian Groen – up close, unplugged and unforgettable.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-10",
+        "precision": "day",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "SkyBar Hermanus",
+      "address": "Hermanus Waterfront, cnr Marine Drive & Market Square Street",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://tickets.tixsa.co.za/event/gian-groen-skybar-hermanus-dec",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local",
+      "language": [
+        "afrikaans"
+      ]
+    },
+    "tags": [
+      "folk-and-acoustic"
+    ],
+    "profile": "Afrikaans singer-songwriter Gian Groen plays an intimate unplugged set of songs and stories at SkyBar on the Hermanus Waterfront, with food available. It suits fans of Afrikaans acoustic music and anyone wanting a relaxed evening of live music."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1676630676851179",
+    "url": "https://www.facebook.com/events/1676630676851179/",
+    "rawFile": "raw/facebook/1676630676851179-rumours-of-fleetwood-mac-hermanus-golf-club.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026",
+    "summary": "The Rumours of Fleetwood Mac tribute show, back by popular demand at Hermanus Golf Club with Two Chefs.",
+    "description": "Rumours of Fleetwood Mac back by popular demand at Hermanus Golf Club with Two Chefs!\nJoin us for an incredible experience at this great venue.\nRave reviews from audiences across the Western Cape (since 2021) after many sold out shows and multiple performances at venues including Simon's at Groot Constantia, Asara Wine Estae & Hotel in Stellenbosch, Atlantic Beach Golf Links in Melkbosstrand, Franschhoek Cellar, Benguela Cove in Hermanus, Die Boer in Durbanville, Cafe Roux in Noordhoek, Die Koelkamers in Paternoster, Hermanus Golf Club, Kelvin Grove Club in Newlands, Woodstock Brewery, The Drama Factory in Strand, Alex on Fire in Somerset West to mention a few.\nthat the ONLY way to purchase tickets for Rumours of Fleetwood Mac is via Quicket.\nNO other tickets will be valid or accepted.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-11",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "22:30"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "address": "11098 Sim St",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://qkt.io/v3dqgQ",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "rock-and-pop",
+      "cabaret"
+    ],
+    "profile": "A Fleetwood Mac tribute show by Rumours of Fleetwood Mac at Hermanus Golf Club, with dinner from Two Chefs. The band has played sold-out shows across the Western Cape since 2021. Tickets are sold only on Quicket. It suits fans of classic rock looking for a dinner-and-show evening."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1717418836292781",
+    "url": "https://www.facebook.com/events/1717418836292781/",
+    "rawFile": "raw/facebook/1717418836292781-creedence-clearwater-revival-hermanus-golf-club.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Creedence - A Clearwater Revival at Hermanus Golf Club on 4 December",
+    "summary": "A tribute to Creedence Clearwater Revival by a full band of Cape Town musicians, with an à la carte dinner menu.",
+    "description": "Creedence - A Clearwater Revival is a tribute paying homage to the brilliant songwriting and success of a great American band, Creedence Clearwater Revival.\nCreedence - A Clearwater Revival features a full band made up top Cape Town musicians.\nYour ticket is for the show. Dinner will be ordered from an a la carte menu. Full bar serive available.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "22:30"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "address": "11098 Sim St",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://qkt.io/rySVD8",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "rock-and-pop",
+      "cabaret"
+    ],
+    "profile": "Creedence - A Clearwater Revival, a full-band tribute to Creedence Clearwater Revival, plays Hermanus Golf Club. The ticket covers the show; dinner is ordered from an à la carte menu and there is a full bar. It suits fans of classic American rock."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2493675691072461",
+    "url": "https://www.facebook.com/events/2493675691072461/",
+    "rawFile": "raw/facebook/2493675691072461-jingle-bell-rock-hermanus-golf-club.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "JINGLE BELL ROCK with The Family Band at Hermanus Golf Club",
+    "summary": "A Christmas variety show with an 8-piece live band playing festive hits and classics.",
+    "description": "This festive season, get ready for an unforgettable night of music, nostalgia, laughter, and holiday magic with The Family Band presents Jingle Bell Rock\nJingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.\nFeaturing a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world's most beloved artists. Audiences can look forward to festive favourites from legendary names like Wham, Boney M, Bing Crosby, Frank Sinatra, and Johnny Mathis, alongside energetic rock anthems, nostalgic 90's medleys, Disney favourites, and even music inspired by the iconic Home Alone soundtrack.\nMore than just a concert, Jingle Bell Rock is a fully scripted musical journey a magical theatre experience for the whole family.\nThe show stars acclaimed performers including Dewald Louw, Dee Dee Theunissen and The Family Band Trio.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-03",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "address": "Golf Road",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://qkt.io/NYyjL7",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "holidays_and_celebrations"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "cabaret",
+      "rock-and-pop"
+    ],
+    "profile": "Jingle Bell Rock, a scripted Christmas variety show by The Family Band with an 8-piece live band, at Hermanus Golf Club. It mixes Christmas hits from Wham, Boney M, Bing Crosby and Frank Sinatra with rock anthems, 90s medleys and Disney songs. The listing pitches it as a theatre experience for the whole family."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1724292362058734",
+    "url": "https://www.facebook.com/events/1724292362058734/",
+    "rawFile": "raw/facebook/1724292362058734-most-influential-icons-gala-dinner.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "The 4th Annual Most Influential Icons Gala Dinner",
+    "summary": "A gala dinner honouring young and influential icons of the Overberg, with networking, entertainment, food and wine.",
+    "description": "Valid Dreamers Foundation NPC in partnership with Creation Wines & the Overstrand Municipality Socio-Economic Services Unit to host the 4th Annual Most Influential Icons Gala Dinner 2026\nAn unforgettable evening of elegance, inspiration, and celebration awaits.\nJoin us for the 4th Annual Most Influential Icons Gala Dinner, where we honour excellence, connect with young and influential icons of the Overberg, and celebrate the remarkable individuals shaping our communities and contributing to socio-economic development.\nFriday, 4 December 2026\n5:00 PM\nOverstrand Municipal Auditorium/Banqueting Hall, Hermanus\nTickets\n• General: R370\n• VIP: R500\n• General for 2: R700\nEnjoy an evening of networking, entertainment, fine food, and Wine.\nSeats are limited—secure your ticket and be part of a night to remember.\nTICKETS\nhttps://www.webtickets.co.za/v2/event.aspx?itemid=1598631600\nMIIGD-Celebrating Excellence Since 2023!\n#RoadToMIIGD2026",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "17:00",
+        "endTime": "22:00"
+      }
+    ],
+    "venue": {
+      "name": "Overstrand Municipal Auditorium/Banqueting Hall",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 370,
+      "max": 700,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1598631600",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "The fourth Most Influential Icons Gala Dinner, hosted by Valid Dreamers Foundation with Creation Wines and the Overstrand Municipality at the municipal auditorium in Hermanus. It honours people shaping Overberg communities, with networking, entertainment, food and wine. It suits adults interested in local community and business life."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1813535136590082",
+    "url": "https://www.facebook.com/events/1813535136590082/",
+    "rawFile": "raw/facebook/1813535136590082-two-cookies-make-one-give-one.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "TWO COOKIES | MAKE ONE. GIVE ONE.",
+    "summary": "A day of baking, laughter and giving: make two cookies and give one away.",
+    "description": "TWO COOKIES — MAKE ONE. GIVE ONE.\nSmall hands. Big kindness. A whole lot of heart!\nOn Wednesday, 16 December 2026, we're inviting everyone to Wonderland Lifestyle Nursery & Play Park in Hermanus for a wonderful day of baking, laughter and giving.\nOur dream? 2,000 cookies made. 1,000 cookies shared.\nFor just R50, you'll receive everything needed to make your two cookies. Baking sessions run hourly from 9 AM to 2 PM, with an optional R50 play-park voucher.\nYou can book and pay online and download your own Certificate of Kindness.\nBook, sponsor, claim or contribute:\nhttps://twocookies.online",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-16",
+        "precision": "day",
+        "startTime": "09:00",
+        "endTime": "14:00"
+      }
+    ],
+    "venue": {
+      "name": "Wonderland Lifestyle Nursery & Play Park",
+      "city": "Sandbaai"
+    },
+    "price": {
+      "min": 50,
+      "max": 50,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://twocookies.online",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "class_or_workshop",
+      "audience": "family",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "charity",
+      "school-holidays"
+    ],
+    "profile": "A charity baking day at Wonderland Lifestyle Nursery & Play Park where children make two cookies, keep one and give one away. Hourly baking sessions run from 9 AM to 2 PM at R50, with an optional play-park voucher. It suits families with young children during the school holidays."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1827870488350400",
+    "url": "https://www.facebook.com/events/1827870488350400/",
+    "rawFile": "raw/facebook/1827870488350400-paddakoor-christmas-carnival.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Paddakoor Akademie Presents - CHRISTMAS CARNIVAL",
+    "summary": "A Christmas carnival with games, food, face painting, jumping castles, prizes and a visit from Father Christmas.",
+    "description": "Get ready for a magical afternoon filled with Christmas cheer, family fun and festive excitement!\nJoin us for a wonderful day of carnival games, delicious food, sweet treats, face painting, jumping castles and so much more! There will be prizes to win, fun for the whole family, and a special visit from Father Christmas himself! Make sure to bring a gift for Father Christmas to hand out!\nVenue: Jukskei Hall, Sandbaai\nDate: Saturday, 12 December 2026\nTime: 12:00 – 17:00\nEntrance: R10 per person",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-12",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "17:00"
+      }
+    ],
+    "venue": {
+      "name": "Jukskei Hall (Groenberg Jukskei Klub)",
+      "address": "39 Jimmy Smith St",
+      "city": "Sandbaai"
+    },
+    "price": {
+      "min": 10,
+      "max": 10,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "community_and_causes"
+      ],
+      "format": "fair_or_expo",
+      "audience": "family",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A Christmas carnival at the Jukskei Hall in Sandbaai, hosted by Paddakoor Akademie, with carnival games, food and sweets, face painting, jumping castles, prizes and a visit from Father Christmas. Entrance is R10 per person. It suits families with young children."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2039974310039999",
+    "url": "https://www.facebook.com/events/2039974310039999/",
+    "rawFile": "raw/facebook/2039974310039999-slope-soaring-weekend-hermanus-2026.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Hermanus 2026",
+    "summary": "The Atlantic Flying Club's annual slope soaring weekend in Hermanus.",
+    "description": "Atlantic Flying Club annual slope soaring weekend",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "17:00",
+        "end": "2026-11-29"
+      }
+    ],
+    "venue": {
+      "name": "Rotary Way",
+      "address": "6475 Rotary Way",
+      "city": "Hermanus"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "fair_or_expo",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Atlantic Flying Club's annual slope soaring weekend on Rotary Way above Hermanus, hosted by Two Oceans Slope Soarers over three days. It suits model-glider enthusiasts and anyone curious to watch slope soaring on the mountain drive."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2095125201104743",
+    "url": "https://www.facebook.com/events/2095125201104743/",
+    "rawFile": "raw/facebook/2095125201104743-jambo-core-throwdown-2.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Jambo core Throwdown 2.0",
+    "summary": "A hybrid doubles race after Christmas: 7 workout stations, each separated by a 500m run.",
+    "description": "JAMBO CORE THROWDOWN 2.0\nA RACE AFTER CHRISTMAS.\n26 December 2026\nHermanus Cricket Ground\n8AM–12PM\nR450 per athlete.\nA hybrid race testing strength, endurance, stamina & teamwork.\nRACE FORMAT\n7 workout stations - each separated by a 500m run.\nCATEGORIES\n• Men's Doubles\n• Women's Doubles\n• Mixed Doubles\nRULES\n• Movement standards must be met\n• No rep = no count\n• Complete all prescribed work\n• Doubles stay together during the runs.\nEARN YOUR FINISH.\nJambo Core Fitness team",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-26",
+        "precision": "day",
+        "startTime": "08:00",
+        "endTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Cricket Ground",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 450,
+      "max": 450,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/398964-jambo-core-throwdown-20",
+    "hints": [
+      "Fitness & workouts"
+    ],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Jambo Core Throwdown 2.0, a hybrid fitness race on Boxing Day at Hermanus Cricket Ground: seven workout stations separated by 500m runs, for men's, women's and mixed doubles. Entry is R450 per athlete. It suits fit adults who want a strength and endurance challenge over the holidays."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2221759688737371",
+    "url": "https://www.facebook.com/events/2221759688737371/",
+    "rawFile": "raw/facebook/2221759688737371-just-care-aftercare-kerskonsert.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Just Care Aftercare Kerskonsert",
+    "summary": "An evening of Christmas music and festive atmosphere at Moffat Hall in Mount Pleasant.",
+    "description": "Kom geniet 'n aand vol Kersmusiek, vrolikheid en 'n wonderlike Kersatmosfeer! Dit gaan omtrent 'n \"show wees!!\n- 4 Desember 2026\n- 7pm\n- Moffat Saal in Mount Pleasant\nKaartjies kan by Just Care Aftercare gekoop word, of by die deur. Kaart masjien is beskikbaar.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "19:00"
+      }
+    ],
+    "venue": {
+      "name": "Moffat Hall, Mount Pleasant",
+      "address": "Dahlia Street",
+      "city": "Hermanus"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "holidays_and_celebrations",
+        "community_and_causes"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local",
+      "language": [
+        "afrikaans"
+      ]
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A Christmas concert by Just Care Aftercare at Moffat Hall in Mount Pleasant, Hermanus, promising an evening of Christmas music and cheer. Tickets are sold at Just Care Aftercare or at the door. It suits local families and Afrikaans speakers looking for a community Christmas show."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2362287811199671",
+    "url": "https://www.facebook.com/events/2362287811199671/",
+    "rawFile": "raw/facebook/2362287811199671-the-gift-market.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "The Gift Market",
+    "summary": "The 11th Gift Market, with over 200 bespoke exhibitors from gifts and decor to deli.",
+    "description": "The Gift Market will host the 11th market with over 200 bespoke exhibitors - from gifts, decor to deli.\n11 December 2026 - 3 January 2027\n10am - 6pm\nClosed only 25 December",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-11",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "18:00",
+        "end": "2027-01-03"
+      }
+    ],
+    "openingHours": "10:00 - 18:00 daily, closed 25 December",
+    "venue": {
+      "name": "Curro Hermanus",
+      "address": "1 Curro Road",
+      "city": "Sandbaai"
+    },
+    "hints": [
+      "Crafts"
+    ],
+    "attributes": {
+      "category": [
+        "hobbies_and_lifestyle",
+        "holidays_and_celebrations"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "christmas",
+      "craft"
+    ],
+    "profile": "The Gift Market's 11th holiday market at Curro in Sandbaai, with more than 200 exhibitors selling gifts, decor and deli goods. It is open daily from 11 December to 3 January, 10am to 6pm, except Christmas Day. It suits holiday shoppers looking for handmade and local gifts."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2942779296079650",
+    "url": "https://www.facebook.com/events/2942779296079650/",
+    "rawFile": "raw/facebook/2942779296079650-decorate-and-sip-afternoon.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Decorate & Sip Afternoon",
+    "summary": "Bubbles, platters and a lot of icing at Café Anna.",
+    "description": "You asked... we listened!\n*Decorate & Sip Afternoon*\nBubbles, platters and alot of icing!\nDate: 16 December 2026\nTime: 16h00\nPrice: R750 pp\nVenue: Café Anna Hermanus\nDon't miss out!\nElla's Eats\n0823111391",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-16",
+        "precision": "day",
+        "startTime": "16:00"
+      }
+    ],
+    "venue": {
+      "name": "Café Anna",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 750,
+      "max": 750,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "class_or_workshop",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A decorate-and-sip afternoon by Ella's Eats at Café Anna in Hermanus, with bubbles, platters and plenty of icing to decorate with. It costs R750 per person, booked by phone. It suits friends looking for a hands-on, social afternoon."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "3353478788374189",
+    "url": "https://www.facebook.com/events/3353478788374189/",
+    "rawFile": "raw/facebook/3353478788374189-arno-carstens-sandbaai-saal.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Arno Carstens Live at Sandbaai Saal, Hermanus",
+    "summary": "Arno Carstens's African Sunrise Summer Tour, with songs from his solo albums and the Springbok Nude Girls years.",
+    "description": "Hermanus, the African Sunrise Summer Tour is coming to Sandbaai Saal on Wednesday 30 December\nArno Carstens live with songs from his solo albums and the Springbok Nude Girls years. A summer evening of music in the heart of the Overberg.\nThe show starts at 6pm. There's a cash bar and a food truck on the night.\nTickets are limited, so book yours now",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-30",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Sandbaai Saal",
+      "city": "Sandbaai"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/407250-arno-carstens-african-sunrise-hermanus",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Arno Carstens plays songs from his solo albums and his Springbok Nude Girls years at Sandbaai Saal, as part of his African Sunrise Summer Tour. There is a cash bar and a food truck, and tickets are limited. It suits fans of South African rock."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "971584648929564",
+    "url": "https://www.facebook.com/events/971584648929564/",
+    "rawFile": "raw/facebook/971584648929564-nadine-live-in-hermanus.txt",
+    "fetchedAt": "2026-11-23T15:50:52+02:00",
+    "title": "Nádine live in Hermanus",
+    "summary": "Nádine live at Curro School, Sandbaai: music with purpose, in aid of Camphill Farm Community Hermanus.",
+    "description": "Nádine live in Hermanus! 5 December 2026 at Curro School, Sandbaai, Hermanus. Doors open at 18h30. Show starts at 19h00. Music with purpose - in aid of Camphill Farm Community Hermanus.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "Curro Hermanus",
+      "address": "Curro Way",
+      "city": "Sandbaai"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "community_and_causes"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "charity"
+    ],
+    "profile": "Singer Nádine performs at Curro School in Sandbaai in a concert in aid of Camphill Farm Community Hermanus. Doors open at 18:30 and the show starts at 19:00. It suits fans of Nádine and anyone who wants an evening of music for a cause."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "974875511884363",
+    "url": "https://www.facebook.com/events/974875511884363/",
+    "rawFile": "raw/facebook/974875511884363-somos-sunset-house-and-dining.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Somos presents sunset house&dining",
+    "summary": "An afternoon into evening of deep, tech, afro and soulful house with dining at Bossa Hermanus.",
+    "description": "Date:Sunday 20 dec 2026\nTime:15:00-22:00\nVenue:Bossa Hermanus(Jose Burman Dr)\nmusic:Deep,Tech,Afro,Soulful House\nTickets &Table bookings\n… See more",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-20",
+        "precision": "day",
+        "startTime": "15:00",
+        "endTime": "22:00"
+      }
+    ],
+    "venue": {
+      "name": "Bossa Hermanus",
+      "address": "Hermanus Sports Club, Jose Burman Dr",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://qkt.io/F8LYse",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "party",
+      "audience": "adults",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "electronic"
+    ],
+    "profile": "Somos hosts a sunset house-music session with dining at Bossa Hermanus, playing deep, tech, afro and soulful house from 15:00 to 22:00. Tickets and table bookings are on Quicket. It suits adults who like house music and a long sundowner."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "4522556314700854",
+    "url": "https://www.facebook.com/events/4522556314700854/",
+    "rawFile": "raw/facebook/4522556314700854-hermanus-christmas-market.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Hermanus Christmas Market",
+    "summary": "A Christmas pop-up market returning to the Overstrand Learning Hub.",
+    "description": "Hermanus... We're Back!\nYou asked, and we listened!\nWe're so excited to be returning to the Overstrand Learning Hub for a magical Christmas Pop-Up Market\nA huge thank you for inviting us back - we can't wait to see you on Thursday 11th & Friday 12th December, 10am - 5pm!\nSave the dates... it's going to be magical!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-10",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "17:00",
+        "end": "2026-12-11"
+      }
+    ],
+    "venue": {
+      "name": "The Overstrand Learning Hub",
+      "address": "10996 Royal St",
+      "city": "Hermanus"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "craft"
+    ],
+    "profile": "A two-day Christmas pop-up market at the Overstrand Learning Hub in Hermanus, run by Elegance and Grace, KILS Pottery and other makers. It suits holiday shoppers looking for local gifts."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1075197248440625",
+    "url": "https://www.facebook.com/events/1075197248440625/",
+    "rawFile": "raw/facebook/1075197248440625-that-80s-show-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "That '80s Show Live at Benguela Cove",
+    "summary": "Mike McCullagh and The Harmonix bring the music of the 1980s to Benguela Cove Lagoon Wine Estate.",
+    "description": "Mike McCullagh and The Harmonix bring the music of the 1980s to Benguela Cove Lagoon Wine Estate, near Hermanus. Expect Queen, Tina Turner, Journey, Madonna and more, with costume changes, an encore and plenty of singing along.\nDates: Saturday, 12 December 2026 • Saturday, 27 February 2027\nDoors open 18:30\nShow starts 19:30\nTICKETS\nWine Pairing Basket for 2 + Entry: R1 550 (two tickets, a picnic for two and a bottle of wine)\nGeneral Admission: R350 per person\nDinner first? Fire on the Lagoon at Moody Lagoon Restaurant cooks over open flames from 17:30, last seating 19:00.\nDress code: 80s, and the bolder the better.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-12",
+        "precision": "day",
+        "startTime": "19:30",
+        "endTime": "22:00"
+      },
+      {
+        "start": "2027-02-27",
+        "precision": "day",
+        "startTime": "19:30",
+        "endTime": "22:00"
+      }
+    ],
+    "venue": {
+      "name": "Benguela Cove Cellar Door",
+      "address": "R43",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 350,
+      "max": 1550,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://tinyurl.com/4t5re37b",
+    "hints": [
+      "Dance"
+    ],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "rock-and-pop",
+      "cabaret",
+      "wine"
+    ],
+    "profile": "Mike McCullagh and The Harmonix play 1980s hits from Queen, Tina Turner, Journey and Madonna, with costume changes and plenty of singing along, at Benguela Cove Lagoon Wine Estate near Hermanus. Doors open at 18:30 and the show starts at 19:30; general admission is R350, or R1,550 for two with a wine pairing basket. Moody Lagoon Restaurant serves dinner beforehand. It suits 80s fans who like to dress up."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1066531885823675",
+    "url": "https://www.facebook.com/events/1066531885823675/",
+    "rawFile": "raw/facebook/1066531885823675-christmas-eve-dinner-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Christmas Eve Dinner 2026",
+    "summary": "A festive Christmas Eve dinner at Moody Lagoon Restaurant overlooking the lagoon.",
+    "description": "Celebrate the magic of Christmas Eve with an unforgettable evening at Benguela Cove Wine Estate.\nOn Thursday, 24 December 2026, join us at Moody Lagoon Restaurant for a festive dining experience overlooking the tranquil waters of the lagoon. As the sun sets and the estate comes alive with Christmas cheer, enjoy exceptional cuisine, award-winning wines, and quality time with family and friends.\nChristmas Eve Dinner Highlights\n• Festive multi-course menu created by our Head Chef\n• Choice of honey-glazed gammon, stuffed chicken, or smoked roast beef\n• Decadent seasonal desserts, including Amarula Malva pudding and summer trifle\n• Family-friendly atmosphere with play areas, giant lawn games and a dedicated children's menu\n• Spectacular waterfront setting and sunset views\nDinner service from 18:00\nMoody Lagoon Restaurant, Benguela Cove Wine Estate, Hermanus\nLimited seating available\nA 50% deposit is required to secure your reservation.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-24",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Moody Lagoon Restaurant, Benguela Cove Lagoon Wine Estate",
+      "address": "R43 Botrivier Lagoon",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/christmas-eve-dinner-2026",
+    "hints": [
+      "Foods"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "holidays_and_celebrations"
+      ],
+      "format": "dining_event",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "wine"
+    ],
+    "profile": "A festive multi-course Christmas Eve dinner at Moody Lagoon Restaurant on Benguela Cove wine estate, with a choice of gammon, stuffed chicken or roast beef and seasonal desserts, overlooking the lagoon at sunset. There are play areas, lawn games and a children's menu, and a 50% deposit secures a table. It suits families celebrating Christmas Eve away from home."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "972858609141064",
+    "url": "https://www.facebook.com/events/972858609141064/",
+    "rawFile": "raw/facebook/972858609141064-christmas-lunch-moody-lagoon-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T15:56:39+02:00",
+    "title": "Christmas Lunch 2026 at Moody Lagoon Restaurant",
+    "summary": "Christmas Day lunch on the water's edge overlooking the lagoon at Benguela Cove Wine Estate.",
+    "description": "Celebrate Christmas Day the South African way with sunshine, spectacular views, exceptional food, and unforgettable family moments at Benguela Cove Wine Estate.\nJoin us on the water's edge for a festive Christmas celebration overlooking the lagoon\nChristmas Lunch Menu Highlights\nFamily-Friendly Festivities: Our specially designed Kids' Christmas Menu",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-25",
+        "precision": "day",
+        "startTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Moody Lagoon Restaurant, Benguela Cove Lagoon Wine Estate",
+      "address": "R43 Botrivier Lagoon",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/christmas-lunch-2026",
+    "hints": [
+      "Foods"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "holidays_and_celebrations"
+      ],
+      "format": "dining_event",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "wine"
+    ],
+    "profile": "Christmas Day lunch at Moody Lagoon Restaurant on Benguela Cove wine estate, by the lagoon, with a starter, a choice of roast beef, stuffed chicken or gammon, and dessert. A kids' Christmas menu makes it family friendly. It suits families spending Christmas on the Whale Coast."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1600545191625040",
+    "url": "https://www.facebook.com/events/1600545191625040/",
+    "rawFile": "raw/facebook/1600545191625040-great-gatsby-new-years-eve-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T16:04:37+02:00",
+    "title": "Great Gatsby New Year's Eve at Benguela Cove",
+    "summary": "A Great Gatsby New Year's Eve on the Bot River Lagoon, with a live DJ, a 360-degree video booth and a midnight countdown into 2027.",
+    "description": "Step onto the shores of the Bot River Lagoon and into the Roaring Twenties. This New Year's Eve, Benguela Cove transforms into a Great Gatsby scene for one night only, live DJ, premium sound and lighting, an unlimited 360-degree video booth, and a midnight countdown into 2027.\nDress the part: think flapper dresses, feathers and black tie glamour.\nWhat's included?\nStandard Ticket, from R850pp (early bird until 15 November): entry, welcome drink, DJ and sound, lighting, video booth, parking, midnight countdown and Gatsby-themed décor\nPicnic Basket Ticket, from R1,350pp: everything above, plus a picnic to enjoy in the New Year's Eve Area\nChildren's Ticket (under 12), R450: soft drinks and age-appropriate entertainment\nOnly 180 guests, so early booking is recommended.\nWant to make a full night of it? Book a table at Moody Lagoon Restaurant beforehand, or stay over in one of the estate's Waterfront Villas and skip the drive home.\nThursday, 31 December 2026 · 19:30–01:00\nBenguela Cove Lagoon Wine Estate, R43, Hermanus",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-31",
+        "precision": "day",
+        "startTime": "19:30",
+        "endTime": "01:00"
+      }
+    ],
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 450,
+      "max": 1350,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/new-years-eve-2026",
+    "hints": [
+      "Parties"
+    ],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "music"
+      ],
+      "format": "party",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "new-years-eve",
+      "electronic"
+    ],
+    "profile": "A Roaring Twenties New Year's Eve party at Benguela Cove on the Bot River Lagoon, with a live DJ, lighting, a 360-degree video booth and a midnight countdown into 2027. Tickets range from R450 for children under 12 to R1,350 for a picnic basket ticket, and only 180 guests are admitted. Guests are asked to dress the Gatsby part. It suits couples and families wanting a themed New Year's Eve near Hermanus."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "900597406456327",
+    "url": "https://www.facebook.com/events/900597406456327/",
+    "rawFile": "raw/facebook/900597406456327-andrew-young-live-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T16:05:35+02:00",
+    "title": "Andrew Young Live at Benguela Cove | 9 January 2027",
+    "summary": "An afternoon of live saxophone music beside the lagoon with Andrew Young.",
+    "description": "Andrew Young Live at Benguela Cove: an afternoon of live music beside the lagoon, with an evening still to come.\nSaturday, 9 January 2027 Doors 16:30 | Show 17:30 Benguela Cove Lagoon Wine Estate, R43, Walker Bay, Hermanus\nThe Saxophone Journal USA has called Andrew Young \"one of the most complete saxophone players in the world today.\" Expect Beatles classics, iconic movie themes, soul, rhythm and blues and rock, all transformed by his distinctive musicianship, humour and warmth. You do not need to love jazz to enjoy this show, you only need to enjoy good live music beside the water.\nMake a full afternoon of it. Moody Lagoon Restaurant serves à la carte lunch from 12:00 to 17:00 on the day, and gourmet picnic baskets are available on the lawns from 11:00 to 16:00. On-site villa accommodation is also available if you would like to stay the night.\nTickets R275 early bird (book by 30 November 2026) R300 general admission R150 children (4-12 years) Free under 4",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-01-09",
+        "precision": "day",
+        "startTime": "16:30"
+      }
+    ],
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 300,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/andrew-young-live-concert",
+    "hints": [
+      "Music & audio"
+    ],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "jazz",
+      "rock-and-pop",
+      "wine"
+    ],
+    "profile": "Saxophonist Andrew Young plays Beatles classics, movie themes, soul, rhythm and blues and rock beside the lagoon at Benguela Cove wine estate. Doors open at 16:30 and the show starts at 17:30; tickets are R300, R150 for children and free under 4, with lunch and picnic baskets available earlier. It suits anyone who enjoys good live music outdoors, not only jazz fans."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "28784394677845407",
+    "url": "https://www.facebook.com/events/28784394677845407/",
+    "rawFile": "raw/facebook/28784394677845407-dancing-queen-abba-experience-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T16:05:35+02:00",
+    "title": "Dancing Queen: The Ultimate ABBA Experience at Benguela Cove",
+    "summary": "Mike & The Harmonix return with their ABBA tribute show, followed by a post-show disco under the stars.",
+    "description": "After a completely sold-out performance in 2025, Mike & The Harmonix return to Benguela Cove with their spectacular tribute show, Dancing Queen: The Ultimate ABBA Experience.\nJoin us as our courtyard is transformed into a dazzling Greek island paradise for an unforgettable evening celebrating the timeless music of ABBA.\nSing along to all your favourites, including Dancing Queen, Mamma Mia, Waterloo, Gimme! Gimme! Gimme! and more, brought to life with incredible live vocals, authentic costumes, stunning staging, and all the glittering energy of the world's favourite pop group.\nAnd when the final curtain falls, the party continues with a post-show disco under the stars.\nTwo dates: 7 November 2026 • 30 January 2027\nDoors Open: 16:30\nMake a day of it Pre-book a picnic to collect on arrival, or enjoy an à la carte meal at Moody Lagoon Restaurant earlier in the day before the show.\nTicket Prices • Adults: R500 • Children (5-17 years): R325 • Family Bundle (2 Adults + 2 Children under 17): R1,450\nDust off your flares, gather your Dancing Queens and Super Troupers, and get ready for a night of nostalgia, fun, and unforgettable entertainment at Benguela Cove.\nBenguela Cove Wine Estate https://tinyurl.com/44msa9k9\nBook now. These shows are expected to sell out quickly!\n#DancingQueen #TheUltimateABBAExperience #ABBATribute #BenguelaCove #LiveMusic",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-01-30",
+        "precision": "day",
+        "startTime": "16:30"
+      }
+    ],
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43 Botrivier Lagoon",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 325,
+      "max": 1450,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://tinyurl.com/44msa9k9",
+    "hints": [
+      "Classics"
+    ],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "cabaret",
+      "rock-and-pop",
+      "wine"
+    ],
+    "profile": "Mike & The Harmonix perform their ABBA tribute show in the Benguela Cove courtyard, dressed as a Greek island, with live vocals, costumes and a post-show disco. Doors open at 16:30; adults pay R500, children R325 and a family bundle R1,450. It suits ABBA fans and families who like a sing-along night out."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1081742004236844",
+    "url": "https://www.facebook.com/events/1081742004236844/",
+    "rawFile": "raw/facebook/1081742004236844-the-blending-table-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T16:05:35+02:00",
+    "title": "The Blending Table at Benguela Cove | Create Your Own Wine",
+    "summary": "A hands-on wine experience where guests blend, bottle and label their own wine with the winemaker.",
+    "description": "Ever wondered what it takes to create the perfect wine blend?\nJoin us for The Blending Table, a new hands-on wine experience at Benguela Cove Lagoon Wine Estate, where you'll step into the role of winemaker for the morning.\nTaste four to six component wines from the current vintage and discover how each one contributes to the final blend. Guided by our winemaker, you'll experiment with different ratios, refine your creation, and craft a wine that reflects your personal taste.\nOnce you've perfected your blend, you'll compare it with the winemaker's own selection before bottling and labelling your wine to take home.\nEvery guest leaves with a bottle of their own creation.\nWhat's Included\nGuided wine blending session with the winemaker\nTasting of 4 to 6 component wines\nTasting notes and precision blending equipment\nBottling and labelling of your wine\nA personalised bottle to take home\nEvent Details\nSunday, 29 November 2026\n11:00 - 13:30\nBenguela Cove Lagoon Wine Estate, Hermanus\nR895 per person\nLimited to 20 guests\nWhether you're new to wine or a passionate enthusiast, The Blending Table offers a unique opportunity to learn, taste and create.\nSeats are strictly limited and expected to sell out.\nWine Club members receive access 48 hours before general release.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-29",
+        "precision": "day",
+        "startTime": "11:00",
+        "endTime": "13:30"
+      }
+    ],
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 895,
+      "max": 895,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/the-blending-table",
+    "hints": [
+      "Drinks"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "class_or_workshop",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "A guided wine-blending session with the Benguela Cove winemaker: guests taste four to six component wines, make their own blend, then bottle and label a bottle to take home. It is limited to 20 guests at R895 each. It suits wine lovers, from newcomers to enthusiasts."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1613591803750419",
+    "url": "https://www.facebook.com/events/1613591803750419/",
+    "rawFile": "raw/facebook/1613591803750419-cuvee-weekends-benguela-cove.txt",
+    "fetchedAt": "2026-11-23T16:05:35+02:00",
+    "title": "Cuvée Weekends at Benguela Cove",
+    "summary": "A sparkling brunch: two hours of freely poured Cuvée 58 Brut NV Cap Classique with any brunch or lunch dish.",
+    "description": "TWO HOURS OF BUBBLY. ONE VERY GOOD REASON TO BRUNCH.\nYour weekend plans, sorted. Join us at Moody Lagoon Restaurant at Benguela Cove Wine Estate for Cuvée Weekends, a sparkling brunch experience just outside Hermanus.\nFor R295 per person, enjoy two hours of freely poured Cuvée 58 Brut NV Cap Classique when you order any brunch or lunch dish.\nAdd delicious food, lagoon and mountain views, and your favourite people, and you have all the ingredients for a seriously good weekend.\nSaturdays, Sundays and public holidays, 11:00 - 13:00\nDon't leave your brunch plans to chance. Book your table, gather your people and let the bubbles flow.\nBOOK YOUR BUBBLY BRUNCH NOW: https://tinyurl.com/2r5p9wtt\nContact us 087 357 0637 • info@benguelacove.co.za",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA,SU",
+      "start": "2026-11-21",
+      "startTime": "11:00",
+      "endTime": "13:00"
+    },
+    "openingHours": "Saturdays, Sundays and public holidays, 11:00 - 13:00",
+    "venue": {
+      "name": "Moody Lagoon Restaurant, Benguela Cove Lagoon Wine Estate",
+      "address": "R43 Botrivier Lagoon",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 295,
+      "max": 295,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://tinyurl.com/2r5p9wtt",
+    "hints": [
+      "Foods"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "Weekend bubbly brunch at Moody Lagoon Restaurant on Benguela Cove wine estate: for R295 per person, two hours of freely poured Cap Classique with any brunch or lunch dish, with lagoon and mountain views. It runs on Saturdays, Sundays and public holidays from 11:00 to 13:00. It suits friends and couples wanting a long weekend brunch."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1644321573761925",
+    "url": "https://www.facebook.com/events/1644321573761925/",
+    "rawFile": "raw/facebook/1644321573761925-overberg-toy-run.txt",
+    "fetchedAt": "2026-11-23T16:06:26+02:00",
+    "title": "Overberg Toy Run",
+    "summary": "The annual Overberg Toy Run: motorcyclists ride toy-laden bikes from Hermanus, Gansbaai, Caledon and Bredasdorp to Stanford for underprivileged children.",
+    "description": "Toys taken for a ride on the wild side....\nAbout 400 motorcyclists took part in the annual Overberg Toy Run 2025, collecting more than three bakkie‑loads of toys for underprivileged children. Over 100 riders left Hermanus and another group from Gansbaai, meeting in Caledon before finishing at Birkenhead Brewery in Stanford. Bikes decked with teddy bears and Christmas colours rode the Hemel‑en‑Aarde and Akkedisberg routes, and donations were handed to Rotary clubs and community groups for regional distribution.\nMass rides start at 09h00 at Hermanus Whale Coast Mall Mac'Donalds, heading via Hemel-en-Aarde to Caledon, and at 09h00 from the Wimpy in Gansbaai, heading to Bredasdorp. Marshals will be there to guide you! 10h00 start at Caltex (near Casino) in Caledon and 10h00 start at Pavilion Mall, Bredasdorp - with all bikers from Gansbaai and Hermanus - to Stanford (Birkenhead Brewery). Remember to smile en route - there will be photographers capturing you, your pillion and toy-laden bikes!!!\nEnquiries: Eddie Noble +27 83 261 5675 | info@overbergtoyrun.co.za",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-29",
+        "precision": "day",
+        "startTime": "09:00",
+        "endTime": "14:00"
+      }
+    ],
+    "venue": {
+      "name": "Birkenhead Galley Restaurant, Walker Bay Estate",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "community_and_causes",
+        "hobbies_and_lifestyle",
+        "holidays_and_celebrations"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "motorsport",
+      "charity",
+      "christmas"
+    ],
+    "profile": "The annual Overberg Toy Run, when hundreds of motorcyclists carry toys for underprivileged children. Mass rides leave Hermanus Whale Coast Mall and Gansbaai at 09:00, regroup in Caledon and Bredasdorp, and finish at Birkenhead Brewery in Stanford. It suits bikers who want to ride for a cause and anyone who likes to watch a festive bike procession."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1800466375412197",
+    "url": "https://www.facebook.com/events/1800466375412197/",
+    "rawFile": "raw/facebook/1800466375412197-new-years-eve-family-day-landskein.txt",
+    "fetchedAt": "2026-11-23T16:06:26+02:00",
+    "title": "New Year's Eve Family Day",
+    "summary": "A New Year's Eve family day with a summer braai, DJ Adrian and plenty of fun.",
+    "description": "Summer Braai, DJ Adrian, and plenty of fun.\nGates open at 12:00.\nTickets on WebTickets.\nEnquiries: Allen 076 390 7443 | 028 054 0422",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-31",
+        "precision": "day",
+        "startTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "music"
+      ],
+      "format": "party",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "new-years-eve",
+      "electronic",
+      "wine"
+    ],
+    "profile": "A New Year's Eve family day at Landskein Wines near Stanford, with a summer braai, DJ Adrian and fun for all ages from noon. Tickets are on WebTickets. It suits families who want to see in the new year on a wine farm."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1827330151943437",
+    "url": "https://www.facebook.com/events/1827330151943437/",
+    "rawFile": "raw/facebook/1827330151943437-open-air-cinema-love-actually-landskein.txt",
+    "fetchedAt": "2026-11-23T16:06:26+02:00",
+    "title": "Open Air Cinema - Love Actually",
+    "summary": "An open-air screening of Love Actually at Landskein.",
+    "description": "Open Air Cinema - Love Actually.\nGates open at 17:00.\nTickets on WebTickets\nEnquiries: Allen 076 390 7443 | 028 054 0422",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-23",
+        "precision": "day",
+        "startTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "film",
+        "holidays_and_celebrations"
+      ],
+      "format": "screening",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "outdoor-cinema",
+      "christmas",
+      "wine"
+    ],
+    "profile": "An open-air screening of the Christmas film Love Actually at Landskein Wines near Stanford, with gates opening at 17:00. Tickets are on WebTickets. It suits couples and friends wanting a festive film night under the stars."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1111115151926179",
+    "url": "https://www.facebook.com/events/1111115151926179/",
+    "rawFile": "raw/facebook/1111115151926179-carols-by-candlelight-landskein.txt",
+    "fetchedAt": "2026-11-23T16:06:26+02:00",
+    "title": "Carols by Candlelight",
+    "summary": "Carols by candlelight with The Overberg Choir's 90 voices and guests Dezi Ray and Louna Stofberg.",
+    "description": "The Overberg Choir, 90 Voices, with guests Dezi Ray & Louna Stofberg. Tickets on WebTickets.\nEnquiries: Allen 076 390 7443 |\n028 054 0422",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-19",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "holidays_and_celebrations",
+        "faith_and_spirituality"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "choral"
+    ],
+    "profile": "Carols by candlelight at Landskein Wines near Stanford, sung by The Overberg Choir's 90 voices with guests Dezi Ray and Louna Stofberg. Tickets are on WebTickets. It suits families and anyone wanting a traditional Christmas carol evening."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1164398776009454",
+    "url": "https://www.facebook.com/events/1164398776009454/",
+    "rawFile": "raw/facebook/1164398776009454-summer-picnic-die-bron-primary.txt",
+    "fetchedAt": "2026-11-23T16:07:09+02:00",
+    "title": "Prosound and Effortless Events present Summer Picnic",
+    "summary": "A community summer picnic with local DJs at Die Bron Primary School.",
+    "description": "This December, we're bringing the community together for an unforgettable SUMMER PICNIC at Die Bron Primary School!\nEntertainment: Featuring our very own LOCAL DJs bringing you the best music, good vibes, and non-stop entertainment! Expect great music, summer vibes, good company, and an amazing atmosphere!\nLet's come together, support our local talent, and make memories this festive season! Spread the word, tag your friends, and get ready!\nTickets Will Be Sold From 23 November to 4 December @Die Bron Primary School(Cash Only).\nSaturday, 19 December. Gates open at 12:00\nAmber Barends 060 679 1581",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-19",
+        "precision": "day",
+        "startTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Die Bron Primary",
+      "address": "606 School Street",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "community_and_causes"
+      ],
+      "format": "party",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "electronic"
+    ],
+    "profile": "A summer picnic at Die Bron Primary School in Stanford with local DJs and summer vibes, from noon. Tickets are sold for cash at the school from 23 November to 4 December. It suits locals and visitors wanting a relaxed community day with music."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1174935688398301",
+    "url": "https://www.facebook.com/events/1174935688398301/",
+    "rawFile": "raw/facebook/1174935688398301-wine-and-cheese-market-landskein.txt",
+    "fetchedAt": "2026-11-23T16:07:09+02:00",
+    "title": "Wine & Cheese Market",
+    "summary": "A wine and cheese market with live music at Landskein.",
+    "description": "Live music.\nEnquiries: Allen 076 390 7443 | 028 054 0422",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-06",
+        "precision": "day",
+        "startTime": "10:00"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "A wine and cheese market with live music at Landskein Wines near Stanford, from 10 AM. It suits wine and cheese lovers looking for a relaxed Sunday on a farm."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1110826718358010",
+    "url": "https://www.facebook.com/events/1110826718358010/",
+    "rawFile": "raw/facebook/1110826718358010-doc-maclean-live-searles-stanford.txt",
+    "fetchedAt": "2026-11-23T16:07:09+02:00",
+    "title": "Doc Maclean Live",
+    "summary": "A night of legendary blues and stories with Doc Maclean at Searles Stanford.",
+    "description": "Join us on 5 December 2026 for an unforgettable night of Legendary Blues & Stories.\nBookings essential with Corne on 083 241 7211.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Searles Stanford",
+      "address": "112 Kortmark St",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "jazz",
+      "folk-and-acoustic"
+    ],
+    "profile": "Blues musician Doc Maclean plays a night of blues and stories at Searles Stanford. Bookings are essential, by phone. It suits blues fans looking for an intimate evening of live music."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2341971899970443",
+    "url": "https://www.facebook.com/events/2341971899970443/",
+    "rawFile": "raw/facebook/2341971899970443-whale-coast-symphony-orchestra-landskein.txt",
+    "fetchedAt": "2026-11-23T16:07:09+02:00",
+    "title": "Whale Coast Symphony Orchestra",
+    "summary": "An open-air evening of the greatest classical compositions under the Walker Bay sky at Landskein.",
+    "description": "Join us for an enchanting open-air evening as the Whale Coast Symphony Orchestra from neighbouring Hermanus takes us on an amble through the greatest compositions of the classical repertoire. Settle into your spot with blankets, cushions or camping chairs and enjoy timeless melodies under the Walker Bay sky at Landskein.\nTime: Gates open at 16:30 | Concert starts at 18:30.\nLandskein wines, refreshing drinks, wood-fired pizza, popcorn and snacks will be available for purchase.\nPlease note: No outside food or beverages are permitted.\nShould adverse weather conditions prevent the event from going ahead, guests will be notified via email.\nTickets: https://www.webtickets.co.za/v2/event.aspx... on Webtickets.\nEnquiries: Allen 076 390 7443 | 028 054 0422",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "classical",
+      "wine"
+    ],
+    "profile": "The Whale Coast Symphony Orchestra from Hermanus plays great works of the classical repertoire in the open air at Landskein Wines near Stanford. Gates open at 16:30 and the concert starts at 18:30; guests bring blankets or chairs, and wine, pizza and snacks are sold on site. Tickets are on WebTickets. It suits classical music lovers and families."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "28383741367974341",
+    "url": "https://www.facebook.com/events/28383741367974341/",
+    "rawFile": "raw/facebook/28383741367974341-stanford-100-miler.txt",
+    "fetchedAt": "2026-11-23T16:07:54+02:00",
+    "title": "Stanford 100 Miler",
+    "summary": "A professionally timed endurance event over 100, 50 or 25 miles, starting and finishing at Stanford Hills Estate.",
+    "description": "The start & finish will be at the lush Stanford Hills Estate.\n100 Miler - 169km - 2358m elevation - Start 07:30 - Strictly enforced 10-hour cut-off.\n50 Miler - 77km - 1365m elevation - Start 08:30 - Strictly enforced 6-hour cut-off.\n25 Miler - 40km - 500m elevation - Start 09:30 - Strictly enforced 4-hour cut-off.\nRegistration will take place at Stanford Hills Estate from 17:00 on 04 December 2026 and from 05:30 to 06:30 on race morning, 05 December. The route will be professionally timed.\nA fully functional GPS device is essential.\nFull medical backup.\n5 refreshment stations (100-mile).\n3 refreshment stations (50-mile).\n1 refreshment station (25-mile)\nwww.thestanford100miler.co.za",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "07:30"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.thestanford100miler.co.za",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [],
+    "profile": "The Stanford 100 Miler starts and finishes at Stanford Hills Estate, with 169km, 77km and 40km distances and strict cut-offs. The route is professionally timed, with refreshment stations and full medical backup; registration opens the evening before. It suits experienced endurance athletes."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2293974867830613",
+    "url": "https://www.facebook.com/events/2293974867830613/",
+    "rawFile": "raw/facebook/2293974867830613-christmas-carols-village-walk-stanford.txt",
+    "fetchedAt": "2026-11-23T16:07:54+02:00",
+    "title": "Christmas Carols Village Walk",
+    "summary": "A Christmas carols walk through Stanford village, starting at The Green.",
+    "description": "Starts at The Green\nEnquiries: Danielle Sadie - 072 993 9792",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "17:30"
+      }
+    ],
+    "venue": {
+      "name": "The Village Green",
+      "address": "17 Queen Victoria St",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "community_and_causes"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A Christmas carols walk through Stanford village, starting at the Village Green at 17:30. It suits families and visitors who want to sing carols with the village."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1435321238094300",
+    "url": "https://www.facebook.com/events/1435321238094300/",
+    "rawFile": "raw/facebook/1435321238094300-jannie-du-toit-ramkiekie-stanford.txt",
+    "fetchedAt": "2026-11-23T16:07:54+02:00",
+    "title": "JANNIE DU TOIT - RAMKIEKIE",
+    "summary": "Jannie du Toit in Stanford, at Searles.",
+    "description": "Jannie Du Toit in Stanford.\nBookings essential with Corne on 083 241 7211.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-10",
+        "precision": "day",
+        "startTime": "19:00"
+      }
+    ],
+    "venue": {
+      "name": "Searles Stanford",
+      "address": "21 Queen Victoria Street",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "folk-and-acoustic"
+    ],
+    "profile": "Singer Jannie du Toit performs his Ramkiekie show at Searles in Stanford. Bookings are essential, by phone. It suits fans of Afrikaans music looking for an intimate evening."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "3657024141134067",
+    "url": "https://www.facebook.com/events/3657024141134067/",
+    "rawFile": "raw/facebook/3657024141134067-raiders-of-the-lost-ark-open-air-cinema-landskein.txt",
+    "fetchedAt": "2026-11-23T16:07:54+02:00",
+    "title": "Raiders of the Lost Ark: Open-Air Cinema at Landskein",
+    "summary": "Raiders of the Lost Ark (1981) screened in the amphitheatre under the fairy lights and the Stanford sky.",
+    "description": "Dust off your fedora: Indiana Jones is coming to Landskein.\nSaturday 28 November\nGates open at 17:00 · Movie starts at 19:30\nWe're screening Raiders of the Lost Ark (1981) in the amphitheatre, under the fairy lights and the Stanford sky.\nCome early, find your spot and settle in with a glass of Landskein wine, a wood-fired pizza and some popcorn from the bar.\nBring blankets, cushions or camping chairs, and a warm layer for when the sun goes down. Outside food and drinks aren't allowed. If the weather turns, we'll let ticket holders know by email.\nBook your tickets here: https://www.webtickets.co.za/v2/event.aspx?itemid=1607498579",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607498579",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "film"
+      ],
+      "format": "screening",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "outdoor-cinema",
+      "wine"
+    ],
+    "profile": "An open-air screening of Raiders of the Lost Ark in the amphitheatre at Landskein Wines near Stanford. Gates open at 17:00 and the film starts at 19:30; wine, wood-fired pizza and popcorn are sold, and guests bring blankets or chairs. It suits film fans, families and couples."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1025110826732949",
+    "url": "https://www.facebook.com/events/1025110826732949/",
+    "rawFile": "raw/facebook/1025110826732949-christmas-market-2026-rivergate-stanford.txt",
+    "fetchedAt": "2026-11-23T16:08:42+02:00",
+    "title": "Christmas Market 2026",
+    "summary": "Rivergate Guest Farm's annual December Christmas Market with over 80 local artisans, deli treats, wine, craft beer and live music.",
+    "description": "Join us at Rivergate Guest Farm for our highly anticipated annual December Christmas Market. Gather your family and friends for a beautiful summer day out in the tranquil Stanford countryside.\nDiscover a curated selection of over 80 amazing local artisans and small businesses showcasing unique gifts, clothing, jewellery, ceramics, and festive decor. It is the perfect opportunity to complete your holiday shopping while supporting local entrepreneurs.\nWhile you shop, stock your pantry with delicious deli treats, artisanal cheeses, and fresh bread. Sip on local wines, craft beers, and boutique gins, or enjoy a freshly brewed coffee or smoothie while soaking in the vibrant farm atmosphere.\nRelax on the lawns, say hello to our friendly alpacas and miniature donkeys, and enjoy live music under the summer sun.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-13",
+        "precision": "day",
+        "startTime": "09:00"
+      }
+    ],
+    "venue": {
+      "name": "Rivergate Guest Farm",
+      "address": "Wortelgat Road",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "food_and_drink",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "christmas",
+      "craft",
+      "wine",
+      "craft-beer",
+      "gin"
+    ],
+    "profile": "Rivergate Guest Farm's annual Christmas market in the Stanford countryside, with over 80 local artisans selling gifts, clothing, jewellery, ceramics and decor. There are deli treats, cheeses, local wines, craft beers and gins, live music, and alpacas and miniature donkeys to meet. It suits families and holiday shoppers wanting a summer day out on a farm."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1667973471528679",
+    "url": "https://www.facebook.com/events/1667973471528679/",
+    "rawFile": "raw/facebook/1667973471528679-watershed-live-stanford-hills.txt",
+    "fetchedAt": "2026-11-23T16:08:42+02:00",
+    "title": "Watershed LIVE at Stanford Hills",
+    "summary": "Watershed play an afternoon of big tunes on a big stage at Stanford Hills, with support from Keanan Eksteen.",
+    "description": "Just a stone’s throw from Hermanus, Stanford Hills is one of South Africa’s favourite live music venues, set among green lawns with a beautiful view of the mountains.\nJoin Watershed for an afternoon of big tunes, a big stage and the kind of sunset that makes you want to stay a little longer. We’d love to see you there.\nTHINGS TO NOTE:\nGATES OPEN: 3:00 pm\nSUPPORT ACT: 4:30PM (Keanan Eksteen)\nWATERSHED on 6PM\nVenue: Stanford Hills, Stanford\nTickets\nAdults: R280–R360\nChildren (5–13): R180–R220\nChildren under 5: Free\nNO FOOD OR DRINK TO BE BROUGHT INTO THE VENUE - THIS IS AVAILABLE THROUGH THE VENUE\nGuests may bring picnic blankets and low chairs for the grass. There are shade areas available on first come first served basis",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-21",
+        "precision": "day",
+        "startTime": "16:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 360,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/406446-watershed-live-at-stanford-hills",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop",
+      "wine"
+    ],
+    "profile": "South African band Watershed play an outdoor show on the lawns of Stanford Hills, with Keanan Eksteen in support. Gates open at 15:00; adults pay R280 to R360, children R180 to R220 and under-5s go free, and food and drink are sold on site. Guests may bring blankets and low chairs. It suits families and fans of South African pop-rock."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2070690266880078",
+    "url": "https://www.facebook.com/events/2070690266880078/",
+    "rawFile": "raw/facebook/2070690266880078-jannie-moolman-petronel-baard-searles-stanford.txt",
+    "fetchedAt": "2026-11-23T16:10:25+02:00",
+    "title": "Jannie Moolman & Petronel Baard",
+    "summary": "Jannie Moolman and Petronel Baard's “Alles wat mooi is” production, now with Christmas music, at Searles Stanford.",
+    "description": "Jannie Moolman en Petronel Baard!\n“Alles wat mooi is” produksie.\nHul kombineer liedere uit hul wye repetoire en belangstellings met humor, ‘n vrolike gekorswel en pragtige sang.\nAnders as met hul vertoning “Wat die hart van vol is” wat in 2025 landwyd getoer het en net Afrikaanse musiek bevat het, sluit hul nuwe musiekavontuur saam ook die allermooiste liedere van dwarsoor die wêreld in en nou ook, vir die seisoentyd, Kersmusiek.\n“Lisa se Klavier”, “Hymne à l’Amour, “Don’t cry for me Argentina”, “Stille Nag”, “Stille Nag van Vrede”, “O Holy Night”, “Ave Maria” en vele meer kom hang die perfekte ster op jou Kersboom saam met hierdie twee talentvolle, gewilde sangers.\nMet Franco Engelbrecht op klavier.\nDate: Vrydag 18 Desember 2026\nTyd: 18h30\nKoste' R220pp\nBespreek by Corne - 083 241 7211\n#kersfeesmusiek #searlesstanford #lekkervibes #supportlocal #localmusicians",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-18",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Searles Stanford",
+      "address": "21 Queen Victoria Street",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 220,
+      "max": 220,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music",
+        "holidays_and_celebrations"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local",
+      "language": [
+        "afrikaans"
+      ]
+    },
+    "tags": [
+      "christmas",
+      "cabaret"
+    ],
+    "profile": "Singers Jannie Moolman and Petronel Baard, with Franco Engelbrecht on piano, bring their Afrikaans music show “Alles wat mooi is” to Searles in Stanford, mixing songs from around the world, humour and Christmas music. Tickets are R220, booked by phone. It suits Afrikaans speakers and lovers of song."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1884487292985491",
+    "url": "https://www.facebook.com/events/1884487292985491/",
+    "rawFile": "raw/facebook/1884487292985491-sterling-eq-landskein.txt",
+    "fetchedAt": "2026-11-23T16:08:42+02:00",
+    "title": "Sterling EQ at Landskein",
+    "summary": "Classical music with a bold contemporary twist from all-female crossover ensemble Sterling EQ, beneath the open sky.",
+    "description": "Classical music with a bold contemporary twist, beneath the open sky.\nThursday 17 December\nGates open at 17:00 · Concert starts at 19:30\nSterling EQ, South Africa's all-female crossover ensemble and SAMA winners, join us in the amphitheatre at Landskein for an evening of soaring melodies under the Stanford sky.\nCome early, find your spot and settle in with a glass of Landskein wine and a wood-fired pizza from the bar.\nBring blankets, cushions or camping chairs, and something warm for when the sun goes down. Outside food and drinks aren't allowed. If the weather turns, we'll let ticket holders know by email.\nBook your tickets here: https://www.webtickets.co.za/v2/event.aspx?itemid=1607764459",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-17",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein Wines - The Parlour",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607764459",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "classical",
+      "wine"
+    ],
+    "profile": "Sterling EQ, an all-female crossover ensemble and SAMA winners, play classical music with a contemporary twist in the open-air amphitheatre at Landskein Wines near Stanford. Gates open at 17:00 and the concert starts at 19:30; wine and wood-fired pizza are sold. It suits classical and crossover music lovers."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1996202921336387",
+    "url": "https://www.facebook.com/events/1996202921336387/",
+    "rawFile": "raw/facebook/1996202921336387-stanford-stumble.txt",
+    "fetchedAt": "2026-11-23T16:09:31+02:00",
+    "title": "Stanford Stumble",
+    "summary": "A dress-up charity walk for the Butterfly Centre, with live music, food, wine, kids' activities and prizes.",
+    "description": "Dress Up. Butterfly Centre charity event. Live Music. Food. Wine. Kids activities. Prizes.\nWHERE: Stanford Hills Estate\nWalk starts at 13:00. Regsitration from12:00.\nEnquiries: 066 250 3388",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "13:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Off R43",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "fair_or_expo",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "charity",
+      "wine"
+    ],
+    "profile": "The Stanford Stumble, a dress-up walk at Stanford Hills Estate in aid of the Butterfly Centre, with live music, food, wine, kids' activities and prizes. Registration is from 12:00 and the walk starts at 13:00. It suits families and groups of friends who like a fun day for a cause."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1114314831518645",
+    "url": "https://www.facebook.com/events/1114314831518645/",
+    "rawFile": "raw/facebook/1114314831518645-pizza-and-sauvignon-blanc-landskein.txt",
+    "fetchedAt": "2026-11-23T16:09:31+02:00",
+    "title": "Pizza & Sauvignon Blanc",
+    "summary": "Friday night pizza evening: a Landskein traditional Italian pizza with a glass of Landskein Horizon Sauvignon Blanc.",
+    "description": "Friday Night Pizza Evenings\nR 150 pp: 1 x Landskein Traditional Italian Pizza; 1 x Glass Landskein Horizon Sauvignon Blanc 2023\nWHERE: The Amphitheatre at Landskein Wines\nWHEN: Fridays 13, 20 and 27 November 2026 from 17:00 - 21:00\nCONTACT: Allen 076 390 7443 | 028 054 0422",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "17:00",
+        "endTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "The Amphitheatre at Landskein Wines",
+      "address": "Kleinrivier Farm No. RE/646, R43",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 150,
+      "max": 150,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "A Friday pizza evening in the amphitheatre at Landskein Wines near Stanford: R150 buys a traditional Italian pizza and a glass of the estate's Sauvignon Blanc. It suits anyone wanting a casual evening on a wine farm."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1735054877978327",
+    "url": "https://www.facebook.com/events/1735054877978327/",
+    "rawFile": "raw/facebook/1735054877978327-stanford-festive-market.txt",
+    "fetchedAt": "2026-11-23T16:09:31+02:00",
+    "title": "Stanford Festive Market",
+    "summary": "The Stanford Festive Market, starting on the evening the Stanford Christmas lights are switched on.",
+    "description": "Our Stanford Festive Market will start on Friday evening, 11 December, the evening of the official switching on of the Stanford Christmas lights, with the whole town celebrating.\nEnquiries 083 530 4968",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-11",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "21:30"
+      },
+      {
+        "start": "2026-12-12",
+        "precision": "day"
+      },
+      {
+        "start": "2026-12-13",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Flower Building",
+      "address": "32 Queen Victoria Street",
+      "city": "Stanford"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A festive market in the Flower Building on Queen Victoria Street, Stanford. It opens on Friday 11 December, the evening the Stanford Christmas lights are switched on, with the whole town celebrating. It suits holiday shoppers and families visiting the village in December."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2002831010298860",
+    "url": "https://www.facebook.com/events/2002831010298860/",
+    "rawFile": "raw/facebook/2002831010298860-spoegwolf-en-deon-meiring-stanford-hills.txt",
+    "fetchedAt": "2026-11-23T16:10:25+02:00",
+    "title": "Spoegwolf en Deon Meiring by Stanford Hills",
+    "summary": "Spoegwolf's yearly summer Christmas show on the lawns of Stanford Hills, with Deon Meiring.",
+    "description": "Spoegwolf kom een keer 'n jaar na die mooi Suid-Afrikaanse kus. Daar sit ons liggies en kersfeesbome solank op - en begin die sing en drink op 'n enorme skaal. Meer klank, meer musiek, meer gees - meer vibes vir die wêreld se mooiste Somerkersfees.\nStanford Hills is ons gunstelling manier om die toer en Desembervakansie af te skop en is elke jaar 'n groot vibe op die mooi grasperk.\nDeure maak 15:00 oop\n17:00 - Deon Meiring\n18:00 - Spoegwolf\nAlle ouderdomme welkom! Kinders onder 5 jaar kan gratis inkom.\nBring jou eie piekniek kombers en stoel as jy wil. Geen eie kos of drank word ingelaat nie.\nKaartjies:\nhttps://itickets.co.za/events/487716",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-16",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Off R43",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://itickets.co.za/events/487716",
+    "hints": [
+      "Music & audio"
+    ],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional",
+      "language": [
+        "afrikaans"
+      ]
+    },
+    "tags": [
+      "rock-and-pop",
+      "christmas"
+    ],
+    "profile": "Afrikaans band Spoegwolf play their yearly summer Christmas show on the lawns of Stanford Hills, with Deon Meiring at 17:00 and Spoegwolf at 18:00. Doors open at 15:00, all ages are welcome and under-5s go free; guests may bring blankets and chairs but not their own food or drink. It suits fans of Afrikaans rock and families."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1624250925916686",
+    "url": "https://www.facebook.com/events/1624250925916686/",
+    "rawFile": "raw/facebook/1624250925916686-stanford-sunset-market.txt",
+    "fetchedAt": "2026-11-23T16:10:25+02:00",
+    "title": "Stanford Sunset Market",
+    "summary": "An outdoor food market on the Village Green: come for supper and stay for the vibe.",
+    "description": "All welcome to this outdoor food market. Come for supper on the Village Green and stay for the vibe. Free entrance, free parking. Locally made food and drink; gifts and deli products also available.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "20:00"
+      },
+      {
+        "start": "2026-12-11",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Village Green",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "An outdoor Friday-evening food market on the Village Green in Stanford, with locally made food and drink, gifts and deli products. Entrance and parking are free. It suits visitors looking for an easy supper with locals."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2075292713088686",
+    "url": "https://www.facebook.com/events/2075292713088686/",
+    "rawFile": "raw/facebook/2075292713088686-bettys-bay-community-market.txt",
+    "fetchedAt": "2026-11-23T16:10:25+02:00",
+    "title": "Betty's Bay Community Market",
+    "summary": "A community market at Crassula Hall where vendors serve something yummy, rain or shine.",
+    "description": "Join our locals for something yummy and for that special something you might need. Rain or shine our vendors are always ready to serve you. For more info 0731990896.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "15:00"
+      },
+      {
+        "start": "2026-12-12",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Crassula Hall",
+      "address": "4199 Crassula Ave",
+      "city": "Betty's Bay"
+    },
+    "hints": [
+      "Shopping"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A Saturday community market at Crassula Hall in Betty's Bay, where local vendors sell food and gifts, rain or shine. It suits visitors who want to browse and eat with locals."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1125658120114585",
+    "url": "https://www.facebook.com/events/1125658120114585/",
+    "rawFile": "raw/facebook/1125658120114585-rosoberry-harvest-fest-2026.txt",
+    "fetchedAt": "2026-11-23T16:11:19+02:00",
+    "title": "Rosoberry Harvest Fest 2026",
+    "summary": "Berry picking, good food, live music and a whole farm to explore at Hermanus River Farm.",
+    "description": "A berry good day at the farm\nBerry picking, good food, live music and a whole farm to explore!\nJoin us for the second Rosoberry Harvest Fest at Hermanus River Farm — a relaxed, family-friendly celebration of berry season, local food and summer in the Overstrand.\nYour ticket includes berry picking! You’ll receive one full punnet and one empty punnet on arrival, so you can enjoy picking and eating berries throughout the day. Want to take more home? Additional punnets will be available to purchase.\nCome hungry! Enjoy a taste of the Overberg with:\n* Hermanus River Farm's grass-fed beef in brisket bowls and espetadas by Agteros Heritage Table and boerie rolls\n* Poke bowls by Poke Oukie\n* Ice cream by You Scream Ice Cream\n* Belgian-style ales from Honingklip Brewery\n* Local wine from Gabrielskloof\nBrowse fresh farm produce and berry plants from Rosoberry Nursery, relax under the trees to live music by some fantastic artists including Craig Vee, Takura Terry, CJ Bergh, Emma Minke, and Mike Fabricius, and explore our beautiful 2.5 km waterfall walking trail.\nIncluded in your ticket there’s plenty for the kids too, with tractor rides, face painting and lawn games!\nSaturday, 28 November 2026\n10am–5pm\nHermanus River Farm, on the R44 near Kleinmond https://maps.app.goo.gl/7zU4y5bLFkyNZ34BA?g_st=ac\nAdults R200 | Children under 12 R70 https://qkt.io/harvestfest26\nBring a picnic blanket and camping chair, settle in and make a day of it - and if you want to make a weekend of it, our campsite will be open with limited sites available. Enquire directly to book a site.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "17:00"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus River Farm",
+      "address": "R44",
+      "city": "Kleinmond",
+      "position": {
+        "lat": -34.305034,
+        "lng": 19.134396
+      }
+    },
+    "price": {
+      "min": 70,
+      "max": 200,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://qkt.io/harvestfest26",
+    "hints": [
+      "Foods"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "music",
+        "outdoor_and_adventure"
+      ],
+      "format": "festival",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "harvest",
+      "craft-beer",
+      "wine",
+      "hiking"
+    ],
+    "profile": "The second Rosoberry Harvest Fest at Hermanus River Farm near Kleinmond: tickets include berry picking, and there is Overberg food, Honingklip ales and Gabrielskloof wine, live music, a 2.5 km waterfall trail, tractor rides and face painting. Adults pay R200 and children under 12 R70, and the farm campsite is open. It suits families wanting a full day on a farm."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1086589230627082",
+    "url": "https://www.facebook.com/events/1086589230627082/",
+    "rawFile": "raw/facebook/1086589230627082-christof-van-der-berg-stories-en-sterre-kleinmond.txt",
+    "fetchedAt": "2026-11-23T16:11:19+02:00",
+    "title": "Christof van der Berg - Stories en Sterre | Kleinmond",
+    "summary": "Christof van der Berg and his piano in an enchanting evening of music and stories, with a guest male choir.",
+    "description": "Christof van der Berg en sy klavier in 'n betowerende aand van musiek en stories in Kleinmond. Aangebied deur die \"moving Guelph teater\" met 'n baie spesiale gasoptrede deur die mannekoor onder leiding van Thinus Ries. Die vertoning begin om 19:00",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-25",
+        "precision": "day",
+        "startTime": "19:00"
+      }
+    ],
+    "venue": {
+      "city": "Kleinmond"
+    },
+    "bookingUrl": "https://www.christofvanderberg.com/copy-of-bordienghuis",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local",
+      "language": [
+        "afrikaans"
+      ]
+    },
+    "tags": [
+      "choral"
+    ],
+    "profile": "Pianist Christof van der Berg presents an evening of music and stories in Kleinmond, with a guest male choir led by Thinus Ries. The show starts at 19:00. It suits Afrikaans speakers who enjoy piano music and storytelling."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "4503707463200522",
+    "url": "https://www.facebook.com/events/4503707463200522/",
+    "rawFile": "raw/facebook/4503707463200522-a-christmas-story-pringle-bay.txt",
+    "fetchedAt": "2026-11-23T16:11:19+02:00",
+    "title": "A Christmas Story",
+    "summary": "An afternoon of music, literature and community giving: a Christmas reading by Dorian Haarhoff with cello and clarinet.",
+    "description": "Join us for an enchanting afternoon of music, literature and community giving\nReader: Dorian Haarhoff\nCello: Barbara Kennedy\nClarinet: Frances Brand\nA special Christmas reading from the beloved South African story\nDonations at the door:\nAdults R120\nChildren R60\nSupporting KidsCan After School Care & Learning Centre in Kleinmond\nLet's build a brighter future for our children together",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-15",
+        "precision": "day",
+        "startTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Menucha Coffee and Crafts",
+      "address": "Menucha Building, 15 Peak Road",
+      "city": "Pringle Bay"
+    },
+    "price": {
+      "min": 60,
+      "max": 120,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "culture_and_heritage",
+        "music",
+        "holidays_and_celebrations",
+        "community_and_causes"
+      ],
+      "format": "talk",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "books",
+      "christmas",
+      "charity"
+    ],
+    "profile": "A Christmas reading of a beloved South African story by Dorian Haarhoff, with cello and clarinet, at Menucha Coffee and Crafts in Pringle Bay. Donations at the door (R120 adults, R60 children) support KidsCan After School Care & Learning Centre in Kleinmond. It suits book lovers and families."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "29694026440283576",
+    "url": "https://www.facebook.com/events/29694026440283576/",
+    "rawFile": "raw/facebook/29694026440283576-2027-isa-miniature-convention-kleinmond.txt",
+    "fetchedAt": "2026-11-23T16:11:19+02:00",
+    "title": "2027 ISA Miniature Convention",
+    "summary": "Save the date: the ISA Miniature Convention, 6 - 10 September 2027 at the Grail, Kleinmond.",
+    "description": "Save the date: ISA Miniature Convention, 6 - 10 September 2027 at the Grail, Kleinmond. Book out your calendar! You don't want to miss this! ���",
+    "type": "single",
+    "status": "announced",
+    "booking": "not_yet",
+    "sessions": [
+      {
+        "start": "2027-09-06",
+        "precision": "day",
+        "startTime": "08:30",
+        "endTime": "13:30",
+        "end": "2027-09-10"
+      }
+    ],
+    "venue": {
+      "name": "The Grail",
+      "city": "Kleinmond"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "conference",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "major"
+    },
+    "tags": [],
+    "profile": "The 2027 ISA Miniature Convention, a five-day gathering at the Grail in Kleinmond from 6 to 10 September 2027, announced as a save-the-date. It suits miniature makers and collectors."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1436173424679764",
+    "url": "https://www.facebook.com/events/1436173424679764/",
+    "rawFile": "raw/facebook/1436173424679764-inniebos-market-kleinmond-saturday.txt",
+    "fetchedAt": "2026-11-23T16:12:11+02:00",
+    "title": "Inniebos Market Kleinmond",
+    "summary": "The Inniebos Market at Kleinmond Town Hall, on a Friday evening and a Saturday.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "17:00",
+        "endTime": "21:00"
+      },
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "09:00",
+        "endTime": "14:00"
+      }
+    ],
+    "venue": {
+      "name": "Kleinmond Town Hall",
+      "city": "Kleinmond"
+    },
+    "hints": [],
+    "attributes": {
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Inniebos Market at Kleinmond Town Hall, open on Friday evening 27 November and Saturday morning 28 November. The listing gives no further detail. It suits visitors in Kleinmond who like to browse a local market."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "972751975621996",
+    "url": "https://www.facebook.com/events/972751975621996/",
+    "rawFile": "raw/facebook/972751975621996-groeneweide-mark-franskraal.txt",
+    "fetchedAt": "2026-11-23T16:12:11+02:00",
+    "title": "Groeneweide Mark",
+    "summary": "A farm day at Groeneweide: wander, browse, eat something good and enjoy the day.",
+    "description": "� Desember is kuiertyd op Groeneweide!\n'n Bietjie rondloop, 'n bietjie rondsnuffel, iets lekkers eet en sommer net die dag geniet!\nBring jou familie, nooi jou vriende en kom geniet 'n heerlike plaasdag saam met ons.\n� Saterdag 5 Desember\nKom vir iets. Bly vir alles! �\n#GroeneweidePlaas #Franskraal #Gansbaai #Maandmark #Plaasmark #DesemberKuier #OndersteunPlaaslik #Overberg",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Groeneweide Farm",
+      "city": "Franskraal"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A December farm market day at Groeneweide Farm in Franskraal, near Gansbaai: wander around, browse the stalls and eat something good. It suits families and friends wanting a relaxed day on a farm."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1667254398169353",
+    "url": "https://www.facebook.com/events/1667254398169353/",
+    "rawFile": "raw/facebook/1667254398169353-bbc-bioblitzing-stony-point.txt",
+    "fetchedAt": "2026-11-23T16:13:04+02:00",
+    "title": "BBC Bioblitzing",
+    "summary": "An iNaturalist workshop at Stony Point, followed by an informal bioblitz around the area.",
+    "description": "Betty's Bay Conservancy is hosting an iNat workshop at Stony Point, presented by Magriet Brink with support from BBC and Kogelberg CREW volunteers.\nThe meeting will be held at Stony Point EcoVenue and afterwards Magriet will lead an informal bioblitz around the area.\nPlease RSVP to bettysbayconservancy@gmail.com or 079 753 0166",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "14:00",
+        "endTime": "15:30"
+      }
+    ],
+    "venue": {
+      "name": "Stony Point EcoVenue",
+      "city": "Betty's Bay"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "class_or_workshop",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "fynbos"
+    ],
+    "profile": "Betty's Bay Conservancy hosts an iNaturalist workshop at the Stony Point EcoVenue, presented by Magriet Brink, followed by an informal bioblitz to record species around the area. RSVP by email or phone. It suits nature lovers who want to learn to record what they find."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2320106695510430",
+    "url": "https://www.facebook.com/events/2320106695510430/",
+    "rawFile": "raw/facebook/2320106695510430-kogelberg-botanical-society-bioblitz.txt",
+    "fetchedAt": "2026-11-23T16:13:04+02:00",
+    "title": "Kogelberg Botanical Society Bioblitz",
+    "summary": "A Kogelberg Botanical Society bioblitz on the Betty's Bay mountains.",
+    "description": "Kogelberg Botanical Society is doing a blitz on the Betty's Bay mountains behind Peter and Michael Dall's houses. Meet Adele Scheepers at 8:30 on the corner of Mountain and Broadwith Road.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "08:30"
+      }
+    ],
+    "venue": {
+      "name": "Corner of Mountain and Broadwith Road",
+      "city": "Betty's Bay"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "nature_and_wildlife",
+        "outdoor_and_adventure"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "fynbos",
+      "hiking"
+    ],
+    "profile": "A Kogelberg Botanical Society bioblitz on the mountain slopes of Betty's Bay, meeting at 8:30 on the corner of Mountain and Broadwith Road. Participants walk and record plants and other species. It suits botanists and keen walkers interested in fynbos."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2022407895813409",
+    "url": "https://www.facebook.com/events/2022407895813409/",
+    "rawFile": "raw/facebook/2022407895813409-raaf-pringle-bay-fomo.txt",
+    "fetchedAt": "2026-11-23T16:13:04+02:00",
+    "title": "RAAF",
+    "summary": "RAAF bring their concert and their 'Raafontuur' wine to FOMO in Pringle Bay.",
+    "description": "Buy your tickets here\nhttps://www.quicket.co.za/.../402967-raaf-pringle-bay-fomo/\nRAAF IN PRINGLE BAY | FOMO\nPringle Bay, RAAF is coming to visit!\nCome and enjoy a delightful summer evening with Esté and Lourens at FOMO!\nRAAF is bringing their iconic concert to Pringle Bay—along with their delicious 'Raafontuur' wine—for an evening filled with music, stories, laughter, and, of course, that special RAAF energy!\nJoin us with friends and family and get ready for an unforgettable RAAF performance!\nSATURDAY, 12 DECEMBER 2026\n17:00 – Doors open\n18:00 – RAAF concert\nTICKETS: R280 per person\nTickets available on Quicket.\nSee you there!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-12",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "FOMO Fine Art",
+      "address": "R44, Clarence Drive",
+      "city": "Pringle Bay"
+    },
+    "price": {
+      "min": 280,
+      "max": 280,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "folk-and-acoustic",
+      "wine"
+    ],
+    "profile": "Duo RAAF, Esté and Lourens, bring their concert of music, stories and laughter, and their own Raafontuur wine, to FOMO Fine Art in Pringle Bay. Doors open at 17:00 and the concert starts at 18:00; tickets are R280 on Quicket. It suits friends and families who enjoy a summer evening concert."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1760152671879222",
+    "url": "https://www.facebook.com/events/1760152671879222/",
+    "rawFile": "raw/facebook/1760152671879222-chelsea-glitter-tea-party-pringle-bay.txt",
+    "fetchedAt": "2026-11-23T16:13:04+02:00",
+    "title": "4 Dec 2026, Chelsea Glitter Tea Party @ Menucha Coffee & Crafts, Pringle Bay, with Graham & Werner",
+    "summary": "A show, book launch and inspirational conversation with readings, ukulele songs and author reflections.",
+    "description": "Friends, Romans, Bibliophiles, lend me your ears...\n...and I will give you a girl, a graveyard, and seven days.\nCome and experience a Chelsea Glitter Tea Party!\nCHELSEA GLITTER TEA PARTY\nA show/book launch/inspirational conversation\nFriday 4 December\n11am for 11.30am\nPlace your drinks orders then\nMenucha Coffee & Crafts\nMenucha Building, 15 Peak Road, Pringle Bay\nFeaturing Werner and Graham Leaper, live\n+ Readings from Chelsea Glitter and the Graveyard on the Hill\n+ Ukulele songs straight out of the novel\n+ Author reflections from Werner\n+ Graham's quirky humour and his own brand of wisdom\n+ And the greatest joy in life and death and beyond, through the trinity of eats, drinks, and conversation\n+ Entrance: Free\n+ Finger eats/bites/munchies/water/ice tea served\n+ Wine, beer, ciders, coffees, tea, for own account\n+ Book sales, signed by the author\n+ Card facilities available\nProceeds of book sales towards Coastal Rewilding\nCoastalRewilding.co.za\nBookings and enquiries: 064 141 4341 info@wernerschmidt.co.za\nUntil then, make the most of your bestseller day, now!\nChelsea, Graham, and Werner",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "11:00"
+      }
+    ],
+    "venue": {
+      "name": "Menucha Coffee & Crafts",
+      "address": "Menucha Building, 15 Peak Road",
+      "city": "Pringle Bay"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "culture_and_heritage"
+      ],
+      "format": "talk",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "books",
+      "charity"
+    ],
+    "profile": "A book launch and show at Menucha Coffee & Crafts in Pringle Bay, where author Werner Schmidt and Graham Leaper read from Chelsea Glitter and the Graveyard on the Hill, play ukulele songs from the novel and talk. Entrance is free with snacks served, drinks are for own account, and book sales support Coastal Rewilding. It suits readers and anyone who enjoys a quirky literary morning."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1014346831713485",
+    "url": "https://www.facebook.com/events/1014346831713485/",
+    "rawFile": "raw/facebook/1014346831713485-hangklip-art-collective-art-exhibition.txt",
+    "fetchedAt": "2026-11-23T16:13:57+02:00",
+    "title": "Art exhibition",
+    "summary": "The Hangklip Art Collective exhibits work by artists from across the Hangklip area at Harold Porter National Botanical Garden.",
+    "description": "SAVE THE DATE!\n27 November – 1 December 2026\nThe Hangklip Art Collective is coming together!\nA celebration of creativity, talent and artistic expression, bringing together a collection of artists from across the Hangklip area.\nJoin us at the beautiful Harold Porter National Botanical Garden as we share our work, our stories and our love of art.\nCome and discover the incredible creative talent right here in our community.\nMore details coming soon!\nWe look forward to seeing you there.\n#localartists\n#artinthegardens\n#exhibition\n#art",
+    "type": "single",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "end": "2026-12-01"
+      }
+    ],
+    "venue": {
+      "name": "Harold Porter National Botanical Garden",
+      "city": "Betty's Bay"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "visual_arts"
+      ],
+      "format": "exhibition",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "gardens"
+    ],
+    "profile": "The Hangklip Art Collective brings together artists from across the Hangklip area for an exhibition at Harold Porter National Botanical Garden from 27 November to 1 December 2026. More details were still to come when read. It suits art lovers and garden visitors."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2115342933192038",
+    "url": "https://www.facebook.com/events/2115342933192038/",
+    "rawFile": "raw/facebook/2115342933192038-akimbo-hangklip-hotel.txt",
+    "fetchedAt": "2026-11-23T16:13:57+02:00",
+    "title": "AKiMBO",
+    "summary": "Stellenbosch duo AKiMBO bring original songs, storytelling and unique takes on classics from the 60s to today.",
+    "description": "Two musicians, a stack of instruments, a homemade foot-percussion kit, and huge vocal harmonies - AKiMBO sound way bigger than your standard two-piece.\nStellenbosch duo Andi & Tayne bring a great blend of original songs, deep storytelling, and unique takes on classic songs spanning everything from the 60's to today. Between classical fingerpicking, steel-string rhythms, ukulele, harmonica, and an uncanny ability to read the energy of a crowd, they know how to hook a room from the first chord.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "precision": "day",
+        "startTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "The Hangklip Hotel",
+      "city": "Pringle Bay"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "folk-and-acoustic"
+    ],
+    "profile": "Stellenbosch duo AKiMBO, Andi and Tayne, play original songs and reworked classics from the 60s to today at The Hangklip Hotel, with fingerpicked guitar, ukulele, harmonica, foot percussion and big harmonies. It suits anyone who enjoys a lively acoustic set in a hotel bar."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "2490389718039513",
+    "url": "https://www.facebook.com/events/2490389718039513/",
+    "rawFile": "raw/facebook/2490389718039513-harcourts-10km-road-race-pringle-bay.txt",
+    "fetchedAt": "2026-11-23T16:13:57+02:00",
+    "title": "HARCOURTS 10KM ROAD RACE",
+    "summary": "The inaugural Harcourts 10km Road Race along the coastal road at Pringle Bay.",
+    "description": "History in the making!\nIntroducing the inaugural Harcourts 10km Road Race\n10km of coastal road, beautiful views, and community gees like only Pringle Bay can deliver.\nBe part of the very first start line. Be part of the story we'll tell for years.\n� 6 December 2026\n� Pringle Bay , Hangklip Hotel\nHosted by Hangklip Athletics Club\nENTER NOW! https://entrytickets.co.za/hangklip10km",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-06",
+        "precision": "day",
+        "startTime": "07:00"
+      }
+    ],
+    "venue": {
+      "name": "Hangklip Hotel",
+      "city": "Pringle Bay"
+    },
+    "bookingUrl": "https://entrytickets.co.za/hangklip10km",
+    "hints": [],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "road-running"
+    ],
+    "profile": "The first Harcourts 10km Road Race, hosted by Hangklip Athletics Club, runs along the coastal road at Pringle Bay from the Hangklip Hotel. Entries are online. It suits runners who want a scenic 10km with a community feel."
+  },
+  {
+    "source": "Facebook events",
+    "sourceListingId": "1020450560329370",
+    "url": "https://www.facebook.com/events/1020450560329370/",
+    "rawFile": "raw/facebook/1020450560329370-pringle-bay-united-church-christmas-carol-service.txt",
+    "fetchedAt": "2026-11-23T16:13:57+02:00",
+    "title": "Pringle Bay United Church Christmas Carol Service",
+    "summary": "Communal carol singing with a brass band and choir at Pringle Bay United Church.",
+    "description": "Communal singing with brass band and choir. Whether you come wearing flipflops, sandals or fancy leather shoes, join us in celebration of the humble birth of Jesus Christ the King.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-20",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Pringle Bay United Church",
+      "address": "397 Park Street",
+      "city": "Pringle Bay"
+    },
+    "hints": [],
+    "attributes": {
+      "category": [
+        "faith_and_spirituality",
+        "holidays_and_celebrations",
+        "music"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "choral"
+    ],
+    "profile": "A Christmas carol service at Pringle Bay United Church, with communal singing, a brass band and a choir. Everyone is welcome, dressed as they like. It suits families and visitors wanting a traditional carol service by the sea."
+  }
+]
