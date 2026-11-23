@@ -109,7 +109,17 @@ export interface ClaimedRawListing {
   // "removed" means the listing is gone from the source, and there is no content.
   kind: "listing" | "removed";
   // ownPages: the source's pages are an organiser's own, about its own offerings (its settings' ownPages).
-  source: { id: string; name: string; kind: string; priority: number; locationId: string; ownPages: boolean };
+  // missedRunsBeforeRemoval: how many readings of the listing in a row may miss an experience it yielded before
+  // its link is removed, the same number as for a listing that disappears.
+  source: {
+    id: string;
+    name: string;
+    kind: string;
+    priority: number;
+    locationId: string;
+    ownPages: boolean;
+    missedRunsBeforeRemoval: number;
+  };
   url: string | null;
   contentType: string | null;
   content: string | null;

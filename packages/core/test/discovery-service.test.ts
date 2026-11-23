@@ -271,6 +271,7 @@ function memoryRepository() {
             priority: 0,
             locationId: hermanus.id,
             ownPages: false,
+            missedRunsBeforeRemoval: 3,
           },
           url: null,
           contentType: "text/html",

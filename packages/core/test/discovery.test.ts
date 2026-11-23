@@ -570,6 +570,7 @@ describe("Discovery: the hand-off to Data processing", () => {
       priority: 10,
       locationId: location?.id,
       ownPages: false,
+      missedRunsBeforeRemoval: saved.missedRunsBeforeRemoval,
     });
 
     const [olderNow] = await harness.db.select().from(rawListing).where(eq(rawListing.id, older.id));

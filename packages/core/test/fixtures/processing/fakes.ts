@@ -51,6 +51,7 @@ export function rawListing(overrides: Partial<ClaimedRawListing> = {}): ClaimedR
       priority: 10,
       locationId: HERMANUS.id,
       ownPages: false,
+      missedRunsBeforeRemoval: 3,
     },
     url: "https://fynarts.example.com/",
     contentType: "text/html",
