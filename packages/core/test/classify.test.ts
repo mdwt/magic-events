@@ -113,17 +113,31 @@ describe("What the classifier is given", () => {
     assert.match(instructions, /- jazz \(Jazz\): Jazz music/);
   });
 
-  test("the text is the experience's title, summary, description, venue and the source's labels", () => {
+  test("the text is the experience's title, summary, description, venue, price and the source's labels", () => {
     assert.equal(
-      classificationText(experience()),
+      classificationText(experience({ price: { min: 150, max: 300, currency: "ZAR" } })),
       [
         "Title: Jazz on the Cliffs",
         "Summary: An evening of jazz.",
         "Description: Local players on the cliff path.",
         "Venue: Gearing's Point, Hermanus",
+        "Price: ZAR 150 to ZAR 300",
         "The source's labels: Live music, Outdoor",
       ].join("\n"),
     );
+  });
+
+  test("the price says free for 0 and 0, not stated for none, and one amount or an upper limit", () => {
+    const price = (value: ExtractedExperience["price"]) =>
+      classificationText(experience(value === undefined ? {} : { price: value }))
+        .split("\n")
+        .find((line) => line.startsWith("Price: "));
+    assert.equal(price(undefined), "Price: not stated");
+    assert.equal(price({ min: 0, max: 0 }), "Price: free");
+    assert.equal(price({ min: 0 }), "Price: free");
+    assert.equal(price({ min: 0, max: 250, currency: "ZAR" }), "Price: ZAR 0 to ZAR 250");
+    assert.equal(price({ min: 850, currency: "ZAR" }), "Price: ZAR 850");
+    assert.equal(price({ max: 400 }), "Price: up to 400");
   });
 });
 

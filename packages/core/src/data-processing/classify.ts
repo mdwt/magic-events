@@ -51,7 +51,8 @@ export function classificationInstructions(definitions: Definitions): string {
   return lines.join("\n");
 }
 
-// What the model is shown of the experience: what a source says about it, and nothing derived.
+// What the model is shown of the experience: what a source says about it, and nothing derived. The price and the
+// venue are there because the tier is decided from them, with the description.
 export function classificationText(experience: ExtractedExperience): string {
   const venue = [experience.venue?.name, experience.venue?.address, experience.venue?.city].filter(
     (part) => part !== undefined,
@@ -61,8 +62,20 @@ export function classificationText(experience: ExtractedExperience): string {
     `Summary: ${experience.summary ?? ""}`,
     `Description: ${experience.description ?? ""}`,
     `Venue: ${venue.join(", ")}`,
+    `Price: ${priceText(experience.price)}`,
     `The source's labels: ${experience.hints.join(", ")}`,
   ].join("\n");
+}
+
+// The price as a source gives it: a range, free when it is 0 and 0, or not stated when it has none.
+function priceText(price: ExtractedExperience["price"]): string {
+  const { min, max, currency } = price ?? {};
+  if (min === undefined && max === undefined) return "not stated";
+  if ((min ?? 0) === 0 && (max ?? 0) === 0) return "free";
+  const amount = (value: number) => (currency === undefined ? String(value) : `${currency} ${String(value)}`);
+  if (min === undefined) return `up to ${amount(max ?? 0)}`;
+  if (max === undefined || max === min) return amount(min);
+  return `${amount(min)} to ${amount(max)}`;
 }
 
 export interface UndefinedValueFound {
