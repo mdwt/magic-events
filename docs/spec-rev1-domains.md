@@ -13,7 +13,7 @@ Version 1 is an experience feed. It holds no trip context and serves experiences
 | Discover experiences | Find experiences in the locations the system covers and capture the raw data as received | Discovery |
 | Process experiences | Clean, de-duplicate, categorise and tag raw data, then make it ready for the data warehouse | Data processing |
 | Search experiences | Find processed experiences by location, dates and traveller interests | Catalogue |
-| Track changes | Show what is new, changed or cancelled since a time the client gives | Catalogue |
+| Track changes | Show what is new, confirmed, rescheduled, postponed, cancelled or otherwise changed since a time the client gives | Catalogue |
 | Authenticate and authorise | Know who is calling and decide what they may do | Identity |
 | Manage tenants | Tenant setup and configuration, users, and their roles | Organizations |
 
@@ -26,7 +26,7 @@ Version 1 has two roles. Every person or agent that calls the system acts as one
 | System admin | System role | The platform operator | Onboard and configure tenants, manage users and roles, manage locations and sources, oversee discovery and processing |
 | Client | User role | Users of a client tenant | Search experiences and track changes |
 
-Client tenants come in several kinds. All of them hold the client role, and they use the system differently:
+Client tenants come in two kinds. All of them hold the client role, and they use the system differently:
 
 - **Travel agencies and travel agents** search for experiences to plan trips for their travellers.
 - **Travel apps** search experiences on behalf of their own users.
@@ -41,12 +41,12 @@ There are five domains: Discovery, Data processing, Catalogue, Identity and Orga
 
 Finds experiences and captures the raw data as received.
 
-- **Owns:** sources (where experiences are found), which sources cover which location, discovery runs, raw records exactly as fetched.
-- **Boundary:** does not interpret, categorise or decide what clients see. It hands raw records to Data processing and stops there.
+- **Owns:** sources (where experiences are found), which sources cover which location, discovery runs, raw listings exactly as fetched.
+- **Boundary:** does not interpret, categorise or decide what clients see. It hands raw listings to Data processing and stops there.
 
 ### Data processing
 
-Turns raw records into clean, categorised, tagged experiences ready for the data warehouse.
+Turns raw listings into clean, categorised, tagged experiences ready for the data warehouse.
 
 - **Owns:** the processing pipeline, the system-defined attributes (categories) and tags, matching rules (is this the same experience as one we already have), and the processed result.
 - **Boundary:** does not fetch from sources or answer client queries. It processes the raw listings Discovery captures.
@@ -114,8 +114,8 @@ REST and MCP are two adapters on the same inbound ports, so a person and an agen
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
-| Discovery | Run discovery for a location; manage sources and which locations each covers | Fetch from a source; store raw records; announce `raw_listing.captured` |
-| Data processing | Process a raw record | Store processed experiences; load the data warehouse; announce `experience.processed` |
+| Discovery | Run discovery for a location; manage sources and which locations each covers | Fetch from a source; store raw listings; announce `raw_listing.captured` |
+| Data processing | Process a raw listing | Store processed experiences; load the data warehouse; announce `experience.processed` |
 | Catalogue | Search experiences; get changes since; manage locations | Store published experiences and their history; announce `location.added` |
 | Identity | Authenticate a caller; authorise an action | Store credentials; know each user's tenant and role |
 | Organizations | Manage tenants; manage users and roles | Store tenants and users; announce tenant and user changes |
@@ -127,7 +127,7 @@ Domains never reach into each other's data. One domain raises a domain event whe
 | Domain event | Raised by | Listened to by | Means |
 | --- | --- | --- | --- |
 | `location.added` | Catalogue | Discovery | A new place is covered; start finding experiences there |
-| `raw_listing.captured` | Discovery | Data processing | A source returned an experience record, as fetched |
+| `raw_listing.captured` | Discovery | Data processing | A source returned a listing that is new or changed, as fetched |
 | `experience.processed` | Data processing | Catalogue | A clean, categorised, tagged experience is ready, either new or changed |
 | `tenant.created` | Organizations | Identity | A new tenant exists and can have users |
 | `user.added` | Organizations | Identity | A person joined a tenant with a role; issue credentials |
@@ -145,8 +145,8 @@ A travel agent is planning a trip to Hermanus from 10 to 20 June 2027 for a coup
 
 1. The agent calls through REST, or their AI agent calls through MCP.
 2. **Identity** authenticates the caller, then authorises the search for a client in an active tenant.
-3. **Catalogue** finds published experiences in Hermanus that overlap 10 to 20 June 2027 and match art or nature. That includes single dates, recurring markets, festivals and seasons such as whale watching.
-4. **Catalogue** returns the experiences with their categories, tags, dates and how certain those dates are.
+3. **Catalogue** finds published experiences within the radius the agent gives around Hermanus that overlap 10 to 20 June 2027 and match art or nature. That includes single dates, recurring markets, festivals and seasons such as whale watching.
+4. **Catalogue** returns the experiences with their categories, tags, dates, status (expected, announced, confirmed or postponed) and whether they can be booked.
 
 ### UC2: The travel agent checks back months later
 
@@ -154,13 +154,13 @@ Eight months later, the agent refines the trip and books activities. They want o
 
 1. **Identity** authenticates and authorises the caller, as in UC1.
 2. **Catalogue** takes the same search parameters and the time of the agent's last search.
-3. **Catalogue** returns what is new, rescheduled, changed or cancelled since then.
+3. **Catalogue** returns what is new, confirmed, rescheduled, postponed, cancelled or otherwise changed since then.
 
 ### UC3: The system discovers experiences in a location
 
 1. **Discovery** runs on its schedule for each covered location and fetches from that location's sources.
-2. **Discovery** stores each raw record as received and raises `raw_listing.captured`.
-3. **Data processing** cleans and de-duplicates the records, categorises and tags them, prepares them for the data warehouse, and raises `experience.processed`.
+2. **Discovery** stores each new or changed listing as received and raises `raw_listing.captured`.
+3. **Data processing** cleans and de-duplicates the listings, categorises and tags them, prepares them for the data warehouse, and raises `experience.processed`.
 4. **Catalogue** publishes new experiences and records changes to existing ones, which feeds UC2.
 
 ### UC4: A system admin onboards a travel agency
@@ -176,7 +176,7 @@ Eight months later, the agent refines the trip and books activities. They want o
 | --- | --- |
 | Experience | Something a traveller can go to or do: a concert, a match, a market, a show with many dates, an exhibition, a festival months away, or a season such as whale watching |
 | Domain event | Something that happened inside the system that another domain may care about, such as `experience.processed`. Not an experience. |
-| Raw record | An experience as a source returned it, before any processing |
+| Raw listing | An experience as one source returned it, before any processing |
 | Source | A place Discovery finds experiences, such as a ticketing site, tourism listing or venue page |
 | Location | A place the system covers and clients search by, such as Hermanus |
 | Tenant | A client organisation: a travel agency or travel app |
