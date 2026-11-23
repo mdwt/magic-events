@@ -279,7 +279,7 @@ The language model settings (`LANGUAGE_MODEL_PROVIDER`, `LANGUAGE_MODEL`, `LANGU
 | Discovery | Catalogue | The location of each source, and a location by its slug for a fetch on demand |
 | Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, sending listings back to be processed again |
 
-Catalogue calls neither of these two for fetching or the hand-off. It calls Data processing for the attribute definitions (see How domains talk in [architecture.md](architecture.md)).
+Catalogue calls neither of these two for fetching or the hand-off. It calls Data processing for the attribute definitions and the tag and season slugs (see How domains talk in [architecture.md](architecture.md)).
 
 ## Decisions
 

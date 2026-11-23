@@ -30,7 +30,7 @@ flowchart LR
   ID[Identity] --> ORG[Organizations]
 ```
 
-Arrows point from the service that calls to the service it calls. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions from Data processing to check a search's filters. Organizations calls nobody.
+Arrows point from the service that calls to the service it calls. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions and the tag and season slugs from Data processing to check a search's filters. Organizations calls nobody.
 
 | Domain | Repository | What it holds |
 | --- | --- | --- |

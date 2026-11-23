@@ -2371,7 +2371,7 @@
         "tags": [
           "Experiences"
         ],
-        "description": "Experiences near a place that are on during the dates given: festivals, concerts, matches, markets, shows and exhibitions. The place is a location's slug, such as hermanus, or a point. Dates match an experience's sessions, so an experience is returned only when it is on inside the range, and each result carries the sessions that fall inside it. An experience is bookable when it is confirmed, its booking is open and it has a link to book through: its booking link, or failing that its own page. The filters decide what is returned; the query text only orders the results.",
+        "description": "Experiences near a place that are on during the dates given: festivals, concerts, matches, markets, shows and exhibitions. The place is a location's slug, such as hermanus, or a point. Dates match an experience's sessions, so an experience is returned only when it is on inside the range, and each result carries the sessions that fall inside it. An experience is bookable when it is confirmed, its booking is open and it has a link to book through: its booking link, or failing that its own page. An attribute, option, tag or season that does not exist is refused with invalid_input. The filters decide what is returned; the query text only orders the results.",
         "requestBody": {
           "required": true,
           "content": {
@@ -2490,7 +2490,7 @@
                     }
                   },
                   "tags": {
-                    "description": "Tag slugs, such as jazz or whales. An experience with any one of them matches.",
+                    "description": "Tag slugs and season slugs, such as jazz, whales or whale-season. An experience with any one of them matches. A slug that is no tag or season is refused, and the error names the closest ones.",
                     "minItems": 1,
                     "maxItems": 50,
                     "type": "array",
@@ -3525,7 +3525,7 @@
                     }
                   },
                   "tags": {
-                    "description": "Tag slugs, such as jazz or whales. An experience with any one of them matches.",
+                    "description": "Tag slugs and season slugs, such as jazz, whales or whale-season. An experience with any one of them matches. A slug that is no tag or season is refused, and the error names the closest ones.",
                     "minItems": 1,
                     "maxItems": 50,
                     "type": "array",

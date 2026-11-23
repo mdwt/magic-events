@@ -161,7 +161,7 @@ Work that no client asks for is a job: finding the sources that are due, fetchin
 | --- | --- | --- |
 | Discovery | Run discovery for a source; fetch every active source of a location; find the sources that are due; manage sources; get a listing; send listings back to be processed again; claim pending raw listings; mark them processed or failed; get the priority of each listing's source | Fetch from a source; store runs, listings and raw listings; get a location from Catalogue; ask the language model |
 | Data processing | Process pending raw listings; process listings again; manage attribute and tag definitions and seasons | Claim and mark raw listings, get their sources' priorities, find a source and send listings back through Discovery; get a location, get an experience's listings, match and save experiences and remove source links through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; get an experience; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; keep up, which moves finished experiences to Past, closes bookings whose close time has passed and generates the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts; get the attribute definitions from Data processing |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; get an experience; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; keep up, which moves finished experiences to Past, closes bookings whose close time has passed and generates the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts; get the attribute definitions and the tag and season slugs from Data processing |
 | Identity | Authenticate a caller; authorise an action; issue, list and revoke a user's credentials | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
 | Organizations | Create, change, list and get tenants; add and list a tenant's users; get a user's role and tenant | Store tenants and users |
 
@@ -186,10 +186,10 @@ A domain that needs another domain's data calls that domain's service through it
 | Discovery | Catalogue | The location of each source, and a location by its slug for a fetch on demand |
 | Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, sending listings back to be processed again |
 | Data processing | Catalogue | A listing's location, matching listings to experiences, saving experiences, removing source links, the listings an experience is linked to |
-| Catalogue | Data processing | The attribute definitions, to check a search's attribute filters against them |
+| Catalogue | Data processing | The attribute definitions and the slugs of every tag and season, to check a search's attribute and tag filters against them |
 | Identity | Organizations | A user's tenant and whether it is active |
 
-A service that needs something another service has calls it. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions from Data processing. Organizations calls nobody. The hand-off from fetching to processing is the raw listing's status: Discovery saves it as pending, and Data processing marks it processed or failed.
+A service that needs something another service has calls it. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions and the tag and season slugs from Data processing. Organizations calls nobody. The hand-off from fetching to processing is the raw listing's status: Discovery saves it as pending, and Data processing marks it processed or failed.
 
 ## Use cases
 
@@ -263,6 +263,7 @@ Onboarding is the action `tenants.manage`, and only a system admin may take it. 
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
 | How does a client search by place? | With a location's slug, such as `hermanus`, which searches around its centre, or with a point. The radius is the client's, with a default. Distance is worked out at query time |
 | How are attribute filters checked? | Against Data processing's attribute definitions, which Catalogue reads through its service. A key that is no attribute, an attribute that cannot be filtered on, or a value that is none of its options is refused, and the error lists what can be used |
+| How are tag filters checked? | Against the slugs of every tag and every season, which Catalogue reads through Data processing's service. A slug that is none of them is refused with invalid_input; the message says how many there are and names the five closest, never the whole list |
 | What does a range filter do with an experience that has no value? | A range with only a max keeps it: nothing recorded means no lower limit, so `minimum_age: { max: 12 }` still finds it. A range with a min matches a recorded value only |
 | Which endpoints need an API key? | All of them except the health check, which a load balancer or an uptime check calls with no key |
 | What does a caller get while the database is down? | 503 `unavailable` with `Retry-After`, from every endpoint and the health check, over REST and MCP alike. A good key is never answered 401 because it could not be checked: Identity trusts Better Auth's "invalid key" only once the key store answers |

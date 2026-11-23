@@ -103,7 +103,10 @@ export const searchExperiencesInputSchema = z.strictObject({
     .min(1)
     .max(50)
     .optional()
-    .describe("Tag slugs, such as jazz or whales. An experience with any one of them matches."),
+    .describe(
+      "Tag slugs and season slugs, such as jazz, whales or whale-season. An experience with any one of them " +
+        "matches. A slug that is no tag or season is refused, and the error names the closest ones.",
+    ),
   query: z
     .string()
     .trim()

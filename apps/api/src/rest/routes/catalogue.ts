@@ -21,7 +21,8 @@ export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = 
           "shows and exhibitions. The place is a location's slug, such as hermanus, or a point. Dates match an experience's sessions, so an experience is returned only when it " +
           "is on inside the range, and each result carries the sessions that fall inside it. An experience is " +
           "bookable when it is confirmed, its booking is open and it has a link to book through: its booking link, " +
-          "or failing that its own page. The filters decide " +
+          "or failing that its own page. An attribute, option, tag or season that does not exist is refused " +
+          "with invalid_input. The filters decide " +
           "what is returned; the query text only orders the results.",
         tags: ["Experiences"],
         body: searchExperiencesInputSchema,
