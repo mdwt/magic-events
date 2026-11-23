@@ -28,8 +28,14 @@ const identity = new IdentityService({
   auth: createAuth(database.db, settings),
   organizations: {
     saveTenant: () => Promise.reject(new Error("not used")),
+    createTenant: () => Promise.reject(new Error("not used")),
+    updateTenant: () => Promise.reject(new Error("not used")),
+    listTenants: () => Promise.resolve([]),
     getTenant: () => Promise.resolve(null),
+    getTenantBySlug: () => Promise.reject(new Error("not used")),
+    listUsers: () => Promise.resolve([]),
     saveUser: () => Promise.reject(new Error("not used")),
+    createUser: () => Promise.reject(new Error("not used")),
     getMembership: (): Promise<Membership | null> => Promise.resolve(null),
   },
   settings,
@@ -77,7 +83,17 @@ test("a client without a tenant may do nothing", () => {
 });
 
 test("a system admin may do everything", () => {
-  for (const action of ACTIONS) identity.authorise(caller({ role: "system_admin", tenant: null }), action);
+  for (const action of [...ACTIONS, "tenants.manage"] as const) {
+    identity.authorise(caller({ role: "system_admin", tenant: null }), action);
+  }
+});
+
+test("a client may not manage tenants, as a person or an agent", () => {
+  for (const kind of ["person", "agent"] as const) {
+    assert.throws(() => {
+      identity.authorise(caller({ kind }), "tenants.manage");
+    }, forbidden);
+  }
 });
 
 test("a missing credential is refused before Better Auth is asked", async () => {

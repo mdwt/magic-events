@@ -52,6 +52,14 @@ describe("authentication", () => {
     { method: "POST", url: "/v1/experiences/search", payload: SEARCH },
     { method: "GET", url: "/no/such/path" },
     { method: "POST", url: "/v1/no-such-route", payload: {} },
+    { method: "POST", url: "/v1/tenants", payload: { name: "Blue", slug: "blue", kind: "travel_agency" } },
+    { method: "GET", url: "/v1/tenants" },
+    { method: "GET", url: "/v1/tenants/blue" },
+    { method: "PATCH", url: "/v1/tenants/blue", payload: { status: "suspended" } },
+    { method: "POST", url: "/v1/tenants/blue/users", payload: { name: "Ann", email: "ann@example.com" } },
+    { method: "POST", url: "/v1/users/someone/credentials", payload: { name: "desk", kind: "person" } },
+    { method: "GET", url: "/v1/users/someone/credentials" },
+    { method: "DELETE", url: "/v1/users/someone/credentials/something" },
   ] as const;
 
   for (const route of routes) {
@@ -250,6 +258,11 @@ describe("the OpenAPI document", () => {
       "/openapi.json": ["get"],
       "/mcp": ["post", "get", "delete"],
       "/v1/experiences/search": ["post"],
+      "/v1/tenants": ["post", "get"],
+      "/v1/tenants/{slug}": ["get", "patch"],
+      "/v1/tenants/{slug}/users": ["post"],
+      "/v1/users/{userId}/credentials": ["post", "get"],
+      "/v1/users/{userId}/credentials/{credentialId}": ["delete"],
     };
     assert.deepEqual(Object.keys(document.paths).sort(), Object.keys(expected).sort());
     for (const [path, methods] of Object.entries(expected)) {
@@ -264,6 +277,18 @@ describe("the OpenAPI document", () => {
     }
     assert.ok(document.paths["/v1/experiences/search"]?.post?.requestBody);
     assert.ok(document.paths["/v1/experiences/search"].post.responses["200"]);
+    for (const [path, method] of [
+      ["/v1/tenants/{slug}", "get"],
+      ["/v1/tenants/{slug}", "patch"],
+      ["/v1/tenants/{slug}/users", "post"],
+      ["/v1/users/{userId}/credentials", "post"],
+      ["/v1/users/{userId}/credentials", "get"],
+      ["/v1/users/{userId}/credentials/{credentialId}", "delete"],
+    ] as const) {
+      assert.ok(document.paths[path]?.[method]?.responses["404"], `${method} ${path} does not document 404`);
+    }
+    assert.ok(document.paths["/v1/tenants"]?.post?.responses["201"]);
+    assert.ok(document.paths["/v1/tenants"].post.requestBody);
   });
 });
 
