@@ -1,4 +1,5 @@
 import type { Role, TenantStatus } from "../organizations/ports.ts";
+import { AppError } from "../shared/errors.ts";
 
 // Identity: knows who is calling and decides what they may do.
 // It holds credentials through Better Auth, used directly, and reads role and tenant from Organizations.
@@ -31,6 +32,18 @@ export interface CredentialSummary {
   name: string | null;
   kind: CallerKind;
   enabled: boolean;
+}
+
+// What authenticate fails with when a credential has made too many requests: rate_limited, with when to try again.
+export class CredentialRateLimitedError extends AppError {
+  // Undefined when it is not known.
+  readonly retryAfterSeconds: number | undefined;
+
+  constructor(message: string, retryAfterSeconds: number | undefined) {
+    super("rate_limited", message);
+    this.name = "CredentialRateLimitedError";
+    this.retryAfterSeconds = retryAfterSeconds;
+  }
 }
 
 // Inbound port: what Identity offers.
