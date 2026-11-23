@@ -137,11 +137,11 @@ Models from outside providers sit behind ports like everything else. The domains
 
 The model ports and their adapters are defined in [data-processing.md](data-processing.md). The job queue is described under Background jobs, below, and publishing domain events in [domain-events.md](domain-events.md).
 
-REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler is the third inbound side. It starts discovery, processing, Catalogue's embedding worker, and Catalogue's move of finished experiences to Past and its generating of recurring sessions further ahead, without passing through Identity, because no client is involved.
+REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler is the third inbound side. It starts discovery, processing, Catalogue's embedding, and Catalogue's upkeep, which moves finished experiences to Past and generates recurring sessions further ahead, without passing through Identity, because no client is involved.
 
 ### Background jobs
 
-Work that no client asks for is a job: finding the sources that are due, fetching one source, processing the raw listings that are pending. The scheduler runs inside the server.
+Work that no client asks for is a job: finding the sources that are due, fetching one source, processing the raw listings that are pending, embedding experiences, and Catalogue's upkeep. The scheduler runs inside the server.
 
 - **The job queue is a port.** It keeps jobs, runs them, puts a job on a schedule and tries a failed job again. It names no technology.
 - **A job handler says what a job does.** It is written against the domains' inbound ports and the job queue port, and nothing else. A handler calls a service the way a REST route does, and holds no business rules.
@@ -151,17 +151,19 @@ Work that no client asks for is a job: finding the sources that are due, fetchin
 
 | Job | When | Does |
 | --- | --- | --- |
-| Find due sources | Every 15 minutes | Asks Discovery which sources are due and adds a fetch job for each |
-| Fetch a source | When a source is due | Runs Discovery for that source. A failed fetch is tried again by the queue (see [discovery.md](discovery.md)). A fetch that found something adds a processing job |
-| Process pending | After a fetch that found something, and once an hour | Has Data processing process pending raw listings until none is left |
+| Find due sources | Every 15 minutes (`DISCOVERY_SCHEDULE_CRON`) | Asks Discovery which sources are due and adds a fetch job for each |
+| Fetch a source | When a source is due | Runs Discovery for that source. A failed fetch is tried again by the queue (see [discovery.md](discovery.md)). A fetch that found a new, changed or gone listing adds a processing job |
+| Process pending | After a fetch that found a new, changed or gone listing, and once an hour | Has Data processing process pending raw listings until none is left. A job that processed anything adds an embedding job |
+| Embed experiences | After a processing job that processed anything, and every 15 minutes | Has Catalogue embed experiences, round after round, until none is left to embed (see [data-processing.md](data-processing.md)) |
+| Catalogue upkeep | Every hour (`CATALOGUE_UPKEEP_CRON`) | Has Catalogue set finished experiences to Past, close bookings whose close time has passed, and generate the sessions of open-ended recurring experiences further ahead (see [data-model.md](data-model.md)) |
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
-| Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask the language model |
-| Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; move finished experiences to Past; generate the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts; get the attribute definitions from Data processing |
-| Identity | Authenticate a caller; authorise an action | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
-| Organizations | Manage tenants; manage users and roles; get a tenant | Store tenants |
+| Discovery | Run discovery for a source; fetch every active source of a location; find the sources that are due; manage sources; get a listing; send listings back to be processed again; claim pending raw listings; mark them processed or failed; get the priority of each listing's source | Fetch from a source; store runs, listings and raw listings; get a location from Catalogue; ask the language model |
+| Data processing | Process pending raw listings; process listings again; manage attribute and tag definitions and seasons | Claim and mark raw listings, get their sources' priorities, find a source and send listings back through Discovery; get a location, get an experience's listings, match and save experiences and remove source links through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; get an experience; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; keep up, which moves finished experiences to Past, closes bookings whose close time has passed and generates the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts; get the attribute definitions from Data processing |
+| Identity | Authenticate a caller; authorise an action; issue, list and revoke a user's credentials | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
+| Organizations | Create, change, list and get tenants; add and list a tenant's users; get a user's role and tenant | Store tenants and users |
 
 ### Rules
 
@@ -181,9 +183,9 @@ A domain that needs another domain's data calls that domain's service through it
 
 | Service | Calls | For |
 | --- | --- | --- |
-| Discovery | Catalogue | The location of each source |
-| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
-| Data processing | Catalogue | A listing's location, matching listings to experiences, saving experiences, removing source links |
+| Discovery | Catalogue | The location of each source, and a location by its slug for a fetch on demand |
+| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, sending listings back to be processed again |
+| Data processing | Catalogue | A listing's location, matching listings to experiences, saving experiences, removing source links, the listings an experience is linked to |
 | Catalogue | Data processing | The attribute definitions, to check a search's attribute filters against them |
 | Identity | Organizations | A user's tenant and whether it is active |
 
@@ -226,6 +228,8 @@ Because every run fetches the same listings again, a change at the source months
 3. **Organizations** adds the agency's first user with the client role.
 4. **Identity** issues that user's credentials for REST and MCP.
 
+Onboarding is the action `tenants.manage`, and only a system admin may take it. Over REST and MCP alike, a system admin creates, lists, reads and changes tenants, suspending one included, adds users to a tenant with the client role, and issues, lists and revokes a user's API keys. A key is shown once, when it is issued. Revoking a key disables it: it is refused from then on, and stays in the user's list as disabled.
+
 ## Glossary
 
 | Term | Meaning |
@@ -243,7 +247,7 @@ Because every run fetches the same listings again, a change at the source months
 | System admin | The system role that operates the platform |
 | Port | A domain's own definition of what it offers (inbound) or what it needs (outbound), with no technology in it |
 | Adapter | A plug that connects a port to the outside world, such as REST, MCP, a scheduler, a source, storage, the data warehouse or the job queue |
-| Job | A piece of background work the scheduler runs: finding due sources, fetching a source, processing pending raw listings |
+| Job | A piece of background work the scheduler runs: finding due sources, fetching a source, processing pending raw listings, embedding experiences, Catalogue's upkeep |
 
 ## Decisions
 
