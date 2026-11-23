@@ -67,6 +67,8 @@ function fakeRepository(due: ExperienceToEmbed[] = []) {
     findMatchCandidateIds: notUsed,
     findTakenSlugs: notUsed,
     saveExperiences: notUsed,
+    countMissedReading: notUsed,
+    clearMissedReadings: notUsed,
     findChangesSince: notUsed,
     findUpkeepCandidates: notUsed,
   };

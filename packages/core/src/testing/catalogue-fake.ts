@@ -42,6 +42,8 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
   // Experiences whose save fails, and the batch sizes the upkeep asked for.
   const failing = new Set<string>();
   const upkeepLimits: number[] = [];
+  // Each link's count of readings in a row that missed its experience, by experience and listing ID.
+  const missedReadings = new Map<string, number>();
   const clock = { now: new Date(options.now ?? "2026-11-23T10:00:00.000Z") };
 
   const repository: CatalogueRepository = {
@@ -74,6 +76,17 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     findExperiencesToEmbed: () => Promise.resolve({ items: [], total: 0 }),
     storeEmbeddings: () => Promise.resolve(0),
     recordEmbeddingFailures: () => Promise.resolve([]),
+    countMissedReading: (link) => {
+      const stored = experiences.get(link.experienceId);
+      if (stored?.listingIds.includes(link.listingId) !== true) return Promise.resolve(null);
+      const key = `${link.experienceId} ${link.listingId}`;
+      missedReadings.set(key, (missedReadings.get(key) ?? 0) + 1);
+      return Promise.resolve(missedReadings.get(key) ?? 0);
+    },
+    clearMissedReadings: (link) => {
+      missedReadings.delete(`${link.experienceId} ${link.listingId}`);
+      return Promise.resolve();
+    },
     saveExperiences: (batch) => {
       const appended: DomainEvent[] = [];
       if (batch.some((write) => failing.has(write.experience.id))) return Promise.reject(new Error("the save failed"));
@@ -81,6 +94,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
         const stored = experiences.get(write.experience.id);
         if ((stored?.version ?? null) !== write.previousVersion) throw new Error("version mismatch");
         experiences.set(write.experience.id, structuredClone(write.experience));
+        for (const listingId of write.links.remove) missedReadings.delete(`${write.experience.id} ${listingId}`);
         writes.push(structuredClone(write));
         if (write.event !== null) {
           const row = { id: crypto.randomUUID(), resourceId: write.experience.id, recordedAt: write.at.toISOString() };
@@ -142,6 +156,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     changes,
     failing,
     upkeepLimits,
+    missedReadings,
     // The published domain events, as type, resource and data.
     publishedEvents() {
       return published.map(({ type, resourceId, data }) => ({ type, resourceId, data }));

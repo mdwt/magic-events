@@ -380,16 +380,19 @@ export class DataProcessingService implements DataProcessing {
       }
     }
 
-    // Links that fall away: what this listing linked to before and no longer describes.
+    // What this listing linked to before and did not yield this time. One reading is not enough: the miss is counted
+    // on the link, and the link goes only after the source's missed runs before removal readings in a row, as a
+    // listing that disappears does.
     let unlinked = 0;
     for (const previous of linked) {
       if (taken.has(previous.id)) continue;
-      const removed = await this.#catalogue.removeSourceLink({
+      const removed = await this.#catalogue.recordMissedReading({
         listingId: raw.listingId,
         experienceId: previous.id,
         rawListingId: raw.id,
+        missesBeforeRemoval: raw.source.missedRunsBeforeRemoval,
       });
-      unlinked += removed.length;
+      if (removed) unlinked += 1;
     }
 
     const rows: WarehouseRow[] = saved.map((result) => ({

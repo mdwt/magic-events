@@ -717,6 +717,16 @@ export interface Catalogue {
   // An experience left with no links is set to Removed, unless it is already Past or Cancelled.
   // Returns the IDs of the experiences that lost the link.
   removeSourceLink(input: { listingId: string; experienceId?: string; rawListingId: string }): Promise<string[]>;
+  // A reading of the listing that did not yield the experience it links to. The miss is counted on the link, and
+  // nothing about the experience changes until `missesBeforeRemoval` readings in a row have missed it; then the link
+  // is removed as removeSourceLink removes it. A save from the listing sets the count back to 0. Returns true when
+  // the link was removed.
+  recordMissedReading(input: {
+    listingId: string;
+    experienceId: string;
+    rawListingId: string;
+    missesBeforeRemoval: number;
+  }): Promise<boolean>;
   // What changed since a time among the experiences the search parameters select: new, confirmed, rescheduled,
   // postponed, cancelled, removed or otherwise changed. Cancelled and Removed ones are reported; Past ones never are.
   // One that was on during the dates before a change since then, and is not now, is reported as moved out.
@@ -769,6 +779,11 @@ export interface CatalogueRepository {
   // Stores the saves in one transaction. Returns the domain events it appended, as stored, in the order of the
   // saves; it does not publish them.
   saveExperiences(writes: ExperienceWrite[]): Promise<DomainEvent[]>;
+  // Adds one to the link's count of readings in a row that missed the experience, and returns the new count. Null
+  // when the listing does not link to the experience.
+  countMissedReading(link: { experienceId: string; listingId: string }): Promise<number | null>;
+  // Sets the link's count of missed readings back to 0.
+  clearMissedReadings(link: { experienceId: string; listingId: string }): Promise<void>;
   // A page of the experiences changed-since reports, the most recent change first, and how many there are.
   findChangesSince(query: ExperienceChangesQuery): Promise<{ items: ChangedExperienceRecord[]; total: number }>;
   // Up to `limit` IDs, in order after `after`, of the experiences the upkeep may have work on: Expected, Announced

@@ -43,6 +43,7 @@ const catalogue: Catalogue = {
   findMatchCandidates: notUsed,
   saveExperience: notUsed,
   removeSourceLink: notUsed,
+  recordMissedReading: notUsed,
   getChangesSince: notUsed,
   keepUp: notUsed,
   embedExperiences: notUsed,

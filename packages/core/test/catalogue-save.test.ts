@@ -899,6 +899,88 @@ describe("removing a source link", () => {
   });
 });
 
+describe("a reading of a listing that did not yield an experience", () => {
+  // A listing that yields two experiences; the second is then missing from readings of it.
+  async function twoFromOneListing(catalogue: ReturnType<typeof fakeCatalogue>) {
+    const kept = await created(catalogue);
+    const missing = await created(catalogue, { title: "Whale Walk", sessions: [{ startDate: "2027-07-01", precision: "day" }] });
+    return { kept, missing };
+  }
+  const miss = (catalogue: ReturnType<typeof fakeCatalogue>, experienceId: string) =>
+    catalogue.service.recordMissedReading({
+      listingId: LISTING_A,
+      experienceId,
+      rawListingId: crypto.randomUUID(),
+      missesBeforeRemoval: 3,
+    });
+
+  test("keeps the link and changes nothing for two readings, and removes it on the third", async () => {
+    const catalogue = fakeCatalogue();
+    const { missing } = await twoFromOneListing(catalogue);
+    const writes = catalogue.writes.length;
+    const published = catalogue.published.length;
+
+    for (const reading of [1, 2]) {
+      assert.equal(await miss(catalogue, missing), false, `reading ${String(reading)}`);
+      const stored = catalogue.experiences.get(missing);
+      assert.deepEqual([stored?.status, stored?.version, stored?.listingIds], ["confirmed", 1, [LISTING_A]]);
+    }
+    assert.equal(catalogue.writes.length, writes);
+    assert.equal(catalogue.published.length, published);
+
+    assert.equal(await miss(catalogue, missing), true);
+    const gone = catalogue.experiences.get(missing);
+    assert.deepEqual([gone?.status, gone?.version, gone?.listingIds], ["removed", 2, []]);
+    assert.equal(catalogue.writes.at(-1)?.change?.kind, "removed");
+    assert.equal(catalogue.published.length, published + 1);
+  });
+
+  test("a reading that yields it again sets the count back", async () => {
+    const catalogue = fakeCatalogue();
+    const { missing } = await twoFromOneListing(catalogue);
+    await miss(catalogue, missing);
+    await miss(catalogue, missing);
+    // The listing yields it again, unchanged.
+    const again = await catalogue.service.saveExperience(
+      input({
+        experienceId: missing,
+        title: "Whale Walk",
+        sessions: [{ startDate: "2027-07-01", precision: "day" }],
+        source: { listingId: LISTING_A, rawListingId: RAW_B },
+      }),
+    );
+    assert.equal(again.changed, false);
+    assert.equal(await miss(catalogue, missing), false);
+    assert.equal(await miss(catalogue, missing), false);
+    assert.equal(catalogue.experiences.get(missing)?.status, "confirmed");
+    assert.equal(await miss(catalogue, missing), true);
+  });
+
+  test("an experience with another listing keeps its status when the link goes", async () => {
+    const catalogue = fakeCatalogue();
+    const id = await created(catalogue);
+    await catalogue.service.saveExperience(input({ experienceId: id, source: { listingId: LISTING_B, rawListingId: RAW_B }, precedence: "fill" }));
+    for (let reading = 0; reading < 3; reading += 1) await miss(catalogue, id);
+    const stored = catalogue.experiences.get(id);
+    assert.deepEqual([stored?.status, stored?.listingIds], ["confirmed", [LISTING_B]]);
+  });
+
+  test("a listing that does not link to the experience counts nothing", async () => {
+    const catalogue = fakeCatalogue();
+    const id = await created(catalogue);
+    assert.equal(
+      await catalogue.service.recordMissedReading({
+        listingId: LISTING_B,
+        experienceId: id,
+        rawListingId: RAW_B,
+        missesBeforeRemoval: 1,
+      }),
+      false,
+    );
+    assert.deepEqual(catalogue.experiences.get(id)?.listingIds, [LISTING_A]);
+  });
+});
+
 describe("finding experiences by listing", () => {
   test("returns every experience the listing links to, whatever its status", async () => {
     const catalogue = fakeCatalogue();

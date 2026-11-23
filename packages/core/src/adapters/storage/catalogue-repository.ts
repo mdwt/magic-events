@@ -504,6 +504,30 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       return appended;
     },
 
+    async countMissedReading(link) {
+      const [row] = await db
+        .update(experienceSourceLink)
+        .set({ missedReadings: sql`${experienceSourceLink.missedReadings} + 1` })
+        .where(
+          and(eq(experienceSourceLink.experienceId, link.experienceId), eq(experienceSourceLink.listingId, link.listingId)),
+        )
+        .returning({ missed: experienceSourceLink.missedReadings });
+      return row?.missed ?? null;
+    },
+
+    async clearMissedReadings(link) {
+      await db
+        .update(experienceSourceLink)
+        .set({ missedReadings: 0 })
+        .where(
+          and(
+            eq(experienceSourceLink.experienceId, link.experienceId),
+            eq(experienceSourceLink.listingId, link.listingId),
+            gt(experienceSourceLink.missedReadings, 0),
+          ),
+        );
+    },
+
     async findExperiencesToEmbed(query) {
       const due = and(
         inArray(experience.status, [...SEARCHABLE_STATUSES]),

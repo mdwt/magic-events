@@ -115,6 +115,7 @@ function fakeCatalogue(overrides: Partial<Catalogue>): Catalogue {
     findMatchCandidates: notUsed,
     saveExperience: notUsed,
     removeSourceLink: notUsed,
+    recordMissedReading: notUsed,
     getChangesSince: notUsed,
     keepUp: notUsed,
     embedExperiences: notUsed,

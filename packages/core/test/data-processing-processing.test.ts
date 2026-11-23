@@ -130,13 +130,17 @@ describe("processNext", () => {
     assert.deepEqual(state.processed, [RAW]);
   });
 
-  test("a listing that describes nothing is processed, and the links it had are removed", async () => {
+  test("a listing that describes nothing is processed, and each link it had counts a missed reading", async () => {
     const { service, state } = setup({ experiences: [stored()] });
     const outcome = await service.processNext();
     assert.equal(outcome?.outcome, "processed");
     assert.equal(outcome.experiences, 0);
-    assert.equal(outcome.unlinked, 1);
-    assert.deepEqual(state.removals, [{ listingId: LISTING, experienceId: stored().id, rawListingId: RAW }]);
+    // Catalogue counts the miss and keeps the link until the source's missed runs before removal.
+    assert.equal(outcome.unlinked, 0);
+    assert.deepEqual(state.removals, []);
+    assert.deepEqual(state.misses, [
+      { listingId: LISTING, experienceId: stored().id, rawListingId: RAW, missesBeforeRemoval: 3 },
+    ]);
     assert.deepEqual(state.warehouse, []);
     assert.deepEqual(state.processed, [RAW]);
   });
@@ -303,7 +307,7 @@ describe("Matching", () => {
     assert.deepEqual(state.removals, []);
   });
 
-  test("among several, each extracted experience is matched to the linked one with its title, and the others lose the link", async () => {
+  test("among several, each extracted experience is matched to the linked one with its title, and the others count a miss", async () => {
     const fynArts = stored({ id: "e-fynarts" });
     const whales = stored({ id: "e-whales", title: "Hermanus Whale Festival", firstDate: "2027-09-24", lastDate: "2027-09-26" });
     const gone = stored({ id: "e-gone", title: "Kalfiefees" });
@@ -317,8 +321,9 @@ describe("Matching", () => {
       state.saves.map((save) => save.experienceId),
       ["e-whales", "e-fynarts"],
     );
-    assert.deepEqual(state.removals, [{ listingId: LISTING, experienceId: "e-gone", rawListingId: RAW }]);
-    assert.equal(outcome?.unlinked, 1);
+    assert.deepEqual(state.misses, [{ listingId: LISTING, experienceId: "e-gone", rawListingId: RAW, missesBeforeRemoval: 3 }]);
+    assert.deepEqual(state.removals, []);
+    assert.equal(outcome?.unlinked, 0);
   });
 
   test("otherwise a candidate with the same title and overlapping dates is matched in code", async () => {
@@ -447,7 +452,7 @@ describe("Matching", () => {
     assert.doesNotMatch(text, /e-opera/);
   });
 
-  test("when the model declines the linked experience, a new one is made and the link falls away", async () => {
+  test("when the model declines the linked experience, a new one is made and the old link counts a miss", async () => {
     const screening = stored({ id: "e-screening", title: "Focker In-Law Premiere Night", firstDate: "2026-11-26", lastDate: "2026-11-26" });
     const other = stored({ id: "e-other", title: "Christmas Market", firstDate: "2026-12-13", lastDate: "2026-12-13" });
     const ladiesNight = answered({ title: "Ladies Night: Focker In-Law", sessions: [session({ start: "2026-11-26", end: "" })] });
@@ -459,7 +464,9 @@ describe("Matching", () => {
       state.saves.map((save) => save.experienceId),
       [undefined, "e-other"],
     );
-    assert.deepEqual(state.removals, [{ listingId: LISTING, experienceId: "e-screening", rawListingId: RAW }]);
+    assert.deepEqual(state.misses, [
+      { listingId: LISTING, experienceId: "e-screening", rawListingId: RAW, missesBeforeRemoval: 3 },
+    ]);
   });
 
   test("when no title matches, the model picks among the candidates", async () => {

@@ -215,6 +215,9 @@ interface State {
   experiences: Map<string, ExperienceMatch>;
   saves: SaveExperienceInput[];
   removals: { listingId: string; experienceId?: string; rawListingId: string }[];
+  // The readings that did not yield an experience the listing links to. Catalogue counts them; its own tests cover
+  // when a link goes.
+  misses: { listingId: string; experienceId: string; rawListingId: string; missesBeforeRemoval: number }[];
   warehouse: WarehouseRow[];
   undefinedValues: UndefinedValueRow[];
   processed: string[];
@@ -238,6 +241,7 @@ export function setup(
     experiences: new Map((options.experiences ?? []).map((one) => [one.id, one])),
     saves: [],
     removals: [],
+    misses: [],
     warehouse: [],
     undefinedValues: [],
     processed: [],
@@ -327,6 +331,10 @@ export function setup(
         changed: true,
         change: existing ? "changed" : "new",
       });
+    },
+    recordMissedReading(input) {
+      state.misses.push(input);
+      return Promise.resolve(false);
     },
     removeSourceLink(input) {
       state.removals.push(input);

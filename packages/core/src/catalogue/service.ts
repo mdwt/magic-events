@@ -158,6 +158,10 @@ export class CatalogueService implements Catalogue {
     if (input.experienceId === undefined) return this.#create(input, incoming, at);
 
     const [stored] = await this.#repository.loadExperiences({ ids: [input.experienceId] });
+    // The listing yielded it, so the readings that missed it are no longer in a row.
+    if (stored !== undefined) {
+      await this.#repository.clearMissedReadings({ experienceId: stored.id, listingId: input.source.listingId });
+    }
     if (stored === undefined) {
       throw new AppError("not_found", "No experience has this ID.", [
         { path: "experienceId", message: "No such experience." },
@@ -257,6 +261,24 @@ export class CatalogueService implements Catalogue {
       );
     }
     return targets.map((one) => one.id);
+  }
+
+  async recordMissedReading(input: {
+    listingId: string;
+    experienceId: string;
+    rawListingId: string;
+    missesBeforeRemoval: number;
+  }): Promise<boolean> {
+    const link = { experienceId: input.experienceId, listingId: input.listingId };
+    const missed = await this.#repository.countMissedReading(link);
+    if (missed === null) return false;
+    const log = { ...link, rawListingId: input.rawListingId, missed, missesBeforeRemoval: input.missesBeforeRemoval };
+    if (missed < input.missesBeforeRemoval) {
+      this.#logger.info(log, "A reading of the listing did not yield the experience; its link is kept");
+      return false;
+    }
+    await this.removeSourceLink(input);
+    return true;
   }
 
   async getChangesSince(input: ExperienceChangesInput): Promise<ExperienceChangesResult> {
