@@ -48,7 +48,7 @@
     "url": "https://xplorio.com/hermanus/benguela-cove-parkrun/",
     "rawFile": "raw/xplorio/hermanus-benguela-cove-parkrun.txt",
     "fetchedAt": "2026-11-23T13:57:53Z",
-    "title": "Benguela Cove Parkrun",
+    "title": "Benguela Cove parkrun",
     "summary": "A free, fun, and friendly weekly 5km community event.",
     "description": "A free, fun, and friendly weekly 5km community event. Walk, jog, run, volunteer or spectate – it's up to you! Every week we grab a post parkrun coffee at Benguela Adventure Centre - please come and join us!",
     "type": "recurring",
@@ -194,7 +194,7 @@
     "url": "https://xplorio.com/gansbaai/gansbaai-market/",
     "rawFile": "raw/xplorio/gansbaai-gansbaai-market.txt",
     "fetchedAt": "2026-11-23T13:57:41Z",
-    "title": "Gansbaai Market / Gansbaai Mark",
+    "title": "The Gansbaai Market",
     "summary": "Gansbaai’s Farmer’s Market every Saturday and on pre-announced occasions in-season.",
     "description": "Bring your shopping basket and tell all your friends to meet you at Gansbaai’s Farmer’s Market every Saturday and on pre-announced occasions in-season. Gansbaai Market / Gansbaai Mark is the place to be if you love local vibes, sustainable shopping and delicious food. Get together with the community as you shop for organically grown produce, plants, handmade gifts, and an ever-changing selection of upcycled and preloved goods on sale at the Gansbaai Market / Gansbaai Mark. Stock up on a tasty selection of bottled condiments, artisanal bakes and delicious takeaways! For added enjoyment, the Gansbaai Market / Gansbaai Mark has picnic tables and chairs, a jungle gym for the kids and a DJ playing all your favourite hits.",
     "type": "recurring",
@@ -347,7 +347,7 @@
       }
     ],
     "venue": {
-      "name": "Groeneweide Farm (Restaurant)",
+      "name": "Groeneweide Farm",
       "address": "Franskraal, Gansbaai 7220",
       "city": "Gansbaai"
     },
@@ -403,7 +403,6 @@
       "category": [
         "hobbies_and_lifestyle"
       ],
-      "format": "class_or_workshop",
       "audience": "all_ages",
       "setting": "indoor",
       "scale": "local"

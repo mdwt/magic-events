@@ -19,7 +19,6 @@
       }
     ],
     "venue": {
-      "name": "Various Locations",
       "address": "102 Main Rd, Kleinmond",
       "city": "Kleinmond"
     },
@@ -68,8 +67,8 @@
       }
     ],
     "venue": {
-      "name": "Hermanus River Farmhouse",
-      "city": "Hermanus"
+      "name": "Hermanus River Farm",
+      "city": "Kleinmond"
     },
     "price": {
       "min": 70,
@@ -125,7 +124,7 @@
       }
     ],
     "venue": {
-      "name": "Stanford Hills",
+      "name": "Stanford Hills Estate",
       "city": "Stanford"
     },
     "bookingUrl": "https://www.quicket.co.za/organisers/99225-the-stanford-stumble",
@@ -157,9 +156,9 @@
     "url": "https://www.wesgro.co.za/travel/events/toy-run-overberg",
     "rawFile": "raw/wesgro/toy-run-overberg.txt",
     "fetchedAt": "2026-11-23T14:04:39Z",
-    "title": "Toy Run Overberg",
+    "title": "Overberg Toy Run",
     "summary": "The annual Overberg Toy Run, with thanks to Harbour On Deck and Laerskool Gansbaai for their support.",
-    "description": "Thank you Harbour On Deck and Laerskool Gansbaai for your continued support for the annual Overberg Toy Run.\nYou've outdone yourselves this year!!\nSpecial thanks to Hilda Verster Rodrigues for your continued support\n#HarbourOnDeck#overbergtoyrun",
+    "description": "Thank you Harbour On Deck and Laerskool Gansbaai for your continued support for the annual Overberg Toy Run.\nYou've outdone yourselves this year!!\nSpecial thanks to Hilda Verster Rodrigues for your continued support",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -199,7 +198,7 @@
     "url": "https://www.wesgro.co.za/travel/events/titan-trail-run-benguela-cove-lagoon-wine-estate",
     "rawFile": "raw/wesgro/titan-trail-run-benguela-cove-lagoon-wine-estate.txt",
     "fetchedAt": "2026-11-23T14:04:56Z",
-    "title": "TITAN Trail Run | Benguela Cove Lagoon Wine Estate",
+    "title": "Titan Trail Run",
     "summary": "Titan Trail Running is about well-built routes, great locations, and a community of runners who enjoy being out there.",
     "description": "## Welcome to Titan Trail Running\nLet’s Hit the Trails\nIf you love running, a bit of adventure, and the kind of routes that make your legs work but leave you smiling at the finish, you’re in the right place.\nTitan Trail Running is about well-built routes, great locations, and a community of runners who enjoy being out there. Whether you’re chasing a podium or just keen for a solid morning on the trails, there’s a place for you on our start line.\nAnd yes, walking is allowed on all distances. Run it, hike it, race it. Just get it done.\n## What You Can Expect\n### Proper Trails\nEach event features carefully mapped routes designed to be interesting, runnable, and rewarding. You can also expect water stations along the route to keep you hydrated.\n### Accurate Timing\nYour race, your result. We time every event so you can track your performance and see where you stack up [ and get your Vitality points ;) ]\n### Podiums & Medals\nIf you’re fast, we’ll celebrate you properly. If you’re not, you still earn your medal, and your bragging rights.\n### Post-Run Atmosphere\nTitan events are designed to be more than a start and finish line. Expect:\n- Great coffee\n- Good food\n- Wine at selected venues\n- Space to sit, relax, and enjoy the vibe\nWe want you to stick around after you’ve crossed the line!\n### Professional Support\nMedical teams are on standby at every event, and our routes are clearly marked and well managed so you can focus on running.\n### Cool Partners\nWe have some really cool partners we invite to display their awesome product on the day. They are there for you to make your running experience amazing.\nFor a cool discount on the best electrolytes on the market, use code: Titan20 here -> sci_coreSALT to be race ready on the day!\n### Good Vibes Only\nNo egos. No pressure. Just people who enjoy being active, being outdoors, and being part of something well organised.\n## Our Venues\nTitan Trail Running takes place at standout locations across the Western Cape.\nEach event location brings its own flavour, but the Titan standard stays the same: solid routes, great scenery, and a welcoming atmosphere.\n## Distances & Format\nWe offer accessible distances:\n- 5KM - Start at 07:45\n- 10KM - Start at 07:30\nWave starts keep things flowing, with early morning kick-offs to make the most of the day.\n### Registration\nRegistration open at 06:30, make sure to come early to collect you timing band at the registration booth (look out for the TITAN gazebo). You only need your full name to register.\nSo what do you say?\nSign up. Show up. Bring your people.\nLet’s hit the trails together.",
     "type": "single",
@@ -214,7 +213,7 @@
     ],
     "venue": {
       "name": "Benguela Cove Lagoon Wine Estate",
-      "city": "Fisherhaven"
+      "city": "Hermanus"
     },
     "bookingUrl": "https://www.entryninja.com/events/83448",
     "imageUrl": "https://www.wesgro.co.za/uploads/imager/files/921078/Screenshot-2026-11-17-134229_W500_P50-50.webp",
@@ -234,8 +233,7 @@
       "scale": "regional"
     },
     "tags": [
-      "trail-running",
-      "wine"
+      "trail-running"
     ],
     "profile": "A TITAN trail run at Benguela Cove Lagoon Wine Estate with 5 km and 10 km distances, starting from 07:30 after registration opens at 06:30. Runners and walkers follow marked, timed routes with water stations, then stay for coffee, food and wine. It suits trail runners of any pace."
   },

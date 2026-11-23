@@ -216,7 +216,7 @@
     "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
     "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
     "fetchedAt": "2026-11-23T14:09:57Z",
-    "title": "First Fridays Artwalk",
+    "title": "Hermanus First Friday Art Walk",
     "summary": "On the first Friday of every month the art galleries in Hermanus Village centre remain open until 8pm for the Hermanus First Fridays Artwalk.",
     "description": "On the first Friday of every month we showcase our towns wealth of fine art with \"Hermanus First Fridays Artwalk\"; an ideal opportunity to visit Hermanus Village centre as the twelve art galleries remain open to welcome you until 8pm. Stroll through the village, savour a glass of wine from one of our local vineyards and enjoy the astonishing range of art and fine craft on display.\n\nEnjoy over 300 artists, 4000 paintings and 200 sculptures and ceramics whilst you walk the town at twilight!\n\nFor more information please call 083 259 8869 or email originals@hermanus.co.za",
     "type": "recurring",
@@ -278,7 +278,7 @@
       "endTime": "15:00"
     },
     "venue": {
-      "name": "Lemm's Corner",
+      "name": "Lemm’s Corner",
       "city": "Hermanus"
     },
     "hints": [
@@ -329,7 +329,7 @@
       "category": [
         "food_and_drink"
       ],
-      "format": "dining_event",
+      "format": "attraction",
       "scale": "local"
     },
     "tags": [],
