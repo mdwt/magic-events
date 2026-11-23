@@ -21,7 +21,8 @@
     "db:seed:samples": "pnpm --filter @magic-events/cli seed:samples",
     "db:studio": "pnpm --filter @magic-events/db studio",
     "cli:pipeline": "pnpm --filter @magic-events/cli run pipeline",
-    "cli:captures": "pnpm --filter @magic-events/cli run captures"
+    "cli:captures": "pnpm --filter @magic-events/cli run captures",
+    "tunnel": "cloudflared tunnel --url http://localhost:4000"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
