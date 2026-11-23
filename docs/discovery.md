@@ -1,46 +1,45 @@
-# Discovery and processing
+# Discovery
 
-Source of truth for how experiences are fetched from sources and turned into published experiences. Resources outside this flow are defined in [data-model.md](data-model.md).
+Source of truth for how listings are fetched from sources and handed to Data processing. How a raw listing becomes an experience is in [data-processing.md](data-processing.md). Resources outside this flow are defined in [data-model.md](data-model.md).
 
 2026-11-23 · Meiring
 
 ## Overview
 
-Discovery fetches listings from sources and saves each new or changed one as a raw listing with status pending. Data processing picks up pending raw listings, turns each one into an experience, and saves it through the Catalogue service. The raw listing's status is the whole hand-off between the two.
+Discovery keeps a record of every listing a source publishes and fetches it again on every run, for as long as the source lists it. When a listing is new or its content has changed, Discovery saves the content, whole, as a raw listing with status pending. Data processing picks up pending raw listings and turns them into experiences, so an experience follows its listings: a date, price or booking change at the source reaches the experience on the next run. The raw listing's status is the whole hand-off between the two.
+
+Version 1 is a tracer bullet: five source kinds, with one adapter and one extractor each, working end to end from fetch to published experience.
 
 ```mermaid
 flowchart LR
   SCH[Schedule] --> DIS[Discovery service]
   DIS -- location of each source --> CAT[Catalogue service]
-  DIS -- fetch --> F[Fetcher for the source's kind]
+  DIS -- fetch --> F[Adapter for the source's kind]
   DIS -- saves --> RL[(raw listing: pending)]
-  W[Processing worker] -- claims pending --> DIS
-  W --> DP[Data processing service]
-  DP -- match and save experience --> CAT
-  DP -- mark processed or failed --> DIS
+  DP[Data processing] -- claims pending, marks processed or failed --> DIS
 ```
 
 Services call each other's services directly. Nothing is copied between domains and no domain event is needed for the hand-off. All tables are in one Postgres database.
 
 ## Tables
 
-### Source (Discovery)
+### Source
 
 A site or feed that publishes experiences for one location.
 
 | Holds | Notes |
 | --- | --- |
-| Name, kind | Kind picks the adapter that fetches it and the parser that reads it (see Source kinds) |
+| Name, kind | Kind picks the adapter that fetches it and the extractor that reads it (see Source kinds) |
 | Location | One location per source. A site that covers two places is entered twice, once per location |
-| Settings | JSON the adapter reads: address, query, organiser ID, page pattern. Each kind defines its own |
+| Settings | JSON the adapter reads: page addresses, organiser ID, calendar name. Each kind defines its own |
 | Credentials | The name of an environment variable holding the API key. Keys are never stored in the table |
 | Sync state | JSON the adapter keeps between runs, such as Quicket's last-modified time for incremental fetches |
 | Fetch interval | How often this source is fetched |
-| Missed runs before removal | How many successful runs in a row may miss a listing before it counts as gone |
+| Missed runs before removal | How many successful, complete runs in a row may miss a listing before it counts as gone |
 | Max processing attempts | How many times a failed raw listing is retried |
 | Active | Only active sources are fetched |
 
-### Run (Discovery)
+### Run
 
 One fetch of one source. This is the log of what was fetched and when.
 
@@ -49,53 +48,72 @@ One fetch of one source. This is the log of what was fetched and when.
 | Source | The source fetched |
 | Started, finished | Finished is empty while it runs |
 | Status | Running, succeeded, failed |
+| Complete | Whether the run returned everything the source currently lists. Only complete runs count towards a missed listing |
 | Counts | Listings found, new or changed, unchanged |
 | Error | Why it failed, if it did |
 
-### Raw listing (Discovery)
+### Listing
 
-One version of one listing, exactly as the source returned it. A new row is saved only when the listing is new or its content changed.
+One item a source publishes: one API event, one web page, one post or one PDF calendar. It is the lasting record that Discovery keeps in sync with the source. There is one row per source and listing ID, and every run that returns the listing updates it. A listing can describe one experience or several.
 
 | Holds | Notes |
 | --- | --- |
-| Run, source | Where and when it was fetched |
-| Source's listing ID | The source's own ID for the listing, or its web address if the source has none |
-| Address, fetched time, content type | |
-| Content | The JSON, HTML or feed item as returned, in a Postgres `text` column |
-| Fingerprint | A hash of the content, used to skip unchanged listings |
+| Source | The source that publishes it |
+| Source's listing ID | The source's own ID for the listing, or its web address if the source has none. Stable across runs, and unique within the source |
+| Web address | Where the listing can be seen |
+| First seen, last seen | The first and the last run that returned it. Last seen is when the listing was last verified against the source |
+| Fingerprint | A hash of the content last fetched, used to tell whether the listing changed |
+| State | Listed, or removed once the source has stopped returning it |
+
+### Raw listing
+
+One version of a listing's content, whole and exactly as the source returned it. A new row is saved only when the listing is new or its content changed, so a listing's raw listings are its history.
+
+| Holds | Notes |
+| --- | --- |
+| Listing, run | Which listing, and the run that fetched this version |
+| Fetched time, content type | |
+| Content | The JSON, HTML or text as returned, in a Postgres `text` column. A PDF is stored as base64 |
+| Fingerprint | The hash of this version's content |
 | Status | Pending, processed, failed |
 | Attempts, error | For failed ones |
 | Kind | Listing (fetched content) or removed (the listing is gone from the source; no content) |
-| Last seen | The last run that returned this listing. Kept on the latest version of each listing |
-| Experience | The experience it produced, once processed |
 
-The content is never changed after it is saved. Only the status and last-seen fields change.
-
-### Attributes and tags (Data processing)
-
-The system-defined list of attributes (name, type, default value), their options, and tags. Data processing uses it to describe each experience. Defined in [data-model.md](data-model.md).
-
-### Experience and source link (Catalogue)
-
-The published experience and the links from source listings to it. A source's listing ID links to one experience only. Data processing reads these links through the Catalogue service to match listings. Defined in [data-model.md](data-model.md).
+A raw listing's content is never changed after it is saved. Only its status changes. Which experiences a listing produced is recorded by Catalogue's source links, not here.
 
 ## Source kinds
 
-Each source has a kind, and each kind has one adapter. The kinds come from the Hermanus source research (23 Nov 2026).
+Version 1 has five kinds. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research (23 Nov 2026).
 
-| Kind | Sources it covers | What a run returns | Listing ID |
-| --- | --- | --- | --- |
-| Ticketing API | Quicket (free key, all public events, no location filter, incremental by last-modified); Ticketmaster Discovery (free key, filters by point) | One listing per event, as JSON | The platform's event ID |
-| Paid events API | PredictHQ, SerpApi Google Events, Bandsintown partner search | One listing per event, as JSON | The platform's event ID |
-| WordPress REST | Hermanus Times posts | One listing per post, as JSON. A post can describe several experiences | The post ID |
-| PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. File names change with each reissue, so the adapter finds the latest file from the calendar page | One listing per table row | Derived by the adapter |
-| HTML page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | One listing per event on the page, as HTML | The event's own page address |
+| Kind | Sources it covers | How it is fetched | One listing is | Listing ID | Extracted by |
+| --- | --- | --- | --- | --- | --- |
+| Quicket | Quicket | API with a free key. Returns all public events with no location filter, incremental by last-modified | One event, as JSON | Quicket's event ID | Field mapping |
+| Ticketmaster | Ticketmaster Discovery | API with a free key. Filters by point | One event, as JSON | Ticketmaster's event ID | Field mapping |
+| WordPress | Hermanus Times posts | WordPress REST API (blocked, see Access) | One post, as JSON | The post ID | Claude |
+| PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. Each calendar is its own source | The adapter fetches the calendar page, asks Claude which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Claude, which reads the PDF itself |
+| Web page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Claude |
 
-Sources the research found closed (Facebook events, Eventbrite search) have no kind.
+Three kinds have an API: Quicket, Ticketmaster and WordPress. PDF calendars and web pages are fetched as files and pages.
+
+Adding another web page or PDF calendar is adding a source row with its address in the settings. It needs no new code.
+
+The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown) and the sources it found closed (Facebook events, Eventbrite search) have no kind.
+
+### Access
+
+Checked on 23 Nov 2026 by calling each one without a key.
+
+| Kind | What is needed | Result of the check |
+| --- | --- | --- |
+| Quicket | An API key. Sign up at developer.quicket.co.za and get a key there | The API answers 401 without a key. Not yet tested with one |
+| Ticketmaster | An API key. Sign up at developer.ticketmaster.com. 5000 calls a day, 5 a second | The API answers 401 without a key. Its documentation lists South Africa. Whether it holds any Hermanus events is not yet known |
+| WordPress | Nothing to sign up for | Hermanus Times is a WordPress site at novanews.co.za/hermanustimes, but its posts API answers 403 behind a Cloudflare browser check. Its RSS feed is open: 10 posts a page with their full text. Nine of the ten latest posts were national news |
+| PDF calendar | Nothing | whalecoast.info is reachable. Its site has no events API, so the PDFs remain the source |
+| Web page | Nothing | Public pages. Not checked one by one |
 
 ## Adapter interface
 
-An adapter is a plug-in behind Discovery's fetch port. Discovery picks it by the source's kind, calls it, and does everything after: fingerprints, saving raw listings as pending, and closing the run. Adding a source of a new kind means adding one adapter, plus a parser for it in Data processing.
+An adapter is a plug-in behind Discovery's fetch port. Discovery picks it by the source's kind, calls it, and does everything after: fingerprints, saving raw listings as pending, and closing the run. Adding a source of a new kind means adding one adapter, plus an extractor for it in Data processing.
 
 ```ts
 interface SourceAdapter {
@@ -113,25 +131,28 @@ interface SourceAdapter {
 }
 
 interface FetchedListing {
-  sourceListingId: string;      // stable across runs; derived by the adapter when the source has none
+  sourceListingId: string;      // the source's own ID or the web address; stable across runs
   url?: string;
-  contentType: string;          // application/json, text/html, text/plain
-  content: string;              // exactly as returned, or the extracted row for PDFs
+  contentType: string;          // application/json, text/html, application/pdf
+  content: string;              // exactly as returned; a PDF as base64
 }
 ```
+
+An adapter returns each listing whole. It does not split a page, post or calendar into experiences; that is extraction, and it belongs to Data processing.
 
 An adapter that filters by place does it here. Quicket has no location filter, so its adapter keeps only events near the source's location.
 
 ## Fetching
 
-1. The schedule starts Discovery for each active source, at that source's fetch interval.
+1. The schedule starts Discovery for each active source, at that source's fetch interval. How often the schedule looks for sources that are due is a setting (see Settings).
 2. Discovery gets the source's location (name, centre point, timezone) from the Catalogue service and inserts a run with status running.
-3. Discovery calls the fetcher for the source's kind with the source's settings and the location.
-4. The fetcher calls the source and splits the response into listings. For each listing it returns the source's listing ID, the address, the content type and the raw content. It does not clean or interpret anything.
-5. For each listing, Discovery computes the fingerprint and compares it with the last raw listing saved for the same source and listing ID:
-   - same fingerprint: counted as unchanged; only the last-seen run is updated
-   - new listing or different fingerprint: saved as a raw listing with status pending
-6. Discovery closes the run with its status, counts and any error.
+3. Discovery calls the adapter for the source's kind with the source's settings, credentials, sync state and the location.
+4. The adapter calls the source and returns the listings whole: one per API event, page, post or calendar. For each listing it returns the source's listing ID, the web address, the content type and the raw content. It does not clean, split or interpret anything.
+5. For each listing returned, Discovery computes the fingerprint and finds the listing record for the same source and listing ID:
+   - no record: the listing is new. Discovery creates the record and saves the content as a raw listing with status pending
+   - same fingerprint: counted as unchanged. Only the listing's last seen is updated
+   - different fingerprint: the listing changed. Discovery updates the record's fingerprint and last seen, and saves the content as a new raw listing with status pending
+6. Discovery closes the run with its status, whether it was complete, its counts and any error.
 7. If the run succeeded and the adapter reported it complete, Discovery checks for listings that have gone missing (below). An incremental run only returns what changed, so it never counts as a miss.
 
 If the fetch fails part way, the listings already saved stay saved and the run is marked failed. A failed run never counts as a miss.
@@ -140,31 +161,56 @@ If the fetch fails part way, the listings already saved stay saved and the run i
 
 A listing that a source stops returning is checked again before anything changes:
 
-1. After each successful, complete run, Discovery looks at every listing this source has returned before, whose latest version is not a removal.
-2. If the number of successful, complete runs since the listing was last seen reaches the source's missed runs before removal, Discovery saves a raw listing of kind removed, with status pending.
-3. Data processing processes it like any other raw listing: the Catalogue service removes that source's link from the experience.
-4. If the experience has no source links left, Catalogue sets its status to Cancelled and booking to Closed. If another source still lists it, it stays as it is.
-5. If the listing comes back later, it is saved as a new raw listing and processed as usual.
+1. After each successful, complete run, Discovery looks at every listing of this source whose state is listed.
+2. If the number of successful, complete runs since the listing was last seen reaches the source's missed runs before removal, Discovery sets the listing's state to removed and saves a raw listing of kind removed, with status pending.
+3. Data processing processes it like any other raw listing: the Catalogue service removes that listing's link from every experience it was linked to.
+4. If an experience has no source links left, Catalogue sets its status to Removed and booking to Closed. If another listing still links to it, it stays as it is. An experience that is already Past or Cancelled keeps its status, so a listing a source drops after the experience is over changes nothing.
+5. If the listing comes back later, its state is set to listed again and its content is saved as a new raw listing and processed as usual. Removed is final for an experience, so the returning listing becomes a new experience.
 
-## Processing
+Removed is not Cancelled. Cancelled means a source said the organisers cancelled it. Removed means no source lists it any more, whatever the reason. Statuses are defined in [data-model.md](data-model.md).
 
-1. A processing worker runs on a loop. It asks the Discovery service for pending raw listings, which are claimed with `FOR UPDATE SKIP LOCKED` so two workers never take the same one.
-2. Data processing parses the content with the parser for the source's kind and maps it to experience fields, attribute values and tags, checked against the attribute definitions.
-3. It matches the listing to an experience through the Catalogue service:
-   - the source and listing ID already have a source link: that experience is updated
-   - otherwise Catalogue returns candidates in the same location with overlapping dates and a similar title, and Data processing links the listing to one of them or creates a new experience
-4. The Catalogue service saves the experience, its sessions, attribute values, tags, the source link and a change row.
-5. Data processing marks the raw listing processed with the experience, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
+## Hand-off to Data processing
 
-Steps 4 and 5 run in one transaction, so a raw listing is never marked processed without its experience saved.
+Data processing never reads Discovery's tables. It uses two calls on the Discovery service:
 
-## Raw listing status
+- **Claim** pending raw listings. They are claimed with `FOR UPDATE SKIP LOCKED`, so two workers never take the same one. Each comes with its source's kind and location.
+- **Mark** a raw listing processed, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
 
 | Status | Means | Moves to |
 | --- | --- | --- |
 | Pending | Saved by a run, waiting for processing | Processed, Failed |
-| Processed | Turned into an experience | Nothing |
+| Processed | Its experiences are extracted and saved | Nothing |
 | Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
+
+## Claude in Discovery
+
+Discovery uses Claude, through the Anthropic API, where finding something takes judgement and not a fixed rule. How Claude is called (the SDK, the model, structured answers) is in [data-processing.md](data-processing.md) and is the same here.
+
+| Place | What Claude does | Kind of call | Status |
+| --- | --- | --- | --- |
+| Finding the current calendar file | The PDF calendar adapter gives Claude the links on the calendar page and the calendar's name from the source's settings. Claude returns the address of the current file | One request with a structured answer | Version 1 |
+| Research source | For experiences with no feed, such as seasons and standing recurring experiences. Claude is given a research question about the location, searches the web and reads pages, and returns its findings with the addresses it used. Each answer is a listing and goes through processing like any other | Agent with web search and web fetch | Proposed |
+| Source scouting | For a new location, Claude searches the web for sites, calendars and organisers that publish experiences there, and proposes source rows with a kind and an address. A system admin approves them | Agent with web search and web fetch | Proposed |
+
+The two agents are requests to the Messages API with Anthropic's web search and web fetch tools (`web_search_20260209`, `web_fetch_20260209`) and a `max_uses` limit on each. They run on Discovery's own schedule. A response that stops with `pause_turn` is sent back as it is to continue, and a failed search or fetch comes back as an error result inside the response, not as an exception.
+
+Claude is not used for fetching, fingerprints, saving, or deciding that a listing has disappeared.
+
+## Settings
+
+System settings are environment variables, read through the settings provider (see [architecture.md](architecture.md)). Settings that differ per source are on the source row (see Source).
+
+| Setting | Default | Meaning |
+| --- | --- | --- |
+| `DISCOVERY_SCHEDULE_INTERVAL_SECONDS` | 60 | How often the schedule looks for sources that are due a fetch |
+| `DISCOVERY_FETCH_TIMEOUT_SECONDS` | 30 | How long an adapter waits for a source to answer |
+| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 24 | Fetch interval given to a new source |
+| `DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL` | 3 | Missed runs before removal given to a new source |
+| `DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS` | 3 | Max processing attempts given to a new source |
+| `QUICKET_API_KEY` | None | The Quicket API key. The Quicket source row names this variable |
+| `TICKETMASTER_API_KEY` | None | The Ticketmaster API key. The Ticketmaster source row names this variable |
+
+The Claude settings (`ANTHROPIC_API_KEY`, `CLAUDE_MODEL`, `CLAUDE_EFFORT`, `CLAUDE_TIMEOUT_SECONDS`) are listed in [data-processing.md](data-processing.md) and apply here too.
 
 ## Service dependencies
 
@@ -172,7 +218,6 @@ Steps 4 and 5 run in one transaction, so a raw listing is never marked processed
 | --- | --- | --- |
 | Discovery | Catalogue | The location of each source |
 | Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
-| Data processing | Catalogue | Matching by source link or candidates, saving experiences |
 
 Catalogue calls neither, so the dependencies have no cycles.
 
@@ -183,18 +228,22 @@ Catalogue calls neither, so the dependencies have no cycles.
 | Hand-off | The raw listing's status. No domain event or queue is needed |
 | No copies | Services call each other's services. No table holds a copy of another domain's data |
 | One location per source | A source row carries its location and settings |
-| Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source |
-| Adapters | One adapter per source kind, behind one interface. Adapters fetch and split; Discovery saves; Data processing parses |
+| Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source. System settings, such as how often the schedule runs and the defaults a new source gets, are environment variables listed under Settings |
+| Claude | Discovery uses Claude to find the current calendar file. PDFs are stored whole and read by Claude in processing, so no PDF text is extracted here |
+| Source kinds | Five in version 1: Quicket, Ticketmaster, WordPress, PDF calendar and web page. One adapter and one extractor per kind |
+| Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
+| Raw listing | One version of a listing's content, whole as fetched. Saved only when the listing is new or changed |
+| Adapters | Behind one interface. Adapters fetch; Discovery saves; Data processing extracts |
 | Credentials | API keys live in environment variables; a source stores only the variable's name |
-| Disappeared listings | Checked again over the configured number of successful, complete runs, then the source link is removed. An experience with no source links left is cancelled |
-| Matching | By Catalogue's source links first, then by comparing candidates |
+| Disappeared listings | Checked again over the configured number of successful, complete runs, then the source link is removed. An experience with no source links left is set to Removed, a final status that is separate from Cancelled. A Past or Cancelled experience keeps its status |
+| Returning listings | Removed is final. A listing that comes back becomes a new experience |
 | Raw content | Postgres `text` column. **Later:** move to MinIO (S3) and store a key instead |
 
 ## Open questions
 
-- [ ] How often does the processing worker look for pending raw listings?
-- [ ] The same experience appears on many sources (the Whale Festival is on Quicket, AllEvents, Wesgro, SA-Venues and the tourism PDF), and sources disagree (winetourism.com lists different FynArts 2027 dates from the organiser). When linked sources disagree, which one's fields win? One option is a priority number per source.
-- [ ] A PDF row or HTML event with no ID of its own needs a derived listing ID. If it is built from the name and date, a changed date looks like a removed listing plus a new one. What should a derived ID be built from?
+- [ ] The WordPress kind cannot fetch Hermanus Times: its posts API is behind a Cloudflare browser check (see Access). *Proposed:* the fifth kind becomes RSS feed, which reads the open feed, one listing per post with its full text.
 - [ ] The location has only a centre point, but the sources cover Hermanus and the wider Overstrand (Stanford, Gansbaai, Kleinmond). Does a location need a radius for adapters to filter by?
-- [ ] Seasons (whale season, the fynbos bloom) and many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in?
-- [ ] A WordPress post can describe several experiences. Does its parser create one experience per post, or split it?
+- [ ] Seasons (whale season, the fynbos bloom) and many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where Claude researches the location on the web (see Claude in Discovery).
+- [ ] Quicket's runs are incremental and only complete runs count as a miss, so a listing Quicket removes is never noticed, and an unchanged Quicket listing is never verified again. Does the Quicket adapter also make a complete run at some interval?
+- [ ] A planner checking back wants to know an experience was verified recently. Discovery knows when each listing was last seen, but an unchanged listing is not processed, so Catalogue never hears of it. *Proposed:* after each run, Discovery tells the Catalogue service which listings it saw, and Catalogue stamps last verified on their source links.
+- [ ] A web page's HTML can differ on every fetch (tokens, timestamps, adverts), so its fingerprint always differs and every run processes it again. Is the fingerprint taken from the page's visible text instead?

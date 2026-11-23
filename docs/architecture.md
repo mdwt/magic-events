@@ -1,4 +1,4 @@
-# Rev 1: Domains, architecture and use cases
+# Architecture
 
 2026-11-23 · Meiring
 
@@ -13,7 +13,7 @@ Version 1 is an experience feed. It holds no trip context and serves experiences
 | Discover experiences | Find experiences in the locations the system covers and capture the raw data as received | Discovery |
 | Process experiences | Clean, de-duplicate, categorise and tag raw data, then make it ready for the data warehouse | Data processing |
 | Search experiences | Find processed experiences by location, dates and traveller interests | Catalogue |
-| Track changes | Show what is new, confirmed, rescheduled, postponed, cancelled or otherwise changed since a time the client gives | Catalogue |
+| Track changes | Show what is new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed since a time the client gives | Catalogue |
 | Authenticate and authorise | Know who is calling and decide what they may do | Identity |
 | Manage tenants | Tenant setup and configuration, users, and their roles | Organizations |
 
@@ -35,20 +35,22 @@ A client can call through the REST API, or through MCP using an AI agent acting 
 
 ## Domains
 
-There are five domains: Discovery, Data processing, Catalogue, Identity and Organizations. Catalogue owns the processed experiences that clients search and track changes on. Each domain owns its own data, and no other domain changes that data directly. A domain that needs another domain's data calls its service; nothing is copied. How fetching and processing work is in [discovery.md](discovery.md).
+There are five domains: Discovery, Data processing, Catalogue, Identity and Organizations. Catalogue owns the processed experiences that clients search and track changes on. Each domain owns its own data, and no other domain changes that data directly. A domain that needs another domain's data calls its service; nothing is copied. How listings are fetched is in [discovery.md](discovery.md), and how they become experiences is in [data-processing.md](data-processing.md).
+
+Version 1 is a tracer bullet through Discovery, Data processing and Catalogue: five kinds of source, fetched, processed and published end to end.
 
 ### Discovery
 
 Finds experiences and captures the raw data as received.
 
-- **Owns:** sources (where experiences are found, one location each), runs, raw listings exactly as fetched.
-- **Boundary:** does not interpret, categorise or decide what clients see. It saves raw listings as pending for Data processing and stops there.
+- **Owns:** sources (where experiences are found, one location each), runs, listings (the lasting record of each item a source publishes, fetched again on every run), and raw listings (each version of a listing's content, exactly as fetched).
+- **Boundary:** does not interpret, split, categorise or decide what clients see. It saves raw listings as pending for Data processing and stops there.
 
 ### Data processing
 
 Turns raw listings into clean, categorised, tagged experiences ready for the data warehouse.
 
-- **Owns:** the processing pipeline, the system-defined attributes (categories) and tags, and matching rules (is this the same experience as one we already have).
+- **Owns:** the processing pipeline (extract, classify, match, save), one extractor per kind of source, the configurable attribute and tag definitions that experiences are classified with, and matching rules (is this the same experience as one we already have).
 - **Boundary:** does not fetch from sources or answer client queries. It processes the raw listings Discovery captures.
 
 ### Catalogue
@@ -94,6 +96,7 @@ flowchart TB
   end
   subgraph Outbound adapters
     SRC[Experience sources]
+    CL[Claude API]
     DW[Data warehouse]
     STO[Storage]
   end
@@ -102,23 +105,30 @@ flowchart TB
   ID --> CAT
   ID --> ORG
   SCH --> DIS
+  SCH --> DP
+  SCH --> CAT
   DIS --> CAT
   DP --> DIS
   DP --> CAT
-  ID --> ORG
   DIS --> SRC
+  DIS --> CL
+  DP --> CL
   DP --> DW
   CAT --> STO
   ORG --> STO
 ```
 
-REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery without passing through Identity, because no client is involved.
+System settings, such as how often things run, are environment variables. They are read through one settings provider, which reads them once at startup, applies defaults and stops the system when a value is invalid. A domain asks the provider for its settings and never reads an environment variable itself, so the store behind the provider can change later without touching the domains. Each domain's settings are listed in its own document: [discovery.md](discovery.md), [data-processing.md](data-processing.md) and [data-model.md](data-model.md) for Catalogue.
+
+Discovery and Data processing use Claude, through the Anthropic API, for the steps that need judgement. Where and how is in [discovery.md](discovery.md) and [data-processing.md](data-processing.md).
+
+REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker and Catalogue's move of finished experiences to Past without passing through Identity, because no client is involved.
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
-| Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs and raw listings; get a source's location from Catalogue |
-| Data processing | Process pending raw listings | Claim and mark raw listings through Discovery; match and save experiences through Catalogue; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience | Store locations, published experiences and their history |
+| Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask Claude |
+| Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; ask Claude; load the data warehouse |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; move finished experiences to Past | Store locations, published experiences and their history |
 | Identity | Authenticate a caller; authorise an action | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
 | Organizations | Manage tenants; manage users and roles; get a tenant | Store tenants |
 
@@ -130,7 +140,7 @@ A domain that needs another domain's data calls that domain's service. Nothing i
 | --- | --- | --- |
 | Discovery | Catalogue | The location of each source |
 | Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
-| Data processing | Catalogue | Matching listings to experiences, saving experiences |
+| Data processing | Catalogue | A listing's location, matching listings to experiences, saving experiences, removing source links |
 | Identity | Organizations | A user's tenant and whether it is active |
 
 Catalogue and Organizations call nobody, so there are no cycles. The hand-off from fetching to processing is the raw listing's status: Discovery saves it as pending, and Data processing marks it processed or failed.
@@ -154,14 +164,16 @@ Eight months later, the agent refines the trip and books activities. They want o
 
 1. **Identity** authenticates and authorises the caller, as in UC1.
 2. **Catalogue** takes the same search parameters and the time of the agent's last search.
-3. **Catalogue** returns what is new, confirmed, rescheduled, postponed, cancelled or otherwise changed since then.
+3. **Catalogue** returns what is new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed since then.
 
 ### UC3: The system discovers experiences in a location
 
-1. **Discovery** runs on its schedule for each active source, gets the source's location from Catalogue, and fetches from the source.
-2. **Discovery** saves each new or changed listing as a raw listing with status pending, and logs the run.
-3. **Data processing** claims pending raw listings, cleans, categorises and tags them, and matches each one to an experience through Catalogue.
+1. **Discovery** runs on its schedule for each active source, gets the source's location from Catalogue, and fetches every listing the source publishes, including the ones it has fetched before.
+2. **Discovery** updates its record of each listing, saves each new or changed one as a raw listing with status pending, and logs the run.
+3. **Data processing** claims pending raw listings, extracts the experiences each one describes, classifies them with the attribute and tag definitions, and matches each one to an experience through Catalogue.
 4. **Catalogue** saves new experiences and changes to existing ones, with a change record that feeds UC2. Data processing marks the raw listing processed.
+
+Because every run fetches the same listings again, a change at the source months later (new dates, booking opening, a cancellation) reaches the experience and shows up in UC2.
 
 ### UC4: A system admin onboards a travel agency
 
@@ -176,7 +188,8 @@ Eight months later, the agent refines the trip and books activities. They want o
 | --- | --- |
 | Experience | Something a traveller can go to or do: a concert, a match, a market, a show with many dates, an exhibition, a festival months away, or a season such as whale watching |
 | Domain event | Something that happened inside the system that another domain may care about, such as `experience.processed`. Not an experience. |
-| Raw listing | An experience as one source returned it, before any processing |
+| Listing | One item a source publishes: an API event, a web page, a post or a PDF calendar. Discovery keeps one record per listing and fetches it again on every run. It can describe one experience or several |
+| Raw listing | One version of a listing's content, exactly as the source returned it, before any processing |
 | Source | A place Discovery finds experiences, such as a ticketing site, tourism listing or venue page |
 | Location | A place the system covers and clients search by, such as Hermanus |
 | Tenant | A client organisation: a travel agency or travel app |
@@ -197,8 +210,16 @@ Eight months later, the agent refines the trip and books activities. They want o
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
 | How does a client search by place? | With a point and a radius the client chooses. Distance is worked out at query time |
 | Where are sources managed? | In Discovery. Each source has one location |
-| What happens when a listing disappears from its source? | After the configured number of successful runs without it, its source link is removed. An experience with no source links left is cancelled |
+| What happens when a listing disappears from its source? | After the configured number of successful, complete runs without it, its source link is removed. An experience with no source links left is set to Removed. Cancelled is only for an experience its organisers cancelled |
+| What happens when an experience is over? | Catalogue sets it to Past, and search leaves it out |
 | How do domains share data? | By calling each other's services. Nothing is copied or kept in sync |
+| Which sources does version 1 fetch? | Five kinds, with one adapter and one extractor each: Quicket, Ticketmaster, WordPress posts, PDF calendars and web pages |
+| How does an experience stay up to date? | Discovery keeps a record of every listing and fetches it again on every run. A changed listing is processed again and updates its experiences |
+| What is a raw listing? | One version of a listing's content, whole as fetched. Data processing extracts zero or more experiences from it |
+| Are categories and tags fixed? | No. They are configurable definitions with a default set. Classification improves by adding definitions and descriptions, with no code change |
+| Which domain events are defined? | Only those for sourcing and processing experiences: `raw_listing.captured` and `experience.processed` |
+| Where is the system configured? | System settings are environment variables read through one settings provider, and each domain's document lists its own. Per-source settings are on the source row. Categories and tags are definition rows |
+| Which language model does the system use? | Claude, through the Anthropic API. Data processing uses it to extract and classify experiences, and Discovery uses it to find the current calendar file |
 
 ## Open questions
 

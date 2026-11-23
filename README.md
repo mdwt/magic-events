@@ -1,0 +1,4 @@
+
+
+
+- Simplify DDD - dont overcook 

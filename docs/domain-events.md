@@ -8,8 +8,8 @@ Source of truth for how domain events are named and stored, and which ones the s
 
 A domain event is named `resource.verb`, all lowercase.
 
-- `resource` is the resource the event is about, in the domain that raises it. A multi-word resource uses an underscore: `raw_listing`.
-- `verb` is in the past tense, because a domain event records something that already happened: `created`, `processed`, `suspended`. A multi-word verb uses an underscore: `role_changed`.
+- `resource` is the resource the event is about. A multi-word resource uses an underscore: `raw_listing`.
+- `verb` is in the past tense, because a domain event records something that already happened: `captured`, `processed`. A multi-word verb uses an underscore.
 - The name is the `type` column in the `events` log.
 
 ## Envelope
@@ -21,20 +21,19 @@ Every domain event is one row in the repo's append-only `events` table.
 | `global_position` | Order across all domain events. Readers keep their place by it |
 | `id` | The domain event's own ID |
 | `stream_id` | The resource the event is about, as `resource:<id>`, for example `experience:7f3c…` |
-| `stream_version` | The resource's version after this event. Unique per stream, so two writers cannot both append version 5 |
+| `stream_version` | The position of this event in its stream, starting at 1. Unique per stream, so two writers cannot both append version 5 |
 | `type` | The name, for example `experience.processed` |
 | `data` | The payload, below |
-| `metadata` | Who or what caused it: the user or agent, the tenant, the request or run, and the domain event that led to it, if any |
+| `metadata` | What caused it: the run or the raw listing being processed, and the domain event that led to it, if any |
 | `recorded_at` | When it was appended |
 
-## Domain events in the prototype
+## Domain events in version 1
 
-Nothing in the prototype reads domain events. Domains call each other's services, and the hand-off from fetching to processing is the raw listing's status (see [discovery.md](discovery.md)). Whether these are appended to `events` as an audit trail is an open question in [data-model.md](data-model.md).
+Version 1 defines domain events only for sourcing and processing experiences. Locations, tenants and users raise none.
+
+Nothing reads them. Domains call each other's services, and the hand-off from fetching to processing is the raw listing's status (see [discovery.md](discovery.md)). Whether these are appended to `events` as an audit trail is an open question in [data-model.md](data-model.md).
 
 | Domain event | Raised by | When | Carries |
 | --- | --- | --- | --- |
-| `location.added` | Catalogue | The system starts covering a new location | Location ID, name, slug, country, region, timezone, centre point |
-| `raw_listing.captured` | Discovery | A run saves a listing that is new or has changed | Raw listing ID, run ID, source, the source's listing ID, address, fetched time, content type |
-| `experience.processed` | Data processing | A raw listing produced a new or changed experience | Experience ID, version, raw listing ID |
-| `tenant.created` | Organizations | A tenant is set up | Tenant ID, name, slug, kind |
-| `tenant.suspended` | Organizations | A tenant loses access | Tenant ID, reason |
+| `raw_listing.captured` | Discovery | A run saves a raw listing: a listing that is new, has changed or was removed | Raw listing ID, listing ID, run ID, source, kind, fetched time, content type |
+| `experience.processed` | Data processing | Processing a raw listing created or changed an experience. One per experience | Experience ID, version, raw listing ID |

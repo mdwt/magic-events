@@ -1,48 +1,52 @@
 # magic-events
 
-Event sourcing platform. pnpm monorepo: a Fastify API that also serves MCP, and a Next.js web app, backed by Postgres through Drizzle.
+A multi-tenant API system that finds, processes and serves experiences by location. Travel agencies and travel apps are the tenants. Their people and their AI agents query the same feed, through a REST API and an MCP interface, to plan trips.
 
-## Layout
+## The brief
 
-- `apps/api` (`@magic-events/api`): Fastify 5 HTTP API. MCP is served over stateless Streamable HTTP at `POST /mcp`; MCP tools are registered in `src/mcp.ts`.
-- `apps/web` (`@magic-events/web`): Next.js 16 (App Router, Turbopack, Tailwind 4). Read `apps/web/AGENTS.md` before working on it.
-- `packages/db` (`@magic-events/db`): Drizzle schema (`src/schema.ts`), client factory (`createDb`), and migrations (`migrations/`).
+A travel agent planning a trip wants to know what is on in a place while their traveller is there: a festival, a concert, a big match, a market. Build a first version of a feed that collects those events for Hermanus, South Africa, so that the people and the agents planning trips can use it.
 
-## Commands
+### How it gets used
 
-Run from the repo root:
+- A luxury trip is usually booked 6 to 18 months before it starts.
+- Closer to the date the trip is refined and activities are booked, so a planner looks at the same place more than once, months apart.
+- Travellers vary widely in age and interests, so what is worth knowing about differs from one trip to the next.
 
-- `pnpm install`: install all workspaces
-- `pnpm db:up` / `pnpm db:down`: start or stop Postgres (docker compose)
-- `pnpm db:generate`: generate a migration from schema changes
-- `pnpm db:migrate`: apply migrations
-- `pnpm dev`: run the API (port 4000) and web (port 3000) in parallel
-- `pnpm typecheck`, `pnpm lint`, `pnpm build`
+What else the feed needs to be is for you to decide.
 
-Target one package with `pnpm --filter @magic-events/<name> <script>`.
+### What counts as an event
 
-## Environment
+| Kind | Examples |
+| --- | --- |
+| Something to go to | J. Cole in Johannesburg on 12 December 2026, Lions v Munster at Ellis Park on 17 April 2027, the Hermanus Country Market on a Saturday |
+| Something that runs | A theatre show with 81 dates, an exhibition that is open for a year |
+| Something months away | The FynArts Festival in Hermanus in June 2027 |
+| A season, which has months and no date | Southern right whales off Hermanus, June to November |
 
-- Every app reads the single `.env` at the repo root. Copy `.env.example` to `.env` to start.
-- Never commit `.env` files. When you add a variable, add it to `.env.example`, and to `apps/api/src/env.ts` if the API reads it.
+## Architecture principles
 
-## Conventions
+### Domain-driven design on a hexagonal architecture, kept light
 
-- TypeScript 7 (the native `tsc`) everywhere. Node 24+, ESM only.
-- The API and `packages/db` run as `.ts` through Node's native type stripping, with no build step. As a result:
-  - relative imports use the `.ts` extension (`import { x } from "./x.ts"`)
-  - only erasable syntax is allowed: no `enum`, `namespace`, or parameter properties (`erasableSyntaxOnly` enforces this)
-  - type-only imports use `import type` (`verbatimModuleSyntax`)
-- Workspace packages export their TypeScript source directly (`"exports": "./src/index.ts"`).
-- Validate inputs with zod 4.
+The system is organised into domains, and each domain uses ports and adapters. These are the principles the system is built on, and this is version 1, so they are applied without overdoing them:
 
-## Event store
+- The goal is the cleanest and simplest data model that gives a functional version 1.
+- A context or service may depend on another context and call its service for the data it needs.
+- Never add a workaround to the data model to keep contexts apart: no copied data, no synced tables, no duplicated fields.
 
-- `events` is append-only. Never update or delete rows.
-- `global_position` is the total order across all streams. `(stream_id, stream_version)` is unique, which gives optimistic concurrency on append.
-- Change the schema only through `packages/db/src/schema.ts` followed by `pnpm db:generate`. Never hand-edit generated migrations.
+### Guard against over-engineering
 
-## Tooling notes
+The system is built to be scalable, but the first goal is a proven, working version 1. Do not add a dependency until version 1 is proven and the dependency is needed.
 
-- TypeScript 7 ships no JS compiler API yet. `.pnpmfile.cjs` gives typescript-eslint packages TypeScript 6's API (`@typescript/typescript6`). Remove that hook once typescript-eslint supports TS 7.
-- ESLint is pinned to 9 because the plugins `eslint-config-next` uses (react, import, jsx-a11y) don't support ESLint 10 yet.
+### Static analysis enforces architectural integrity
+
+The rules are few, and the ones that exist are enforced. Linters and static analysis check the architectural rules, so that integrity is maintained by tooling and not by convention.
+
+## Workflow
+
+Large changes and feature implementations are done in a separate git worktree:
+
+- No symlinks to the original checkout. Run a clean install inside the worktree.
+- Do the full implementation in the worktree.
+- Commit as you go.
+- Merge back into `main` only when prompted. Every merge into `main` is a squash merge.
+- After merging, delete the branch and remove the worktree.
