@@ -1,7 +1,7 @@
 # @magic-events/api
 
-The server. It serves the experience feed and tenant onboarding over REST and MCP, and runs the scheduler, which does
-the background jobs: fetching sources, processing raw listings, embedding experiences and Catalogue's upkeep. It holds
+The server. It serves the experience feed to clients over REST and MCP, and runs the scheduler, which does the
+background jobs: fetching sources, processing raw listings, embedding experiences and Catalogue's upkeep. It holds
 no business rules: every route, tool and job handler calls a service of [packages/core](../../packages/core/README.md).
 
 Fastify 5 with Zod schemas and the MCP TypeScript SDK.
@@ -49,17 +49,12 @@ pool closes.
 | `GET` | `/openapi.json` | The OpenAPI 3.1 document | Client, system admin |
 | `POST` | `/v1/experiences/search` | Experiences near a location or a point that are on between two dates | Client, system admin |
 | `POST` | `/v1/experiences/changes` | What changed since a time, among the experiences the same search selects | Client, system admin |
-| `POST` | `/v1/tenants` | Creates a tenant | System admin |
-| `GET` | `/v1/tenants` | Lists every tenant | System admin |
-| `GET` | `/v1/tenants/:slug` | One tenant, with its users | System admin |
-| `PATCH` | `/v1/tenants/:slug` | Changes a tenant's name, status or configuration. Suspended turns its access off | System admin |
-| `POST` | `/v1/tenants/:slug/users` | Adds a user to a tenant with the client role | System admin |
-| `POST` | `/v1/users/:userId/credentials` | Issues an API key. The key is in this answer only | System admin |
-| `GET` | `/v1/users/:userId/credentials` | Lists a user's keys, never the keys themselves | System admin |
-| `DELETE` | `/v1/users/:userId/credentials/:credentialId` | Revokes a key | System admin |
 | `POST` | `/mcp` | The MCP endpoint. `GET` and `DELETE` answer 405 | Client, system admin |
 
 A client may act only while their tenant is active. The request and answer schemas are in `/openapi.json`.
+
+The API is for clients and has no admin endpoints. Tenants, users and keys are managed from the command line, with
+`pnpm cli:admin`: see [apps/cli](../cli/README.md).
 
 ## OpenAPI
 
@@ -89,7 +84,7 @@ The endpoint is Streamable HTTP and stateless: every POST is answered on its own
 
 An API key is the only credential, for people and for agents, over REST and MCP alike. A key belongs to a user and
 records whether a person or an agent uses it. Keys start with `mev_`, are stored only as a hash and are shown once, when
-issued: by the seed (`pnpm db:seed` prints them), or by a system admin through the credentials endpoints or tools.
+issued: by the seed (`pnpm db:seed` prints them), or by a system admin with `pnpm cli:admin key issue`.
 
 Send the key as `Authorization: Bearer <key>`, or as `x-api-key: <key>`. Every path checks it except `/health`, and a
 path that does not exist answers 401 to a caller without a valid key.
@@ -136,10 +131,9 @@ message makes sense on its own, so the details also let a client mark the fields
 | 400 | `invalid_input` | The body, query, address or tool arguments do not fit the schema, the body is not valid JSON, or a value is refused, such as a place the feed does not cover. The details say which fields and what to give |
 | 401 | `unauthenticated` | The key is missing, unknown, revoked or expired. Comes with `WWW-Authenticate: Bearer realm="magic-events"` |
 | 403 | `forbidden` | The caller's organisation is suspended, or `/mcp` was called from a host or origin that is not allowed |
-| 404 | `not_found` | Nothing is at this address, or no tenant, user or credential has this slug or ID |
+| 404 | `not_found` | Nothing is at this address |
 | 405 | `method_not_allowed` | The address does not answer this method. `Allow` names the ones it does |
 | 406 | `not_acceptable` | A POST to `/mcp` whose `Accept` does not name both `application/json` and `text/event-stream` |
-| 409 | `conflict` | A tenant slug or an email address is taken. The details name the field |
 | 413 | `content_too_large` | The body is larger than `API_BODY_LIMIT_BYTES` |
 | 415 | `unsupported_media_type` | The body is not sent as `application/json` |
 | 429 | `rate_limited` | Too many requests from this key or this address. `Retry-After` and the message say how many seconds to wait |

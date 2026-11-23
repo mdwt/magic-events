@@ -100,7 +100,9 @@ pnpm db:seed       # Hermanus, its sources, two example tenants, their users and
 ```
 
 The seed prints five API keys, each starting with `mev_`. **Copy them somewhere now.** They are stored only as a hash
-and can't be shown again, and running the seed a second time won't issue new ones.
+and can't be shown again, and running the seed a second time won't issue new ones. To issue more keys, revoke one,
+or onboard another tenant and its users, use `pnpm cli:admin`, described in [apps/cli](apps/cli/README.md#commands).
+The API itself has no admin endpoints.
 
 **5. Load some events**
 

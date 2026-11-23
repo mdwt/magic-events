@@ -1,6 +1,7 @@
 # @magic-events/cli
 
-Command-line tools for the data: the seed, the pipeline run by hand, and the loader for captured pages. Each command
+Command-line tools for the operator: tenants, users and keys, the seed, the pipeline run by hand, and the loader for
+captured pages. The API is for clients and has no admin endpoints, so a system admin works here. Each command
 reads its arguments, calls the services of [packages/core](../../packages/core/README.md) and prints what came back. It
 holds no rules of its own.
 
@@ -11,6 +12,7 @@ holds no rules of its own.
 | `src/seed/run.ts` | The seed command |
 | `src/seed/seed.ts` | What the seed writes, through the domain services |
 | `src/seed/data/` | The seed's data: Hermanus, its seasons and sources, the tenants and users, the sample experiences |
+| `src/admin.ts` | The admin command: tenants, users and API keys |
 | `src/pipeline.ts` | The pipeline command |
 | `src/load-captures.ts` | The captures command |
 | `test/` | `node:test` tests |
@@ -22,6 +24,14 @@ repository's `.env`.
 
 | Command | Does |
 | --- | --- |
+| `pnpm cli:admin tenant create --name NAME --slug SLUG --kind travel_agency\|travel_app [--configuration JSON]` | Creates an active tenant, with its configuration as a JSON object |
+| `pnpm cli:admin tenant list` | Lists every tenant, with its status and kind |
+| `pnpm cli:admin tenant show --slug SLUG` | One tenant, with its users |
+| `pnpm cli:admin tenant update --slug SLUG [--name NAME] [--status active\|suspended] [--configuration JSON]` | Changes a tenant. Suspended refuses its users until it is active again |
+| `pnpm cli:admin user add --tenant SLUG --name NAME --email EMAIL` | Adds a client user to a tenant |
+| `pnpm cli:admin key issue --user EMAIL --name NAME --kind person\|agent` | Issues an API key and prints it once. It cannot be shown again |
+| `pnpm cli:admin key list --user EMAIL` | Lists a user's keys, enabled or revoked, never the keys themselves |
+| `pnpm cli:admin key revoke --user EMAIL --key KEY_ID` | Revokes one key. The user's other keys keep working |
 | `pnpm db:seed` | Seeds Hermanus, the attributes, tags, seasons and sources, the tenants and users, and their API keys. Prints each new key once |
 | `pnpm db:seed:samples` | The same, then inserts a small set of sample experiences |
 | `pnpm cli:pipeline discover` | Fetches every active source now |
@@ -42,7 +52,8 @@ repository's `.env`.
 | `pnpm cli:captures --no-model` | Never asks the language model, even for an unsure match |
 | `pnpm cli:captures --dir DIR` | Loads a capture directory other than `data/hermanus` |
 
-`refetch` and `reprocess` take exactly one selector. Add `--now` to `reprocess` to process the listings straight away.
+`admin` runs one command at a time and names a user by their email address. A failed command prints the reason and
+exits with 1. `refetch` and `reprocess` take exactly one selector. Add `--now` to `reprocess` to process the listings straight away.
 
 The seed and every load are safe to run again: the seed upserts and issues no key a user already has, and a capture that
 has not changed saves nothing new.
@@ -69,7 +80,7 @@ through Data processing. The sources it saves need the seeded location, so seed 
 | Script | Does |
 | --- | --- |
 | `seed`, `seed:samples` | The seed, as above |
-| `pipeline`, `captures` | The commands, as above |
+| `admin`, `pipeline`, `captures` | The commands, as above |
 | `build`, `typecheck` | Checks the types |
 | `lint` | Runs ESLint |
 | `test` | Runs the tests, against `TEST_DATABASE_URL` |
