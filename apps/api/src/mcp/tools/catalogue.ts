@@ -49,6 +49,11 @@ matters most to a planner, with when it happened. The kinds:
 - changed: anything else, such as the price, the venue or booking opening or closing.
 changes lists every change since then, newest first, so nothing is hidden.
 
+An experience that was on during your dates when you searched, and has since moved out of them, is reported too, \
+with movedOut: true and the change it got, usually rescheduled. Its sessions are then the ones it has now, all \
+outside your dates: where it moved to, or none when it has no dates left. Treat it as no longer on during the stay. \
+When movedOut is false, the experience is on during your dates and its sessions are the ones inside them.
+
 Cancelled and removed experiences appear here, with that status, although search_experiences no longer returns them: \
 this is how you learn that something you planned around is off. Experiences that are over are never reported. The \
 most recent change comes first, and results are paged with limit and offset.`;

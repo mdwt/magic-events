@@ -40,7 +40,9 @@ export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = 
           "What changed since a client's last search, among the experiences the same search parameters select: " +
           "new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed. Give the parameters of " +
           "the search, without its query text, and the time of the last search. Cancelled and removed experiences " +
-          "are reported, though search no longer returns them; experiences that are over are not. Each result has " +
+          "are reported, though search no longer returns them; experiences that are over are not. An experience " +
+          "that was on during the dates before a change since then, and is not now, is reported with movedOut " +
+          "true and the sessions it has now, outside the dates. Each result has " +
           "the change that matters most to a planner and every change since, newest first. The most recent change " +
           "comes first.",
         tags: ["Experiences"],
