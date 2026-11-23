@@ -36,6 +36,8 @@ Pages are read with the agent-browser CLI, a headless Chrome driven the way a pe
 - **Extracted experiences:** `data/hermanus/extracted/<source>.json`, one object per experience, in the extracted experience shape from [data-processing.md](data-processing.md) with its attributes, tags and profile, and the raw file it came from.
 - **Blocked sites:** a site that turns the browser away is tried once more with a visible window, then recorded as blocked.
 
+Each captured experience carries a tier among its attributes. The tiers were decided on 23 Nov 2026 by reading the experiences one by one, their title, description, price, venue and format, against the tier attribute's option descriptions, taking the lower tier where two fitted. Of the 425: 0 luxury, 76 premium, 190 standard and 159 everyday.
+
 ### Loading the captures
 
 `pnpm --filter @magic-events/api captures` loads every source in `data/hermanus/sources.json`. `--source <slug>` loads one.
