@@ -200,6 +200,46 @@ export const attributes: AttributeDefinition[] = [
     ],
   },
   {
+    key: "tier",
+    name: "Tier",
+    description:
+      "How premium the experience is, from luxury to everyday. Decided from the price, the venue, how many people it " +
+      "is for and how it is described, never from the category alone. Search returns the most premium first.",
+    type: "option",
+    defaultValue: "standard",
+    multiple: false,
+    filterable: true,
+    // In order, most premium first: search orders its results by this order.
+    options: [
+      {
+        key: "luxury",
+        name: "Luxury",
+        description:
+          "Exclusive or private, at a high price, with personal service: a private charter, a chef's table, a " +
+          "helicopter flight, a VIP or hospitality package. For few guests.",
+      },
+      {
+        key: "premium",
+        name: "Premium",
+        description:
+          "A paid experience produced to a high standard that a luxury traveller would choose: a boat-based whale " +
+          "trip, a wine pairing or an estate dinner, a headline concert or festival, a tour led by an expert.",
+      },
+      {
+        key: "standard",
+        name: "Standard",
+        description:
+          "An ordinary ticketed or paid event: a local gig, a workshop, a fun run with an entry fee, a show in a " +
+          "community hall.",
+      },
+      {
+        key: "everyday",
+        name: "Everyday",
+        description: "Free or community: a parkrun, a town market, a school fête, a club meeting, a church service.",
+      },
+    ],
+  },
+  {
     key: "wheelchair_accessible",
     name: "Wheelchair accessible",
     description: "Whether the experience is wheelchair accessible. Set only when a source says so.",

@@ -101,7 +101,7 @@ interface ExtractedExperience {
   };
   openingHours?: string;
   venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };   // position: only as the listing states it
-  price?: { min?: number; max?: number; currency: string };
+  price?: { min?: number; max?: number; currency?: string };   // 0 and 0: the listing says in words that it is free (see Price)
   onSaleAt?: string;
   bookingClosesAt?: string;
   bookingUrl?: string;
@@ -129,6 +129,12 @@ The fields are the experience fields in [data-model.md](data-model.md). An extra
 An extractor returns the venue's latitude and longitude only when the listing itself states them: in its structured data (JSON-LD `geo`, or `latitude` and `longitude`), in a map link that carries them, or written in its text. It never works them out from an address, a venue's name or what the model knows of the place, so an experience whose listing states no coordinates is searched from its location's centre (see Position in [data-model.md](data-model.md)).
 
 The extractor checks the position in code: it must be a real latitude and longitude, no further than 100 km from the source's location. A position that fails is dropped with a warning, and the experience is kept without it. A lead listing sets the position, and a fill listing only fills it when it is empty, like the venue's other fields.
+
+### Price
+
+A price of 0 and 0 means the experience is free, and an empty price means the listing states none; there is no other field for it. An extractor gives 0 and 0 only when the listing says in words that it is free, in the language it is written in: "free entry", "admission: free", "no charge", "gratis toegang" and the like. The currency is the one the listing uses, or empty when it names none. A "free" about something else, such as free parking or a free welcome drink, says nothing about the price. When some get in free beside a price for others, such as children under 12 free and adults R150, the lowest price is 0 and the highest is what the others pay.
+
+Structured data often gives a ticket a price of 0 that is not entry, such as a Quicket donation ticket, so the extractor checks a 0 in code against the listing's words, in English and Afrikaans: 0 and 0 stands only when they say entry is free, and a lowest price of 0 beside a higher one only when they say entry is free for someone. A 0 they do not bear out is taken off, so a bare 0 with nothing in words leaves the price empty. A PDF calendar's 0 is kept as the model read it, since a PDF has no structured data.
 
 ### Dates
 
@@ -181,6 +187,7 @@ The system starts with this set. They are rows in the database and can be added 
 | Language | Option, several values | English, Afrikaans, isiXhosa, Other | None | The language it is performed or presented in. Set where language matters: theatre, comedy, talks, film |
 | Setting | Option | Indoor, Outdoor, Both | None | Where it takes place |
 | Scale | Option | Local, Regional, Major | Local | How far people travel for it |
+| Tier | Option | Luxury, Premium, Standard, Everyday | Standard | How premium it is, from luxury to everyday. Search returns the most premium first |
 | Wheelchair accessible | True/false | | None | Set only when a source says so |
 
 Category and Format are separate. Category says what an experience is about and Format says the form it takes, so a jazz festival is Music and Festival, and a farmers' market is Food and drink and Market.
@@ -234,6 +241,15 @@ Format is not the experience's type. The type (single, run, recurring) says how 
 Audience is the only place that says an experience is for families. There is no family category.
 
 Scale says how far people travel for it: Local draws the town, Regional draws the province, Major draws visitors from across the country or abroad.
+
+Tier says how premium an experience is, from luxury to everyday. It is decided from the price, the venue, how many people it is for and how it is described, never from the category alone. Its options are in order, most premium first, and search returns its results in that order (see Ranking). An experience with no tier counts as Standard.
+
+| Tier | Description |
+| --- | --- |
+| Luxury | Exclusive or private, at a high price, with personal service: a private charter, a chef's table, a helicopter flight, a VIP or hospitality package. For few guests. |
+| Premium | A paid experience produced to a high standard that a luxury traveller would choose: a boat-based whale trip, a wine pairing or an estate dinner, a headline concert or festival, a tour led by an expert. |
+| Standard | An ordinary ticketed or paid event: a local gig, a workshop, a fun run with an entry fee, a show in a community hall. |
+| Everyday | Free or community: a parkrun, a town market, a school fête, a club meeting, a church service. |
 
 Default tags, grouped by the category they usually go with. Tags are flat: a tag belongs to no category and can go on any experience.
 
