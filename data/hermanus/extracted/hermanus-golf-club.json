@@ -1,0 +1,41 @@
+[
+  {
+    "source": "Hermanus Golf Club",
+    "sourceListingId": "https://hgc.co.za/calendar/#Hermanus Open",
+    "url": "https://hgc.co.za/calendar/",
+    "rawFile": "raw/hermanus-golf-club/club-calendar.ics.txt",
+    "fetchedAt": "2026-11-23T13:46:21Z",
+    "title": "Hermanus Open (golf)",
+    "summary": "The Hermanus Open on the Hermanus Golf Club fixture calendar, Sunday 6 December 2026.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-06",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Club Calendar",
+      "fixtures"
+    ],
+    "attributes": {
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "The Hermanus Open is a golf tournament on the fixture calendar of Hermanus Golf Club, the town's 27-hole course. It is listed for Sunday 6 December 2026. It suits golfers and golf followers in Hermanus in early December."
+  }
+]
