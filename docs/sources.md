@@ -36,7 +36,7 @@ Pages are read with the agent-browser CLI, a headless Chrome driven the way a pe
 - **Extracted experiences:** `data/hermanus/extracted/<source>.json`, one object per experience, in the extracted experience shape from [data-processing.md](data-processing.md) with its attributes, tags and profile, and the raw file it came from.
 - **Blocked sites:** a site that turns the browser away is tried once more with a visible window, then recorded as blocked.
 
-Each captured experience carries a tier among its attributes. The tiers were decided on 23 Nov 2026 by reading the experiences one by one, their title, description, price, venue and format, against the tier attribute's option descriptions, taking the lower tier where two fitted. Of the 425: 0 luxury, 76 premium, 190 standard and 159 everyday.
+Each captured experience carries a tier among its attributes. The tiers were decided on 23 Nov 2026 by reading the experiences one by one, their title, description, price, venue and format, against the tier attribute's option descriptions, taking the lower tier where two fitted, and judged again the same day after the data audit, so that a tribute show, a DJ party or a lawn concert at gig prices is standard wherever it is held. Of the 435: 1 luxury, 51 premium, 221 standard and 162 everyday.
 
 ### Loading the captures
 
