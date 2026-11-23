@@ -25,6 +25,8 @@ purpose: don't overcook it.
 | [docs/data-processing.md](docs/data-processing.md) | How a raw listing becomes experiences, and how search ranks them |
 | [docs/domain-events.md](docs/domain-events.md) | The domain event log |
 | [docs/issues.md](docs/issues.md) | The issues and open questions being worked on |
+| [docs/v1-decisions.md](docs/v1-decisions.md) | What version 1 leaves out and why, for review |
+| [docs/hermanus-sources.md](docs/hermanus-sources.md) | The Hermanus sources, as checked one by one |
 
 ## Getting started
 
