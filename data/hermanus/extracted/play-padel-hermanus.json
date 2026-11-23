@@ -26,6 +26,7 @@
       "What's Happening"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],

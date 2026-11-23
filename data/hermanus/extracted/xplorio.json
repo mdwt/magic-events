@@ -29,6 +29,7 @@
       "With Chef Fabio Lenci"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -76,6 +77,7 @@
       "Weekly Free 5km Timed Run"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -123,6 +125,7 @@
       "Every Saturday Morning"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -172,6 +175,7 @@
       "In Partnership With Discovery Vitality"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -214,6 +218,7 @@
       "A Market For The Whole Family"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -258,6 +263,7 @@
       "Groeneweide Market & Boot Sale!"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "hobbies_and_lifestyle"
@@ -304,6 +310,7 @@
       "Tee off for tails! Join BARC’s charity golf day and help make a difference for animals"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "community_and_causes"
@@ -350,6 +357,7 @@
       "One Landscape Many Hands"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "nature_and_wildlife"
@@ -391,6 +399,7 @@
       "Welcomes new members"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -433,6 +442,7 @@
       "Artisinal Shopping - Food & Wine - Live Music"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "food_and_drink"

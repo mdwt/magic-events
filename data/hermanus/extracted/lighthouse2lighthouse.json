@@ -33,6 +33,7 @@
       "Tickets"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure",
         "community_and_causes"

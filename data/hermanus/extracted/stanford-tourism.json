@@ -34,6 +34,7 @@
       "Stanford Market Square"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "music"

@@ -33,6 +33,7 @@
       "Boat Based"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "nature_and_wildlife"
       ],

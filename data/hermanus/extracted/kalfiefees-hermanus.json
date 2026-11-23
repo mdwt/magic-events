@@ -27,6 +27,7 @@
       "Heeljaar"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "music",

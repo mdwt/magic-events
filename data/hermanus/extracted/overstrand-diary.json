@@ -25,6 +25,7 @@
       "Wednesday 18th November 2026"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -61,6 +62,7 @@
       "Thursday 19th November 2026"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -94,6 +96,7 @@
       "Thursday 19th November 2026"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure",
         "community_and_causes"
@@ -131,6 +134,7 @@
       "Thursday 19th November 2026"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -165,6 +169,7 @@
       "Friday 20th November 2026"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],

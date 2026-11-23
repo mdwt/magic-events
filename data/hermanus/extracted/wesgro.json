@@ -31,6 +31,7 @@
       "Food and wine"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "culture_and_heritage",
         "music",
@@ -83,6 +84,7 @@
       "Food and wine"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music",
@@ -134,6 +136,7 @@
       "Food and wine"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "sport"
@@ -177,6 +180,7 @@
       "Sport and adventure"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -220,6 +224,7 @@
       "Sport and adventure"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -271,6 +276,7 @@
       "Sport and adventure"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport",
         "outdoor_and_adventure"

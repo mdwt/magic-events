@@ -14,7 +14,7 @@
     "sessions": [{ "start": "2027-10", "precision": "month" }],
     "venue": { "city": "Hermanus" },
     "hints": ["Outdoor Events", "Annual Festivals"],
-    "attributes": { "category": ["nature_and_wildlife", "community_and_causes", "music"], "format": "festival", "audience": "all_ages", "setting": "outdoor", "scale": "major" },
+    "attributes": { "tier": "standard", "category": ["nature_and_wildlife", "community_and_causes", "music"], "format": "festival", "audience": "all_ages", "setting": "outdoor", "scale": "major" },
     "tags": ["whales"],
     "profile": "The Hermanus Whale Festival is an annual three-day eco-marine festival celebrating the return of southern right whales to Hermanus, drawing 75,000 to 130,000 people. Visitors watch whales from land and enjoy a street parade, artisan markets, food, marine exhibits, children's activities and live music. It suits families and anyone visiting for the whales; the 2027 dates were still to be confirmed."
   }

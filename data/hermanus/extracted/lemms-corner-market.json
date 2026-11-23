@@ -24,6 +24,7 @@
       "#Foodies"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts",
         "food_and_drink",
