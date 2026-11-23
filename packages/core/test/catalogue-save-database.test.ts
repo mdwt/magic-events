@@ -214,7 +214,8 @@ describe("saving an experience", () => {
     assert.deepEqual(loaded.sessions, [{ startDate: "2027-03-13", endDate: "2027-03-13" }]);
     assert.deepEqual([...loaded.listingIds].sort(), [LISTING_A, LISTING_B].sort());
     assert.equal(result.experience.summary, "Filled from the second listing.");
-    assert.deepEqual(result.experience.tags, ["jazz"]);
+    // Its tags are added to the stored ones, as its attribute keys are.
+    assert.deepEqual(result.experience.tags, ["festival", "jazz"]);
   });
 
   test("a recurring experience stores its recurrence and generated sessions", async () => {
