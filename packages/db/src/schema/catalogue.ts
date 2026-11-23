@@ -108,6 +108,8 @@ export const experience = pgTable(
     bookingClosesAt: timestamp("booking_closes_at", { withTimezone: true }),
     bookingUrl: text("booking_url"),
     imageUrl: text("image_url"),
+    // The experience's own page, when it has one other than the listing it came from.
+    pageUrl: text("page_url"),
 
     // The recurrence of a recurring experience. All empty for a single or a run.
     recurrenceRule: text("recurrence_rule"),

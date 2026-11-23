@@ -182,6 +182,7 @@ function storedExperience(id: string, version: number, input: SaveExperienceInpu
     bookingClosesAt: null,
     bookingUrl: input.bookingUrl ?? null,
     imageUrl: null,
+    pageUrl: null,
     recurrence: null,
     sessions: input.sessions.map((session) => ({
       startDate: session.startDate,
@@ -234,6 +235,8 @@ export function setup(
   };
   const failures: { id: string; error: string; attempts: number; willRetry: boolean }[] = [];
   const attempts = new Map<string, number>();
+  // What each claim returned, so a failed one can go back to pending.
+  const claimed = new Map<string, ClaimedRawListing>();
   const logs: { level: string; context: Record<string, unknown>; message: string }[] = [];
   let created = 0;
 
@@ -258,7 +261,11 @@ export function setup(
     runLocation: () => Promise.reject(new Error("not used")),
     getListing: () => Promise.reject(new Error("not used")),
     requeueListings: () => Promise.reject(new Error("not used")),
-    claimPendingRawListing: () => Promise.resolve(state.pending.shift() ?? null),
+    claimPendingRawListing() {
+      const raw = state.pending.shift() ?? null;
+      if (raw) claimed.set(raw.id, raw);
+      return Promise.resolve(raw);
+    },
     markRawListingProcessed(id) {
       state.processed.push(id);
       return Promise.resolve();
@@ -268,7 +275,8 @@ export function setup(
       attempts.set(id, count);
       const willRetry = count < (options.maxAttempts ?? 3);
       // Back to pending until it reaches its limit, as Discovery does.
-      if (!willRetry) state.pending = state.pending.filter((raw) => raw.id !== id);
+      const raw = claimed.get(id);
+      if (willRetry && raw) state.pending.unshift(raw);
       failures.push({ id, error, attempts: count, willRetry });
       return Promise.resolve({ attempts: count, willRetry });
     },

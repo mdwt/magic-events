@@ -41,6 +41,7 @@ function record(overrides: Partial<ExperienceRecord>): ExperienceRecord {
     bookingClosesAt: null,
     bookingUrl: null,
     imageUrl: null,
+    pageUrl: null,
     attributes: {},
     tags: [],
     sessions: [],

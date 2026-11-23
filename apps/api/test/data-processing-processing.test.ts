@@ -25,7 +25,7 @@ describe("processNext", () => {
 
   test("extracts, classifies, saves, appends to the warehouse and marks the raw listing processed", async () => {
     const model = fakeLanguageModel({
-      extract: [extraction(answered())],
+      extract: [extraction(answered({ url: "https://fynarts.example.com/festival-2027" }))],
       classify: [
         {
           attributes: [
@@ -57,6 +57,7 @@ describe("processNext", () => {
     assert.equal(saved.title, "Hermanus FynArts");
     assert.equal(saved.status, "announced");
     assert.equal(saved.booking, "not_yet");
+    assert.equal(saved.pageUrl, "https://fynarts.example.com/festival-2027");
     assert.deepEqual(saved.sessions, [
       {
         startDate: "2027-06-12",

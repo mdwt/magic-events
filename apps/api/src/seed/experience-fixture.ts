@@ -30,6 +30,7 @@ export interface ExperienceFixture {
   bookingClosesAt?: Date;
   bookingUrl?: string;
   imageUrl?: string;
+  pageUrl?: string;
   recurrence?: { rule: string; start: string; end?: string; startTime?: string; endTime?: string; skipped?: string[] };
   sessions: {
     startDate: string;
@@ -75,6 +76,7 @@ export async function insertExperienceFixture(db: Db, fixture: ExperienceFixture
         bookingClosesAt: fixture.bookingClosesAt,
         bookingUrl: fixture.bookingUrl,
         imageUrl: fixture.imageUrl,
+        pageUrl: fixture.pageUrl,
         recurrenceRule: fixture.recurrence?.rule,
         recurrenceStart: fixture.recurrence?.start,
         recurrenceEnd: fixture.recurrence?.end,

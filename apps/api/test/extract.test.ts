@@ -161,6 +161,23 @@ describe("Extractors", () => {
     );
     assert.deepEqual((await extractor.extract(input())).map((experience) => experience.title), ["Hermanus FynArts"]);
   });
+
+  test("an item is the own page of the one experience it describes, and of none when it lists several", async () => {
+    const own = extractorFor("web_page", extraction(answered({ url: "https://fynarts.example.com/" })));
+    assert.equal((await own.extractor.extract(input()))[0]?.url, "https://fynarts.example.com/");
+
+    const listing = extractorFor(
+      "web_page",
+      extraction(
+        answered({ url: "https://fynarts.example.com/" }),
+        answered({ title: "Jazz on the Cliffs", url: "https://fynarts.example.com/jazz" }),
+      ),
+    );
+    assert.deepEqual(
+      (await listing.extractor.extract(input())).map((experience) => experience.url),
+      [undefined, "https://fynarts.example.com/jazz"],
+    );
+  });
 });
 
 describe("The checks on each extracted experience", () => {

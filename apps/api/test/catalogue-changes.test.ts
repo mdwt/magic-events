@@ -49,6 +49,7 @@ function record(
       bookingClosesAt: null,
       bookingUrl: null,
       imageUrl: null,
+      pageUrl: null,
       attributes: {},
       tags: [],
       sessions: [],

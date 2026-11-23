@@ -218,6 +218,7 @@ describe("an update with precedence lead", () => {
     assert.equal(saved.bookingClosesAt, null);
     assert.equal(saved.bookingUrl, null);
     assert.equal(saved.imageUrl, null);
+    assert.equal(saved.pageUrl, null);
     assert.equal(saved.booking, "none");
     assert.deepEqual(
       saved.sessions.map((session) => [session.startDate, session.startTime]),
@@ -307,6 +308,18 @@ describe("an update with precedence lead", () => {
     assert.equal(catalogue.writes[1]?.clearEmbedding, false);
     assert.deepEqual(catalogue.writes[1].replace, { sessions: false, attributes: false, tags: false });
   });
+
+  test("a new page address is a new version, reported as changed", async () => {
+    const catalogue = fakeCatalogue();
+    const id = await created(catalogue);
+    const result = await catalogue.service.saveExperience(
+      input({ experienceId: id, pageUrl: "https://whatson.example.com/jazz-2027" }),
+    );
+    assert.equal(result.changed, true);
+    assert.equal(result.change, "changed");
+    assert.equal(result.experience.pageUrl, "https://whatson.example.com/jazz-2027");
+    assert.deepEqual(catalogue.writes[1]?.change?.previous, { pageUrl: "https://whatson.example.com/jazz-on-the-cliffs" });
+  });
 });
 
 describe("an update with precedence fill", () => {
@@ -321,6 +334,7 @@ describe("an update with precedence fill", () => {
         venue: { name: "Gearing's Point" },
         price: undefined,
         imageUrl: undefined,
+        pageUrl: undefined,
         attributes: { category: ["music"] },
       },
     );
@@ -335,6 +349,7 @@ describe("an update with precedence fill", () => {
         venue: { name: "Somewhere else", address: "1 Main Road", city: "Hermanus" },
         price: { min: 99, currency: "ZAR" },
         imageUrl: "https://other.example.com/jazz.jpg",
+        pageUrl: "https://other.example.com/jazz",
         sessions: [{ startDate: "2027-04-01", precision: "day" }],
         attributes: { category: ["festival"], audience: ["family"] },
         tags: ["festival"],
@@ -352,6 +367,7 @@ describe("an update with precedence fill", () => {
     assert.deepEqual(saved.venue, { name: "Gearing's Point", address: "1 Main Road", city: "Hermanus", position: null });
     assert.deepEqual(saved.price, { min: 99, max: null, currency: "ZAR" });
     assert.equal(saved.imageUrl, "https://other.example.com/jazz.jpg");
+    assert.equal(saved.pageUrl, "https://other.example.com/jazz");
     assert.deepEqual(
       saved.sessions.map((session) => session.startDate),
       ["2027-03-13"],
@@ -386,6 +402,20 @@ describe("an update with precedence fill", () => {
     );
     assert.deepEqual(result.experience.tags, ["festival"]);
     assert.equal(result.change, "rescheduled");
+  });
+
+  test("leaves a page address that is already stored", async () => {
+    const catalogue = fakeCatalogue();
+    const id = await created(catalogue);
+    const result = await catalogue.service.saveExperience(
+      input({
+        experienceId: id,
+        pageUrl: "https://other.example.com/jazz",
+        source: { listingId: LISTING_B, rawListingId: RAW_B },
+        precedence: "fill",
+      }),
+    );
+    assert.equal(result.experience.pageUrl, "https://whatson.example.com/jazz-on-the-cliffs");
   });
 
   test("adding the link of a new listing is a real change, even when it fills nothing", async () => {

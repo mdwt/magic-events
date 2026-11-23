@@ -175,6 +175,7 @@ export function input(overrides: Partial<SaveExperienceInput> = {}): SaveExperie
     bookingClosesAt: "2027-03-12T16:00:00.000Z",
     bookingUrl: "https://tickets.example.com/jazz",
     imageUrl: "https://tickets.example.com/jazz.jpg",
+    pageUrl: "https://whatson.example.com/jazz-on-the-cliffs",
     sessions: [{ startDate: "2027-03-13", precision: "day", startTime: "18:00", endTime: "22:00" }],
     attributes: { category: ["music"], audience: ["adults"] },
     tags: ["jazz"],

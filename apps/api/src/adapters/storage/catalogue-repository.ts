@@ -289,6 +289,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
           bookingClosesAt: row.bookingClosesAt?.toISOString() ?? null,
           bookingUrl: row.bookingUrl,
           imageUrl: row.imageUrl,
+          pageUrl: row.pageUrl,
           recurrence:
             row.recurrenceRule === null || row.recurrenceStart === null
               ? null
@@ -527,6 +528,7 @@ const storedColumns = {
   bookingClosesAt: experience.bookingClosesAt,
   bookingUrl: experience.bookingUrl,
   imageUrl: experience.imageUrl,
+  pageUrl: experience.pageUrl,
   recurrenceRule: experience.recurrenceRule,
   recurrenceStart: experience.recurrenceStart,
   recurrenceEnd: experience.recurrenceEnd,
@@ -563,6 +565,7 @@ async function saveRow(tx: Tx, write: ExperienceWrite): Promise<void> {
     bookingClosesAt: saved.bookingClosesAt === null ? null : new Date(saved.bookingClosesAt),
     bookingUrl: saved.bookingUrl,
     imageUrl: saved.imageUrl,
+    pageUrl: saved.pageUrl,
     recurrenceRule: saved.recurrence?.rule ?? null,
     recurrenceStart: saved.recurrence?.start ?? null,
     recurrenceEnd: saved.recurrence?.end ?? null,
@@ -626,6 +629,7 @@ function selectRecords(db: Db, near: { lat: number; lng: number }) {
       bookingClosesAt: experience.bookingClosesAt,
       bookingUrl: experience.bookingUrl,
       imageUrl: experience.imageUrl,
+      pageUrl: experience.pageUrl,
       version: experience.version,
       updatedAt: experience.updatedAt,
     })
@@ -712,6 +716,7 @@ async function toRecords<S extends string>(
       bookingClosesAt: row.bookingClosesAt?.toISOString() ?? null,
       bookingUrl: row.bookingUrl,
       imageUrl: row.imageUrl,
+      pageUrl: row.pageUrl,
       attributes,
       tags: (tagsOf.get(row.id) ?? []).map((tag) => tag.tag),
       sessions: (sessionsOf.get(row.id) ?? []).map((session) => ({

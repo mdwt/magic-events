@@ -55,7 +55,7 @@ The fields
 - openingHours: for something that is open over a period, the hours as the item states them, such as "Tue to Sun 09:00 to 17:00".
 - priceMin and priceMax: the lowest and highest ticket price as numbers, and currency as an ISO 4217 code, such as ZAR for prices in rand (R). For one price, give it as both. A free experience has 0 and 0. Leave them empty (null) when no price is given.
 - onSaleAt and bookingClosesAt: when tickets go on sale, and when booking closes, as an ISO 8601 date and time with the place's UTC offset, such as 2027-03-01T09:00:00+02:00. Empty when not given.
-- bookingUrl, imageUrl, url: full addresses that appear in the item. url is the experience's own page, when it has one other than the item itself. Empty when not given.
+- bookingUrl, imageUrl, url: full addresses that appear in the item, or the item's own address. url is the experience's own page: a page about this experience alone, which is either a link the item gives to it or the item itself when the item is that page. An item that lists several experiences is the own page of none of them. Empty when not given.
 - hints: the source's own categories, labels and tags for the experience, as written, such as "Live music" or "Family". Empty when it gives none.
 
 Never invent a date, a time, a price, a venue, a link or any other fact the item does not give. An empty field is always better than a guess.`;

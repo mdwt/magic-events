@@ -156,6 +156,7 @@ export const experienceRecordSchema = z.object({
   bookingClosesAt: z.iso.datetime().nullable(),
   bookingUrl: z.string().nullable(),
   imageUrl: z.string().nullable(),
+  pageUrl: z.string().nullable().describe("The experience's own page, when it has one."),
   attributes: z
     .record(z.string(), z.array(attributeValueSchema))
     .describe("The experience's values by attribute key, such as its categories."),
@@ -275,6 +276,8 @@ export interface SaveExperienceInput {
   bookingClosesAt?: string;
   bookingUrl?: string;
   imageUrl?: string;
+  // The experience's own page, when it has one.
+  pageUrl?: string;
   // The dates the listing lists: one for a single, one per date for a run, only the extra dates for a recurring one.
   sessions: SessionInput[];
   recurrence?: RecurrenceInput;
@@ -317,6 +320,7 @@ export interface StoredExperience {
   bookingClosesAt: string | null;
   bookingUrl: string | null;
   imageUrl: string | null;
+  pageUrl: string | null;
   recurrence: Required<Pick<RecurrenceInput, "rule" | "start">> & {
     end: string | null;
     startTime: string | null;

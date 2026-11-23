@@ -194,6 +194,7 @@ export function readInput(input: SaveExperienceInput): Draft {
     bookingClosesAt,
     bookingUrl: text(input.bookingUrl),
     imageUrl: text(input.imageUrl),
+    pageUrl: text(input.pageUrl),
     recurrence,
     sessions: [],
     listed: sortSessions(listed),
@@ -283,6 +284,7 @@ export function meet(stored: StoredExperience, incoming: Draft, precedence: "lea
     bookingClosesAt: fill(stored.bookingClosesAt, incoming.bookingClosesAt),
     bookingUrl: fill(stored.bookingUrl, incoming.bookingUrl),
     imageUrl: fill(stored.imageUrl, incoming.imageUrl),
+    pageUrl: fill(stored.pageUrl, incoming.pageUrl),
     // The type says how the dates are known, so it comes with them.
     type: takeDates ? incoming.type : stored.type,
     recurrence: takeDates ? incoming.recurrence : stored.recurrence,
@@ -376,6 +378,7 @@ export const TRACKED_FIELDS = [
   "bookingClosesAt",
   "bookingUrl",
   "imageUrl",
+  "pageUrl",
   "recurrence",
   "sessions",
   "attributes",

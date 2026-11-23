@@ -240,6 +240,7 @@ function storedExperience(overrides: Partial<StoredExperience> = {}): StoredExpe
     bookingClosesAt: null,
     bookingUrl: null,
     imageUrl: null,
+    pageUrl: null,
     recurrence: null,
     sessions: [],
     attributes: {},

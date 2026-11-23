@@ -84,6 +84,8 @@ describe("saving an experience", () => {
       [[result.experience.id, "jazz-on-the-cliffs", true, 1]],
     );
     assert.deepEqual(found.items[0]?.attributes, { audience: ["adults"], category: ["music"] });
+    assert.equal(found.items[0].pageUrl, "https://whatson.example.com/jazz-on-the-cliffs");
+    assert.deepEqual(found.items[0].venue.position, { lat: -34.42, lng: 19.24 });
 
     const [loaded] = await catalogue.findExperiencesByListing(LISTING_A);
     assert.equal(loaded?.id, result.experience.id);

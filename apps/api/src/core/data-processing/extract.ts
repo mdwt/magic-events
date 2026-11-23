@@ -556,6 +556,11 @@ class LanguageModelExtractor implements Extractor {
       }
       kept.push(settled.experience);
     }
+    // An item that lists several experiences is the own page of none of them.
+    const itemUrl = settleUrl(input.url, undefined);
+    if (kept.length > 1 && itemUrl !== undefined) {
+      for (const experience of kept) if (experience.url === itemUrl) delete experience.url;
+    }
     this.#logger.debug({ kind: this.kind, answered: answer.experiences.length, kept: kept.length }, "Extracted");
     return kept;
   }

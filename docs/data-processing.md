@@ -106,7 +106,7 @@ interface ExtractedExperience {
   bookingClosesAt?: string;
   bookingUrl?: string;
   imageUrl?: string;
-  url?: string;                         // this experience's own page, if it has one
+  url?: string;                         // this experience's own page, if it has one: a link the listing gives, or the listing itself when it is a page about this experience alone. Saved as its page address
   hints: string[];                      // the source's own categories and labels, used by classification
 }
 
@@ -122,7 +122,7 @@ interface ExtractedSession {
 }
 ```
 
-The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those.
+The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those. A listing that describes several experiences is the own page of none of them, so the extractor drops a `url` that is the listing's own address when it returns more than one.
 
 ### Dates
 
@@ -286,7 +286,7 @@ The same experience appears on many sources, and they do not always agree. The W
 - Each source has a priority number.
 - An experience's fields come from its highest-priority linked listing.
 - A lower-priority listing only fills fields that are empty.
-- When the highest-priority link is removed, the next one takes over.
+- When the highest-priority link is removed, the experience keeps the values it has. The next source taking over is for phase 2.
 - Sessions and the recurrence are taken whole from the highest-priority listing that gives dates. Dates from two listings are never merged, so an experience never gets a date that only a lower-priority source lists.
 
 ## Data warehouse
@@ -486,7 +486,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Adapters in version 1 | Language model: Claude, through the Anthropic API. Embedding model: Amazon Titan Text Embeddings V2, through Amazon Bedrock |
 | Definitions | Configurable rows with a default set, not enums. Improving classification means adding or rewording definitions |
 | Matching | By the listing's existing source links first, then by comparing candidates. The same normalised title and overlapping dates is a match in code. Otherwise the language model picks one candidate or none |
-| Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. When that link is removed, the next one takes over |
+| Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty |
 | Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
 | Processing again | Processed is not final. A listing's latest version can be processed again at any time. A system admin sends listings back with `pipeline reprocess`: one listing, the listings an experience was built from, a source's or a location's |
 | Status and booking from a listing | Set by the rules under Status and booking from a listing. Expected is never set from a listing |
