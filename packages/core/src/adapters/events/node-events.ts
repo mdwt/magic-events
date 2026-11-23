@@ -13,7 +13,8 @@ export function createDomainEvents(logger: Logger): DomainEvents {
 
   return {
     publish(event) {
-      log.debug({ eventId: event.id, type: event.type, resourceId: event.resourceId }, "Domain event published");
+      // At info, so a running server shows every event as it goes out, whether or not anything subscribes.
+      log.info({ eventId: event.id, type: event.type, resourceId: event.resourceId }, "Domain event published");
       emitter.emit(event.type, event);
       emitter.emit("*", event);
     },
