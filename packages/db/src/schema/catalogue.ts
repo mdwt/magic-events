@@ -123,6 +123,9 @@ export const experience = pgTable(
 
     embedding: vector("embedding", { dimensions: 1024 }),
     embeddingModel: text("embedding_model"),
+    // How many times the embedding model failed on its text, while the model answered for others. Cleared with the
+    // embedding when the title or profile changes. At EMBEDDING_MAX_ATTEMPTS it is set aside and not tried again.
+    embeddingFailures: integer("embedding_failures").notNull().default(0),
     // The keyword side of search. Postgres keeps it up to date itself.
     searchText: tsvector("search_text").generatedAlwaysAs(
       (): SQL =>

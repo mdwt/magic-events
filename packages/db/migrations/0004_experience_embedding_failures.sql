@@ -1,0 +1,1 @@
+ALTER TABLE "experience" ADD COLUMN "embedding_failures" integer DEFAULT 0 NOT NULL;
