@@ -20,6 +20,7 @@ import {
   type Definitions,
   seasonItIs,
   seasonsOf,
+  withStatedAge,
 } from "./classify.ts";
 import { isIsoDate } from "./dates.ts";
 import {
@@ -418,7 +419,9 @@ export class DataProcessingService implements DataProcessing {
       text: classificationText(experience),
       schema: classificationAnswerSchema,
     });
-    return { answer, classification: checkClassification(answer, definitions) };
+    const classification = checkClassification(answer, definitions);
+    classification.attributes = withStatedAge(classification.attributes, experience.minimumAge, definitions);
+    return { answer, classification };
   }
 
   // The stored experience this extracted one is, or undefined for a new one.

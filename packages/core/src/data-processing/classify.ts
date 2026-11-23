@@ -64,6 +64,7 @@ export function classificationText(experience: ExtractedExperience): string {
     `Venue: ${venue.join(", ")}`,
     `Price: ${priceText(experience.price)}`,
     `The source's labels: ${experience.hints.join(", ")}`,
+    `Age limit the source states: ${experience.minimumAge === undefined ? "none" : String(experience.minimumAge)}`,
   ].join("\n");
 }
 
@@ -76,6 +77,26 @@ function priceText(price: ExtractedExperience["price"]): string {
   if (min === undefined) return `up to ${amount(max ?? 0)}`;
   if (max === undefined || max === min) return amount(min);
   return `${amount(min)} to ${amount(max)}`;
+}
+
+// The attributes a stated age limit decides, whatever the model chose: the minimum age is the limit, and an
+// experience with a limit of 18 or more is for adults. Each applies only when its definition is there to take it.
+const MINIMUM_AGE = "minimum_age";
+const AUDIENCE = "audience";
+const ADULTS = "adults";
+
+export function withStatedAge(
+  attributes: Record<string, AttributeValue[]>,
+  minimumAge: number | undefined,
+  definitions: Definitions,
+): Record<string, AttributeValue[]> {
+  if (minimumAge === undefined) return attributes;
+  const definition = (key: string) => definitions.attributes.find((attribute) => attribute.key === key);
+  const result = { ...attributes };
+  if (definition(MINIMUM_AGE)?.type === "number") result[MINIMUM_AGE] = [minimumAge];
+  const audience = definition(AUDIENCE);
+  if (minimumAge >= 18 && audience?.options.some((option) => option.key === ADULTS)) result[AUDIENCE] = [ADULTS];
+  return result;
 }
 
 export interface UndefinedValueFound {

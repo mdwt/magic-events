@@ -391,6 +391,17 @@ describe("A title that names no experience", () => {
   });
 });
 
+describe("A stated age limit", () => {
+  test("is kept as a whole number of years, and asked for wherever the page shows it", () => {
+    assert.equal(settled({ minimumAge: 18 }).minimumAge, 18);
+    assert.equal(settled({ minimumAge: null }).minimumAge, undefined);
+    assert.equal(settled({ minimumAge: 0 }).minimumAge, undefined);
+    assert.equal(settled({ minimumAge: 17.5 }).minimumAge, undefined);
+    assert.match(EXTRACTION_INSTRUCTIONS, /minimumAge: the age limit the item states[^\n]*"No under 18s"/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /a label of its own beside the title/);
+  });
+});
+
 describe("Status and booking", () => {
   test("the instructions take an RSVP asked for now as open, a save-the-date as not yet, and a free walk-in as none", () => {
     assert.match(EXTRACTION_INSTRUCTIONS, /asks for an RSVP or a booking now and says how[^\n]*booking open/);

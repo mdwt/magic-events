@@ -64,6 +64,8 @@ export type ExtractedExperience = {
   url?: string;
   // The source's own categories and labels, used by classification.
   hints: string[];
+  // The age limit the listing states, such as 18 for "No under 18s". Classification takes it as the minimum age.
+  minimumAge?: number;
 };
 
 export interface ExtractInput {
@@ -150,6 +152,10 @@ const answerExperienceSchema = z.object({
   imageUrl: z.string(),
   url: z.string(),
   hints: z.array(z.string()),
+  minimumAge: z
+    .number()
+    .nullable()
+    .describe('The age limit the item states, such as 18 for "No under 18s" or "18+"; null when it states none.'),
   nextEdition: z
     .boolean()
     .describe(
@@ -433,6 +439,10 @@ export function settleExperience(
     if (max !== undefined) experience.price.max = max;
     if (currency !== undefined && /^[A-Z]{3}$/.test(currency)) experience.price.currency = currency;
   }
+
+  // An age limit is a whole number of years a person could be.
+  const age = answer.minimumAge;
+  if (age !== null && Number.isInteger(age) && age > 0 && age < 100) experience.minimumAge = age;
 
   const onSaleAt = settleTimestamp(given(answer.onSaleAt));
   if (onSaleAt !== undefined) experience.onSaleAt = onSaleAt;

@@ -108,6 +108,7 @@ interface ExtractedExperience {
   imageUrl?: string;
   url?: string;                         // this experience's own page, if it has one: a link the listing gives, or the listing itself when it is a page about this experience alone. Saved as its page address
   hints: string[];                      // the source's own categories and labels, used by classification
+  minimumAge?: number;                  // the age limit the listing states, such as 18 for "No under 18s"
 }
 
 interface ExtractedSession {
@@ -172,7 +173,7 @@ What every extractor leaves out:
 
 One step, shared by every source kind. The language model assigns each extracted experience its attribute values and tags, and writes its profile.
 
-- **Given:** the extracted experience (title, summary, description, venue, price, hints) and the definitions: every attribute with its options, and every tag, each with its description.
+- **Given:** the extracted experience (title, summary, description, venue, price, hints, the age limit it states) and the definitions: every attribute with its options, and every tag, each with its description.
 - **Returns:** a value for each attribute it can decide, the tags that apply, and the profile (see Profile).
 - **Checked against the definitions:** an attribute, option or tag that is not defined is not put on the experience and is saved for review (see Undefined values). A value must fit the attribute's type, and a single-valued attribute gets one value. An attribute with no value gets its default, if it has one.
 
@@ -187,7 +188,7 @@ The system starts with this set. They are rows in the database and can be added 
 | Category | Option, several values | The categories below | None | What the experience is about |
 | Format | Option | The formats below | None | The form it takes |
 | Audience | Option | Family, All ages, Adults | None | Who it is for |
-| Minimum age | Number | | None | The age limit a source states, such as 18 for "No under 18s" |
+| Minimum age | Number | | None | The age limit a source states, such as 18 for "No under 18s". Extraction reads it from the whole listing, since a page such as Quicket's shows it as a label beside the title and not in the description, and the classification check sets it whatever the model chose, with Audience Adults when it is 18 or more |
 | Language | Option, several values | English, Afrikaans, isiXhosa, Other | None | The language it is performed or presented in. Set where language matters: theatre, comedy, talks, film |
 | Setting | Option | Indoor, Outdoor, Both | None | Where it takes place |
 | Scale | Option | Local, Regional, Major | Local | How far people travel for it |

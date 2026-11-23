@@ -6,6 +6,7 @@ import {
   classificationInstructions,
   classificationText,
   seasonsOf,
+  withStatedAge,
 } from "../src/data-processing/classify.ts";
 import type { ExtractedExperience } from "../src/data-processing/extract.ts";
 import { CLASSIFICATION_INSTRUCTIONS_INTRODUCTION } from "../src/data-processing/instructions.ts";
@@ -102,6 +103,29 @@ describe("Classification against the definitions", () => {
   });
 });
 
+describe("A stated age limit", () => {
+  test("reaches the classifier", () => {
+    assert.match(classificationText(experience({ minimumAge: 18 })), /^Age limit the source states: 18$/m);
+  });
+
+  test("is the minimum age, and makes the audience adults at 18 or more, whatever the model chose", () => {
+    const chosen = { audience: ["family"], category: ["music"] };
+    assert.deepEqual(withStatedAge(chosen, 18, definitions), {
+      audience: ["adults"],
+      category: ["music"],
+      minimum_age: [18],
+    });
+    assert.deepEqual(withStatedAge(chosen, 16, definitions), {
+      audience: ["family"],
+      category: ["music"],
+      minimum_age: [16],
+    });
+    assert.deepEqual(withStatedAge(chosen, undefined, definitions), chosen);
+    // Without the definitions, nothing is added.
+    assert.deepEqual(withStatedAge(chosen, 18, { attributes: [], tags: [] }), chosen);
+  });
+});
+
 describe("What the classifier is given", () => {
   test("the instructions carry every attribute with its options and every tag, with their descriptions", () => {
     const instructions = classificationInstructions(definitions);
@@ -123,6 +147,7 @@ describe("What the classifier is given", () => {
         "Venue: Gearing's Point, Hermanus",
         "Price: ZAR 150 to ZAR 300",
         "The source's labels: Live music, Outdoor",
+        "Age limit the source states: none",
       ].join("\n"),
     );
   });

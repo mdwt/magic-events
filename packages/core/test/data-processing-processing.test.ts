@@ -173,6 +173,34 @@ describe("processNext", () => {
     assert.ok(logs.some((line) => line.message === "Season left out, not an experience"));
   });
 
+    test("a stated age limit is the minimum age and makes the audience adults, though classification missed it", async () => {
+    // Quicket's page shows "No under 18s" as a label above the title, apart from the description.
+    const content = readFileSync(new URL("./fixtures/sources/quicket-somos.txt", import.meta.url), "utf8");
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          answered({
+            title: "Somos Sunset House & Dining",
+            status: "confirmed",
+            booking: "open",
+            sessions: [session({ start: "2026-12-20", end: "", startTime: "15:00", endTime: "22:00" })],
+            minimumAge: 18,
+          }),
+        ),
+      ],
+      classify: [{ attributes: [{ key: "audience", values: ["family"] }], tags: [], profile: "A sunset house party." }],
+    });
+    const { service, state } = setup({
+      model,
+      pending: [
+        rawListing({ url: "https://www.quicket.co.za/events/401463-somos/", content, contentType: "text/plain" }),
+      ],
+    });
+    await service.processNext();
+    assert.deepEqual(state.saves[0]?.attributes, { audience: ["adults"], minimum_age: [18], scale: ["local"] });
+    assert.match(model.of("classify")[0]?.text ?? "", /Age limit the source states: 18/);
+  });
+
     test("processPending goes on until nothing is pending, or until the limit", async () => {
     const pending = [rawListing(), rawListing({ id: "raw-2" }), rawListing({ id: "raw-3" })];
     assert.equal((await setup({ pending }).service.processPending()).length, 3);

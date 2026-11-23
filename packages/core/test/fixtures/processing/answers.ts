@@ -45,6 +45,7 @@ export function answered(overrides: Partial<AnswerExperience> = {}): AnswerExper
     imageUrl: "",
     url: "",
     hints: ["Festival"],
+    minimumAge: null,
     nextEdition: false,
     ...overrides,
   };

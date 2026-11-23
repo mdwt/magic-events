@@ -83,6 +83,7 @@ const capturedExperienceSchema = z.object({
   imageUrl: text,
   hints: z.array(z.string()).nullish(),
   nextEdition: z.boolean().nullish(),
+  minimumAge: z.number().nullish(),
   attributes: z.object({ tier: tier.optional() }).catchall(attributeValue).nullish(),
   tags: z.array(z.string()).nullish(),
   profile: text,
@@ -194,6 +195,13 @@ function readSources(dir: string, only: string | undefined): { sources: SourceTo
 
 type AnswerExperience = ExtractionAnswer["experiences"][number];
 
+// The age limit a capture recorded as its minimum age attribute, which the extraction now carries itself.
+function capturedMinimumAge(experience: CapturedExperience): number | null {
+  const value = experience.attributes?.minimum_age;
+  const age = Array.isArray(value) ? value[0] : value;
+  return typeof age === "number" ? age : typeof age === "string" && /^\d+$/.test(age) ? Number(age) : null;
+}
+
 function extractionAnswer(experience: CapturedExperience): AnswerExperience {
   const { recurrence } = experience;
   return {
@@ -239,6 +247,7 @@ function extractionAnswer(experience: CapturedExperience): AnswerExperience {
     url: experience.url ?? "",
     hints: experience.hints ?? [],
     nextEdition: experience.nextEdition ?? false,
+    minimumAge: experience.minimumAge ?? capturedMinimumAge(experience),
   };
 }
 
