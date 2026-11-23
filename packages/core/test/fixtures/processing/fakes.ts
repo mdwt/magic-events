@@ -341,6 +341,7 @@ export function setup(
     upsertTag: (input) => Promise.resolve(input),
     upsertSeason: (input) => Promise.resolve({ id: "season", ...input }),
     listDefinitions: () => Promise.resolve({ attributes: ATTRIBUTES, tags: TAGS }),
+    listTagSlugs: () => Promise.resolve(TAGS.map((one) => one.slug)),
     listSeasons: (locationId) => Promise.resolve(SEASONS.filter((one) => one.locationId === locationId)),
     appendWarehouseRows(rows) {
       state.warehouse.push(...rows);

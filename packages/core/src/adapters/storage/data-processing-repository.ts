@@ -127,6 +127,16 @@ export function createDataProcessingRepository(db: Db): DataProcessingRepository
       };
     },
 
+    async listTagSlugs() {
+      // A season's slug is unique in its location only, so the same one may come from several; union keeps it once.
+      const rows = await db
+        .select({ slug: tag.slug })
+        .from(tag)
+        .union(db.select({ slug: season.slug }).from(season))
+        .orderBy(asc(sql`slug`));
+      return rows.map((row) => row.slug);
+    },
+
     async listSeasons(locationId) {
       const rows = await db
         .select({

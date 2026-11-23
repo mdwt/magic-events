@@ -76,6 +76,7 @@ function setup() {
       return Promise.resolve({ id: "00000000-0000-4000-8000-000000000003", ...input });
     },
     listDefinitions: notUsed,
+    listTagSlugs: notUsed,
     listSeasons: notUsed,
     appendWarehouseRows: notUsed,
     saveUndefinedValues: notUsed,
@@ -300,6 +301,7 @@ function reprocessSetup(experiences: StoredExperience[] = [storedExperience()]) 
       upsertTag: notUsed,
       upsertSeason: notUsed,
       listDefinitions: notUsed,
+      listTagSlugs: notUsed,
       listSeasons: notUsed,
       appendWarehouseRows: notUsed,
       saveUndefinedValues: notUsed,

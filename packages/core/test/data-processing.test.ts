@@ -158,6 +158,13 @@ describe("Data processing repository: seasons", () => {
     assert.deepEqual(rows, periods);
   });
 
+  test("the tag slugs are every tag's and every season's, in order and each once", async () => {
+    await harness.services.dataProcessing.saveTag({ slug: "jazz", name: "Jazz", description: "Jazz music" });
+    await harness.services.dataProcessing.saveTag({ slug: "art", name: "Art", description: "Art" });
+    await harness.services.dataProcessing.saveSeason(whaleSeason);
+    assert.deepEqual(await harness.services.dataProcessing.listTagSlugs(), ["art", "jazz", whaleSeason.slug].sort());
+  });
+
   test("refuses a location Catalogue does not have", async () => {
     await assert.rejects(
       harness.services.dataProcessing.saveSeason({ ...whaleSeason, locationSlug: "atlantis" }),

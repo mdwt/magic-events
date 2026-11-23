@@ -94,6 +94,9 @@ export interface DataProcessing {
   // Every attribute definition with its options, by key. Catalogue checks a search's attribute filters against
   // them.
   listAttributes(): Promise<AttributeDefinition[]>;
+  // The slug of every tag and every season, in any location, in order and each once. An experience's tags are these
+  // slugs, and Catalogue checks a search's tag filter against them.
+  listTagSlugs(): Promise<string[]>;
   // Creates the attribute with its options, or updates the one that has this key. Options left out are removed.
   saveAttribute(input: AttributeDefinition): Promise<AttributeDefinition>;
   // Creates the tag, or updates the one that has this slug.
@@ -130,6 +133,8 @@ export interface DataProcessingRepository {
   listDefinitions(): Promise<{ attributes: AttributeDefinition[]; tags: TagDefinition[] }>;
   // The seasons of a location, with their periods.
   listSeasons(locationId: string): Promise<Season[]>;
+  // The slugs of every tag and every season, in order and each once.
+  listTagSlugs(): Promise<string[]>;
   appendWarehouseRows(rows: WarehouseRow[]): Promise<void>;
   saveUndefinedValues(rows: UndefinedValueRow[]): Promise<void>;
 }
