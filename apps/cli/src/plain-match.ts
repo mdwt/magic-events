@@ -10,11 +10,20 @@ const WEAK_WORDS = new Set(
     "tribute experience event events").split(" "),
 );
 
+// Words of a date, which a title may carry or leave out, such as "11 Dec 2026".
+const DATE_WORDS = new Set(
+  ("jan january feb february mar march apr april may jun june jul july aug august sep sept september oct october " +
+    "nov november dec december mon monday tue tuesday wed wednesday thu thursday fri friday sat saturday sun sunday")
+    .split(" "),
+);
+
+// A title's words that name something, each with a plural "s" taken off, so "Years" and "Year" are one word.
 export function strongWords(value: string): Set<string> {
   return new Set(
     normaliseTitle(value)
       .split(" ")
-      .filter((word) => word.length > 1 && !WEAK_WORDS.has(word) && !/^\d+$/.test(word)),
+      .filter((word) => word.length > 1 && !WEAK_WORDS.has(word) && !/^\d+$/.test(word))
+      .map((word) => (word.length > 3 && word.endsWith("s") && !word.endsWith("ss") ? word.slice(0, -1) : word)),
   );
 }
 
@@ -52,8 +61,24 @@ export function readMatchQuestion(question: string): MatchQuestion | undefined {
 
 export type PlainVerdict = { verdict: "sure"; id: string } | { verdict: "unsure" | "none" };
 
+// The words of one title that the other does not have, leaving out the words of either venue and of dates: what
+// one title names and the other does not.
+function ownWords(words: Set<string>, others: Set<string>, places: Set<string>): string[] {
+  return [...words].filter((word) => !others.has(word) && !places.has(word) && !DATE_WORDS.has(word));
+}
+
 // "sure" with the candidate it is, "unsure" when a candidate might be it, "none" when no candidate comes close.
 // When it is not sure it never merges: a second copy of an experience is easier to mend than two made one.
+//
+// Sure is looser than the same normalised title, so it is kept to what is safe. Once the words of the venues and
+// of dates are set aside:
+//   - the two titles have the same words, at the same place or with no place to tell them apart; or
+//   - one title only adds to the other, such as a performer or a tour's name, and they are one dated experience at
+//     the same place starting the same day.
+// When each title has words of its own, they may name different organisers, operators or venues, such as
+// "Hermanus Whale Cruises boat-based whale watching" and "Boat-based whale watching with Southern Right Charters",
+// so it is never sure. Nor is it for a recurring experience that only one title adds to, since two operators can
+// run the same trip every day from the same harbour.
 export function matchPlainly(question: MatchQuestion): PlainVerdict {
   const words = strongWords(question.title);
   const place = strongWords(question.place);
@@ -71,11 +96,24 @@ export function matchPlainly(question: MatchQuestion): PlainVerdict {
     const sameKind = question.recurring === candidate.recurring;
     const sameStart = question.start === candidate.first;
 
+    const places = new Set([...place, ...theirPlace]);
+    const ours = ownWords(words, theirs, places);
+    const others = ownWords(theirs, words, places);
+    const sameWords = ours.length === 0 && others.length === 0;
+    const oneAdds = (ours.length === 0) !== (others.length === 0);
     const sure =
-      sameKind && !placesDiffer && ((cover >= 0.8 && shared >= 2) || (cover === 1 && sameStart && samePlace));
+      sameKind &&
+      !placesDiffer &&
+      shared >= 1 &&
+      ((sameWords && (shared >= 2 || (sameStart && samePlace))) ||
+        (oneAdds && !question.recurring && sameStart && samePlace));
+    // What might be the same, and is not sure, is unsure: the model is asked, or with the model off it stays two.
+    const close =
+      (sameKind && !placesDiffer && cover >= 0.8 && shared >= 2) ||
+      (shared >= 1 && cover >= 0.5 && (sameStart || (question.recurring && candidate.recurring)));
     if (sure) {
       if (!best || shared > best.shared) best = { id: candidate.id, shared };
-    } else if (shared >= 1 && cover >= 0.5 && (sameStart || (question.recurring && candidate.recurring))) {
+    } else if (close) {
       unsure = true;
     }
   }

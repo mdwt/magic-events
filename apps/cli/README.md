@@ -49,7 +49,7 @@ repository's `.env`.
 | `pnpm cli:pipeline reprocess --location SLUG` | Sends every listing of a location back |
 | `pnpm cli:captures` | Loads every source in `data/hermanus/sources.json` through the pipeline |
 | `pnpm cli:captures --source SLUG` | Loads one captured source, by its slug |
-| `pnpm cli:captures --no-model` | Never asks the language model, even for an unsure match |
+| `pnpm cli:captures --no-model` | Never asks the language model: an unsure match is left as two experiences |
 | `pnpm cli:captures --dir DIR` | Loads a capture directory other than `data/hermanus` |
 
 `admin` runs one command at a time and names a user by their email address. A failed command prints the reason and
@@ -74,6 +74,13 @@ A capture directory holds `sources.json`, `raw/<slug>/` with one file per captur
 `URL: <address>`), and `extracted/<slug>.json` with the experiences read from those pages. For each source the loader
 saves the source row, runs it through Discovery with the captures in place of the fetch, and processes the raw listings
 through Data processing. The sources it saves need the seeded location, so seed first.
+
+When Data processing asks the language model which stored experience an extracted one is, the loader first answers
+plainly, in `src/plain-match.ts`. It says "same" only when that is safe: once the words of the venues and of dates are
+set aside, the two titles have the same words, or one only adds to the other and they are one dated experience at the
+same place starting the same day. Titles that each name something of their own, such as two operators' whale watching
+trips from New Harbour, and a recurring experience that only one title adds to, are unsure. An unsure pair is asked of
+the real model; with `--no-model` it is left as two experiences and never merged. The summary names every plain match.
 
 ## Scripts
 
