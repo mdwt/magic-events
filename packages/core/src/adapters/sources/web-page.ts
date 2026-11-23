@@ -9,6 +9,8 @@ import { HttpStatusError, MAX_PAGE_BYTES, parseSettings, textOf, type Http } fro
 
 const settingsSchema = z.strictObject({
   urls: z.array(z.url()).min(1),
+  // Read by Data processing, not by the fetch: the pages are the organiser's own.
+  ownPages: z.boolean().optional(),
 });
 
 const MISSING = new Set([404, 410]);

@@ -528,6 +528,7 @@ describe("Discovery: the hand-off to Data processing", () => {
       kind: "web_page",
       priority: 10,
       locationId: location?.id,
+      ownPages: false,
     });
 
     const [olderNow] = await harness.db.select().from(rawListing).where(eq(rawListing.id, older.id));
@@ -540,6 +541,25 @@ describe("Discovery: the hand-off to Data processing", () => {
     // Nothing else is pending: the claim was not marked, so the latest is pending again, and the older is not.
     const again = await claimed((one) => Promise.resolve(one));
     assert.equal(again?.id, newer.id);
+  });
+
+  test("a source whose pages are the organiser's own says so on its claimed raw listing", async () => {
+    const saved = await harness.services.discovery.saveSource({
+      ...pages,
+      settings: { urls: ["https://example.com/a"], ownPages: true },
+    });
+    assert.deepEqual(saved.settings, { urls: ["https://example.com/a"], ownPages: true });
+    returns("web_page", [page("a", "first")]);
+    await harness.services.discovery.runSource(saved.id);
+    const claim = await claimed((one) => Promise.resolve(one));
+    assert.equal(claim?.source.ownPages, true);
+  });
+
+  test("refuses an ownPages setting that is not true or false", async () => {
+    await assert.rejects(
+      harness.services.discovery.saveSource({ ...pages, settings: { urls: ["https://example.com/a"], ownPages: "yes" } }),
+      (error: unknown) => error instanceof AppError && error.code === "invalid_input",
+    );
   });
 
   test("returns null when nothing is pending", async () => {

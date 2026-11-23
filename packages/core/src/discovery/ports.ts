@@ -108,7 +108,8 @@ export interface ClaimedRawListing {
   listingId: string;
   // "removed" means the listing is gone from the source, and there is no content.
   kind: "listing" | "removed";
-  source: { id: string; name: string; kind: string; priority: number; locationId: string };
+  // ownPages: the source's pages are an organiser's own, about its own offerings (its settings' ownPages).
+  source: { id: string; name: string; kind: string; priority: number; locationId: string; ownPages: boolean };
   url: string | null;
   contentType: string | null;
   content: string | null;

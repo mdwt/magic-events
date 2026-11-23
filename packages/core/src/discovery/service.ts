@@ -69,6 +69,14 @@ export class DiscoveryService implements Discovery {
       ]);
     }
 
+    // Every kind may say its pages are an organiser's own; the rest of the settings are the kind's adapter's.
+    const ownPages = input.settings?.ownPages;
+    if (ownPages !== undefined && typeof ownPages !== "boolean") {
+      throw new AppError("invalid_input", "settings.ownPages must be true or false.", [
+        { path: "settings.ownPages", message: "Must be true or false." },
+      ]);
+    }
+
     // Locations are Catalogue's, so the source's location is found through the Catalogue service.
     const location = await this.#catalogue.getLocation({ slug: input.locationSlug });
     if (!location) {

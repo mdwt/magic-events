@@ -364,6 +364,7 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
             kind: source.kind,
             priority: source.priority,
             locationId: source.locationId,
+            ownPages: sql<boolean>`coalesce((${source.settings} ->> 'ownPages') = 'true', false)`,
           },
           // Ties on the fetched time are broken by ID, the same way the oldest is picked.
           latestRawListingId: sql<string>`(${db
