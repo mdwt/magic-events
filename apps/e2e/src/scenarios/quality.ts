@@ -113,8 +113,9 @@ function datesMatch(item: Experience, entry: Entry): boolean {
     .filter((other) => other.precision === "day")
     .every((other) => mine.some((one) => one.start === other.start && one.end === other.end));
   const timesMatch = item.sessions.every((session) => {
-    const other = entry.sessions.find((one) => one.start === session.startDate);
-    return other === undefined || !other.startTime || hhmm(session.startTime) === other.startTime.slice(0, 5);
+    // A day with two shows has two sessions: each must have a time the source gives for that day.
+    const others = entry.sessions.filter((one) => one.start === session.startDate);
+    return others.length === 0 || others.some((one) => !one.startTime || hhmm(session.startTime) === one.startTime.slice(0, 5));
   });
   return everyMineListed && noneMissing && timesMatch;
 }
@@ -170,12 +171,21 @@ function judge(item: Experience, entries: Entry[], seasons: Set<string>): Verdic
       (entry) =>
         (entry.price?.min ?? null) === item.price.min && (entry.price?.max ?? null) === item.price.max && same(entry.price?.currency, item.price.currency),
     ),
-    classes: any((entry) => {
-      const categories = asSet(entry.attributes?.category);
-      const tags = asSet(entry.tags);
-      const feedTags = item.tags.filter((tag) => !seasons.has(tag)).sort();
-      return show(categories) === show(asSet(item.attributes.category)) && show(tags) === show(feedTags);
-    }),
+    // An experience of several sources takes its categories and tags from all of them, and its season tags from
+    // its dates: each must come from one of its sources, and one source's own must all be there.
+    classes: (() => {
+      const categories = new Set(entries.flatMap((entry) => asSet(entry.attributes?.category)));
+      const tags = new Set(entries.flatMap((entry) => asSet(entry.tags)));
+      const feedCategories = asSet(item.attributes.category);
+      const feedTags = item.tags.filter((tag) => !seasons.has(tag));
+      const fromSources = feedCategories.every((one) => categories.has(one)) && feedTags.every((one) => tags.has(one));
+      const oneWhole = any(
+        (entry) =>
+          asSet(entry.attributes?.category).every((one) => feedCategories.includes(one)) &&
+          asSet(entry.tags).every((one) => item.tags.includes(one)),
+      );
+      return fromSources && oneWhole;
+    })(),
     notes: [],
   };
   const fields: [keyof Omit<Verdict, "notes">, string, string][] = [

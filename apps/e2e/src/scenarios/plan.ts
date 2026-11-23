@@ -475,9 +475,7 @@ export function registerPlanning(): void {
     const swallow = one(c, september, "Swallow Series Wine Tasting Lunches");
     if (swallow) c.equal(sessionDays(swallow), ["2027-09-04"], "the Swallow Series in September 2027");
     for (const item of [...september, ...october]) {
-      if (item.status === "confirmed" && item.booking === "open") {
-        c.ok(Boolean(item.bookingUrl ?? item.pageUrl), `"${item.title}" is confirmed with booking open and has nowhere to book`);
-      }
+      if (item.bookable) c.ok(Boolean(item.bookingUrl ?? item.pageUrl), `"${item.title}" is bookable and has nowhere to book`);
     }
     c.note("Whether a source sells tickets now for a confirmed item that far ahead is checked by hand against the source.");
   });

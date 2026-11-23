@@ -153,8 +153,10 @@ export function registerSafety(): void {
         checkErrorFormat(c, call, `${call.path} while down`);
       }
       remember("E2E-39 failed", down[0]);
-      // Every operation answers 503 while the database is down, the ones that need no database aside.
-      await callEveryOperation(server);
+      // Every operation answers 503 while the database is down: the key cannot be checked, and /health says so.
+      for (const call of await callEveryOperation(server)) {
+        c.ok(call.status === 503, `while the database is down ${call.method} ${call.path} is ${call.status}`);
+      }
       await proxy.open();
       const on = server;
       await until(
