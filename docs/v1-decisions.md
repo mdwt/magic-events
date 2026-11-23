@@ -12,7 +12,7 @@ What version 1 leaves out, and why. Each of these is described somewhere in the 
 | 4 | MCP sign-in with OAuth | None. UC1, UC2 and UC4 use API keys | [4](issues.md) |
 | 5 | A reader for the data warehouse | None | [15](issues.md) |
 
-Sending a listing back to be processed again was on this list on the morning of 23 November. It was decided the same day and is being built, as command-line commands.
+Sending a listing back to be processed again was on this list on the morning of 23 November. It was decided the same day and is built, as command-line commands (see Processing again in [data-processing.md](data-processing.md)).
 
 ## 1. The Quicket and Ticketmaster API adapters
 
@@ -64,7 +64,7 @@ UC1 as written, a search within a radius around Hermanus, works. It is less exac
 
 **What it costs.** One case. If the leading source drops an experience and a lower-priority source still lists it with different details, the experience shows the dropped source's details until the remaining listing next changes and is processed. From then on that listing leads.
 
-**What building it needs.** When the leading link is removed, send the experience's remaining listings back for processing. Sending a listing back is being built now, so this is a small step on top of it. Until then an operator can do the same by hand, by reprocessing the experience.
+**What building it needs.** When the leading link is removed, send the experience's remaining listings back for processing. Sending a listing back is built, and the automatic step can call the same code. Until then a system admin can do the same by hand, with `pipeline reprocess --experience`.
 
 **To decide.** Whether to add the automatic step in version 1.
 
