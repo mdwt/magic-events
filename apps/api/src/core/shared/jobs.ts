@@ -29,11 +29,21 @@ export interface JobPolicy {
   concurrency: number;
 }
 
+// The job a handler is running.
+export interface RunningJob {
+  id: string;
+  // 1 for the first try, 2 for the first retry, and so on.
+  attempt: number;
+  // Aborted when the queue is stopping or the job has run past its timeout. A handler that works through
+  // many items checks it between them and stops.
+  signal: AbortSignal;
+}
+
 // What a job does. A handler that throws fails the job, and the queue tries it again as its policy says.
 export interface JobHandler<N extends JobName = JobName> {
   name: N;
   policy: JobPolicy;
-  run(payload: Jobs[N], job: { id: string; attempt: number }): Promise<void>;
+  run(payload: Jobs[N], job: RunningJob): Promise<void>;
 }
 
 export interface JobQueue {
@@ -46,7 +56,9 @@ export interface JobQueue {
     options?: { key?: string; delaySeconds?: number },
   ): Promise<void>;
   // Adds the job again and again on a cron schedule, in UTC. Calling it again replaces the schedule of that kind.
-  schedule<N extends JobName>(name: N, cron: string, payload: Jobs[N]): Promise<void>;
+  // The key works as enqueue's does: a scheduled job is not added while one with the same key is waiting. With no
+  // key, the job's name is the key, so a scheduled job never piles up behind one that is still waiting.
+  schedule<N extends JobName>(name: N, cron: string, payload: Jobs[N], options?: { key?: string }): Promise<void>;
   // Starts taking jobs. Every handler is registered by now.
   start(): Promise<void>;
   // Stops taking jobs and lets the ones in hand finish.

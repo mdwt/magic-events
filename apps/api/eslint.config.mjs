@@ -16,6 +16,8 @@ const TECHNOLOGY = [
   "drizzle-orm",
   "drizzle-orm/*",
   "postgres",
+  "pg",
+  "pg-boss",
   "fastify",
   "fastify-*",
   "@fastify/*",
@@ -112,6 +114,10 @@ export default defineConfig([
       {
         group: ["@magic-events/db", "@magic-events/db/*", "drizzle-orm", "drizzle-orm/*", "postgres", ...BETTER_AUTH],
         message: "The inbound sides reach data and credentials through the core's services, never directly.",
+      },
+      {
+        group: ["pg", "pg-boss"],
+        message: "The inbound sides reach the job queue through its port. app.ts and server.ts hand it over.",
       },
       { regex: "(^|/)adapters/", message: "The inbound sides import no adapter. They are handed the core's services." },
       { regex: "/core/[^/]+/service(\\.ts)?$", message: "Import the domain's ports, not its service. app.ts hands over the service." },
