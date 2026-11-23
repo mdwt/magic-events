@@ -79,6 +79,19 @@ export default defineConfig([
       "no-console": "error",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
+      // node:test's describe, test and hooks return promises that the test runner itself awaits.
+      "@typescript-eslint/no-floating-promises": [
+        "error",
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: "package",
+              package: "node:test",
+              name: ["describe", "test", "it", "suite", "before", "after", "beforeEach", "afterEach"],
+            },
+          ],
+        },
+      ],
     },
   },
   { files: ["**/*.mjs"], extends: [tseslint.configs.disableTypeChecked] },
