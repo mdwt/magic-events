@@ -180,7 +180,7 @@ If the fetch fails part way, the listings already saved stay saved and the run i
 A failed fetch is tried again, with a longer wait each time. It does not wait for the next weekly fetch.
 
 - **The job queue tries it again.** A fetch is a job. A run that fails fails its job, and the queue runs the job again. Discovery itself holds no retry rule.
-- **Five retries.** The first comes 15 minutes after the failure, and the wait doubles each time: 15, 30, 60, 120 and 240 minutes.
+- **Five retries.** The first comes 15 minutes after the failure, and the wait doubles each time: 15, 30, 60, 120 and 240 minutes. pg-boss adds a random extra of up to as much again, so that failed jobs do not all come back at once: each wait is between the one given here and twice it.
 - **When the retries are used up,** the job is given up. The source is due again one fetch interval after its last run started, and starts with a fresh set of retries.
 - **A success ends it.** The next fetch is one interval after the run that succeeded started.
 - **A run that never finished.** A run still running an hour after it started, because the server stopped part way, is closed as failed, so it never blocks its source.

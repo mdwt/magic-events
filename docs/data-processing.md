@@ -398,7 +398,7 @@ interface LanguageModel {
 }
 ```
 
-- **One kind of failure.** `ask` fails with `LanguageModelFailed` and a reason: declined, cut off, wrong shape, too long, or timed out. The caller does not read provider errors. Any of them fails the raw listing.
+- **One kind of failure.** `ask` fails with `LanguageModelFailed` and a reason: declined, cut off, wrong shape, too long, timed out, or unavailable. The caller does not read provider errors. Any of them fails the raw listing.
 - **What every adapter must do:** return only answers that fit the schema, accept a PDF as a document, and never cut content to make it fit.
 - **Instructions are the domain's.** The extraction and classification instructions are written once, in Data processing, and are the same whichever adapter runs them.
 
@@ -510,49 +510,33 @@ Each adapter is the only code that imports its provider's SDK.
 
 ### Anthropic adapter (language model)
 
-- **SDK:** the official TypeScript SDK, `@anthropic-ai/sdk`. It reads the API key from `ANTHROPIC_API_KEY`.
+- **SDK:** the official TypeScript SDK, `@anthropic-ai/sdk`. The API key comes from the settings provider (`ANTHROPIC_API_KEY`), and the client is made on the first call, so a process that never asks the model starts without a key.
 - **Model:** `LANGUAGE_MODEL`, by default `claude-opus-5-5`.
 - **Thinking:** this model always thinks, so no `thinking` parameter is sent. How hard it thinks is `output_config.effort`, from `ANTHROPIC_EFFORT`.
-- **Answer shape:** the call is `client.messages.parse` with `output_config.format` set to `zodOutputFormat(schema)`, and the answer is read from `parsed_output`.
-- **Failures:** `stop_reason` is checked before the answer is read. `refusal` becomes declined, `max_tokens` becomes cut off, and an empty `parsed_output` becomes wrong shape, each as `LanguageModelFailed`.
+- **Long answers:** the call is streamed (`client.beta.messages.stream`, then the final message), with the output limit at the model's maximum of 128,000 tokens. A page can list fifty experiences and a calendar a whole year, and the SDK only allows an answer that long on a streamed call.
+- **Answer shape:** `output_config.format` is the JSON schema of the port's Zod schema. The adapter reads `stop_reason` first, then parses the answer and checks it against the Zod schema itself. The SDK's own parser is not used, because it fails on a declined or cut-off answer before `stop_reason` can be read.
 - **Caching:** the port's `instructions` go in the system prompt, marked `cache_control: { type: "ephemeral" }`, so repeated calls read them from the cache. The port's `text` goes in the user message.
 - **Documents:** a PDF is sent as a `document` block, before the text.
-- **Refusal fallback:** turned on (`fallbacks: "default"` with the beta `server-side-fallback-2026-07-01`), so a request the model declines is run again on another model inside the same call.
+- **Refusal fallback:** turned on (`fallbacks: "default"` with the beta `server-side-fallback-2026-07-01`), so a request the model declines is run again on another model inside the same call. The answer is the text after the last fallback.
+- **Timeout:** one deadline, `LANGUAGE_MODEL_TIMEOUT_SECONDS`, over the whole call, the SDK's own retries included.
+
+Every failure becomes a `LanguageModelFailed`, and nothing else is thrown:
+
+| What happened | Reason |
+| --- | --- |
+| The model declined (`stop_reason` `refusal`) | declined |
+| The answer hit the output limit (`max_tokens`) | cut off |
+| The content does not fit the model: its context window, a request too large, too many PDF pages | too long |
+| The deadline passed, or the connection timed out | timed out |
+| Any other API or connection error, or no API key | unavailable |
+| The answer is not JSON, or does not fit the schema | wrong shape |
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | None; required | The Anthropic API key |
+| `ANTHROPIC_API_KEY` | None; needed where the model is called | The Anthropic API key |
 | `ANTHROPIC_EFFORT` | `medium` | How hard the model thinks: `low`, `medium`, `high`, `xhigh` or `max` |
 
-```ts
-import Anthropic from "@anthropic-ai/sdk";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-
-const client = new Anthropic();                     // reads ANTHROPIC_API_KEY
-
-async function ask<T>({ instructions, text, document, schema }: AskInput<T>): Promise<T> {
-  const response = await client.messages.parse({
-    model: settings.languageModel,                  // claude-opus-5-5
-    max_tokens: 16000,
-    output_config: { effort: settings.anthropicEffort, format: zodOutputFormat(schema) },
-    system: [{ type: "text", text: instructions, cache_control: { type: "ephemeral" } }],
-    messages: [{
-      role: "user",
-      content: [
-        ...(document
-          ? [{ type: "document" as const, source: { type: "base64" as const, media_type: "application/pdf" as const, data: document.base64 } }]
-          : []),
-        { type: "text" as const, text },
-      ],
-    }],
-  });
-
-  if (response.stop_reason === "refusal") throw new LanguageModelFailed("declined");
-  if (response.stop_reason === "max_tokens") throw new LanguageModelFailed("cut off");
-  if (!response.parsed_output) throw new LanguageModelFailed("wrong shape");
-  return response.parsed_output;
-}
-```
+The adapter is `adapters/language-model/anthropic.ts`. Measured on real sources on 23 Nov 2026: a week's diary of 20 experiences took about 40 seconds, and a two-page monthly calendar of 48 took about 95.
 
 ### Bedrock adapter (embedding model)
 
