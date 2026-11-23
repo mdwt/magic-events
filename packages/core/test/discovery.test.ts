@@ -387,6 +387,24 @@ describe("Discovery: listings that disappear", () => {
     assert.equal(a?.state, "listed");
   });
 
+  test("a failed run changes no listing and saves no raw listing", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, missedRunsBeforeRemoval: 1 });
+    returns("web_page", [page("a", "A"), page("b", "B")]);
+    await harness.services.discovery.runSource(saved.id);
+    const listingsBefore = await harness.db.select().from(listing).orderBy(asc(listing.sourceListingId));
+    const rawBefore = await harness.db.select().from(rawListing).orderBy(asc(rawListing.id));
+
+    // Connection refused, a timeout and an HTTP error all fail the fetch before any listing is returned.
+    for (const reason of ["connect ECONNREFUSED", "timed out after 30 s", "GET https://example.com/a answered 500"]) {
+      next.web_page = () => Promise.reject(new Error(reason));
+      later(24);
+      const summary = await harness.services.discovery.runSource(saved.id);
+      assert.deepEqual([summary.status, summary.complete, summary.listingsRemoved], ["failed", false, 0]);
+    }
+    assert.deepEqual(await harness.db.select().from(listing).orderBy(asc(listing.sourceListingId)), listingsBefore);
+    assert.deepEqual(await harness.db.select().from(rawListing).orderBy(asc(rawListing.id)), rawBefore);
+  });
+
   test("a listing that comes back is listed again with a new raw listing", async () => {
     const saved = await harness.services.discovery.saveSource({ ...pages, missedRunsBeforeRemoval: 1 });
     returns("web_page", [page("a", "A")]);
@@ -463,6 +481,29 @@ describe("Discovery: sources that are due", () => {
     const rows = await harness.db.select().from(run);
     assert.ok(rows.every((one) => one.status === "failed" && one.error === "The run did not finish."));
     assert.ok(rows.every((one) => one.finishedAt?.getTime() === now.getTime()));
+  });
+
+  test("closing a run that did not finish changes no listing and counts no miss", async () => {
+    const services = harness.services.discovery;
+    const saved = await services.saveSource({ ...pages, missedRunsBeforeRemoval: 1, fetchIntervalHours: 1 });
+    returns("web_page", [page("a", "A")]);
+    await services.runSource(saved.id);
+    const listingsBefore = await harness.db.select().from(listing);
+    const rawBefore = await harness.db.select().from(rawListing);
+    await harness.db.insert(run).values({ sourceId: saved.id, startedAt: now });
+
+    later(2);
+    await services.findDueSources();
+    const runs = await harness.db.select().from(run).orderBy(asc(run.startedAt));
+    assert.deepEqual(
+      runs.map((one) => [one.status, one.complete]),
+      [
+        ["succeeded", true],
+        ["failed", false],
+      ],
+    );
+    assert.deepEqual(await harness.db.select().from(listing), listingsBefore);
+    assert.deepEqual(await harness.db.select().from(rawListing), rawBefore);
   });
 
   test("runSource on a source being fetched starts no second run and leaves the first alone", async () => {
