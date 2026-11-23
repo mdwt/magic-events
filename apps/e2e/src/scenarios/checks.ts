@@ -1,0 +1,152 @@
+import { send } from "../harness/api.ts";
+import { show } from "../harness/checks.ts";
+import { query } from "../harness/db.ts";
+import { addMonths, today, WINTER } from "../harness/feed.ts";
+import { lastLines, ROOT, runCommand, type CommandResult } from "../harness/process.ts";
+import { byHand, scenario } from "../harness/scenario.ts";
+import { until } from "../harness/server.ts";
+import { prepare, startServer, type Snapshot } from "../harness/setup.ts";
+import { client, mainServer, recall, state } from "../harness/state.ts";
+
+// The checks around the scenarios, C-01 to C-08, where the suite can run them.
+
+function repositoryEnv(): Record<string, string> {
+  const env: Record<string, string> = {};
+  for (const [name, value] of Object.entries(process.env)) if (value !== undefined) env[name] = value;
+  return env;
+}
+
+function pnpm(args: string[]): Promise<CommandResult> {
+  return runCommand("pnpm", args, { env: repositoryEnv(), cwd: ROOT, timeoutMs: 30 * 60_000 });
+}
+
+export function registerSetup(): void {
+  scenario(
+    "SETUP",
+    "The run's database, seed, captures and server",
+    async ({ c }) => {
+      try {
+        await prepare();
+      } catch (error) {
+        state.setupError = error instanceof Error ? error.message : String(error);
+        c.fail(state.setupError);
+      }
+    },
+    { needsSetup: false },
+  );
+
+  scenario("C-04", "The migrations apply to an empty database", ({ c }) => {
+    const found = recall<{ first: CommandResult; second: CommandResult; applied: number; again: number }>("C-04");
+    if (found === undefined) {
+      c.fail("The migrations did not run");
+      return Promise.resolve();
+    }
+    c.ok(found.first.code === 0, `the first migration exited with ${String(found.first.code)}`);
+    c.ok(found.second.code === 0, `the second migration exited with ${String(found.second.code)}`);
+    c.ok(found.applied > 0, `${found.applied} migrations applied`);
+    c.equal(found.again, found.applied, "migrations recorded after the second run");
+    return Promise.resolve();
+  });
+
+  scenario("C-05", "The seed runs twice without changing anything", ({ c }) => {
+    const found = recall<{ first: CommandResult; second: CommandResult; before: Snapshot; after: Snapshot }>("C-05");
+    if (found === undefined) {
+      c.fail("The seed did not run");
+      return Promise.resolve();
+    }
+    const counts = (text: string) => /Default data seeded: .*/.exec(text)?.[0];
+    c.ok(counts(found.first.stdout) !== undefined && /NEW API KEYS/.test(found.first.stdout), "the first seed prints the counts and the new keys");
+    c.equal(counts(found.second.stdout), counts(found.first.stdout), "the second seed's counts");
+    c.ok(/No new API keys/.test(found.second.stdout), "the second seed says No new API keys");
+    c.equal(found.after.rows, found.before.rows, "rows after the second seed");
+    c.ok(found.after.digest === found.before.digest, "no seeded row changed on the second seed");
+    return Promise.resolve();
+  });
+
+  scenario("C-06", "The server starts cleanly", async ({ c }) => {
+    const main = mainServer();
+    const lines = main.lines();
+    c.ok(lines.some((line) => /listening/i.test(String(line.msg))), "the server logs that it is listening");
+    const jobs = lines.find((line) => line.msg === "The jobs started");
+    c.ok(jobs !== undefined && typeof jobs.findDueSourcesCron === "string" && typeof jobs.upkeepCron === "string", "it logs that the jobs started, with each schedule");
+    const settings = lines.find((line) => typeof line.port === "number" || typeof line.settings === "object");
+    c.ok(settings !== undefined, "it logs the settings that are safe to show when it starts");
+    c.equal((await send(main, { path: "/health" })).status, 200, "/health");
+  });
+}
+
+export function registerChecks(): void {
+  byHand("C-01", "A clean install", "pnpm install --frozen-lockfile in a fresh checkout: the suite runs inside an installed worktree.");
+
+  scenario("C-02", "The workspace type checks, lints and builds", async ({ c }) => {
+    if (state.skipChecks) {
+      c.note("Skipped with E2E_SKIP_CHECKS=1.");
+      return;
+    }
+    for (const script of ["typecheck", "lint", "build"]) {
+      const result = await pnpm([script]);
+      c.ok(result.code === 0, `pnpm ${script} exited with ${String(result.code)}: ${lastLines(result.output, 8)}`);
+    }
+  });
+
+  scenario("C-03", "Every automated test passes", async ({ c }) => {
+    if (state.skipChecks) {
+      c.note("Skipped with E2E_SKIP_CHECKS=1.");
+      return;
+    }
+    const migrated = await pnpm(["db:migrate:test"]);
+    c.ok(migrated.code === 0, `pnpm db:migrate:test exited with ${String(migrated.code)}: ${lastLines(migrated.output, 5)}`);
+    const tested = await pnpm(["test"]);
+    c.ok(tested.code === 0, `pnpm test exited with ${String(tested.code)}: ${lastLines(tested.output, 12)}`);
+    const skipped = [...tested.output.matchAll(/^# (skipped|todo) (\d+)$/gm)].filter((match) => Number(match[2]) > 0);
+    c.equal(skipped.map((match) => match[0]), [], "tests skipped");
+  });
+
+  byHand("C-07", "The background jobs run", "Within an hour of a server starting, pgboss.job shows a completed job of each of the four queues: the suite does not wait an hour.");
+
+  scenario("C-08", "Upkeep keeps the feed current", async ({ c, logs }) => {
+    const upkeep = await startServer("upkeep", { CATALOGUE_UPKEEP_CRON: "* * * * *" });
+    try {
+      const line = await upkeep.waitFor("the upkeep to run", (one) => one.msg === "Kept the catalogue up", 180_000);
+      c.note(`Upkeep: ${show(line)}`);
+      const over = await query<{ title: string }>(
+        state.dbUrl,
+        `select e.title from experience e where e.status in ('expected','announced','confirmed','postponed')
+           and (select max(s.end_date) from experience_session s where s.experience_id = e.id) < current_date`,
+      );
+      c.equal(over.map((one) => one.title), [], "searchable experiences whose last session is before today");
+      const horizon = addMonths(today(), 24);
+      const short = await query<{ title: string; last: string }>(
+        state.dbUrl,
+        `select e.title, max(s.start_date)::text as last from experience e join experience_session s on s.experience_id = e.id
+          where e.recurrence_rule is not null and e.recurrence_end is null and e.status in ('expected','announced','confirmed','postponed')
+          group by e.id, e.title having max(s.start_date) < date '${horizon}' - interval '1 month'`,
+      );
+      c.equal(short.map((one) => `${one.title} (${one.last})`), [], `open-ended recurring experiences without sessions up to ${horizon}`);
+      c.equal((await send(upkeep, { path: "/v1/experiences/search", client: client("agency person"), body: WINTER })).status, 200, "search after upkeep");
+    } finally {
+      await upkeep.stop();
+    }
+    logs((lc) => {
+      lc.ok(upkeep.lines().some((one) => one.msg === "Kept the catalogue up"), "the upkeep job is in the log");
+    });
+  });
+}
+
+// Last: the main server stops cleanly on SIGTERM, finishing the request in hand.
+export function registerStop(): void {
+  scenario("C-06", "The server stops cleanly", async ({ c }) => {
+    const main = mainServer();
+    const from = main.lineCount();
+    const inHand = send(main, { path: "/v1/experiences/search", client: client("agency person"), body: { ...WINTER, limit: 100 } });
+    await until("the request to reach the server", () => main.find((line) => line.msg === "Request started", from), 5_000, 20);
+    const code = await main.stop("SIGTERM");
+    const answered = await inHand.catch(() => undefined);
+    c.equal(answered?.status, 200, "the request in hand when it stopped");
+    c.equal(code, 0, "exit code");
+    const messages = main.lines(from).map((line) => String(line.msg));
+    const stopping = messages.indexOf("Stopping");
+    const stopped = messages.indexOf("Stopped");
+    c.ok(stopping !== -1 && stopped > stopping, `it logs "Stopping" then "Stopped": ${show(messages.slice(-6))}`);
+  });
+}
