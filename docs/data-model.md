@@ -202,5 +202,7 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 
 ## Open questions
 
-- [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
+- [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant? Users and membership already live in Better Auth's tables, so does Organizations still raise `user.added`, `user.role_changed` and `user.removed`, or does Better Auth make them unnecessary?
+- [ ] Attributes and tags are held by Data processing, but Catalogue filters on them and clients list them, and no domain reads another's tables. Which domain holds them, or are they shared?
+- [ ] Only `location.added` exists. If a location's details change, Discovery's copy goes stale. Is a `location.changed` domain event needed?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
