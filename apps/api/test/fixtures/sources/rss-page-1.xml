@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	>
+
+<channel>
+	<title>Hermanus Times</title>
+	<atom:link href="http://localhost/hermanustimes/feed/" rel="self" type="application/rss+xml" />
+	<link>https://novanews.co.za/hermanustimes</link>
+	<description>Local news for the Overstrand</description>
+	<lastBuildDate>Sun, 22 Nov 2026 14:05:12 +0000</lastBuildDate>
+	<item>
+		<title>FynArts 2027 programme announced</title>
+		<link>https://novanews.co.za/hermanustimes/fynarts-2027-programme-announced/</link>
+		<dc:creator><![CDATA[Staff Reporter]]></dc:creator>
+		<pubDate>Sun, 22 Nov 2026 14:05:12 +0000</pubDate>
+		<category><![CDATA[Arts]]></category>
+		<guid isPermaLink="false">https://novanews.co.za/hermanustimes/?p=1201</guid>
+		<description><![CDATA[The Hermanus FynArts festival returns from 4 to 13 June 2027 [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>The Hermanus FynArts festival returns from 4 to 13 June 2027, with exhibitions, talks and concerts across town.</p>
+<p>Tickets go on sale in March.</p>]]></content:encoded>
+	</item>
+	<item>
+		<title>Whale Festival road closures &amp; parking</title>
+		<link>https://novanews.co.za/hermanustimes/whale-festival-road-closures/</link>
+		<pubDate>Sat, 21 Nov 2026 09:00:00 +0000</pubDate>
+		<guid isPermaLink="false">https://novanews.co.za/hermanustimes/?p=1200</guid>
+		<content:encoded><![CDATA[<p>Main Road is closed from 25 to 27 September 2027 for the Whale Festival.</p>]]></content:encoded>
+	</item>
+	</channel>
+</rss>

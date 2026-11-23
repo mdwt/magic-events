@@ -1,10 +1,27 @@
 import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
 import { describe, test } from "node:test";
 import type { Catalogue, Location } from "../src/core/catalogue/ports.ts";
-import type { DiscoveryRepository, SaveSourceInput, Source } from "../src/core/discovery/ports.ts";
+import { addMonths, sourcingWindow } from "../src/core/discovery/fetching.ts";
+import type {
+  DiscoveryRepository,
+  FetchedListing,
+  FetchInput,
+  FetchResult,
+  KnownListing,
+  ListingVersion,
+  RunOutcome,
+  SaveSourceInput,
+  Source,
+  SourceFetcher,
+  SourceForRun,
+} from "../src/core/discovery/ports.ts";
 import { DiscoveryService } from "../src/core/discovery/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
+import type { DiscoverySettings } from "../src/core/shared/settings.ts";
+
+// The Discovery service with fakes: an in-memory repository, fake adapters and a clock the test moves.
 
 const silent: Logger = {
   debug: () => {},
@@ -25,28 +42,224 @@ const hermanus: Location = {
   longitude: 19.2345,
 };
 
+const notUsed = () => Promise.reject(new Error("not used"));
+
 // A Catalogue that knows only Hermanus. Discovery uses nothing but getLocation.
 const catalogue: Catalogue = {
-  searchExperiences: () => Promise.reject(new Error("not used")),
-  saveLocation: () => Promise.reject(new Error("not used")),
-  getLocation: (by) => Promise.resolve(("slug" in by ? by.slug : by.id) === "hermanus" ? hermanus : null),
+  searchExperiences: notUsed,
+  saveLocation: notUsed,
+  getLocation: (by) => Promise.resolve(("slug" in by ? by.slug === "hermanus" : by.id === hermanus.id) ? hermanus : null),
+  findExperiencesByListing: notUsed,
+  findMatchCandidates: notUsed,
+  saveExperience: notUsed,
+  removeSourceLink: notUsed,
 };
 
-function setup() {
-  const saved: Omit<Source, "id">[] = [];
+const settings: DiscoverySettings = {
+  defaultFetchIntervalHours: 24,
+  defaultMissedRunsBeforeRemoval: 3,
+  defaultMaxProcessingAttempts: 5,
+  scheduleIntervalSeconds: 60,
+  fetchTimeoutSeconds: 30,
+  userAgent: "test",
+  horizonMonths: 24,
+  credentials: { TEST_API_KEY: "secret-key" },
+};
+
+interface FakeRun extends RunOutcome {
+  id: string;
+  sourceId: string;
+  startedAt: Date;
+}
+
+interface FakeListing extends KnownListing {
+  sourceId: string;
+  lastSeenRunId: string;
+}
+
+interface FakeRawListing {
+  listingId: string;
+  runId: string;
+  kind: "listing" | "removed";
+  content: string | null;
+}
+
+// Storage as the Discovery repository keeps it, in memory, with the same rules for missed listings.
+function memoryRepository() {
+  const sources = new Map<string, SourceForRun>();
+  const runs: FakeRun[] = [];
+  const listings: FakeListing[] = [];
+  const rawListings: FakeRawListing[] = [];
+  const syncStates: Record<string, unknown>[] = [];
+  let failSaveAfter = Infinity;
+  let dueAt: Date | undefined;
+
+  function capture(listingId: string, version: ListingVersion) {
+    rawListings.push({ listingId, runId: version.runId, kind: "listing", content: version.content });
+  }
+
   const repository: DiscoveryRepository = {
     upsertSource(input) {
-      saved.push(input);
-      return Promise.resolve({ id: "00000000-0000-4000-8000-000000000002", ...input });
+      const saved: SourceForRun = { id: randomUUID(), ...input, syncState: {} };
+      sources.set(saved.id, saved);
+      return Promise.resolve(saved);
+    },
+    listSources: () => Promise.resolve([...sources.values()]),
+    findSource: (id) => Promise.resolve(sources.get(id) ?? null),
+    findDueSources(now) {
+      dueAt = now;
+      return Promise.resolve([...sources.values()].filter((source) => source.active));
+    },
+    saveSyncState(sourceId, syncState) {
+      syncStates.push(syncState);
+      const source = sources.get(sourceId);
+      if (source) source.syncState = syncState;
+      return Promise.resolve();
+    },
+    startRun(sourceId, startedAt) {
+      const id = randomUUID();
+      runs.push({
+        id,
+        sourceId,
+        startedAt,
+        status: "failed",
+        complete: false,
+        listingsFound: 0,
+        listingsNewOrChanged: 0,
+        listingsUnchanged: 0,
+        error: "still running",
+        finishedAt: startedAt,
+      });
+      return Promise.resolve(id);
+    },
+    finishRun(runId, outcome) {
+      const found = runs.find((one) => one.id === runId);
+      if (found) Object.assign(found, outcome);
+      return Promise.resolve();
+    },
+    findListings: (sourceId) => Promise.resolve(listings.filter((one) => one.sourceId === sourceId)),
+    saveNewListing(input) {
+      if (rawListings.length >= failSaveAfter) return Promise.reject(new Error("The database went away"));
+      const id = randomUUID();
+      listings.push({
+        id,
+        sourceId: input.sourceId,
+        sourceListingId: input.sourceListingId,
+        fingerprint: input.fingerprint,
+        state: "listed",
+        lastSeenRunId: input.runId,
+      });
+      capture(id, input);
+      return Promise.resolve(id);
+    },
+    saveListingVersion(input) {
+      const found = listings.find((one) => one.id === input.listingId);
+      if (found) Object.assign(found, { fingerprint: input.fingerprint, state: "listed", lastSeenRunId: input.runId });
+      capture(input.listingId, input);
+      return Promise.resolve();
+    },
+    markListingsSeen(listingIds, runId) {
+      for (const one of listings) if (listingIds.includes(one.id)) one.lastSeenRunId = runId;
+      return Promise.resolve();
+    },
+    findMissedListings(sourceId, missedRuns) {
+      const missed = listings.filter((one) => {
+        if (one.sourceId !== sourceId || one.state !== "listed") return false;
+        const seen = runs.find((r) => r.id === one.lastSeenRunId);
+        if (!seen) return false;
+        const after = runs.filter(
+          (r) => r.sourceId === sourceId && r.status === "succeeded" && r.complete && r.startedAt > seen.startedAt,
+        );
+        return after.length >= missedRuns;
+      });
+      return Promise.resolve(missed.map((one) => one.id));
+    },
+    removeListings(listingIds, runId) {
+      for (const one of listings) {
+        if (!listingIds.includes(one.id)) continue;
+        one.state = "removed";
+        rawListings.push({ listingId: one.id, runId, kind: "removed", content: null });
+      }
+      return Promise.resolve();
+    },
+    lockOldestPendingRawListing: notUsed,
+    supersedeOlderVersions: notUsed,
+    findRawListingForMark: (id) =>
+      Promise.resolve({ id, listingId: "listing-1", status: "pending", attempts: 1, maxProcessingAttempts: 3 }),
+    markRawListingProcessed: () => Promise.resolve(),
+    markRawListingFailed: () => Promise.resolve(),
+    findListingPriorities: (ids) => Promise.resolve(Object.fromEntries(ids.map((id) => [id, 10]))),
+  };
+
+  return {
+    repository,
+    runs,
+    listings,
+    rawListings,
+    syncStates,
+    failSavesAfter(count: number) {
+      failSaveAfter = count;
+    },
+    dueAt: () => dueAt,
+  };
+}
+
+// An adapter that returns what the test hands it next, and remembers what it was called with.
+function fakeFetcher(kind = "web_page") {
+  const calls: FetchInput[] = [];
+  let next: () => Promise<FetchResult> = () => Promise.resolve({ listings: [], complete: true, syncState: {} });
+  const fetcher: SourceFetcher = {
+    kind,
+    fetch(input) {
+      calls.push(input);
+      return next();
     },
   };
+  return {
+    fetcher,
+    calls,
+    returns(listings: FetchedListing[], complete = true, syncState: Record<string, unknown> = {}) {
+      next = () => Promise.resolve({ listings, complete, syncState });
+    },
+    fails(message: string) {
+      next = () => Promise.reject(new Error(message));
+    },
+  };
+}
+
+function page(id: string, content: string, fingerprintOf?: string): FetchedListing {
+  return {
+    sourceListingId: id,
+    url: id,
+    contentType: "text/html",
+    content,
+    ...(fingerprintOf === undefined ? {} : { fingerprintOf }),
+  };
+}
+
+function setup(options: { fetchers?: SourceFetcher[]; start?: string } = {}) {
+  const memory = memoryRepository();
+  const adapter = fakeFetcher();
+  let now = new Date(options.start ?? "2026-11-23T08:00:00Z");
   const service = new DiscoveryService({
-    repository,
+    repository: memory.repository,
     catalogue,
-    settings: { defaultFetchIntervalHours: 24, defaultMissedRunsBeforeRemoval: 3, defaultMaxProcessingAttempts: 5 },
+    fetchers: options.fetchers ?? [adapter.fetcher],
+    settings,
     logger: silent,
+    clock: () => now,
   });
-  return { service, saved };
+  return {
+    service,
+    memory,
+    adapter,
+    // A day later, so each run starts after the one before.
+    nextDay: () => {
+      now = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    },
+    source: (input: Partial<SaveSourceInput> = {}): Promise<Source> =>
+      service.saveSource({ name: "Organiser pages", kind: "web_page", locationSlug: "hermanus", ...input }),
+  };
 }
 
 const quicket: SaveSourceInput = {
@@ -58,11 +271,13 @@ const quicket: SaveSourceInput = {
 
 describe("DiscoveryService.saveSource", () => {
   test("gives a source left without them the defaults from the settings", async () => {
-    const { service, saved } = setup();
+    const { service } = setup();
     const source = await service.saveSource(quicket);
 
     assert.equal(source.locationId, hermanus.id);
-    assert.deepEqual(saved[0], {
+    const { id, ...rest } = source;
+    assert.ok(id);
+    assert.deepEqual(rest, {
       name: "Quicket",
       kind: "quicket",
       locationId: hermanus.id,
@@ -73,12 +288,13 @@ describe("DiscoveryService.saveSource", () => {
       missedRunsBeforeRemoval: 3,
       maxProcessingAttempts: 5,
       active: true,
+      syncState: {},
     });
   });
 
   test("keeps the values the source is given", async () => {
-    const { service, saved } = setup();
-    await service.saveSource({
+    const { service } = setup();
+    const source = await service.saveSource({
       ...quicket,
       fetchIntervalHours: 6,
       missedRunsBeforeRemoval: 1,
@@ -87,13 +303,11 @@ describe("DiscoveryService.saveSource", () => {
       active: false,
     });
 
-    const [first] = saved;
-    assert.ok(first);
-    assert.equal(first.fetchIntervalHours, 6);
-    assert.equal(first.missedRunsBeforeRemoval, 1);
-    assert.equal(first.maxProcessingAttempts, 2);
-    assert.equal(first.priority, 20);
-    assert.equal(first.active, false);
+    assert.equal(source.fetchIntervalHours, 6);
+    assert.equal(source.missedRunsBeforeRemoval, 1);
+    assert.equal(source.maxProcessingAttempts, 2);
+    assert.equal(source.priority, 20);
+    assert.equal(source.active, false);
   });
 
   test("accepts each of the five kinds", async () => {
@@ -105,20 +319,296 @@ describe("DiscoveryService.saveSource", () => {
   });
 
   test("refuses an unknown kind with invalid_input and saves nothing", async () => {
-    const { service, saved } = setup();
+    const { service } = setup();
     await assert.rejects(
       service.saveSource({ ...quicket, kind: "facebook" }),
       (error) => error instanceof AppError && error.code === "invalid_input" && error.details?.[0]?.path === "kind",
     );
-    assert.equal(saved.length, 0);
+    assert.equal((await service.listSources()).length, 0);
   });
 
   test("refuses an unknown location with not_found and saves nothing", async () => {
-    const { service, saved } = setup();
+    const { service } = setup();
     await assert.rejects(
       service.saveSource({ ...quicket, locationSlug: "atlantis" }),
       (error) => error instanceof AppError && error.code === "not_found",
     );
-    assert.equal(saved.length, 0);
+    assert.equal((await service.listSources()).length, 0);
+  });
+});
+
+describe("DiscoveryService.runSource: listings", () => {
+  test("saves new listings, counts unchanged ones, and saves a changed one again", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source();
+
+    adapter.returns([page("a", "<p>A</p>"), page("b", "<p>B</p>")]);
+    const first = await service.runSource(saved.id);
+    assert.equal(first.status, "succeeded");
+    assert.equal(first.complete, true);
+    assert.deepEqual(
+      [first.listingsFound, first.listingsNewOrChanged, first.listingsUnchanged, first.listingsRemoved],
+      [2, 2, 0, 0],
+    );
+
+    nextDay();
+    adapter.returns([page("a", "<p>A</p>"), page("b", "<p>B, with a new date</p>"), page("c", "<p>C</p>")]);
+    const second = await service.runSource(saved.id);
+    assert.deepEqual([second.listingsFound, second.listingsNewOrChanged, second.listingsUnchanged], [3, 2, 1]);
+
+    assert.equal(memory.listings.length, 3);
+    // a once, b twice, c once.
+    assert.deepEqual(
+      memory.rawListings.map((raw) => raw.content),
+      ["<p>A</p>", "<p>B</p>", "<p>B, with a new date</p>", "<p>C</p>"],
+    );
+    // The unchanged listing was seen by the second run.
+    const a = memory.listings.find((one) => one.sourceListingId === "a");
+    assert.equal(a?.lastSeenRunId, second.runId);
+    // The run is closed with the same counts.
+    const run = memory.runs.find((one) => one.id === second.runId);
+    assert.equal(run?.status, "succeeded");
+    assert.equal(run.listingsNewOrChanged, 2);
+    assert.equal(run.error, null);
+  });
+
+  test("takes the fingerprint from fingerprintOf when the adapter gives it", async () => {
+    const { service, adapter, nextDay, source } = setup();
+    const saved = await source();
+
+    adapter.returns([page("a", "<p data-token='1'>A</p>", "A")]);
+    await service.runSource(saved.id);
+    nextDay();
+    adapter.returns([page("a", "<p data-token='2'>A</p>", "A")]);
+    const second = await service.runSource(saved.id);
+
+    assert.equal(second.listingsUnchanged, 1);
+    assert.equal(second.listingsNewOrChanged, 0);
+  });
+
+  test("counts a listing the adapter returns twice once", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source();
+    adapter.returns([page("a", "first"), page("a", "second")]);
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.listingsFound, 1);
+    assert.equal(memory.rawListings.length, 1);
+  });
+
+  test("saves the adapter's sync state for the next run, and hands it back", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source();
+
+    adapter.returns([], true, { lastModified: "2026-11-23T08:00:00Z" });
+    await service.runSource(saved.id);
+    nextDay();
+    await service.runSource(saved.id);
+
+    assert.deepEqual(memory.syncStates[0], { lastModified: "2026-11-23T08:00:00Z" });
+    assert.deepEqual(adapter.calls[1]?.syncState, { lastModified: "2026-11-23T08:00:00Z" });
+  });
+});
+
+describe("DiscoveryService.runSource: failures are failed runs", () => {
+  test("an adapter that throws gives a failed run with its error", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source();
+    adapter.fails("GET https://example.com answered 500 Internal Server Error");
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.error, "GET https://example.com answered 500 Internal Server Error");
+    assert.equal(memory.runs[0]?.status, "failed");
+    assert.equal(memory.runs[0].error, summary.error);
+    assert.equal(memory.syncStates.length, 0);
+  });
+
+  test("a source of a kind no adapter fetches gives a failed run", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source({ kind: "ticketmaster" });
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.match(summary.error ?? "", /No adapter fetches sources of the kind "ticketmaster"/);
+    assert.equal(memory.runs.length, 1);
+    assert.equal(adapter.calls.length, 0);
+  });
+
+  test("a source whose API key is not set gives a failed run and the adapter is not called", async () => {
+    const { service, adapter, source } = setup();
+    const saved = await source({ credentialsSetting: "MISSING_API_KEY" });
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.match(summary.error ?? "", /MISSING_API_KEY/);
+    assert.equal(adapter.calls.length, 0);
+  });
+
+  test("hands the adapter the key from the setting the source names", async () => {
+    const { service, adapter, source } = setup();
+    const saved = await source({ credentialsSetting: "TEST_API_KEY", settings: { urls: ["https://example.com/"] } });
+
+    await service.runSource(saved.id);
+
+    assert.equal(adapter.calls[0]?.credentials, "secret-key");
+    assert.deepEqual(adapter.calls[0].settings, { urls: ["https://example.com/"] });
+    assert.equal(adapter.calls[0].location.id, hermanus.id);
+  });
+
+  test("keeps the listings saved before a run failed", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source();
+    memory.failSavesAfter(1);
+    adapter.returns([page("a", "A"), page("b", "B")]);
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.error, "The database went away");
+    assert.equal(summary.listingsNewOrChanged, 1);
+    assert.equal(memory.rawListings.length, 1);
+  });
+
+  test("an unknown source is not_found", async () => {
+    const { service } = setup();
+    await assert.rejects(
+      service.runSource(randomUUID()),
+      (error) => error instanceof AppError && error.code === "not_found",
+    );
+  });
+});
+
+describe("DiscoveryService.runSource: listings that disappear", () => {
+  test("removes a listing after the configured number of successful, complete runs without it", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source({ missedRunsBeforeRemoval: 2 });
+
+    adapter.returns([page("a", "A"), page("b", "B")]);
+    await service.runSource(saved.id);
+
+    nextDay();
+    adapter.returns([page("a", "A")]);
+    const firstMiss = await service.runSource(saved.id);
+    assert.equal(firstMiss.listingsRemoved, 0);
+    assert.equal(memory.listings.find((one) => one.sourceListingId === "b")?.state, "listed");
+
+    nextDay();
+    const secondMiss = await service.runSource(saved.id);
+    assert.equal(secondMiss.listingsRemoved, 1);
+    const b = memory.listings.find((one) => one.sourceListingId === "b");
+    assert.equal(b?.state, "removed");
+    assert.deepEqual(memory.rawListings.at(-1), { listingId: b.id, runId: secondMiss.runId, kind: "removed", content: null });
+  });
+
+  test("never counts an incomplete run", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source({ missedRunsBeforeRemoval: 1 });
+    adapter.returns([page("a", "A")]);
+    await service.runSource(saved.id);
+
+    for (let day = 0; day < 3; day += 1) {
+      nextDay();
+      adapter.returns([], false);
+      const summary = await service.runSource(saved.id);
+      assert.equal(summary.listingsRemoved, 0);
+    }
+    assert.equal(memory.listings[0]?.state, "listed");
+  });
+
+  test("never counts a failed run", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source({ missedRunsBeforeRemoval: 2 });
+    adapter.returns([page("a", "A")]);
+    await service.runSource(saved.id);
+
+    nextDay();
+    adapter.fails("timed out");
+    await service.runSource(saved.id);
+    nextDay();
+    adapter.returns([]);
+    const summary = await service.runSource(saved.id);
+
+    // One failed run and one complete run: only one miss so far.
+    assert.equal(summary.listingsRemoved, 0);
+    assert.equal(memory.listings[0]?.state, "listed");
+  });
+
+  test("a listing that comes back is listed again and saved as a new raw listing", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source({ missedRunsBeforeRemoval: 1 });
+    adapter.returns([page("a", "A")]);
+    await service.runSource(saved.id);
+    nextDay();
+    adapter.returns([]);
+    await service.runSource(saved.id);
+    assert.equal(memory.listings[0]?.state, "removed");
+
+    nextDay();
+    // The same content as before it was removed.
+    adapter.returns([page("a", "A")]);
+    const back = await service.runSource(saved.id);
+
+    assert.equal(back.listingsNewOrChanged, 1);
+    assert.equal(memory.listings[0].state, "listed");
+    assert.deepEqual(
+      memory.rawListings.map((raw) => raw.kind),
+      ["listing", "removed", "listing"],
+    );
+  });
+});
+
+describe("DiscoveryService: due sources and the sourcing window", () => {
+  test("runs every source the repository says is due, one after another, as of the clock", async () => {
+    const { service, memory, adapter, source } = setup({ start: "2026-11-23T08:00:00Z" });
+    await source({ name: "One" });
+    await source({ name: "Two" });
+
+    const summaries = await service.runDueSources();
+
+    assert.deepEqual(
+      summaries.map((one) => one.sourceName),
+      ["One", "Two"],
+    );
+    assert.equal(adapter.calls.length, 2);
+    assert.equal(memory.dueAt()?.toISOString(), "2026-11-23T08:00:00.000Z");
+  });
+
+  test("hands the adapter today to the horizon, in the location's time zone", async () => {
+    // 23:30 UTC is already the 24th in Hermanus.
+    const { service, adapter, source } = setup({ start: "2026-11-23T23:30:00Z" });
+    const saved = await source();
+
+    await service.runSource(saved.id);
+
+    assert.deepEqual(adapter.calls[0]?.window, { from: "2026-11-24", to: "2028-11-24" });
+  });
+
+  test("a month without the day ends on its last day", () => {
+    assert.equal(addMonths("2026-08-31", 6), "2027-02-28");
+    assert.equal(addMonths("2027-08-31", 6), "2028-02-29");
+    assert.equal(addMonths("2026-11-23", 24), "2028-11-23");
+    assert.deepEqual(sourcingWindow(new Date("2026-06-30T21:59:00Z"), "Africa/Johannesburg", 1), {
+      from: "2026-06-30",
+      to: "2026-07-30",
+    });
+  });
+});
+
+describe("DiscoveryService: marking raw listings", () => {
+  test("a failed attempt below the max goes back to pending", async () => {
+    const { service } = setup();
+    // The fake raw listing has had one attempt, of three.
+    assert.deepEqual(await service.markRawListingFailed("raw-1", "wrong shape"), { attempts: 2, willRetry: true });
+  });
+
+  test("asks for no priorities when no listing is given", async () => {
+    const { service } = setup();
+    assert.deepEqual(await service.getListingPriorities([]), {});
+    assert.deepEqual(await service.getListingPriorities(["a", "a"]), { a: 10 });
   });
 });
