@@ -8,12 +8,15 @@ import {
   warehouseExperience,
   type Db,
 } from "@magic-events/db";
-import { asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import type { AttributeDefinition, DataProcessingRepository, Season } from "../../data-processing/ports.ts";
+import { differsFromStored } from "./upsert.ts";
 
 export function createDataProcessingRepository(db: Db): DataProcessingRepository {
   return {
-    // The attribute and its whole option set in one transaction: the options given replace the ones stored.
+    // The attribute and its whole option set in one transaction: the options given replace the ones stored. Only
+    // what differs is written. An option keeps its row while its key stays, and updated_at moves only when the
+    // attribute or one of its options changed.
     async upsertAttribute(input) {
       return db.transaction(async (tx) => {
         const fields = {
@@ -24,21 +27,51 @@ export function createDataProcessingRepository(db: Db): DataProcessingRepository
           multiple: input.multiple,
           filterable: input.filterable,
         };
-        const [row] = await tx
+        // The upsert locks the attribute's row even when it writes nothing, so two saves of it compare in turn.
+        const [written] = await tx
           .insert(attribute)
           .values({ key: input.key, ...fields })
-          .onConflictDoUpdate({ target: attribute.key, set: { ...fields, updatedAt: sql`now()` } })
+          .onConflictDoUpdate({
+            target: attribute.key,
+            set: { ...fields, updatedAt: sql`now()` },
+            setWhere: differsFromStored([
+              attribute.name,
+              attribute.description,
+              attribute.type,
+              attribute.defaultValue,
+              attribute.multiple,
+              attribute.filterable,
+            ]),
+          })
           .returning();
+        const row = written ?? (await tx.select().from(attribute).where(eq(attribute.key, input.key)))[0];
         if (!row) throw new Error("Saving the attribute returned no row");
 
-        await tx.delete(attributeOption).where(eq(attributeOption.attributeId, row.id));
-        const options =
-          input.options.length === 0
-            ? []
-            : await tx
-                .insert(attributeOption)
-                .values(input.options.map((option, position) => ({ attributeId: row.id, ...option, position })))
-                .returning();
+        const stored = new Map(
+          (await tx.select().from(attributeOption).where(eq(attributeOption.attributeId, row.id))).map((option) => [
+            option.key,
+            option,
+          ]),
+        );
+        const added: (typeof attributeOption.$inferInsert)[] = [];
+        let changed = false;
+        for (const [position, { key, name, description }] of input.options.entries()) {
+          const found = stored.get(key);
+          stored.delete(key);
+          if (!found) {
+            added.push({ attributeId: row.id, key, name, description, position });
+          } else if (found.name !== name || found.description !== description || found.position !== position) {
+            await tx.update(attributeOption).set({ name, description, position }).where(eq(attributeOption.id, found.id));
+            changed = true;
+          }
+        }
+        // What is left of the stored options is not in the save.
+        const removed = [...stored.values()].map((option) => option.id);
+        if (removed.length > 0) await tx.delete(attributeOption).where(inArray(attributeOption.id, removed));
+        if (added.length > 0) await tx.insert(attributeOption).values(added);
+        if (!written && (changed || removed.length > 0 || added.length > 0)) {
+          await tx.update(attribute).set({ updatedAt: sql`now()` }).where(eq(attribute.id, row.id));
+        }
 
         const saved: AttributeDefinition = {
           key: row.key,
@@ -48,42 +81,81 @@ export function createDataProcessingRepository(db: Db): DataProcessingRepository
           defaultValue: row.defaultValue ?? null,
           multiple: row.multiple,
           filterable: row.filterable,
-          options: options
-            .sort((a, b) => a.position - b.position)
-            .map((option) => ({ key: option.key, name: option.name, description: option.description })),
+          options: input.options.map(({ key, name, description }) => ({ key, name, description })),
         };
         return saved;
       });
     },
 
+    // A tag saved as it is stored is left as it is, updated_at too.
     async upsertTag(input) {
       const fields = { name: input.name, description: input.description };
-      const [row] = await db
+      const [written] = await db
         .insert(tag)
         .values({ slug: input.slug, ...fields })
-        .onConflictDoUpdate({ target: tag.slug, set: { ...fields, updatedAt: sql`now()` } })
+        .onConflictDoUpdate({
+          target: tag.slug,
+          set: { ...fields, updatedAt: sql`now()` },
+          setWhere: differsFromStored([tag.name, tag.description]),
+        })
         .returning();
+      const row = written ?? (await db.select().from(tag).where(eq(tag.slug, input.slug)))[0];
       if (!row) throw new Error("Saving the tag returned no row");
       return { slug: row.slug, name: row.name, description: row.description };
     },
 
-    // The season and its whole period set in one transaction: the periods given replace the ones stored.
+    // The season and its whole period set in one transaction: the periods given replace the ones stored. Only
+    // what differs is written. A period is known by its start date and keeps its row while that stays, and
+    // updated_at moves only when the season or one of its periods changed.
     async upsertSeason(input) {
       return db.transaction(async (tx) => {
         const fields = { name: input.name, description: input.description };
-        const [row] = await tx
+        // The upsert locks the season's row even when it writes nothing, so two saves of it compare in turn.
+        const [written] = await tx
           .insert(season)
           .values({ locationId: input.locationId, slug: input.slug, ...fields })
-          .onConflictDoUpdate({ target: [season.locationId, season.slug], set: { ...fields, updatedAt: sql`now()` } })
+          .onConflictDoUpdate({
+            target: [season.locationId, season.slug],
+            set: { ...fields, updatedAt: sql`now()` },
+            setWhere: differsFromStored([season.name, season.description]),
+          })
           .returning();
+        const row =
+          written ??
+          (
+            await tx
+              .select()
+              .from(season)
+              .where(and(eq(season.locationId, input.locationId), eq(season.slug, input.slug)))
+          )[0];
         if (!row) throw new Error("Saving the season returned no row");
 
-        await tx.delete(seasonPeriod).where(eq(seasonPeriod.seasonId, row.id));
-        if (input.periods.length > 0) {
-          await tx
-            .insert(seasonPeriod)
-            .values(input.periods.map((period) => ({ seasonId: row.id, ...period })));
+        const stored = new Map(
+          (await tx.select().from(seasonPeriod).where(eq(seasonPeriod.seasonId, row.id))).map((period) => [
+            period.startDate,
+            period,
+          ]),
+        );
+        const added: (typeof seasonPeriod.$inferInsert)[] = [];
+        let changed = false;
+        for (const { startDate, endDate } of input.periods) {
+          const found = stored.get(startDate);
+          stored.delete(startDate);
+          if (!found) {
+            added.push({ seasonId: row.id, startDate, endDate });
+          } else if (found.endDate !== endDate) {
+            await tx.update(seasonPeriod).set({ endDate }).where(eq(seasonPeriod.id, found.id));
+            changed = true;
+          }
         }
+        // What is left of the stored periods is not in the save.
+        const removed = [...stored.values()].map((period) => period.id);
+        if (removed.length > 0) await tx.delete(seasonPeriod).where(inArray(seasonPeriod.id, removed));
+        if (added.length > 0) await tx.insert(seasonPeriod).values(added);
+        if (!written && (changed || removed.length > 0 || added.length > 0)) {
+          await tx.update(season).set({ updatedAt: sql`now()` }).where(eq(season.id, row.id));
+        }
+
         const periods = await tx
           .select({ startDate: seasonPeriod.startDate, endDate: seasonPeriod.endDate })
           .from(seasonPeriod)
