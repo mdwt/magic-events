@@ -17,7 +17,7 @@ Source of truth for the resources the system stores, which domain owns each one,
 
 ## Ownership
 
-Each domain owns its resources. Only that domain's repositories write its tables, and no domain reads another domain's tables. Domains share data only through domain events, and a domain that needs another's data keeps its own copy.
+Each domain owns its resources and has one repository. Only that repository writes the domain's tables, and no domain reads another domain's tables. Domains share data only through domain events, and a domain that needs another's data keeps its own copy.
 
 ```mermaid
 flowchart LR
@@ -27,18 +27,13 @@ flowchart LR
   DP -- experience.processed --> CAT
 ```
 
-| Domain | Aggregate | Repository | What it holds |
-| --- | --- | --- | --- |
-| Catalogue | Location | Location repository | Places the system covers |
-| Catalogue | Experience | Experience repository | Published experiences, their sessions, attributes, tags, source links and change history |
-| Data processing | Vocabulary | Vocabulary repository | Attributes (categories), their options, and tags |
-| Data processing | Incoming listing | Incoming listing repository | Each raw listing received for processing |
-| Data processing | Processed experience | Processed experience repository | The canonical experience and its listing links |
-| Discovery | Source | Source repository | Sources and which locations each covers |
-| Discovery | Run | Run repository | Runs and the raw listings each one captured |
-| Discovery | Covered location | Covered location repository | Discovery's copy of Catalogue's locations |
-| Organizations | Tenant | Tenant repository | Tenants, their kind, status and configuration |
-| Identity | User, session, account | Better Auth | People and agents, credentials, sessions |
+| Domain | Repository | What it holds |
+| --- | --- | --- |
+| Catalogue | Catalogue repository | Locations; published experiences with their sessions, attribute values, tags, source links and change history |
+| Data processing | Data processing repository | Attributes and their options, tags, incoming listings, processed experiences and their listing links |
+| Discovery | Discovery repository | Sources and which locations each covers, runs, raw listings, covered locations |
+| Organizations | Organizations repository | Tenants, their kind, status and configuration |
+| Identity | Better Auth | People and agents, credentials, sessions |
 
 Every domain also has a read position on the domain event log, owned by that domain.
 
@@ -54,7 +49,7 @@ A place the system covers. System-managed and shared by every tenant.
 
 ### Experience
 
-The aggregate root for everything a client searches. System-managed and visible to every tenant. Every experience comes from discovery; clients only read.
+The thing a client searches. System-managed and visible to every tenant. Every experience comes from discovery; clients only read.
 
 - **Holds:**
   - title, slug, summary, description
@@ -71,13 +66,13 @@ The aggregate root for everything a client searches. System-managed and visible 
   - The version goes up on every real change, including changes to its sessions, attributes, tags and source links. Re-verifying a source does not count as a change, and an update that changes nothing doesn't bump the version.
   - An experience is not deleted while a source still lists it. There is no soft delete.
 
-Parts of the aggregate, stored in their own tables:
+Stored with each experience, in their own tables:
 
 | Part | What it is | Rules |
 | --- | --- | --- |
 | Session | One dated occurrence of the experience (a show night, a market day) | Has its own start, end and label. Can be cancelled or sold out on its own |
-| Attribute value | The experience's value for a vocabulary attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
-| Tag | A vocabulary tag on the experience | A tag appears once per experience |
+| Attribute value | The experience's value for an attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
+| Tag | A tag on the experience | A tag appears once per experience |
 | Source link | A source's listing that this experience was built from | One experience can have links from many sources. A source's listing links to one experience only |
 | Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. Feeds changed-since (UC2) |
 
@@ -118,9 +113,9 @@ Three separate questions get three separate fields: is it happening (status), ca
 
 ## Data processing
 
-### Vocabulary
+### Attributes and tags
 
-The single set of attributes and tags every experience is described with. System-managed.
+A system-defined list in the database that every experience is described with.
 
 - **Attribute:** a key, a name, a type (option, text, number, true/false, date), a default value, whether it takes several values, and whether clients can filter on it. Categories are an option attribute.
 - **Attribute option:** an allowed value of an option attribute.
@@ -196,7 +191,7 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |
 | Client access | Read only. Clients cannot create or change experiences |
-| Vocabulary | A system-defined list in the database: attributes with a name, a type and a default value, their options, and tags. Catalogue filters on it and clients list it from it |
+| Attributes and tags | A system-defined list in the database: attributes with a name, a type and a default value, their options, and tags. Catalogue filters on it and clients list it from it |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status, booking and past are separate, as defined under Experience status |

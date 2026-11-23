@@ -48,7 +48,7 @@ Finds experiences and captures the raw data as received.
 
 Turns raw records into clean, categorised, tagged experiences ready for the data warehouse.
 
-- **Owns:** the processing pipeline, the category and tag vocabulary, matching rules (is this the same experience as one we already have), and the processed result.
+- **Owns:** the processing pipeline, the system-defined attributes (categories) and tags, matching rules (is this the same experience as one we already have), and the processed result.
 - **Boundary:** does not fetch from sources or answer client queries. It processes the raw listings Discovery captures.
 
 ### Catalogue
