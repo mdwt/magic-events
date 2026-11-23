@@ -18,7 +18,7 @@ flowchart LR
   W -- mark processed or failed --> DIS
 ```
 
-Data processing owns the extractors, the classifier, the matching decision, and the attribute and tag definitions. Catalogue stores the experiences and Discovery stores the raw listings. Data processing's own tables are the definitions, the data warehouse and the undefined values saved for review.
+Data processing owns the extractors, the classifier, the matching decision, and the attribute and tag definitions. Catalogue stores the experiences and Discovery stores the raw listings. Data processing's own tables are the definitions, the seasons, the data warehouse and the undefined values saved for review.
 
 ## Steps
 
@@ -26,7 +26,7 @@ One raw listing is processed in one transaction, from claim to mark. If the work
 
 1. **Claim.** The processing worker runs on a loop and claims a pending raw listing through the Discovery service. Only the latest version of a listing can be claimed (see Versions of a listing). It keeps going while raw listings are pending and waits the idle interval when there are none. The idle interval and the number of workers are settings (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
 2. **Extract.** The extractor for the source's kind reads the content and returns zero or more extracted experiences (see Extractors).
-3. **Classify.** Each extracted experience is given its attribute values, tags and profile (see Classification).
+3. **Classify.** Each extracted experience is given its attribute values, tags, seasons and profile (see Classification).
 4. **Match.** Each extracted experience is matched to an existing experience or becomes a new one (see Matching).
 5. **Save.** The Catalogue service saves each experience with its sessions, attribute values, tags, profile and source link. Catalogue bumps the version and writes the change row when something really changed.
 6. **Append to the warehouse.** Data processing appends each experience it saved to the data warehouse (see Data warehouse).
@@ -68,20 +68,19 @@ interface ExtractedExperience {
   title: string;
   summary?: string;
   description?: string;
-  type: "single" | "run" | "recurring" | "season";
+  type: "single" | "run" | "recurring";
   status: "expected" | "announced" | "confirmed" | "postponed" | "cancelled";
   booking: "none" | "not_yet" | "open" | "sold_out" | "closed";
-  when: {
-    start?: string;                     // dates, to the precision given
-    end?: string;
-    precision: "day" | "month" | "year";
+  sessions: ExtractedSession[];         // the dates the listing lists: one for a single, one per date for a run, only the extra dates for a recurring experience
+  recurrence?: {                        // for a recurring experience
+    rule: string;                       // an iCalendar recurrence rule, such as FREQ=WEEKLY;BYDAY=SA
+    start: string;                      // the first date
+    end?: string;                       // the last date; left out when open-ended
     startTime?: string;
     endTime?: string;
-    recurrence?: string;                // the recurrence rule, for a recurring experience
-    seasonMonths?: number[];            // for a season
-    openingHours?: string;
+    skipped?: string[];                 // dates the rule gives on which the listing says it is not on
   };
-  sessions?: { start: string; end?: string; label?: string; soldOut?: boolean; cancelled?: boolean }[];
+  openingHours?: string;
   venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };
   price?: { min?: number; max?: number; currency: string };
   onSaleAt?: string;
@@ -91,9 +90,29 @@ interface ExtractedExperience {
   url?: string;                         // this experience's own page, if it has one
   hints: string[];                      // the source's own categories and labels, used by classification
 }
+
+interface ExtractedSession {
+  start: string;                        // a date, a month or a year, to the precision given
+  end?: string;                         // the last day, for a session of several days in a row
+  precision: "day" | "month" | "year";
+  startTime?: string;                   // times need day precision
+  endTime?: string;
+  label?: string;
+  soldOut?: boolean;
+  cancelled?: boolean;
+}
 ```
 
 The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those.
+
+### Dates
+
+An extractor returns the dates a listing gives and no others. Catalogue saves them as the experience's sessions, and search by dates matches only those (see Dates and sessions in [data-model.md](data-model.md)).
+
+- **Listed dates** are returned as sessions, one per date. A show on Thursdays for three weeks and on Wednesdays for the two weeks after is five sessions. The days between a first and a last date are never filled in.
+- **Several days in a row with no break**, such as a three-day festival or the period an exhibition is open, are one session with a start and an end.
+- **A stated pattern**, such as "every Saturday" or "the first Friday of the month", is returned as a recurrence. The extractor does not work the pattern out into dates; Catalogue generates the sessions from the rule. Dates the listing says are skipped go in `skipped`, and dates it lists outside the pattern go in `sessions`.
+- **Only a month or a year** is returned as one session with that precision.
 
 | Kind | How it extracts | Returns |
 | --- | --- | --- |
@@ -173,9 +192,9 @@ Category and Format are separate. Category says what an experience is about and 
 | Party | A club night or New Year's Eve party |
 | Retreat | A wellness or creative retreat over several days |
 | Parade or ceremony | A parade, carols or lights switch-on |
-| Attraction | Something to visit with no programme: a season, a site, an open garden |
+| Attraction | Something to visit with no programme: a site, an open garden |
 
-Format is not the experience's type. The type (single, run, recurring, season) says how it sits in time; the format says what form it takes.
+Format is not the experience's type. The type (single, run, recurring) says how its dates are known; the format says what form it takes.
 
 | Audience | Description |
 | --- | --- |
@@ -222,6 +241,14 @@ The language model can return an attribute, option or tag that is not in the def
 
 Each such value is saved for review, with as much detail as there is: the raw listing, the extracted experience, whether it was an attribute, an option or a tag, the value returned, and the model's whole answer. Version 1 only stores these rows. Nothing reads them or acts on them.
 
+### Seasons
+
+A season is a named period of the year in one location, such as whale season in Hermanus. Seasons are predefined rows that Data processing owns, each with its location and its dates (see [data-model.md](data-model.md)). A season has no source and is not an experience.
+
+- **Applied while processing.** Each experience is given the seasons of its location that its dates fall inside, as tags. An ocean-side dinner in whale season gets whale season.
+- **Stored by Catalogue** with the experience's other tags.
+- **The default seasons:** whale season, South African school holidays, high season, and summer, autumn, winter and spring. Their dates are rows.
+
 ## Matching
 
 Matching decides, for each extracted experience, whether it is an experience Catalogue already has. Data processing makes the decision; Catalogue supplies the source links and the candidates.
@@ -240,6 +267,7 @@ The same experience appears on many sources, and they do not always agree. The W
 - An experience's fields come from its highest-priority linked listing.
 - A lower-priority listing only fills fields that are empty.
 - When the highest-priority link is removed, the next one takes over.
+- Sessions and the recurrence are taken whole from the highest-priority listing that gives dates. Dates from two listings are never merged, so an experience never gets a date that only a lower-priority source lists.
 
 ## Data warehouse
 
@@ -288,7 +316,7 @@ For the keyword side, each experience has a search text: a Postgres `tsvector` c
 ### Search with a query text
 
 - **Optional.** Without a query text, search applies the filters and returns the results in date order.
-- **Filters stay exact.** Place and radius, dates, status, bookable, and every attribute and tag filter are applied first and are never loosened. An embedding cannot tell 10 June from 10 July, or a minimum age of 18 from 16, so anything that must hold is a filter.
+- **Filters stay exact.** Place and radius, dates, status, bookable, and every attribute and tag filter are applied first and are never loosened. An embedding cannot tell 10 June from 10 July, or a minimum age of 18 from 16, so anything that must hold is a filter. The dates filter matches an experience's sessions, never the span from its first date to its last (see [data-model.md](data-model.md)).
 - **The query text only orders.** It never adds or removes a result. Every experience that passes the filters is returned, best match first, and paging applies after ordering.
 - **Changed-since (UC2) takes no query text.** It reports changes to the experiences the filters select.
 - **REST and MCP are the same.** Both pass the query text to the same search port. The MCP tool's description tells an agent to put what must hold (dates, place, audience, minimum age) in the filters and what the traveller likes in the query text.
@@ -438,6 +466,8 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. When that link is removed, the next one takes over |
 | Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
 | Processing again | Processed is not final. A listing's latest version can be processed again at any time |
+| Dates | An extractor returns the dates a listing gives and no others: listed dates as sessions, a stated pattern as a recurrence. It never fills in the days between a first and a last date, and never works a pattern out into dates |
+| Seasons | Predefined rows per location, not experiences. An experience is given the seasons its dates fall inside, as tags |
 | Already over | An extractor leaves out experiences whose last date is before the fetch time |
 | Festival programmes | A festival is one experience. Its programme items are not extracted separately |
 | Undefined values | An attribute, option or tag that is not defined is not put on the experience. It is saved for review with as much detail as possible, and version 1 does nothing more with it |

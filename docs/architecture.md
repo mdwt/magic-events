@@ -50,7 +50,7 @@ Finds experiences and captures the raw data as received.
 
 Turns raw listings into clean, categorised, tagged experiences ready for the data warehouse.
 
-- **Owns:** the processing pipeline (extract, classify, match, save), one extractor per kind of source, the configurable attribute and tag definitions that experiences are classified with, and matching rules (is this the same experience as one we already have).
+- **Owns:** the processing pipeline (extract, classify, match, save), one extractor per kind of source, the configurable attribute and tag definitions that experiences are classified with, the seasons of each location, and matching rules (is this the same experience as one we already have).
 - **Boundary:** does not fetch from sources or answer client queries. It processes the raw listings Discovery captures.
 
 ### Catalogue
@@ -133,13 +133,13 @@ Models from outside providers sit behind ports like everything else. The domains
 
 The ports and their adapters are defined in [data-processing.md](data-processing.md).
 
-REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker, Catalogue's embedding worker and Catalogue's move of finished experiences to Past without passing through Identity, because no client is involved.
+REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker, Catalogue's embedding worker, and Catalogue's move of finished experiences to Past and its generating of recurring sessions further ahead, without passing through Identity, because no client is involved.
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
 | Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask the language model |
 | Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; move finished experiences to Past | Store locations, published experiences and their history; embed texts |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; move finished experiences to Past; generate the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts |
 | Identity | Authenticate a caller; authorise an action | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
 | Organizations | Manage tenants; manage users and roles; get a tenant | Store tenants |
 
@@ -177,8 +177,8 @@ A travel agent is planning a trip to Hermanus from 10 to 20 June 2027 for a coup
 
 1. The agent calls through REST, or their AI agent calls through MCP.
 2. **Identity** authenticates the caller, then authorises the search for a client in an active tenant.
-3. **Catalogue** finds published experiences within the radius the agent gives around Hermanus that overlap 10 to 20 June 2027 and match art or nature. That includes single dates, recurring markets, festivals and seasons such as whale watching.
-4. **Catalogue** returns the experiences with their categories, tags, dates, status (expected, announced, confirmed or postponed) and whether they can be booked.
+3. **Catalogue** finds published experiences within the radius the agent gives around Hermanus that have a session inside 10 to 20 June 2027 and match art or nature. That includes single dates, shows with set dates, recurring markets and festivals. A show that is on only on Thursdays is returned only if a Thursday falls inside those dates.
+4. **Catalogue** returns the experiences with their categories, tags, the sessions that fall inside those dates, status (expected, announced, confirmed or postponed) and whether they can be booked.
 
 ### UC2: The travel agent checks back months later
 
@@ -208,8 +208,10 @@ Because every run fetches the same listings again, a change at the source months
 
 | Term | Meaning |
 | --- | --- |
-| Experience | Something a traveller can go to or do: a concert, a match, a market, a show with many dates, an exhibition, a festival months away, or a season such as whale watching |
-| Domain event | Something that happened inside the system that another domain may care about, such as `experience.processed`. Not an experience. |
+| Experience | Something a traveller can go to or do: a concert, a match, a market, a show with many dates, an exhibition, or a festival months away |
+| Session | One unbroken stretch of time an experience is on: a show night, a market day, a three-day festival. An experience's dates are its sessions, and search by dates matches them |
+| Season | A named period of the year in one location, such as whale season in Hermanus. Predefined data that Data processing owns, not an experience |
+| Domain event | A stored record of something that happened inside the system, such as `experience.published`. Not an experience. |
 | Listing | One item a source publishes: an API event, a web page, a post or a PDF calendar. Discovery keeps one record per listing and fetches it again on every run. It can describe one experience or several |
 | Raw listing | One version of a listing's content, exactly as the source returned it, before any processing |
 | Source | A place Discovery finds experiences, such as a ticketing site, tourism listing or venue page |
@@ -234,12 +236,14 @@ Because every run fetches the same listings again, a change at the source months
 | Where are sources managed? | In Discovery. Each source has one location |
 | What happens when a listing disappears from its source? | After the configured number of successful, complete runs without it, its source link is removed. An experience with no source links left is set to Removed. Cancelled is only for an experience its organisers cancelled |
 | What happens when an experience is over? | Catalogue sets it to Past, and search leaves it out |
+| How are an experience's dates stored? | As sessions, one for every stretch it is on. A show with set dates has one session per date, and a recurring experience has a rule that Catalogue generates sessions from. Search by dates matches sessions only, so an experience is never returned for a date it is not on |
+| Is a season an experience? | No. Seasons are predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates fall inside them |
 | How do domains share data? | By calling each other's services. Nothing is copied or kept in sync |
 | Which sources does version 1 fetch? | Five kinds, with one adapter and one extractor each: Quicket, Ticketmaster, RSS feeds, PDF calendars and web pages. A kind is named for how a source is fetched |
 | How does an experience stay up to date? | Discovery keeps a record of every listing and fetches it again on every run. A changed listing is processed again and updates its experiences |
 | What is a raw listing? | One version of a listing's content, whole as fetched. Data processing extracts zero or more experiences from it |
 | Are categories and tags fixed? | No. They are configurable definitions with a default set. Classification improves by adding definitions and descriptions, with no code change |
-| Which domain events are defined? | Only those for sourcing and processing experiences: `raw_listing.captured` and `experience.processed` |
+| Which domain events are defined? | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). They are a record of what happened, and nothing reads them |
 | Where is the system configured? | System settings are environment variables read through one settings provider, and each domain's document lists its own. Per-source settings are on the source row. Categories and tags are definition rows |
 | How are model providers kept swappable? | Each model is reached through a port, and the domains name no provider. Version 1's adapters are Claude through the Anthropic API for the language model, and Amazon Titan through Amazon Bedrock for the embedding model |
 | Is everything outside the system behind a port? | Yes, with one exception: Better Auth, which Identity and Organizations use directly. The rules are under Architecture, and static analysis checks them |

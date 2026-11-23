@@ -196,6 +196,8 @@ Data processing never reads Discovery's tables. It uses two calls on the Discove
 | Processed | Its experiences are extracted and saved | Nothing |
 | Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
 
+Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded (see [domain-events.md](domain-events.md)). They are a record only; the hand-off is the status.
+
 ## Language model in Discovery
 
 Discovery uses a language model where finding something takes judgement and not a fixed rule. It reaches the model through the language model port defined in [data-processing.md](data-processing.md), so it names no provider and changes with the same setting.
@@ -203,7 +205,7 @@ Discovery uses a language model where finding something takes judgement and not 
 | Place | What the model does | Kind of call | Status |
 | --- | --- | --- | --- |
 | Finding the current calendar file | The PDF calendar adapter gives the model the links on the calendar page and the calendar's name from the source's settings. The model returns the address of the current file | One request with one answer, through the language model port | Version 1 |
-| Research source | For experiences with no feed, such as seasons and standing recurring experiences. The model is given a research question about the location, searches the web and reads pages, and returns its findings with the addresses it used. Each answer is a listing and goes through processing like any other | An agent that searches the web. It needs a port of its own | Proposed |
+| Research source | For experiences with no feed, such as standing recurring experiences. The model is given a research question about the location, searches the web and reads pages, and returns its findings with the addresses it used. Each answer is a listing and goes through processing like any other | An agent that searches the web. It needs a port of its own | Proposed |
 | Source scouting | For a new location, the model searches the web for sites, calendars and organisers that publish experiences there, and proposes source rows with a kind and an address. A system admin approves them | An agent that searches the web. It needs a port of its own | Proposed |
 
 Apart from finding the current calendar file, the language model is not used in fetching, fingerprints, saving, or deciding that a listing has disappeared.
@@ -256,7 +258,7 @@ Catalogue calls neither, so the dependencies have no cycles.
 ## Open questions
 
 - [ ] The location has only a centre point, but the sources cover Hermanus and the wider Overstrand (Stanford, Gansbaai, Kleinmond). Does a location need a radius for adapters to filter by?
-- [ ] Seasons (whale season, the fynbos bloom) and many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where a language model researches the location on the web (see Language model in Discovery).
+- [ ] Many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where a language model researches the location on the web (see Language model in Discovery).
 - [ ] Quicket's runs are incremental and only complete runs count as a miss, so a listing Quicket removes is never noticed, and an unchanged Quicket listing is never verified again. Does the Quicket adapter also make a complete run at some interval?
 - [ ] A planner checking back wants to know an experience was verified recently. Discovery knows when each listing was last seen, but an unchanged listing is not processed, so Catalogue never hears of it. *Proposed:* after each run, Discovery tells the Catalogue service which listings it saw, and Catalogue stamps last verified on their source links.
 - [ ] A web page's HTML can differ on every fetch (tokens, timestamps, adverts), so its fingerprint always differs and every run processes it again. Is the fingerprint taken from the page's visible text instead?

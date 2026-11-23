@@ -8,8 +8,10 @@ Source of truth for the resources the system stores, which domain owns each one,
 
 | Term | Meaning |
 | --- | --- |
-| Experience | Something a traveller can go to or do: a concert, a market, a show with many dates, an exhibition, a festival, a season such as whale watching |
-| Domain event | Something that happened inside the system that another domain may care about. Never used for an experience |
+| Experience | Something a traveller can go to or do: a concert, a market, a show with many dates, an exhibition, a festival |
+| Session | One unbroken stretch of time an experience is on: a show night, a market day, a three-day festival. An experience's dates are its sessions |
+| Season | A named period of the year in one location, such as whale season in Hermanus. Predefined data, not an experience |
+| Domain event | A stored record of something that happened inside the system. Never used for an experience |
 | Listing | One item a source publishes: an API event, a web page, a post or a PDF calendar. Discovery keeps one record per listing and fetches it again on every run. A listing can describe one experience or several |
 | Raw listing | One version of a listing's content, exactly as the source returned it, before any processing |
 | Location | A place the system covers and clients search near, such as Hermanus |
@@ -32,7 +34,7 @@ Arrows point from the service that calls to the service it calls. Catalogue and 
 | Domain | Repository | What it holds |
 | --- | --- | --- |
 | Catalogue | Catalogue repository | Locations; published experiences with their sessions, attribute values, tags, source links and change history |
-| Data processing | Data processing repository | Attribute definitions and their options, tags |
+| Data processing | Data processing repository | Attribute definitions and their options, tags, seasons |
 | Discovery | Discovery repository | Sources, runs, listings, raw listings |
 | Organizations | Organizations repository | Tenants, their kind, status and configuration |
 | Identity | Better Auth | People and agents, credentials, sessions |
@@ -54,17 +56,16 @@ The thing a client searches. System-managed and visible to every tenant. Every e
 
 - **Holds:**
   - title, slug, summary, description
-  - type: single, run (several consecutive days), recurring, season
+  - type: single, run, recurring (see Dates and sessions)
   - status and booking (below)
-  - when: start and end date, date precision (day, month, year), times, timezone, recurrence rule, opening hours, season months
+  - when: its sessions, its recurrence if it is recurring, timezone, opening hours (see Dates and sessions)
   - where: location, venue name and address, city, position
   - price range, currency, on-sale time, booking close time, booking link, image
   - version
 - **Rules:**
   - Belongs to one location. Stores no distance; distance comes from the caller's point and radius at query time.
-  - Only a recurring experience can be open-ended. A recurring experience needs a recurrence rule, and a season needs its months.
-  - Month and year precision dates sit on month and year boundaries, and times need day precision.
-  - The version goes up on every real change, including changes to its sessions, attributes, tags and source links. Re-verifying a source does not count as a change, and an update that changes nothing doesn't bump the version.
+  - Its dates are its sessions, and it is on no other date (see Dates and sessions).
+  - The version goes up on every real change, including changes to its sessions, attributes, tags and source links. Re-verifying a source does not count as a change, and an update that changes nothing doesn't bump the version. Sessions that Catalogue generates further ahead for an open-ended recurring experience do not count as a change either.
   - An experience is not deleted while a source still lists it. There is no soft delete.
   - When its last source link is removed because no source lists it any more, the experience is set to Removed, unless it is already Past or Cancelled (see [discovery.md](discovery.md)).
 
@@ -72,11 +73,45 @@ Stored with each experience, in their own tables:
 
 | Part | What it is | Rules |
 | --- | --- | --- |
-| Session | One dated occurrence of the experience (a show night, a market day) | Has its own start, end and label. Can be cancelled or sold out on its own |
+| Session | One unbroken stretch of time the experience is on (a show night, a market day, a three-day festival) | Every date the experience is on is inside a session. Can be cancelled or sold out on its own (see Dates and sessions) |
 | Attribute value | The experience's value for an attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
 | Tag | A tag on the experience | A tag appears once per experience |
 | Source link | A listing that this experience was built from | One experience can have links from many listings and sources. A listing can link to several experiences, with at most one link to each. Data processing matches listings by these links |
 | Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. Feeds changed-since (UC2) |
+
+### Dates and sessions
+
+An experience's dates are its sessions. Every date it is on is inside a session, and it is on no other date. Its first date is the start of its first session and its last date is the end of its last one. An open-ended recurring experience has no last date.
+
+A session is one unbroken stretch of time: a show night, a market day, a three-day festival, the year an exhibition is open.
+
+- **Holds:** start and end date, precision (day, month, year), start and end time, label, status (Scheduled, Cancelled), sold out, and whether a source listed it or Catalogue generated it from a recurrence.
+- **Day precision.** The session covers every day from its start to its end. A day the experience is not on is never inside a session.
+- **Month or year precision.** The experience is on in that month or year and its days are not announced yet, such as FynArts in June 2027. The session sits on month or year boundaries and has no times. When the days are announced, it is replaced by sessions with day precision.
+
+The type says how an experience's sessions are known:
+
+| Type | Is | Its sessions |
+| --- | --- | --- |
+| Single | Happens once, in one stretch: a concert, a match, a three-day festival, an exhibition open for a year | One session |
+| Run | Several set dates, in a row or not: a show with 81 dates, or a show on Thursdays for three weeks and on Wednesdays for the two weeks after | One session per date, exactly as the source lists them. Nothing is filled in between |
+| Recurring | Repeats by a rule, with or without an end: a market every Saturday | Generated by Catalogue from its recurrence, plus any extra dates a source lists |
+
+A recurring experience holds its recurrence:
+
+- **Holds:** the rule, written as an iCalendar recurrence rule such as `FREQ=WEEKLY;BYDAY=SA`, the first date, the last date, the start and end time, and the skipped dates.
+- **Open-ended.** A recurrence with no last date is open-ended. Only a recurring experience can be open-ended.
+- **Skipped dates** are dates the rule gives on which a source says the experience is not on, such as a Saturday market that skips 25 December. No session is generated for them.
+- **Extra dates.** A date a source lists outside the rule, such as one Wednesday market before Christmas, is a listed session.
+- **Generated sessions.** Catalogue generates one session for every date the rule gives, from the first date to the last, leaving out the skipped dates. For an open-ended recurrence it generates as far ahead as `CATALOGUE_SESSION_HORIZON_MONTHS`, and adds more as time passes, on the same schedule that moves experiences to Past.
+- **When the recurrence changes,** Catalogue generates the sessions from today on again. Listed sessions are left as they are.
+
+Search by dates:
+
+- An experience is returned for the dates a client asks for only when one of its sessions overlaps them and that session is not Cancelled. Search never matches on the span from an experience's first date to its last, so a show that is on only on Thursdays is not returned for a Tuesday.
+- The result carries the sessions that matched, so the client sees which dates inside its range the experience is on.
+- A session with month or year precision matches any dates inside its month or year. Its precision is returned, so the client knows the days are not announced.
+- An open-ended recurring experience is not returned for dates beyond the session horizon, because it has no sessions there yet.
 
 ### Experience status
 
@@ -98,7 +133,7 @@ Two fields say where an experience stands: status says whether it is happening, 
 
 | Booking | Means | Allowed when status is |
 | --- | --- | --- |
-| None | Nothing to book: a market, a beach, a season | Any |
+| None | Nothing to book: a market, a beach | Any |
 | Not yet | Will be bookable; the on-sale time says when, if known | Expected, Announced, Confirmed |
 | Open | Can be booked now through the booking link | Confirmed |
 | Sold out | Booking was open and nothing is left | Confirmed |
@@ -134,13 +169,16 @@ What each status allows:
 | To Past | Not reported |
 | Anything else, booking included | Changed |
 
+Dates changed means a session was added, moved or removed, or the recurrence changed.
+
 ### Catalogue settings
 
 System settings are environment variables, read through the settings provider (see [architecture.md](architecture.md)).
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `CATALOGUE_PAST_CHECK_INTERVAL_MINUTES` | 60 | How often Catalogue moves finished experiences to Past and closes bookings whose close time has passed |
+| `CATALOGUE_PAST_CHECK_INTERVAL_MINUTES` | 60 | How often Catalogue moves finished experiences to Past, closes bookings whose close time has passed, and generates the sessions of open-ended recurring experiences further ahead |
+| `CATALOGUE_SESSION_HORIZON_MONTHS` | 24 | How far ahead Catalogue generates the sessions of an open-ended recurring experience. Trips are booked up to 18 months ahead |
 | `SEARCH_DEFAULT_RADIUS_KM` | 25 | The radius used when a client's search gives none |
 | `SEARCH_MAX_RADIUS_KM` | 200 | The largest radius a client may ask for |
 
@@ -155,6 +193,14 @@ A configurable list in the database that every experience is classified with. At
 - **Tag:** a name, a slug and a description. Not tenant-scoped, and not freeform per tenant.
 
 The description is the context the classifier reads to decide when a definition applies. Classification is improved by adding definitions or rewording descriptions.
+
+### Season
+
+A named period of the year in one location, such as whale season in Hermanus. Seasons are predefined rows. A season has no source, and it is not an experience or an experience type.
+
+- **Holds:** name, slug, description, the location it applies to, its dates.
+- **Rules:** while it processes, Data processing gives each experience the seasons of its location that its dates fall inside, as tags (see [data-processing.md](data-processing.md)). Catalogue stores them with the experience's other tags.
+- The system starts with whale season, South African school holidays, high season, and summer, autumn, winter and spring. Their dates are rows.
 
 ## Discovery
 
@@ -174,7 +220,9 @@ Better Auth's tables hold users, sessions and accounts. Identity also records wh
 
 ## Domain event log
 
-Nothing in the prototype depends on domain events: domains call each other's services. Version 1 defines domain events only for sourcing and processing experiences: `raw_listing.captured` and `experience.processed`. Naming and the envelope are in [domain-events.md](domain-events.md).
+The `events` table is an append-only record of what happened to raw listings and experiences. Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded. Catalogue appends one with every version of an experience. Each is written in the same transaction as the change it records.
+
+The table belongs to no domain: a domain's repository appends its own domain events, and nothing reads the table. Domains call each other's services and no hand-off depends on a domain event. The names, the columns and the six domain events are in [domain-events.md](domain-events.md).
 
 ## Decisions
 
@@ -182,12 +230,16 @@ Nothing in the prototype depends on domain events: domains call each other's ser
 | --- | --- |
 | Terms | "Experience" is the thing a traveller goes to; "event" means domain event only |
 | Domain event names | `resource.verb`, lowercase, verb in the past tense |
-| Domain events defined | Only for sourcing and processing experiences. Locations, tenants and users raise none |
+| Domain events defined | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). Locations, tenants and users raise none |
+| Domain event log | Appended to the `events` table as a record of what happened. Nothing reads it |
 | Listings | Discovery keeps one lasting record per listing and fetches it again on every run. Raw listings are the versions of its content |
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |
 | Client access | Read only. Clients cannot create or change experiences |
 | Attributes and tags | Data processing owns the definitions: a configurable list in the database of attributes with a name, a description, a type and a default value, their options, and tags. They are rows with a default set, not enums. Catalogue owns each experience's attribute values and tags, which are what clients query |
+| Dates | An experience's dates are its sessions, and it is on no other date. Search by dates matches sessions, never the span from the first date to the last |
+| Types | Single is one session. A run is one session per listed date, in a row or not. Recurring has a recurrence, from which Catalogue generates the sessions, with skipped and extra dates |
+| Seasons | Not an experience and not an experience type. Predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates fall inside them |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
@@ -198,9 +250,6 @@ Nothing in the prototype depends on domain events: domains call each other's ser
 
 ## Open questions
 
-- [ ] Does the prototype append domain events to the `events` table as an audit trail? Nothing reads them.
-
 - [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
-- [ ] A season has months and no dates, but only a recurring experience may be open-ended. A run is several consecutive days, but a show with 81 dates can skip days. Do the type rules allow both?
 - [ ] A change row has one kind, but one version can both confirm an experience and move its dates. Which kind does changed-since report?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
