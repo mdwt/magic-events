@@ -41,6 +41,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "culture_and_heritage",
         "music",
@@ -97,6 +98,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -149,6 +151,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -202,6 +205,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -255,6 +259,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -331,6 +336,7 @@
       "Sports & Fitness"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "performing_arts"
       ],
@@ -384,6 +390,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -433,6 +440,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -484,6 +492,7 @@
       "Food & Drink"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music"
@@ -537,6 +546,7 @@
       "Health & Wellness"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -586,6 +596,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "community_and_causes"
@@ -639,6 +650,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -690,6 +702,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -741,6 +754,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -793,6 +807,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "food_and_drink"
@@ -845,6 +860,7 @@
       "@FOODANDWINEFESTIVAL"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music"
@@ -898,6 +914,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -949,6 +966,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "wellness"
@@ -1003,6 +1021,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "wellness"
@@ -1056,6 +1075,7 @@
       "Food & Drink"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1108,6 +1128,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1160,6 +1181,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
@@ -1213,6 +1235,7 @@
       "Food & Drink"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1264,6 +1287,7 @@
       "Food & Drink"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1317,6 +1341,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1370,6 +1395,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1418,6 +1444,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1470,6 +1497,7 @@
       "Other"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "business_and_professional"
       ],
@@ -1519,6 +1547,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1570,6 +1599,7 @@
       "Food & Drink"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -1619,6 +1649,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1671,6 +1702,7 @@
       "Charity & Causes"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "outdoor_and_adventure"
@@ -1723,6 +1755,7 @@
       "Community"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes"
       ],
@@ -1772,6 +1805,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1824,6 +1858,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1876,6 +1911,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1929,6 +1965,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -1981,6 +2018,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2033,6 +2071,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2084,6 +2123,7 @@
       "Sports & Fitness"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport"
       ],
@@ -2136,6 +2176,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2190,6 +2231,7 @@
       "Hobbies & Interests"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2244,6 +2286,7 @@
       "Hobbies & Interests"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2299,6 +2342,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2353,6 +2397,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2408,6 +2453,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2463,6 +2509,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle",
@@ -2518,6 +2565,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle"
@@ -2570,6 +2618,7 @@
       "Hobbies & Interests"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle"
@@ -2622,6 +2671,7 @@
       "Hobbies & Interests"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle"
@@ -2675,6 +2725,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle"
@@ -2728,6 +2779,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -2782,6 +2834,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "film",
         "community_and_causes"
@@ -2835,6 +2888,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2885,6 +2939,7 @@
       "Afrikaans"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2936,6 +2991,7 @@
       "Afrikaans"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2989,6 +3045,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music",
         "food_and_drink"
@@ -3046,6 +3103,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -3096,6 +3154,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3148,6 +3207,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3197,6 +3257,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -3251,6 +3312,7 @@
       "Food & Drink"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
@@ -3304,6 +3366,7 @@
       "Family friendly"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
