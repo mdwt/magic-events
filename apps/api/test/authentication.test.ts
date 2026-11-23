@@ -202,3 +202,45 @@ describe("the logs", () => {
     assert.equal(lines.filter((line) => line.includes(secret)).length, 0, "a line holds the key");
   });
 });
+
+describe("behind a proxy named in API_TRUST_PROXY", () => {
+  const PROXY = "10.0.0.1";
+  let app: FastifyInstance;
+  const lines: { msg?: string; requestId?: string; address?: string }[] = [];
+
+  before(async () => {
+    const stream = new Writable({
+      write(chunk: Buffer, _encoding, done) {
+        for (const line of chunk.toString().split("\n").filter(Boolean)) lines.push(JSON.parse(line) as (typeof lines)[number]);
+        done();
+      },
+    });
+    const settings = testSettings(process.env.TEST_DATABASE_URL ?? "");
+    settings.api.trustProxy = [PROXY];
+    settings.api.rateLimitMax = 1;
+    const logger = pino({ level: "info", mixin: () => ({ ...logContext.getStore() }) }, stream);
+    ({ app } = await buildApp({ settings, db: harness.db, logger, overrides: testOverrides({}) }));
+    await app.ready();
+  });
+
+  after(() => app.close());
+
+  async function call(remoteAddress: string, forwardedFor: string): Promise<{ status: number; address: string | undefined }> {
+    const response = await app.inject({ method: "GET", url: "/health", remoteAddress, headers: { "x-forwarded-for": forwardedFor } });
+    const line = lines.find((one) => one.msg === "Request completed" && one.requestId === response.headers["x-request-id"]);
+    return { status: response.statusCode, address: line?.address };
+  }
+
+  test("from the proxy, X-Forwarded-For is the address the limit counts and the log shows", async () => {
+    assert.deepEqual(await call(PROXY, "203.0.113.5"), { status: 200, address: "203.0.113.5" });
+    assert.deepEqual(await call(PROXY, "203.0.113.5"), { status: 429, address: "203.0.113.5" });
+    // Another caller through the same proxy has a limit of its own.
+    assert.deepEqual(await call(PROXY, "203.0.113.6"), { status: 200, address: "203.0.113.6" });
+  });
+
+  test("from any other address, X-Forwarded-For is ignored", async () => {
+    assert.deepEqual(await call("198.51.100.7", "203.0.113.9"), { status: 200, address: "198.51.100.7" });
+    // A new X-Forwarded-For does not buy a new limit.
+    assert.deepEqual(await call("198.51.100.7", "203.0.113.10"), { status: 429, address: "198.51.100.7" });
+  });
+});

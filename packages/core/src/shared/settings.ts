@@ -8,6 +8,8 @@ export interface ApiSettings {
   corsOrigin: string;
   // The host names the MCP endpoint answers to, which guards it against DNS rebinding.
   allowedHosts: string[];
+  // The proxies whose X-Forwarded-For gives the caller's address: addresses, CIDR ranges or loopback. Empty is off.
+  trustProxy: string[];
   logLevel: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
   // Readable log lines for a person at a terminal. Off in production, where logs are JSON.
   logPretty: boolean;

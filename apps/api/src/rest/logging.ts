@@ -40,10 +40,14 @@ export function loggedUrl(url: string): string {
 }
 
 // Fastify's request lines: started at debug, completed at info with the status and duration. Both run outside the
-// request's async context, so they add the log context themselves.
+// request's async context, so they add the log context themselves. The address is request.ip: the connection's, or
+// the caller's behind a proxy named in API_TRUST_PROXY.
 export class RequestLogController extends LogController {
   override incomingRequest(request: FastifyRequest): void {
-    request.log.debug({ ...contextOf(request), method: request.method, url: loggedUrl(request.url) }, "Request started");
+    request.log.debug(
+      { ...contextOf(request), method: request.method, url: loggedUrl(request.url), address: request.ip },
+      "Request started",
+    );
   }
 
   override requestCompleted(error: Error | null | undefined, request: FastifyRequest, reply: FastifyReply): void {
@@ -51,6 +55,7 @@ export class RequestLogController extends LogController {
       ...contextOf(request),
       method: request.method,
       url: loggedUrl(request.url),
+      address: request.ip,
       statusCode: reply.statusCode,
       durationMs: Math.round(reply.elapsedTime),
     };

@@ -53,6 +53,7 @@ try {
       host: settings.api.host,
       port: settings.api.port,
       allowedHosts: settings.api.allowedHosts,
+      trustProxy: settings.api.trustProxy,
       corsOrigin: settings.api.corsOrigin,
       logLevel: settings.api.logLevel,
       rateLimitMax: settings.api.rateLimitMax,

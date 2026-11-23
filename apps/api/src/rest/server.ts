@@ -99,6 +99,9 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
     genReqId: requestId,
     requestIdHeader: false,
     bodyLimit: settings.bodyLimitBytes,
+    // Only the named proxies' X-Forwarded-For is believed, and request.ip, which the limit per address and the request
+    // log use, is then the caller's address. Off when none is named. Never true, which would believe any client's.
+    trustProxy: settings.trustProxy.length > 0 ? settings.trustProxy : false,
     connectionTimeout: 60_000,
     requestTimeout: 30_000,
     keepAliveTimeout: 5_000,

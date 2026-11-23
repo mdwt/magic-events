@@ -167,8 +167,14 @@ curl -H "Authorization: Bearer <key>" -H "Content-Type: application/json" \
 
 Each key is rate limited on its own, and each address before any key is checked. Both limits are set high by default,
 to stop a runaway client, not to meter use. Answers carry the limit per address in `x-ratelimit-limit`,
-`x-ratelimit-remaining` and `x-ratelimit-reset`, and a 429 from either limit carries `Retry-After`. The address is the
-one the connection comes from: the server trusts no `X-Forwarded-For`.
+`x-ratelimit-remaining` and `x-ratelimit-reset`, and a 429 from either limit carries `Retry-After`.
+
+The address is the one the connection comes from, unless that is a proxy named in `API_TRUST_PROXY`: then it is the
+caller's, from the proxy's `X-Forwarded-For`. The limit per address counts it, and the request lines log it as
+`address`. Name each proxy by its address or CIDR range, or as `loopback` for a proxy on the same machine. Behind the
+Cloudflare tunnel, `cloudflared` connects from the same machine, so set `API_TRUST_PROXY=loopback`. Without it, every
+caller through the tunnel shares one limit and is logged with the tunnel's address. From any other address,
+`X-Forwarded-For` is ignored. The server never trusts every address, as a client could then name any address it liked.
 
 ## Errors
 
@@ -222,7 +228,7 @@ much: `info` by default.
 | Level | What is logged |
 | --- | --- |
 | `debug` | Every request as it starts; the resolved search or changes query; the count of changes found; a job starting and finishing; a run starting; each page fetched |
-| `info` | Every request completed, with `method`, `url`, `statusCode` and `durationMs`; each search, with its count and duration; the server started, with its settings that are safe to show, and stopped; each MCP tool called, with its arguments; a run finished, with its counts; a raw listing processed, with its outcome; an experience published or changed; each domain event published (`eventId`, `type`, `resourceId`); a tenant created, a user added, a key issued or revoked |
+| `info` | Every request completed, with `method`, `url`, `address`, `statusCode` and `durationMs`; each search, with its count and duration; the server started, with its settings that are safe to show, and stopped; each MCP tool called, with its arguments; a run finished, with its counts; a raw listing processed, with its outcome; an experience published or changed; each domain event published (`eventId`, `type`, `resourceId`); a tenant created, a user added, a key issued or revoked |
 | `warn` | A refused call, with `reason` and, for wrong input, `details` naming each field; a refused admin command; a job that failed and will be tried again |
 | `error` | A system error, with `err` in full; a job given up; the database out of reach |
 
@@ -260,6 +266,7 @@ message that names the variable. The full list, with defaults, is in [.env.examp
 | `API_HOST`, `API_PORT` | Where the server listens. `0.0.0.0` and `4000` by default |
 | `API_ALLOWED_HOSTS` | The host names the MCP endpoint answers to, comma-separated, against DNS rebinding |
 | `CORS_ORIGIN` | The one browser origin allowed to call the API |
+| `API_TRUST_PROXY` | The proxies whose `X-Forwarded-For` gives the caller's address: addresses, CIDR ranges or `loopback`, comma-separated. Empty, the default, is off. `loopback` behind the Cloudflare tunnel |
 | `LOG_LEVEL`, `LOG_PRETTY` | How much is logged, and readable lines instead of JSON |
 | `ANTHROPIC_API_KEY` | The language model, which the jobs use to process listings |
 | `AWS_REGION` and AWS credentials | The embedding model on Amazon Bedrock. Without it, search orders by keyword alone |

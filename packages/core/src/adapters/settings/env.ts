@@ -1,3 +1,4 @@
+import { isIP } from "node:net";
 import { z } from "zod";
 import type { Settings } from "../../shared/settings.ts";
 
@@ -15,12 +16,39 @@ const list = z
   .transform((value) => value.split(",").map((item) => item.trim()).filter(Boolean))
   .pipe(z.array(z.string()).min(1, "Must name at least one value."));
 
+// The names Fastify's trustProxy takes for a group of addresses, besides an address or a CIDR range.
+const PROXY_NAMES = ["loopback", "linklocal", "uniquelocal"];
+
+function isProxyAddress(item: string): boolean {
+  if (PROXY_NAMES.includes(item)) return true;
+  const [address = "", prefix, extra] = item.split("/");
+  const version = isIP(address);
+  if (version === 0 || extra !== undefined) return false;
+  return prefix === undefined || (/^\d{1,3}$/.test(prefix) && Number(prefix) <= (version === 4 ? 32 : 128));
+}
+
+// The proxies whose X-Forwarded-For is believed, comma-separated: addresses, CIDR ranges or loopback. Empty is off, and
+// the address is the connection's. Never every address: a client could then send X-Forwarded-For itself and name any
+// address it liked, to slip the limit per address or to put another address in the logs.
+const trustedProxies = z
+  .string()
+  .transform((value) => value.split(",").map((item) => item.trim()).filter(Boolean))
+  .superRefine((items, context) => {
+    for (const item of items.filter((one) => !isProxyAddress(one))) {
+      context.addIssue({
+        code: "custom",
+        message: `${item} is not an address, a CIDR range or loopback. Name the proxies, such as loopback or 10.0.0.0/8.`,
+      });
+    }
+  });
+
 const environmentSchema = z.object({
   DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/, error: "Must be a postgres:// URL." }),
   API_HOST: z.string().min(1).default("0.0.0.0"),
   API_PORT: whole(1).max(65535).default(4000),
   CORS_ORIGIN: z.url({ protocol: /^https?$/, error: "Must be an http:// or https:// origin." }).default("http://localhost:3000"),
   API_ALLOWED_HOSTS: list.default(["localhost", "127.0.0.1", "[::1]"]),
+  API_TRUST_PROXY: trustedProxies.default([]),
   LOG_LEVEL: z.enum(LOG_LEVELS).default("info"),
   LOG_PRETTY: flag.default(false),
   API_RATE_LIMIT_MAX: whole(1).default(10_000),
@@ -87,6 +115,7 @@ export function loadSettings(env: NodeJS.ProcessEnv = process.env): Settings {
       port: e.API_PORT,
       corsOrigin: new URL(e.CORS_ORIGIN).origin,
       allowedHosts: e.API_ALLOWED_HOSTS,
+      trustProxy: e.API_TRUST_PROXY,
       logLevel: e.LOG_LEVEL,
       logPretty: e.LOG_PRETTY,
       rateLimitMax: e.API_RATE_LIMIT_MAX,

@@ -17,6 +17,7 @@ test("the defaults apply when only the required variables are set", () => {
       port: 4000,
       corsOrigin: "http://localhost:3000",
       allowedHosts: ["localhost", "127.0.0.1", "[::1]"],
+      trustProxy: [],
       logLevel: "info",
       logPretty: false,
       rateLimitMax: 10_000,
@@ -76,6 +77,21 @@ test("given values are parsed, and an empty value counts as not set", () => {
   assert.equal(settings.api.corsOrigin, "https://app.example.com");
   assert.equal(settings.identity.apiKeyRateLimitMax, 10_000);
   assert.equal(settings.catalogue.searchMaxRadiusKm, 150.5);
+});
+
+test("the proxies to trust are addresses, CIDR ranges or loopback, and anything else stops startup", () => {
+  assert.deepEqual(loadSettings({ ...REQUIRED, API_TRUST_PROXY: "" }).api.trustProxy, []);
+  assert.deepEqual(
+    loadSettings({ ...REQUIRED, API_TRUST_PROXY: " loopback , 10.0.0.0/8, 192.168.1.7, ::1, fd00::/8 " }).api.trustProxy,
+    ["loopback", "10.0.0.0/8", "192.168.1.7", "::1", "fd00::/8"],
+  );
+  for (const value of ["true", "*", "2", "localhost", "10.0.0.0/33", "::1/129", "[::1]", "10.0.0.1/8/8", "loopback,proxy.example.com"]) {
+    assert.throws(
+      () => loadSettings({ ...REQUIRED, API_TRUST_PROXY: value }),
+      /API_TRUST_PROXY: .* is not an address, a CIDR range or loopback/,
+      value,
+    );
+  }
 });
 
 test("a missing required variable stops startup and is named", () => {
