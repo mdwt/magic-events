@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
-import { experience } from "@magic-events/db";
+import { experience, location } from "@magic-events/db";
 import { eq } from "drizzle-orm";
 import type { Catalogue, SearchExperiencesInput, SearchExperiencesResult } from "../src/catalogue/ports.ts";
 import { AppError } from "../src/shared/errors.ts";
@@ -467,5 +467,30 @@ describe("locations", () => {
     assert.equal(saved.region, "Cape Winelands");
     assert.deepEqual(await catalogue.getLocation({ id: before.id }), saved);
     assert.equal(await catalogue.getLocation({ slug: "nowhere" }), null);
+  });
+
+  test("saving a location as it is stored changes no column, and saving a change updates it and updated_at", async () => {
+    const input = {
+      name: "Gansbaai",
+      slug: "gansbaai",
+      country: "ZA",
+      region: "Western Cape",
+      timezone: "Africa/Johannesburg",
+      latitude: -34.5805,
+      longitude: 19.3516,
+    };
+    await catalogue.saveLocation(input);
+    const [stored] = await harness.db.select().from(location).where(eq(location.slug, "gansbaai"));
+    assert.ok(stored);
+
+    const again = await catalogue.saveLocation(input);
+    assert.equal(again.id, stored.id);
+    assert.deepEqual(await harness.db.select().from(location).where(eq(location.slug, "gansbaai")), [stored]);
+
+    await catalogue.saveLocation({ ...input, latitude: -34.5806 });
+    const [changed] = await harness.db.select().from(location).where(eq(location.slug, "gansbaai"));
+    assert.ok(changed);
+    assert.deepEqual({ ...changed, updatedAt: stored.updatedAt }, { ...stored, latitude: -34.5806 });
+    assert.ok(changed.updatedAt > stored.updatedAt);
   });
 });

@@ -57,6 +57,7 @@ import {
   type ReportedStatus,
 } from "../../catalogue/ports.ts";
 import type { DomainEvent } from "../../shared/domain-events.ts";
+import { differsFromStored } from "./upsert.ts";
 
 // Rows per insert, well inside Postgres's limit on the parameters of one statement.
 const INSERT_CHUNK = 1000;
@@ -204,12 +205,25 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       return rows.map((row) => row.id);
     },
 
+    // A location saved as it is stored is left as it is, updated_at too.
     async upsertLocation(input) {
-      const [saved] = await db
+      const [row] = await db
         .insert(location)
         .values(input)
-        .onConflictDoUpdate({ target: location.slug, set: { ...input, updatedAt: new Date() } })
+        .onConflictDoUpdate({
+          target: location.slug,
+          set: { ...input, updatedAt: new Date() },
+          setWhere: differsFromStored([
+            location.name,
+            location.country,
+            location.region,
+            location.timezone,
+            location.latitude,
+            location.longitude,
+          ]),
+        })
         .returning();
+      const saved = row ?? (await db.select().from(location).where(eq(location.slug, input.slug)))[0];
       if (saved === undefined) throw new Error("Saving a location returned no row");
       return toLocation(saved);
     },
