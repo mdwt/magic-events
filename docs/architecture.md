@@ -96,7 +96,8 @@ flowchart TB
   end
   subgraph Outbound adapters
     SRC[Experience sources]
-    CL[Claude API]
+    LM[Language model]
+    EM[Embedding model]
     DW[Data warehouse]
     STO[Storage]
   end
@@ -111,8 +112,9 @@ flowchart TB
   DP --> DIS
   DP --> CAT
   DIS --> SRC
-  DIS --> CL
-  DP --> CL
+  DIS --> LM
+  DP --> LM
+  CAT --> EM
   DP --> DW
   CAT --> STO
   ORG --> STO
@@ -120,15 +122,22 @@ flowchart TB
 
 System settings, such as how often things run, are environment variables. They are read through one settings provider, which reads them once at startup, applies defaults and stops the system when a value is invalid. A domain asks the provider for its settings and never reads an environment variable itself, so the store behind the provider can change later without touching the domains. Each domain's settings are listed in its own document: [discovery.md](discovery.md), [data-processing.md](data-processing.md) and [data-model.md](data-model.md) for Catalogue.
 
-Discovery and Data processing use Claude, through the Anthropic API, for the steps that need judgement. Where and how is in [discovery.md](discovery.md) and [data-processing.md](data-processing.md).
+Models from outside providers sit behind ports like everything else. The domains name no provider and import no provider's SDK, so a provider is changed by writing one adapter and changing one setting.
+
+| Port | Used by | Adapter in version 1 |
+| --- | --- | --- |
+| Language model | Data processing, to extract and classify experiences. Discovery, to find the current calendar file | Claude, through the Anthropic API |
+| Embedding model | Catalogue, to embed experience profiles and search query texts | Amazon Titan Text Embeddings V2, through Amazon Bedrock |
+
+The ports and their adapters are defined in [data-processing.md](data-processing.md).
 
 REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker and Catalogue's move of finished experiences to Past without passing through Identity, because no client is involved.
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
-| Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask Claude |
-| Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; ask Claude; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; move finished experiences to Past | Store locations, published experiences and their history |
+| Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask the language model |
+| Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; ask the language model; load the data warehouse |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; move finished experiences to Past | Store locations, published experiences and their history; embed texts |
 | Identity | Authenticate a caller; authorise an action | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
 | Organizations | Manage tenants; manage users and roles; get a tenant | Store tenants |
 
@@ -219,7 +228,7 @@ Because every run fetches the same listings again, a change at the source months
 | Are categories and tags fixed? | No. They are configurable definitions with a default set. Classification improves by adding definitions and descriptions, with no code change |
 | Which domain events are defined? | Only those for sourcing and processing experiences: `raw_listing.captured` and `experience.processed` |
 | Where is the system configured? | System settings are environment variables read through one settings provider, and each domain's document lists its own. Per-source settings are on the source row. Categories and tags are definition rows |
-| Which language model does the system use? | Claude, through the Anthropic API. Data processing uses it to extract and classify experiences, and Discovery uses it to find the current calendar file |
+| How are model providers kept swappable? | Each model is reached through a port, and the domains name no provider. Version 1's adapters are Claude through the Anthropic API for the language model, and Amazon Titan through Amazon Bedrock for the embedding model |
 
 ## Open questions
 

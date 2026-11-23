@@ -89,9 +89,9 @@ Version 1 has five kinds. Each source has a kind, and each kind has one adapter 
 | --- | --- | --- | --- | --- | --- |
 | Quicket | Quicket | API with a free key. Returns all public events with no location filter, incremental by last-modified | One event, as JSON | Quicket's event ID | Field mapping |
 | Ticketmaster | Ticketmaster Discovery | API with a free key. Filters by point | One event, as JSON | Ticketmaster's event ID | Field mapping |
-| WordPress | Hermanus Times posts | WordPress REST API (blocked, see Access) | One post, as JSON | The post ID | Claude |
-| PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. Each calendar is its own source | The adapter fetches the calendar page, asks Claude which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Claude, which reads the PDF itself |
-| Web page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Claude |
+| WordPress | Hermanus Times posts | WordPress REST API (blocked, see Access) | One post, as JSON | The post ID | Language model |
+| PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
+| Web page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model |
 
 Three kinds have an API: Quicket, Ticketmaster and WordPress. PDF calendars and web pages are fetched as files and pages.
 
@@ -182,19 +182,19 @@ Data processing never reads Discovery's tables. It uses two calls on the Discove
 | Processed | Its experiences are extracted and saved | Nothing |
 | Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
 
-## Claude in Discovery
+## Language model in Discovery
 
-Discovery uses Claude, through the Anthropic API, where finding something takes judgement and not a fixed rule. How Claude is called (the SDK, the model, structured answers) is in [data-processing.md](data-processing.md) and is the same here.
+Discovery uses a language model where finding something takes judgement and not a fixed rule. It reaches the model through the language model port defined in [data-processing.md](data-processing.md), so it names no provider and changes with the same setting.
 
-| Place | What Claude does | Kind of call | Status |
+| Place | What the model does | Kind of call | Status |
 | --- | --- | --- | --- |
-| Finding the current calendar file | The PDF calendar adapter gives Claude the links on the calendar page and the calendar's name from the source's settings. Claude returns the address of the current file | One request with a structured answer | Version 1 |
-| Research source | For experiences with no feed, such as seasons and standing recurring experiences. Claude is given a research question about the location, searches the web and reads pages, and returns its findings with the addresses it used. Each answer is a listing and goes through processing like any other | Agent with web search and web fetch | Proposed |
-| Source scouting | For a new location, Claude searches the web for sites, calendars and organisers that publish experiences there, and proposes source rows with a kind and an address. A system admin approves them | Agent with web search and web fetch | Proposed |
+| Finding the current calendar file | The PDF calendar adapter gives the model the links on the calendar page and the calendar's name from the source's settings. The model returns the address of the current file | One request with one answer, through the language model port | Version 1 |
+| Research source | For experiences with no feed, such as seasons and standing recurring experiences. The model is given a research question about the location, searches the web and reads pages, and returns its findings with the addresses it used. Each answer is a listing and goes through processing like any other | An agent that searches the web. It needs a port of its own | Proposed |
+| Source scouting | For a new location, the model searches the web for sites, calendars and organisers that publish experiences there, and proposes source rows with a kind and an address. A system admin approves them | An agent that searches the web. It needs a port of its own | Proposed |
 
-The two agents are requests to the Messages API with Anthropic's web search and web fetch tools (`web_search_20260209`, `web_fetch_20260209`) and a `max_uses` limit on each. They run on Discovery's own schedule. A response that stops with `pause_turn` is sent back as it is to continue, and a failed search or fetch comes back as an error result inside the response, not as an exception.
+The language model is not used for fetching, fingerprints, saving, or deciding that a listing has disappeared.
 
-Claude is not used for fetching, fingerprints, saving, or deciding that a listing has disappeared.
+The two proposed agents search the web, which the language model port does not offer. If they are taken up they get a research port, and its first adapter would be Claude with Anthropic's web search and web fetch tools.
 
 ## Settings
 
@@ -210,7 +210,7 @@ System settings are environment variables, read through the settings provider (s
 | `QUICKET_API_KEY` | None | The Quicket API key. The Quicket source row names this variable |
 | `TICKETMASTER_API_KEY` | None | The Ticketmaster API key. The Ticketmaster source row names this variable |
 
-The Claude settings (`ANTHROPIC_API_KEY`, `CLAUDE_MODEL`, `CLAUDE_EFFORT`, `CLAUDE_TIMEOUT_SECONDS`) are listed in [data-processing.md](data-processing.md) and apply here too.
+The language model settings (`LANGUAGE_MODEL_PROVIDER`, `LANGUAGE_MODEL`, `LANGUAGE_MODEL_TIMEOUT_SECONDS`) are listed in [data-processing.md](data-processing.md) and apply here too.
 
 ## Service dependencies
 
@@ -229,7 +229,7 @@ Catalogue calls neither, so the dependencies have no cycles.
 | No copies | Services call each other's services. No table holds a copy of another domain's data |
 | One location per source | A source row carries its location and settings |
 | Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source. System settings, such as how often the schedule runs and the defaults a new source gets, are environment variables listed under Settings |
-| Claude | Discovery uses Claude to find the current calendar file. PDFs are stored whole and read by Claude in processing, so no PDF text is extracted here |
+| Language model | Discovery uses the language model port to find the current calendar file. PDFs are stored whole and read by the language model in processing, so no PDF text is extracted here |
 | Source kinds | Five in version 1: Quicket, Ticketmaster, WordPress, PDF calendar and web page. One adapter and one extractor per kind |
 | Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
 | Raw listing | One version of a listing's content, whole as fetched. Saved only when the listing is new or changed |
@@ -243,7 +243,7 @@ Catalogue calls neither, so the dependencies have no cycles.
 
 - [ ] The WordPress kind cannot fetch Hermanus Times: its posts API is behind a Cloudflare browser check (see Access). *Proposed:* the fifth kind becomes RSS feed, which reads the open feed, one listing per post with its full text.
 - [ ] The location has only a centre point, but the sources cover Hermanus and the wider Overstrand (Stanford, Gansbaai, Kleinmond). Does a location need a radius for adapters to filter by?
-- [ ] Seasons (whale season, the fynbos bloom) and many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where Claude researches the location on the web (see Claude in Discovery).
+- [ ] Seasons (whale season, the fynbos bloom) and many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where a language model researches the location on the web (see Language model in Discovery).
 - [ ] Quicket's runs are incremental and only complete runs count as a miss, so a listing Quicket removes is never noticed, and an unchanged Quicket listing is never verified again. Does the Quicket adapter also make a complete run at some interval?
 - [ ] A planner checking back wants to know an experience was verified recently. Discovery knows when each listing was last seen, but an unchanged listing is not processed, so Catalogue never hears of it. *Proposed:* after each run, Discovery tells the Catalogue service which listings it saw, and Catalogue stamps last verified on their source links.
 - [ ] A web page's HTML can differ on every fetch (tokens, timestamps, adverts), so its fingerprint always differs and every run processes it again. Is the fingerprint taken from the page's visible text instead?
