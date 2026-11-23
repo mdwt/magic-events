@@ -179,3 +179,17 @@ export function seasonsOf(experience: ExtractedExperience, seasons: Season[], ho
     )
     .map((season) => season.slug);
 }
+
+// The season an extracted experience is, when it is one: its dates are only months or years and are exactly one
+// period of a season of its location, such as "Southern right whales in Walker Bay, June to November", which is
+// whale season. A season is predefined and becomes a tag; it is never an experience.
+export function seasonItIs(experience: ExtractedExperience, seasons: Season[]): Season | undefined {
+  const { sessions } = experience;
+  if (experience.recurrence !== undefined || sessions.length === 0) return undefined;
+  if (sessions.some((session) => session.precision === "day")) return undefined;
+  const start = sessions.map((session) => session.start).reduce((a, b) => (b < a ? b : a));
+  const end = sessions.map(sessionEnd).reduce((a, b) => (b > a ? b : a));
+  return seasons.find((season) =>
+    season.periods.some((period) => period.startDate === start && period.endDate === end),
+  );
+}

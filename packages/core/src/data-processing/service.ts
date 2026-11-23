@@ -18,6 +18,7 @@ import {
   classificationInstructions,
   classificationText,
   type Definitions,
+  seasonItIs,
   seasonsOf,
 } from "./classify.ts";
 import { isIsoDate } from "./dates.ts";
@@ -281,7 +282,7 @@ export class DataProcessingService implements DataProcessing {
 
     const now = this.#clock();
     const fetchedAt = new Date(raw.fetchedAt);
-    const extracted = await extractor.extract({
+    const answered = await extractor.extract({
       content: raw.content,
       contentType: raw.contentType ?? "",
       ...(raw.url === null ? {} : { url: raw.url }),
@@ -308,6 +309,14 @@ export class DataProcessingService implements DataProcessing {
     const taken = new Set<string>();
     const saved: SaveExperienceResult[] = [];
     const undefinedValues: UndefinedValueRow[] = [];
+
+    // A season the extractor took for an experience is left out: seasons are tags, never experiences.
+    const extracted = answered.filter((experience) => {
+      const season = seasonItIs(experience, seasons);
+      if (season === undefined) return true;
+      this.#logger.warn({ ...context, title: experience.title, season: season.slug }, "Season left out, not an experience");
+      return false;
+    });
 
     for (const experience of extracted) {
       const { classification, answer } = await this.#classify(experience, definitions, instructions);

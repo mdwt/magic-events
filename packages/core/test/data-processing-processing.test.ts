@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, test } from "node:test";
 import { AppError } from "../src/shared/errors.ts";
 import { LanguageModelFailed } from "../src/shared/language-model.ts";
@@ -140,7 +141,39 @@ describe("processNext", () => {
     assert.deepEqual(state.processed, [RAW]);
   });
 
-  test("processPending goes on until nothing is pending, or until the limit", async () => {
+  test("a season taken for an experience is left out, and the experiences beside it are saved", async () => {
+    // Xplorio's events page, whose introduction tells of the whales from June to November beside the festivals.
+    const content = readFileSync(new URL("./fixtures/sources/xplorio-events.html", import.meta.url), "utf8");
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          answered({
+            title: "Southern Right Whales in Walker Bay",
+            venueName: "Walker Bay",
+            sessions: [session({ start: "2027-06-01", end: "2027-11-30", precision: "month" })],
+          }),
+          answered({
+            title: "Hermanus Flower and Eco Fair",
+            venueName: "Fernkloof Nature Reserve",
+            sessions: [session({ start: "2027-09-01", end: "2027-09-30", precision: "month" })],
+          }),
+        ),
+      ],
+    });
+    const { service, state, logs } = setup({
+      model,
+      pending: [rawListing({ url: "https://xplorio.com/hermanus/en/things-to-do/events/", content })],
+    });
+    const outcome = await service.processNext();
+    assert.equal(outcome?.experiences, 1);
+    assert.deepEqual(
+      state.saves.map((saved) => saved.title),
+      ["Hermanus Flower and Eco Fair"],
+    );
+    assert.ok(logs.some((line) => line.message === "Season left out, not an experience"));
+  });
+
+    test("processPending goes on until nothing is pending, or until the limit", async () => {
     const pending = [rawListing(), rawListing({ id: "raw-2" }), rawListing({ id: "raw-3" })];
     assert.equal((await setup({ pending }).service.processPending()).length, 3);
     assert.equal((await setup({ pending }).service.processPending({ limit: 2 })).length, 2);

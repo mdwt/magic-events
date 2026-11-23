@@ -150,11 +150,13 @@ An extractor returns the dates a listing gives and no others. Catalogue saves th
 
 The three language model extractors share one implementation. Each kind only prepares the content differently. The model is given the content, the location's name and region, the fetch time and the extracted experience shape, and must answer in that shape. The model is reached through the language model port (see Ports).
 
-Three things every extractor leaves out:
+What every extractor leaves out:
 
 - **What is already over.** An experience whose last date is before the fetch time is not returned. A news post about last weekend produces nothing.
 - **What is beyond the sourcing horizon.** An experience whose first date is more than `DISCOVERY_HORIZON_MONTHS` after the fetch time is not returned (see [discovery.md](discovery.md)). An open-ended recurring experience starts inside the horizon, so it is returned.
 - **Festival programme items.** A festival is one experience. The talks, concerts and exhibitions on its programme are not extracted separately.
+- **Seasons and facts about the place.** Whales in the bay from June to November, the spring flowers or a town's beaches are not experiences. Seasons are predefined rows that become tags (see Seasons). An extracted experience whose dates are only months or years and are exactly one period of a season of its location is that season, and Data processing leaves it out with a warning before it is classified.
+- **A title that names nothing.** A title must name the experience. One that is only the place, a year, a month or a page's headings and labels, such as "Hermanus 2026" or "Time", is a misreading of the page: the instructions ask for a name taken from what the listing says the experience is, and the extractor drops one that still names nothing, with a warning.
 
 ## Classification
 
