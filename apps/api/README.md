@@ -201,9 +201,9 @@ much: `info` by default.
 
 | Level | What is logged |
 | --- | --- |
-| `debug` | Every request as it starts; the resolved search or changes query, with its count and duration; a job starting and finishing; a run starting; each page fetched |
-| `info` | Every request completed, with `method`, `url`, `statusCode` and `durationMs`; the server started, with its settings that are safe to show, and stopped; each MCP tool called, with its arguments; a run finished, with its counts; a raw listing processed, with its outcome; an experience published or changed; each domain event published (`eventId`, `type`, `resourceId`); a tenant created, a user added, a key issued or revoked |
-| `warn` | A refused call, with `reason` and, for wrong input, `details` naming each field; a job that failed and will be tried again |
+| `debug` | Every request as it starts; the resolved search or changes query; the count of changes found; a job starting and finishing; a run starting; each page fetched |
+| `info` | Every request completed, with `method`, `url`, `statusCode` and `durationMs`; each search, with its count and duration; the server started, with its settings that are safe to show, and stopped; each MCP tool called, with its arguments; a run finished, with its counts; a raw listing processed, with its outcome; an experience published or changed; each domain event published (`eventId`, `type`, `resourceId`); a tenant created, a user added, a key issued or revoked |
+| `warn` | A refused call, with `reason` and, for wrong input, `details` naming each field; a refused admin command; a job that failed and will be tried again |
 | `error` | A system error, with `err` in full; a job given up; the database out of reach |
 
 Every line of a request carries `requestId`, the `x-request-id` the client got back. Once the key is checked, every line
