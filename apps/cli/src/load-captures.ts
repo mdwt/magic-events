@@ -416,8 +416,10 @@ async function main(): Promise<void> {
   if (sources.length === 0) throw new Error("No source to load. Check the slug and sources.json.");
 
   const settings = loadSettings();
-  // The pipeline logs every saved experience. A load of hundreds prints its own summary instead.
-  const logger = createLogger({ ...settings.api, logLevel: "warn" });
+  // The pipeline logs every saved experience. A load of hundreds prints its own summary instead, unless LOG_LEVEL asks
+  // for debug or trace, so a load can be followed line by line.
+  const traced = settings.api.logLevel === "debug" || settings.api.logLevel === "trace";
+  const logger = createLogger(traced ? settings.api : { ...settings.api, logLevel: "warn" });
   const { db, close } = createDb(settings.database.url, { max: 4 });
   try {
     const staged: { listings: FetchedListing[] } = { listings: [] };
