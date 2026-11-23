@@ -561,6 +561,15 @@ export function onlyFreeInWords(experience: ExtractedExperience, text: string): 
   return { ...experience, price: kept };
 }
 
+// One price stated is both the lowest and the highest, so a price never has only one end.
+export function bothEnds(experience: ExtractedExperience): ExtractedExperience {
+  const price = experience.price;
+  if (price === undefined || (price.min !== undefined && price.max !== undefined)) return experience;
+  const one = price.min ?? price.max;
+  if (one === undefined) return experience;
+  return { ...experience, price: { ...price, min: one, max: one } };
+}
+
 // The window an experience must fall in: not over by the later of the fetch day and today, and starting no later
 // than the horizon counted from the fetch day. Days are the location's.
 export function sourcingWindow(input: { fetchedAt: Date; now: Date; timezone: string; horizonMonths: number }): {
@@ -877,6 +886,7 @@ class LanguageModelExtractor implements Extractor {
           settled.experience = priced;
         }
       }
+      settled.experience = bothEnds(settled.experience);
       const position = settled.experience.venue?.position;
       const problem = position === undefined ? undefined : positionProblem(position, input.location);
       if (problem !== undefined) {

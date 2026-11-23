@@ -61,7 +61,7 @@ The thing a client searches. System-managed and visible to every tenant. Every e
   - status and booking (below)
   - when: its sessions, its recurrence if it is recurring, timezone, opening hours (see Dates and sessions)
   - where: location, venue name and address, city, position
-  - price range, currency, on-sale time, booking close time, booking link, image, its own page address if it has one. An organiser's own page about its own offerings is the page address of each of them; a page that lists other organisers' events is the page address of none (see Extractors in [data-processing.md](data-processing.md))
+  - price range for one person, currency, on-sale time, booking close time, booking link, image, its own page address if it has one. An organiser's own page about its own offerings is the page address of each of them; a page that lists other organisers' events is the page address of none (see Extractors in [data-processing.md](data-processing.md))
   - version
 - **Rules:**
   - Belongs to one location. Stores no distance; distance comes from the caller's point and radius at query time.

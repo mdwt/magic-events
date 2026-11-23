@@ -391,6 +391,35 @@ describe("A title that names no experience", () => {
   });
 });
 
+describe("A price", () => {
+  test("stated once is both its lowest and its highest", async () => {
+    const { extractor } = extractorFor(
+      "web_page",
+      extraction(
+        // The audit's Ubumnandi Summer Picnic had a lowest price and no highest.
+        answered({ title: "Ubumnandi Summer Picnic", priceMin: 100, priceMax: null, currency: "ZAR" }),
+        answered({ title: "That '80s Show", priceMin: null, priceMax: 350, currency: "ZAR" }),
+        answered({ title: "Rumours of Fleetwood Mac Tribute", priceMin: 300, priceMax: 430, currency: "ZAR" }),
+      ),
+    );
+    const experiences = await extractor.extract(input());
+    assert.deepEqual(
+      experiences.map((one) => [one.title, one.price]),
+      [
+        ["Ubumnandi Summer Picnic", { min: 100, max: 100, currency: "ZAR" }],
+        ["That '80s Show", { min: 350, max: 350, currency: "ZAR" }],
+        ["Rumours of Fleetwood Mac Tribute", { min: 300, max: 430, currency: "ZAR" }],
+      ],
+    );
+  });
+
+  test("the instructions take a package for several people as a price for one", () => {
+    assert.match(EXTRACTION_INSTRUCTIONS, /the lowest and highest price one person pays/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /the package divided by that number/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /"Cost: Free", is taken at its word/);
+  });
+});
+
 describe("A PDF calendar", () => {
   test("keeps the rows of the district's smaller towns, and its yield is logged at warn", async () => {
     // Five rows of the November 2026 monthly calendar: a live run left out every row outside Hermanus and
@@ -709,7 +738,12 @@ describe("A price of 0", () => {
     // The 0 is a donation ticket beside the paid ones; the page's words give only R200 and R80.
     const page = captured("quicket-secret-sunset.txt");
     assert.equal(await priceOf(page, { priceMin: 0, priceMax: 0, currency: "ZAR" }), undefined);
-    assert.deepEqual(await priceOf(page, { priceMin: 0, priceMax: 200, currency: "ZAR" }), { max: 200, currency: "ZAR" });
+    // With the 0 taken off, the one price left is both ends.
+    assert.deepEqual(await priceOf(page, { priceMin: 0, priceMax: 200, currency: "ZAR" }), {
+      min: 200,
+      max: 200,
+      currency: "ZAR",
+    });
     assert.deepEqual(await priceOf(page, { priceMin: 80, priceMax: 200, currency: "ZAR" }), {
       min: 80,
       max: 200,
