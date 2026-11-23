@@ -1,5 +1,3 @@
-/* global process */
-
 // The API on a measurement database, with no jobs: the same app as apps/api/src/server.ts, minus the scheduler, so
 // nothing fetches a source or calls a model while requests are timed.
 //

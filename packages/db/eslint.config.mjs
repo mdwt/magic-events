@@ -16,4 +16,11 @@ export default defineConfig([
     },
   },
   { files: ["**/*.mjs"], extends: [tseslint.configs.disableTypeChecked] },
+  // The measurement scripts run on Node, as plain JavaScript, so they are given the Node globals they use.
+  {
+    files: ["perf/**/*.mjs"],
+    languageOptions: {
+      globals: { process: "readonly", console: "readonly", fetch: "readonly", performance: "readonly", setTimeout: "readonly" },
+    },
+  },
 ]);

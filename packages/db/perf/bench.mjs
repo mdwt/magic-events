@@ -1,5 +1,3 @@
-/* global process, console, fetch, performance, setTimeout */
-
 // Times the client's requests against a running API (see serve.mjs): each scenario once to warm up, then RUNS times
 // one after another. Prints the median and the worst, in milliseconds, with the status and the total returned.
 //
