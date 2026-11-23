@@ -179,6 +179,7 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
     organizations: deps.services.organizations,
     allowedHosts: settings.allowedHosts,
     allowedOrigin: settings.corsOrigin,
+    isUnavailable: deps.isUnavailable,
   });
   await app.register(catalogueRoutes, { prefix: "/v1", catalogue: deps.services.catalogue });
   await app.register(organizationsRoutes, { prefix: "/v1", organizations: deps.services.organizations });

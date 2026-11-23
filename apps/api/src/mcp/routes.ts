@@ -74,7 +74,8 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
   organizations: Organizations;
   allowedHosts: string[];
   allowedOrigin: string;
-}> = (app, { identity, catalogue, organizations, allowedHosts, allowedOrigin }) => {
+  isUnavailable: (error: unknown) => boolean;
+}> = (app, { identity, catalogue, organizations, allowedHosts, allowedOrigin, isUnavailable }) => {
   const guard = guardHostAndOrigin(allowedHosts, allowedOrigin);
 
   app.post(
@@ -104,7 +105,10 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
       },
     },
     async (request, reply) => {
-      const server = createMcpServer({ caller: request.caller, identity, logger: request.log }, { catalogue, organizations });
+      const server = createMcpServer(
+        { caller: request.caller, identity, logger: request.log, requestId: request.id, isUnavailable },
+        { catalogue, organizations },
+      );
       const transport = new WebStandardStreamableHTTPServerTransport({
         sessionIdGenerator: undefined,
         enableJsonResponse: true,

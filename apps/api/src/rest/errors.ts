@@ -24,6 +24,7 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
 export const MESSAGES = {
   internal: "Something went wrong on our side. Quote the request ID if you report it.",
   invalidInput: "The request is not valid.",
+  invalidArguments: "The arguments do not fit the tool's input schema. The details say which fields are wrong and why.",
   notFound: "There is nothing at this address.",
 } as const;
 

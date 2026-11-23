@@ -7,7 +7,7 @@ import { CredentialRateLimitedError } from "@magic-events/core/identity/ports.ts
 import { isDatabaseUnavailable } from "@magic-events/core/adapters/storage/unavailable.ts";
 import { AppError, UNAVAILABLE_RETRY_AFTER_SECONDS, unavailable } from "@magic-events/core/shared/errors.ts";
 import type { Logger } from "@magic-events/core/shared/logger.ts";
-import { TOOL_FAILED_MESSAGE, toolError } from "../src/mcp/tool.ts";
+import { toolError } from "../src/mcp/tool.ts";
 import { MESSAGES, toErrorReply } from "../src/rest/errors.ts";
 
 // How failures map to what a caller sees, over REST and MCP, with no database.
@@ -123,19 +123,28 @@ test("over MCP, an AppError is a tool error with its message, and anything else 
     child: () => logger,
   };
 
-  const refused = toolError(new AppError("forbidden", "You may not do this."), "search_experiences", logger);
+  const deps = { logger, requestId: "trip-42", isUnavailable: isDatabaseUnavailable };
+  const textOf = (result: ReturnType<typeof toolError>) => (result.content[0]?.type === "text" ? result.content[0].text : "");
+
+  const refused = toolError(new AppError("forbidden", "You may not do this."), "search_experiences", deps);
   assert.equal(refused.isError, true);
-  assert.deepEqual(JSON.parse(refused.content[0]?.type === "text" ? refused.content[0].text : ""), {
-    error: { code: "forbidden", message: "You may not do this.", details: [] },
+  assert.deepEqual(JSON.parse(textOf(refused)), {
+    error: { code: "forbidden", message: "You may not do this.", details: [], requestId: "trip-42" },
   });
 
-  const failed = toolError(new Error("connection to postgres lost"), "search_experiences", logger);
+  const failed = toolError(new Error("connection to postgres lost"), "search_experiences", deps);
   assert.equal(failed.isError, true);
-  const text = failed.content[0]?.type === "text" ? failed.content[0].text : "";
-  assert.doesNotMatch(text, /postgres/);
-  assert.match(text, new RegExp(TOOL_FAILED_MESSAGE.slice(0, 20)));
+  assert.doesNotMatch(textOf(failed), /postgres/);
+  assert.deepEqual(JSON.parse(textOf(failed)), {
+    error: { code: "internal_error", message: MESSAGES.internal, details: [], requestId: "trip-42" },
+  });
+
+  const outage = Object.assign(new Error("Failed query"), { cause: Object.assign(new Error("x"), { code: "ECONNREFUSED" }) });
+  const down = JSON.parse(textOf(toolError(outage, "search_experiences", deps))) as { error: { code: string } };
+  assert.equal(down.error.code, "unavailable");
+
   assert.deepEqual(
     logged.map((line) => line.level),
-    ["warn", "error"],
+    ["warn", "error", "error"],
   );
 });

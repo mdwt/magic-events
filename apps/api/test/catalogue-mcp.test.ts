@@ -121,9 +121,35 @@ describe("MCP search_experiences", () => {
       arguments: { ...search, near: { lat: 123, lng: 19.2345 } },
     });
     assert.equal(called.isError, true);
-    const text = called.content.map((part) => part.text).join(" ");
-    assert.match(text, /near/);
-    assert.match(text, /lat/);
+    // The REST API's error format, with the field named, so an agent can correct its call.
+    const answer = JSON.parse(called.content[0]?.text ?? "{}") as {
+      error: { code: string; message: string; details: { path: string; message: string }[]; requestId: string };
+    };
+    assert.equal(answer.error.code, "invalid_input");
+    assert.deepEqual(
+      answer.error.details.map((detail) => detail.path),
+      ["near.lat"],
+    );
+    assert.ok(answer.error.requestId.length > 0);
+  });
+
+  test("an unknown argument is invalid_input that names it", async () => {
+    const called = await result<ToolResult>("tools/call", {
+      name: "search_experiences",
+      arguments: { ...search, colour: "blue" },
+    });
+    assert.equal(called.isError, true);
+    const answer = JSON.parse(called.content[0]?.text ?? "{}") as { error: { code: string; details: unknown[] } };
+    assert.equal(answer.error.code, "invalid_input");
+    assert.deepEqual(answer.error.details, [{ path: "colour", message: "Unknown field." }]);
+  });
+
+  test("a tool that does not exist is a JSON-RPC invalid params error", async () => {
+    const response = await mcp("tools/call", { name: "no_such_tool", arguments: {} });
+    assert.equal(response.statusCode, 200);
+    const body = response.json<{ error?: { code: number; message: string } }>();
+    assert.equal(body.error?.code, -32602);
+    assert.match(body.error.message, /no_such_tool/);
   });
 
   test("a refused search comes back as a tool error that names the limit", async () => {

@@ -4,7 +4,7 @@ import type { Organizations } from "@magic-events/core/organizations/ports.ts";
 import { registerCatalogueTools } from "./tools/catalogue.ts";
 import { registerIdentityTools } from "./tools/identity.ts";
 import { registerOrganizationsTools } from "./tools/organizations.ts";
-import type { ToolDeps } from "./tool.ts";
+import { answerToolCalls, type ToolDeps } from "./tool.ts";
 
 export const MCP_SERVER_NAME = "magic-events";
 
@@ -26,5 +26,6 @@ export function createMcpServer(
   registerCatalogueTools(server, deps, services.catalogue);
   registerOrganizationsTools(server, deps, services.organizations);
   registerIdentityTools(server, deps);
+  answerToolCalls(server, deps);
   return server;
 }
