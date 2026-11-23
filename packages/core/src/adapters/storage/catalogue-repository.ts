@@ -148,7 +148,12 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       const [records, changes] = await Promise.all([
         toRecords(db, page, sessions, reported),
         db
-          .select({ experienceId: experienceChange.experienceId, kind: experienceChange.kind, at: experienceChange.changedAt })
+          .select({
+            experienceId: experienceChange.experienceId,
+            kind: experienceChange.kind,
+            at: experienceChange.changedAt,
+            previous: experienceChange.previous,
+          })
           .from(experienceChange)
           .where(
             and(
@@ -164,8 +169,8 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
         (record): ChangedExperienceRecord => ({
           experience: record,
           movedOut: movedOutIds.includes(record.id),
-          changes: (changesOf.get(record.id) ?? []).flatMap(({ kind, at }) =>
-            kind === "past" ? [] : [{ kind, at: at.toISOString() }],
+          changes: (changesOf.get(record.id) ?? []).flatMap(({ kind, at, previous }) =>
+            kind === "past" ? [] : [{ kind, at: at.toISOString(), previous: previous ?? null }],
           ),
         }),
       );

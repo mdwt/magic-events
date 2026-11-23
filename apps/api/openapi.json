@@ -3508,7 +3508,7 @@
         "tags": [
           "Experiences"
         ],
-        "description": "What changed since you last searched, among the experiences the same search selects: new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed. Give the same search, without its query text, and since: when you last searched. An empty answer means nothing changed. Cancelled and removed experiences are reported, though search no longer returns them; experiences that are over are not. An experience that was on during the stay when you searched, and is not now, is reported with movedOut true and the sessions it has now, outside the stay. Each result has the change that matters most to a planner and every change since, newest first. The most recent change comes first.",
+        "description": "What changed since you last searched, among the experiences the same search selects: new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed. Give the same search, without its query text, and since: when you last searched. An empty answer means nothing changed. Cancelled and removed experiences are reported, though search no longer returns them; experiences that are over are not. An experience that was on during the stay when you searched, and is not now, is reported with movedOut true and the sessions it has now, outside the stay. Each result has the change that matters most to a planner and every change since, newest first. Each change names the fields it changed, and gives what they were before in the experience's own shapes, beside the experience as it is now. The most recent change comes first.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4089,11 +4089,311 @@
                                 "format": "date-time",
                                 "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
                                 "description": "When it changed."
+                              },
+                              "fields": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "title",
+                                    "status",
+                                    "booking",
+                                    "type",
+                                    "sessions",
+                                    "price",
+                                    "venue",
+                                    "openingHours",
+                                    "onSaleAt",
+                                    "bookingClosesAt",
+                                    "bookingUrl",
+                                    "pageUrl",
+                                    "imageUrl",
+                                    "summary",
+                                    "description",
+                                    "attributes"
+                                  ]
+                                },
+                                "description": "Which of the experience's fields this change changed, by their names in the experience, such as price, booking or sessions. Empty for new, and for a change only to what is not shown, such as its tags."
+                              },
+                              "previous": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "title": {
+                                        "description": "Its title before this change.",
+                                        "type": "string"
+                                      },
+                                      "status": {
+                                        "description": "Its status before this change.",
+                                        "type": "string",
+                                        "enum": [
+                                          "expected",
+                                          "announced",
+                                          "confirmed",
+                                          "postponed",
+                                          "cancelled",
+                                          "removed",
+                                          "past"
+                                        ]
+                                      },
+                                      "booking": {
+                                        "description": "Its booking before this change, such as open.",
+                                        "type": "string",
+                                        "enum": [
+                                          "none",
+                                          "not_yet",
+                                          "open",
+                                          "sold_out",
+                                          "closed"
+                                        ]
+                                      },
+                                      "type": {
+                                        "description": "Its type before this change: single, run or recurring.",
+                                        "type": "string",
+                                        "enum": [
+                                          "single",
+                                          "run",
+                                          "recurring"
+                                        ]
+                                      },
+                                      "sessions": {
+                                        "description": "The sessions it was on during the stay asked for, before this change: compare them with the experience's sessions to see which dates were added, moved, cancelled or removed. Empty when it was on none of those days, as when only a date outside the stay changed.",
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "startDate": {
+                                              "type": "string",
+                                              "format": "date",
+                                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$",
+                                              "description": "The first day it is on, as YYYY-MM-DD. For month or year precision, the month's or year's first day."
+                                            },
+                                            "endDate": {
+                                              "type": "string",
+                                              "format": "date",
+                                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$",
+                                              "description": "The last day of this stretch, as YYYY-MM-DD: the start day for a single day. For month or year precision, the month's or year's last day."
+                                            },
+                                            "precision": {
+                                              "type": "string",
+                                              "enum": [
+                                                "day",
+                                                "month",
+                                                "year"
+                                              ],
+                                              "description": "Month or year means the experience is on in that month or year and its days are not announced yet."
+                                            },
+                                            "startTime": {
+                                              "description": "When it starts, as HH:MM in the experience's timezone. Empty when not stated.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            },
+                                            "endTime": {
+                                              "description": "When it ends, as HH:MM in the experience's timezone. Empty when not stated.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            },
+                                            "label": {
+                                              "description": "The source's name for this date, such as \"Opening night\". Empty when there is none.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            },
+                                            "soldOut": {
+                                              "description": "True when this date was sold out. Left out when the change's record does not say.",
+                                              "type": "boolean"
+                                            }
+                                          },
+                                          "required": [
+                                            "startDate",
+                                            "endDate",
+                                            "precision",
+                                            "startTime",
+                                            "endTime",
+                                            "label"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      },
+                                      "price": {
+                                        "description": "Its price before this change, as { min, max, currency }. 0 and 0 is free; empty is no price stated.",
+                                        "type": "object",
+                                        "properties": {
+                                          "min": {
+                                            "description": "The lowest price, in its currency.",
+                                            "type": [
+                                              "number",
+                                              "null"
+                                            ]
+                                          },
+                                          "max": {
+                                            "description": "The highest price, in its currency.",
+                                            "type": [
+                                              "number",
+                                              "null"
+                                            ]
+                                          },
+                                          "currency": {
+                                            "description": "The currency's code, such as ZAR.",
+                                            "type": [
+                                              "string",
+                                              "null"
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "min",
+                                          "max",
+                                          "currency"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      "venue": {
+                                        "description": "Its venue before this change.",
+                                        "type": "object",
+                                        "properties": {
+                                          "name": {
+                                            "description": "The venue's name. Empty when not stated.",
+                                            "type": [
+                                              "string",
+                                              "null"
+                                            ]
+                                          },
+                                          "address": {
+                                            "description": "The venue's street address. Empty when not stated.",
+                                            "type": [
+                                              "string",
+                                              "null"
+                                            ]
+                                          },
+                                          "city": {
+                                            "description": "The town or city the venue is in. Empty when not stated.",
+                                            "type": [
+                                              "string",
+                                              "null"
+                                            ]
+                                          },
+                                          "position": {
+                                            "anyOf": [
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "lat": {
+                                                    "type": "number",
+                                                    "description": "Latitude in decimal degrees."
+                                                  },
+                                                  "lng": {
+                                                    "type": "number",
+                                                    "description": "Longitude in decimal degrees."
+                                                  }
+                                                },
+                                                "required": [
+                                                  "lat",
+                                                  "lng"
+                                                ],
+                                                "additionalProperties": false
+                                              },
+                                              {
+                                                "type": "null"
+                                              }
+                                            ],
+                                            "description": "The venue's own coordinates, when the source states them. When empty, distanceKm is measured from the location's centre."
+                                          }
+                                        },
+                                        "required": [
+                                          "name",
+                                          "address",
+                                          "city",
+                                          "position"
+                                        ],
+                                        "additionalProperties": false
+                                      },
+                                      "openingHours": {
+                                        "description": "Its opening hours before this change. Empty: none stated.",
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "onSaleAt": {
+                                        "description": "When booking was to open, before this change, as an ISO timestamp. Empty: not known then.",
+                                        "anyOf": [
+                                          {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                                          },
+                                          {
+                                            "type": "null"
+                                          }
+                                        ]
+                                      },
+                                      "bookingClosesAt": {
+                                        "description": "When booking was to close, before this change, as an ISO timestamp. Empty: not known then.",
+                                        "anyOf": [
+                                          {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                                          },
+                                          {
+                                            "type": "null"
+                                          }
+                                        ]
+                                      },
+                                      "bookingUrl": {
+                                        "description": "Where to book it, before this change. Empty: no link then.",
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "pageUrl": {
+                                        "description": "Its own page, before this change. Empty: none then.",
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "attributes": {
+                                        "description": "Its attribute values by key before this change, such as its categories and tier.",
+                                        "type": "object",
+                                        "propertyNames": {
+                                          "type": "string"
+                                        },
+                                        "additionalProperties": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": [
+                                              "string",
+                                              "number",
+                                              "boolean"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "additionalProperties": false,
+                                    "description": "What the changed fields were before this change, each in the shape the experience has it, so the experience beside it gives the value now."
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ],
+                                "description": "What those fields were before this change. Empty for new: there was nothing before."
                               }
                             },
                             "required": [
                               "kind",
-                              "at"
+                              "at",
+                              "fields",
+                              "previous"
                             ],
                             "additionalProperties": false,
                             "description": "The change that matters most to a planner."
@@ -4121,11 +4421,311 @@
                                   "format": "date-time",
                                   "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
                                   "description": "When it changed."
+                                },
+                                "fields": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "enum": [
+                                      "title",
+                                      "status",
+                                      "booking",
+                                      "type",
+                                      "sessions",
+                                      "price",
+                                      "venue",
+                                      "openingHours",
+                                      "onSaleAt",
+                                      "bookingClosesAt",
+                                      "bookingUrl",
+                                      "pageUrl",
+                                      "imageUrl",
+                                      "summary",
+                                      "description",
+                                      "attributes"
+                                    ]
+                                  },
+                                  "description": "Which of the experience's fields this change changed, by their names in the experience, such as price, booking or sessions. Empty for new, and for a change only to what is not shown, such as its tags."
+                                },
+                                "previous": {
+                                  "anyOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "title": {
+                                          "description": "Its title before this change.",
+                                          "type": "string"
+                                        },
+                                        "status": {
+                                          "description": "Its status before this change.",
+                                          "type": "string",
+                                          "enum": [
+                                            "expected",
+                                            "announced",
+                                            "confirmed",
+                                            "postponed",
+                                            "cancelled",
+                                            "removed",
+                                            "past"
+                                          ]
+                                        },
+                                        "booking": {
+                                          "description": "Its booking before this change, such as open.",
+                                          "type": "string",
+                                          "enum": [
+                                            "none",
+                                            "not_yet",
+                                            "open",
+                                            "sold_out",
+                                            "closed"
+                                          ]
+                                        },
+                                        "type": {
+                                          "description": "Its type before this change: single, run or recurring.",
+                                          "type": "string",
+                                          "enum": [
+                                            "single",
+                                            "run",
+                                            "recurring"
+                                          ]
+                                        },
+                                        "sessions": {
+                                          "description": "The sessions it was on during the stay asked for, before this change: compare them with the experience's sessions to see which dates were added, moved, cancelled or removed. Empty when it was on none of those days, as when only a date outside the stay changed.",
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "startDate": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$",
+                                                "description": "The first day it is on, as YYYY-MM-DD. For month or year precision, the month's or year's first day."
+                                              },
+                                              "endDate": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$",
+                                                "description": "The last day of this stretch, as YYYY-MM-DD: the start day for a single day. For month or year precision, the month's or year's last day."
+                                              },
+                                              "precision": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "day",
+                                                  "month",
+                                                  "year"
+                                                ],
+                                                "description": "Month or year means the experience is on in that month or year and its days are not announced yet."
+                                              },
+                                              "startTime": {
+                                                "description": "When it starts, as HH:MM in the experience's timezone. Empty when not stated.",
+                                                "type": [
+                                                  "string",
+                                                  "null"
+                                                ]
+                                              },
+                                              "endTime": {
+                                                "description": "When it ends, as HH:MM in the experience's timezone. Empty when not stated.",
+                                                "type": [
+                                                  "string",
+                                                  "null"
+                                                ]
+                                              },
+                                              "label": {
+                                                "description": "The source's name for this date, such as \"Opening night\". Empty when there is none.",
+                                                "type": [
+                                                  "string",
+                                                  "null"
+                                                ]
+                                              },
+                                              "soldOut": {
+                                                "description": "True when this date was sold out. Left out when the change's record does not say.",
+                                                "type": "boolean"
+                                              }
+                                            },
+                                            "required": [
+                                              "startDate",
+                                              "endDate",
+                                              "precision",
+                                              "startTime",
+                                              "endTime",
+                                              "label"
+                                            ],
+                                            "additionalProperties": false
+                                          }
+                                        },
+                                        "price": {
+                                          "description": "Its price before this change, as { min, max, currency }. 0 and 0 is free; empty is no price stated.",
+                                          "type": "object",
+                                          "properties": {
+                                            "min": {
+                                              "description": "The lowest price, in its currency.",
+                                              "type": [
+                                                "number",
+                                                "null"
+                                              ]
+                                            },
+                                            "max": {
+                                              "description": "The highest price, in its currency.",
+                                              "type": [
+                                                "number",
+                                                "null"
+                                              ]
+                                            },
+                                            "currency": {
+                                              "description": "The currency's code, such as ZAR.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "min",
+                                            "max",
+                                            "currency"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        "venue": {
+                                          "description": "Its venue before this change.",
+                                          "type": "object",
+                                          "properties": {
+                                            "name": {
+                                              "description": "The venue's name. Empty when not stated.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            },
+                                            "address": {
+                                              "description": "The venue's street address. Empty when not stated.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            },
+                                            "city": {
+                                              "description": "The town or city the venue is in. Empty when not stated.",
+                                              "type": [
+                                                "string",
+                                                "null"
+                                              ]
+                                            },
+                                            "position": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "lat": {
+                                                      "type": "number",
+                                                      "description": "Latitude in decimal degrees."
+                                                    },
+                                                    "lng": {
+                                                      "type": "number",
+                                                      "description": "Longitude in decimal degrees."
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "lat",
+                                                    "lng"
+                                                  ],
+                                                  "additionalProperties": false
+                                                },
+                                                {
+                                                  "type": "null"
+                                                }
+                                              ],
+                                              "description": "The venue's own coordinates, when the source states them. When empty, distanceKm is measured from the location's centre."
+                                            }
+                                          },
+                                          "required": [
+                                            "name",
+                                            "address",
+                                            "city",
+                                            "position"
+                                          ],
+                                          "additionalProperties": false
+                                        },
+                                        "openingHours": {
+                                          "description": "Its opening hours before this change. Empty: none stated.",
+                                          "type": [
+                                            "string",
+                                            "null"
+                                          ]
+                                        },
+                                        "onSaleAt": {
+                                          "description": "When booking was to open, before this change, as an ISO timestamp. Empty: not known then.",
+                                          "anyOf": [
+                                            {
+                                              "type": "string",
+                                              "format": "date-time",
+                                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                                            },
+                                            {
+                                              "type": "null"
+                                            }
+                                          ]
+                                        },
+                                        "bookingClosesAt": {
+                                          "description": "When booking was to close, before this change, as an ISO timestamp. Empty: not known then.",
+                                          "anyOf": [
+                                            {
+                                              "type": "string",
+                                              "format": "date-time",
+                                              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                                            },
+                                            {
+                                              "type": "null"
+                                            }
+                                          ]
+                                        },
+                                        "bookingUrl": {
+                                          "description": "Where to book it, before this change. Empty: no link then.",
+                                          "type": [
+                                            "string",
+                                            "null"
+                                          ]
+                                        },
+                                        "pageUrl": {
+                                          "description": "Its own page, before this change. Empty: none then.",
+                                          "type": [
+                                            "string",
+                                            "null"
+                                          ]
+                                        },
+                                        "attributes": {
+                                          "description": "Its attribute values by key before this change, such as its categories and tier.",
+                                          "type": "object",
+                                          "propertyNames": {
+                                            "type": "string"
+                                          },
+                                          "additionalProperties": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": [
+                                                "string",
+                                                "number",
+                                                "boolean"
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "additionalProperties": false,
+                                      "description": "What the changed fields were before this change, each in the shape the experience has it, so the experience beside it gives the value now."
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "description": "What those fields were before this change. Empty for new: there was nothing before."
                                 }
                               },
                               "required": [
                                 "kind",
-                                "at"
+                                "at",
+                                "fields",
+                                "previous"
                               ],
                               "additionalProperties": false
                             },

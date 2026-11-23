@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import { reportedChange } from "../src/catalogue/changes.ts";
+import { changeOf, reportedChange } from "../src/catalogue/changes.ts";
 import {
   experienceChangesInputSchema,
   type ChangedExperienceRecord,
@@ -19,8 +19,9 @@ function changesInput(overrides: object = {}) {
   return experienceChangesInputSchema.parse({ ...params, since: "2026-10-01T09:00:00Z", ...overrides });
 }
 
+// A change as reported, for a change row that holds no previous values: none for new, an empty set otherwise.
 function change(kind: ReportedChange["kind"], day: string): ReportedChange {
-  return { kind, at: `2026-${day}T10:00:00.000Z` };
+  return { kind, at: `2026-${day}T10:00:00.000Z`, fields: [], previous: kind === "new" ? null : {} };
 }
 
 function record(
@@ -58,7 +59,7 @@ function record(
       updatedAt: changes[0]?.at ?? "2026-10-01T10:00:00.000Z",
     },
     movedOut,
-    changes,
+    changes: changes.map(({ kind, at }) => ({ kind, at, previous: kind === "new" ? null : {} })),
   };
 }
 
@@ -289,5 +290,141 @@ describe("an experience that moved out of the dates", () => {
       ],
     );
     assert.deepEqual(result.items[0]?.experience.sessions.map((session) => session.startDate), ["2027-08-14"]);
+  });
+});
+
+describe("what each change says it changed, and what that was before", () => {
+  // The previous values as the change rows hold them, from nine changes made to the Hermanus feed on 23 November
+  // 2026, read for a stay in December 2026.
+  const AT = "2026-11-23T17:21:00.000Z";
+  const december = { from: "2026-12-01", to: "2026-12-31" };
+  const read = (kind: ReportedChange["kind"], previous: Record<string, unknown> | null) =>
+    changeOf({ kind, at: AT, previous }, december);
+  const listed = (startDate: string, startTime: string | null, endTime: string | null) => ({
+    label: null,
+    origin: "listed",
+    status: "scheduled",
+    endDate: startDate,
+    endTime,
+    soldOut: false,
+    precision: "day",
+    startDate,
+    startTime,
+  });
+  const shown = (startDate: string, startTime: string | null, endTime: string | null) => ({
+    startDate,
+    endDate: startDate,
+    precision: "day",
+    startTime,
+    endTime,
+    label: null,
+    soldOut: false,
+  });
+
+  test("cancelled: its status and booking before", () => {
+    assert.deepEqual(read("cancelled", { status: "confirmed", booking: "open" }), {
+      kind: "cancelled",
+      at: AT,
+      fields: ["status", "booking"],
+      previous: { status: "confirmed", booking: "open" },
+    });
+  });
+
+  test("postponed: its status and booking before", () => {
+    const change = read("postponed", { status: "confirmed", booking: "open" });
+    assert.deepEqual([change.fields, change.previous], [["status", "booking"], { status: "confirmed", booking: "open" }]);
+  });
+
+  test("rescheduled: the sessions it had, with times as HH:MM, and no tags or seasons", () => {
+    const change = read("rescheduled", {
+      tags: ["south-african-school-holidays", "summer"],
+      sessions: [listed("2026-12-14", "19:00:00", "20:30:00")],
+    });
+    assert.deepEqual(change.fields, ["sessions"]);
+    assert.deepEqual(change.previous, { sessions: [shown("2026-12-14", "19:00", "20:30")] });
+  });
+
+  test("sold out: its booking before", () => {
+    const change = read("changed", { booking: "open" });
+    assert.deepEqual([change.fields, change.previous], [["booking"], { booking: "open" }]);
+  });
+
+  test("a price rise: the price before, as { min, max, currency }", () => {
+    const change = read("changed", { price: { max: 200, min: 200, currency: "ZAR" } });
+    assert.deepEqual([change.fields, change.previous], [["price"], { price: { min: 200, max: 200, currency: "ZAR" } }]);
+  });
+
+  test("tickets on sale: confirmed, with the status and booking before", () => {
+    const change = read("confirmed", { status: "announced", booking: "not_yet" });
+    assert.deepEqual(
+      [change.kind, change.fields, change.previous],
+      ["confirmed", ["status", "booking"], { status: "announced", booking: "not_yet" }],
+    );
+  });
+
+  test("one session of three cancelled: the three it was on before", () => {
+    const change = read("changed", {
+      sessions: [
+        listed("2026-12-11", "10:00:00", "21:30:00"),
+        listed("2026-12-12", null, null),
+        listed("2026-12-13", null, null),
+      ],
+    });
+    assert.deepEqual(change.fields, ["sessions"]);
+    assert.deepEqual(change.previous, {
+      sessions: [shown("2026-12-11", "10:00", "21:30"), shown("2026-12-12", null, null), shown("2026-12-13", null, null)],
+    });
+  });
+
+  test("a listing that disappeared: removed, with its status and booking before and no source link", () => {
+    const change = read("removed", {
+      status: "confirmed",
+      booking: "open",
+      listingIds: ["3602b99e-bd90-412b-9bc8-d4f1f7076f34"],
+    });
+    assert.deepEqual([change.fields, change.previous], [["status", "booking"], { status: "confirmed", booking: "open" }]);
+  });
+
+  test("an on-sale date appearing: onSaleAt, which was empty", () => {
+    const change = read("changed", { onSaleAt: null });
+    assert.deepEqual([change.fields, change.previous], [["onSaleAt"], { onSaleAt: null }]);
+  });
+
+  test("new has no fields and nothing before", () => {
+    assert.deepEqual(read("new", null), { kind: "new", at: AT, fields: [], previous: null });
+  });
+
+  test("only sessions during the stay, and only ones that were on, are given as before", () => {
+    const cancelled = { ...listed("2026-12-20", null, null), status: "cancelled" };
+    const change = read("rescheduled", { sessions: [listed("2027-01-10", null, null), cancelled] });
+    assert.deepEqual(change.previous, { sessions: [] });
+  });
+
+  test("long text and the image are named with no value before; a change only to tags names nothing", () => {
+    const text = read("changed", { summary: "Old.", description: "Old text.", imageUrl: "https://example.com/a.jpg" });
+    assert.deepEqual([text.fields, text.previous], [["imageUrl", "summary", "description"], {}]);
+    const tags = read("changed", { tags: ["jazz"], listingIds: ["a"] });
+    assert.deepEqual([tags.fields, tags.previous], [[], {}]);
+  });
+
+  test("a changed recurrence names the sessions, and an old row that holds only the rule gives none before", () => {
+    const change = read("rescheduled", { recurrence: { rule: "FREQ=WEEKLY;BYDAY=SA", start: "2026-11-01" } });
+    assert.deepEqual([change.fields, change.previous], [["sessions"], {}]);
+  });
+
+  test("attributes, the venue and links are given before, in the experience's shapes", () => {
+    const change = read("changed", {
+      attributes: { audience: ["family"] },
+      venue: { name: "Old hall", address: null, city: "Hermanus", position: null },
+      bookingUrl: null,
+      pageUrl: "https://example.com/old",
+    });
+    assert.deepEqual(change.fields, ["venue", "bookingUrl", "pageUrl", "attributes"]);
+    assert.deepEqual(change.previous, {
+      venue: { name: "Old hall", address: null, city: "Hermanus", position: null },
+      bookingUrl: null,
+      pageUrl: "https://example.com/old",
+      attributes: { audience: ["family"] },
+    });
   });
 });

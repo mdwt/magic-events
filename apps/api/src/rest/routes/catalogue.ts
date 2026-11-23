@@ -49,7 +49,9 @@ export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = 
           "experiences are reported, though search no longer returns them; experiences that are over are not. An " +
           "experience that was on during the stay when you searched, and is not now, is reported with movedOut " +
           "true and the sessions it has now, outside the stay. Each result has the change that matters most to a " +
-          "planner and every change since, newest first. The most recent change comes first.",
+          "planner and every change since, newest first. Each change names the fields it changed, and gives what " +
+          "they were before in the experience's own shapes, beside the experience as it is now. The most recent " +
+          "change comes first.",
         tags: ["Experiences"],
         body: experienceChangesInputSchema,
         response: { 200: experienceChangesResultSchema, ...errorResponses, ...bodyErrorResponses },

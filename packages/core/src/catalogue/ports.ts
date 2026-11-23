@@ -570,6 +570,81 @@ export const experienceChangesInputSchema = searchExperiencesInputSchema
   });
 export type ExperienceChangesInput = z.infer<typeof experienceChangesInputSchema>;
 
+// The experience's fields a change can name, in the words of the result, in the order they are named. Tags and
+// seasons, the profile, the embedding, the source links and the version are worked out by the system or not acted
+// on, so they are never named.
+export const CHANGE_FIELDS = [
+  "title",
+  "status",
+  "booking",
+  "type",
+  "sessions",
+  "price",
+  "venue",
+  "openingHours",
+  "onSaleAt",
+  "bookingClosesAt",
+  "bookingUrl",
+  "pageUrl",
+  "imageUrl",
+  "summary",
+  "description",
+  "attributes",
+] as const;
+export type ChangeField = (typeof CHANGE_FIELDS)[number];
+
+// A session as it was before a change. Old change rows may not say whether it was sold out.
+const previousSessionSchema = sessionResultSchema.extend({
+  soldOut: z
+    .boolean()
+    .optional()
+    .describe("True when this date was sold out. Left out when the change's record does not say."),
+});
+
+// The values a change replaced, for the fields a planner acts on, each in the shape the experience has it. A field
+// is here only when this change changed it and its earlier value is known; summary, description and imageUrl are
+// named in fields and given no earlier value.
+export const previousValuesSchema = z
+  .object({
+    title: z.string().optional().describe("Its title before this change."),
+    status: z.enum(EXPERIENCE_STATUSES).optional().describe("Its status before this change."),
+    booking: z.enum(BOOKING_STATUSES).optional().describe("Its booking before this change, such as open."),
+    type: z.enum(EXPERIENCE_TYPES).optional().describe("Its type before this change: single, run or recurring."),
+    sessions: z
+      .array(previousSessionSchema)
+      .optional()
+      .describe(
+        "The sessions it was on during the stay asked for, before this change: compare them with the experience's " +
+          "sessions to see which dates were added, moved, cancelled or removed. Empty when it was on none of those " +
+          "days, as when only a date outside the stay changed.",
+      ),
+    price: experienceRecordSchema.shape.price
+      .optional()
+      .describe("Its price before this change, as { min, max, currency }. 0 and 0 is free; empty is no price stated."),
+    venue: experienceRecordSchema.shape.venue.optional().describe("Its venue before this change."),
+    openingHours: z.string().nullable().optional().describe("Its opening hours before this change. Empty: none stated."),
+    onSaleAt: z.iso
+      .datetime()
+      .nullable()
+      .optional()
+      .describe("When booking was to open, before this change, as an ISO timestamp. Empty: not known then."),
+    bookingClosesAt: z.iso
+      .datetime()
+      .nullable()
+      .optional()
+      .describe("When booking was to close, before this change, as an ISO timestamp. Empty: not known then."),
+    bookingUrl: z.string().nullable().optional().describe("Where to book it, before this change. Empty: no link then."),
+    pageUrl: z.string().nullable().optional().describe("Its own page, before this change. Empty: none then."),
+    attributes: experienceRecordSchema.shape.attributes
+      .optional()
+      .describe("Its attribute values by key before this change, such as its categories and tier."),
+  })
+  .describe(
+    "What the changed fields were before this change, each in the shape the experience has it, so the experience " +
+      "beside it gives the value now.",
+  );
+export type PreviousValues = z.infer<typeof previousValuesSchema>;
+
 export const reportedChangeSchema = z.object({
   kind: z
     .enum(REPORTED_CHANGE_KINDS)
@@ -579,6 +654,15 @@ export const reportedChangeSchema = z.object({
         "removed: no source lists it any more. changed: anything else, booking and price included.",
     ),
   at: z.iso.datetime().describe("When it changed."),
+  fields: z
+    .array(z.enum(CHANGE_FIELDS))
+    .describe(
+      "Which of the experience's fields this change changed, by their names in the experience, such as price, " +
+        "booking or sessions. Empty for new, and for a change only to what is not shown, such as its tags.",
+    ),
+  previous: previousValuesSchema
+    .nullable()
+    .describe("What those fields were before this change. Empty for new: there was nothing before."),
 });
 export type ReportedChange = z.infer<typeof reportedChangeSchema>;
 
@@ -631,8 +715,9 @@ export interface ChangedExperienceRecord {
   // True when it was matched on the sessions it had before a change after the time given, and has none in the dates
   // now. Its sessions are then the ones it has now.
   movedOut: boolean;
-  // Its changes after the time given, newest first. Moves to Past are left out.
-  changes: { kind: Exclude<ChangeKind, "past">; at: string }[];
+  // Its changes after the time given, newest first, each with the previous values its change row holds. Moves to Past
+  // are left out.
+  changes: { kind: Exclude<ChangeKind, "past">; at: string; previous: Record<string, unknown> | null }[];
 }
 
 // ---- Upkeep ----

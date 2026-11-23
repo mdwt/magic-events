@@ -88,7 +88,9 @@ happened:
 - cancelled: its organisers called it off.
 - removed: no source lists it any more, and why is not known. Treat it as not happening unless you confirm otherwise.
 - changed: anything else, such as the price, the venue, or booking opening or closing.
-changes lists every change since then, newest first.
+changes lists every change since then, newest first. Each change names in fields what it changed, such as \
+price, booking or sessions, and gives in previous what those were before, in the experience's own shapes: tell the \
+person what it was and what it is now, from previous and the experience beside it.
 
 Every item has movedOut. True means it had a scheduled session inside the dates before a change made after since, \
 and has none there now: treat it as no longer on during the stay. Its sessions are then the ones it has now, all \

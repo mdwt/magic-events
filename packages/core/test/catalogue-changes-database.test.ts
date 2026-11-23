@@ -143,6 +143,15 @@ before(async () => {
   await update("never in", 19, { sessions: evening("2027-10-25") });
   await update("new then moved", 20, { sessions: evening("2027-10-21") });
 
+  // In August 2027: a sell-out, and one night of a run of three cancelled.
+  const nights = ["2027-08-12", "2027-08-13", "2027-08-14"];
+  await create("sold out", 0, { sessions: evening("2027-08-14") });
+  await create("three nights", 0, { type: "run", sessions: nights.flatMap((night) => evening(night)) });
+  await update("sold out", 21, { booking: "sold_out" });
+  await update("three nights", 22, {
+    sessions: nights.flatMap((night) => evening(night, night === "2027-08-13")),
+  });
+
   clock.now = at(30);
 });
 
@@ -172,8 +181,18 @@ describe("checking back on day 30", () => {
   test("an experience changed several times reports what matters most, and lists every change newest first", async () => {
     const [confirmed] = (await changes()).items;
     assert.deepEqual(confirmed?.changes, [
-      { kind: "changed", at: at(13).toISOString() },
-      { kind: "confirmed", at: at(5).toISOString() },
+      {
+        kind: "changed",
+        at: at(13).toISOString(),
+        fields: ["price"],
+        previous: { price: { min: 150, max: 300, currency: "ZAR" } },
+      },
+      {
+        kind: "confirmed",
+        at: at(5).toISOString(),
+        fields: ["status", "booking"],
+        previous: { status: "announced", booking: "not_yet" },
+      },
     ]);
     assert.deepEqual([confirmed.experience.status, confirmed.experience.bookable], ["confirmed", true]);
   });
@@ -301,5 +320,72 @@ describe("an experience that moved out of the dates searched", () => {
       "evening cancelled",
       "market moved out",
     ]);
+  });
+});
+
+describe("what each change says it changed, and what that was before", () => {
+  const byName = async (overrides: Partial<ExperienceChangesInput> = {}) => {
+    const result = experienceChangesResultSchema.parse(await changes(overrides));
+    return new Map(names(result).map((name, index) => [name, result.items[index]]));
+  };
+
+  test("a price rise gives the price before", async () => {
+    const price = (await byName()).get("price");
+    assert.deepEqual([price?.change.kind, price?.change.fields], ["changed", ["price"]]);
+    assert.deepEqual(price?.change.previous, { price: { min: 150, max: 300, currency: "ZAR" } });
+    assert.deepEqual(price.experience.price, { min: 200, max: 400, currency: "ZAR" });
+  });
+
+  test("a reschedule gives the sessions it had during the stay", async () => {
+    const moved = (await byName()).get("rescheduled");
+    assert.deepEqual([moved?.change.kind, moved?.change.fields], ["rescheduled", ["sessions"]]);
+    assert.deepEqual(moved?.change.previous, {
+      sessions: [
+        {
+          startDate: "2027-06-12",
+          endDate: "2027-06-12",
+          precision: "day",
+          startTime: "18:00",
+          endTime: "22:00",
+          label: null,
+          soldOut: false,
+        },
+      ],
+    });
+  });
+
+  test("a removal gives the status and booking before, and names no source link", async () => {
+    const removed = (await byName()).get("removed");
+    assert.deepEqual(
+      [removed?.change.kind, removed?.change.fields, removed?.change.previous],
+      ["removed", ["status", "booking"], { status: "confirmed", booking: "open" }],
+    );
+  });
+
+  test("a sell-out gives the booking before", async () => {
+    const soldOut = (await byName({ from: "2027-08-01", to: "2027-08-31" })).get("sold out");
+    assert.deepEqual(
+      [soldOut?.change.fields, soldOut?.change.previous, soldOut?.experience.booking],
+      [["booking"], { booking: "open" }, "sold_out"],
+    );
+  });
+
+  test("one night of three cancelled gives the three it was on, beside the two it is on now", async () => {
+    const run = (await byName({ from: "2027-08-01", to: "2027-08-31" })).get("three nights");
+    assert.ok(run);
+    assert.deepEqual(run.change.fields, ["sessions"]);
+    assert.deepEqual(
+      (run.change.previous?.sessions ?? []).map((one) => one.startDate),
+      ["2027-08-12", "2027-08-13", "2027-08-14"],
+    );
+    assert.deepEqual(
+      run.experience.sessions.map((one) => one.startDate),
+      ["2027-08-12", "2027-08-14"],
+    );
+  });
+
+  test("new has no fields and nothing before", async () => {
+    const created = (await byName()).get("new");
+    assert.deepEqual([created?.change.kind, created?.change.fields, created?.change.previous], ["new", [], null]);
   });
 });

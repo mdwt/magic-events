@@ -43,7 +43,7 @@ import {
   uniqueSlug,
   type Draft,
 } from "./save.ts";
-import { reportedChange } from "./changes.ts";
+import { changeOf, reportedChange } from "./changes.ts";
 import { checkAttributeFilters, checkTagFilters } from "./filters.ts";
 import type {
   ExperienceChange,
@@ -318,7 +318,8 @@ export class CatalogueService implements Catalogue {
     this.#logger.debug({ query }, "Finding changes");
     const { items, total } = await this.#repository.findChangesSince(query);
 
-    const changed = items.flatMap(({ experience, movedOut, changes }): ExperienceChange[] => {
+    const changed = items.flatMap(({ experience, movedOut, changes: stored }): ExperienceChange[] => {
+      const changes = stored.map((one) => changeOf(one, { from: query.from, to: query.to }));
       const change = reportedChange(changes);
       if (change === null) return [];
       return [
