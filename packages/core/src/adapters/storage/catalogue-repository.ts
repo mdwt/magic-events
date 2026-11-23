@@ -14,6 +14,7 @@ import {
 import {
   and,
   asc,
+  between,
   cosineDistance,
   count,
   desc,
@@ -30,10 +31,12 @@ import {
   max,
   min,
   ne,
+  not,
   notExists,
   notInArray,
   or,
   sql,
+  type AnyColumn,
   type SQL,
 } from "drizzle-orm";
 import {
@@ -882,6 +885,7 @@ function movedOut(db: Db, query: ExperienceChangesQuery): SQL | undefined {
 // The filters search and changed-since share: the place and radius, the attributes and the tags.
 function placeAndClassification(db: Db, query: ExperienceSearchQuery): (SQL | undefined)[] {
   return [
+    withinBounds(db, query.near, query.radiusKm),
     lte(distanceKm(query.near), sql`${query.radiusKm}::double precision`),
     ...Object.entries(query.attributes).map(([key, filter]) => {
       const ofAttribute = and(
@@ -972,6 +976,44 @@ function fusedScore(text: string, embedding: ExperienceSearchQuery["queryEmbeddi
   const semantic = sql`(case when ${inSemantic} then 1.0 / (${FUSION_K} + row_number() over (
     partition by ${inSemantic} order by ${cosineDistance(experience.embedding, embedding.vector)}, ${experience.id})) else 0 end)`;
   return sql`(${semantic} + ${keyword})`;
+}
+
+// Widens the bounds a little, in degrees, so that rounding never leaves out a place the exact distance keeps.
+const BOUNDS_MARGIN = 1e-6;
+
+// The latitudes and longitudes no place within the radius lies outside: a necessary condition for the exact distance,
+// written so that the indexes on the experience's position and on its location can serve it. A place within the
+// angle d of the point is within d of its latitude, and within asin(sin d / cos lat) of its longitude unless the
+// circle reaches a pole, where every longitude is. Across the 180th meridian the longitudes are two ranges.
+// Positions are stored with a latitude from -90 to 90 and a longitude from -180 to 180.
+function withinBounds(db: Db, near: { lat: number; lng: number }, radiusKm: number): SQL | undefined {
+  const angle = radiusKm / EARTH_RADIUS_KM;
+  const degrees = (radians: number) => (radians * 180) / Math.PI;
+  const latDelta = degrees(angle) + BOUNDS_MARGIN;
+  const minLat = near.lat - latDelta;
+  const maxLat = near.lat + latDelta;
+  // Empty when every longitude is within the bounds.
+  let lngRanges: [number, number][] = [];
+  if (minLat > -90 && maxLat < 90) {
+    const lngDelta = degrees(Math.asin(Math.sin(angle) / Math.cos((near.lat * Math.PI) / 180))) + BOUNDS_MARGIN;
+    const minLng = near.lng - lngDelta;
+    const maxLng = near.lng + lngDelta;
+    if (minLng < -180) lngRanges = [[minLng + 360, 180], [-180, maxLng]];
+    else if (maxLng > 180) lngRanges = [[minLng, 180], [-180, maxLng - 360]];
+    else lngRanges = [[minLng, maxLng]];
+  }
+  const inBounds = (lat: AnyColumn, lng: AnyColumn) =>
+    and(
+      between(lat, minLat, maxLat),
+      lngRanges.length === 0 ? undefined : or(...lngRanges.map(([from, to]) => between(lng, from, to))),
+    );
+  const own = sql`(${experience.latitude} is not null and ${experience.longitude} is not null)`;
+  // The locations whose centre is within the bounds, as an array, so the index on the location can serve it.
+  const centres = db.select({ id: location.id }).from(location).where(inBounds(location.latitude, location.longitude));
+  return or(
+    and(own, inBounds(experience.latitude, experience.longitude)),
+    and(not(own), sql`${experience.locationId} = any(array(${centres}))`),
+  );
 }
 
 // Kilometres from the point, by the haversine formula. The experience's own position, or its location's centre.
