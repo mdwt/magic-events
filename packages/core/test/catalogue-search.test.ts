@@ -275,7 +275,7 @@ describe("search by dates", () => {
     assert.deepEqual(sessions("Thursday Theatre"), ["2027-06-10", "2027-06-17"]);
     assert.deepEqual(sessions("Hermanus Country Market"), ["2027-06-12", "2027-06-19"]);
     const market = result.items.find((item) => item.title === "Hermanus Country Market");
-    assert.equal(market?.sessions[0]?.startTime, "09:00:00");
+    assert.equal(market?.sessions[0]?.startTime, "09:00");
   });
 });
 

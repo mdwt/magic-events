@@ -782,8 +782,8 @@ async function toRecords<S extends string>(
         startDate: session.startDate,
         endDate: session.endDate,
         precision: session.precision,
-        startTime: session.startTime,
-        endTime: session.endTime,
+        startTime: hourAndMinute(session.startTime),
+        endTime: hourAndMinute(session.endTime),
         label: session.label,
         soldOut: session.soldOut,
       })),
@@ -791,6 +791,11 @@ async function toRecords<S extends string>(
       updatedAt: row.updatedAt.toISOString(),
     };
   });
+}
+
+// A time as a caller reads it, HH:MM. Postgres stores and returns it with seconds.
+function hourAndMinute(time: string | null): string | null {
+  return time === null ? null : time.slice(0, 5);
 }
 
 // A session that is on during the dates asked for. Cancelled sessions never match.
