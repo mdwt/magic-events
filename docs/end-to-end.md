@@ -31,12 +31,14 @@ The seed prints each key once, when it issues it (`pnpm db:seed`). Keep them for
 
 ### How to run them
 
-- **Two databases.** The scenarios that only read (E2E-01 to E2E-17, E2E-42 and E2E-43) run against the development database as it was sourced on 23 Nov 2026, and the values they quote come from it. Every scenario that changes data runs against an end-to-end database: an empty database, migrated (`pnpm db:migrate`) and seeded (`pnpm db:seed`), with `DATABASE_URL` pointing at it. Never use the test database, which the automated tests empty.
-- **Order on the end-to-end database.** Run E2E-18 to E2E-25 in order, then E2E-26 to E2E-41. E2E-21 records the time T1 that the checking-back scenarios use.
-- **The server.** `pnpm --filter @magic-events/api start`, on `http://localhost:4000`. The fetching and processing jobs need `ANTHROPIC_API_KEY`, and embedding needs `AWS_REGION` and AWS credentials.
+- **The suite.** `pnpm e2e` runs every scenario that needs no person and no outside service, and prints the results table, also written to `apps/e2e/results/latest.md`. It needs Postgres up (`pnpm db:up`) and `psql` on the path, and calls no website, no language model and no Bedrock. `pnpm e2e:live` adds the scenarios that do, with `ANTHROPIC_API_KEY`, `AWS_REGION` and AWS credentials from `.env`. How the suite works is in [apps/e2e](../apps/e2e/README.md).
+- **The end-to-end database.** Every scenario runs against a database of its own, `magic_events_e2e`: created empty, migrated (`pnpm db:migrate`), seeded (`pnpm db:seed`), and loaded from a copy of `data/hermanus` with `captures --no-model`, with `DATABASE_URL` pointing at it. The values below are those of the captured pages. The development database also has what the seeded live sources fetched, and where that changes a value the scenario says so. Never use the development or the test database.
+- **Order.** E2E-01 to E2E-17 and E2E-44 only read, and run first. Then E2E-18 to E2E-21, E2E-26, E2E-22 to E2E-25, and E2E-27 to E2E-43. E2E-21 records the time T1 that the checking-back scenarios use, and E2E-26 asks what changed since T1 before E2E-22 changes anything.
+- **By hand.** E2E-10 needs a person and a real AI agent: connect Claude to `/mcp` with the Agency Planner's agent key, ask the question, and read the reply against the tool's answer and the log. C-01 needs a fresh checkout, and C-07 a server left running for an hour. In E2E-16, E2E-42 and E2E-43 a person checks what only the live source can tell: whether tickets are on sale now, the live page where a capture is older, and whether an item is part of a festival's programme.
+- **The server.** `pnpm --filter @magic-events/api start`, on `http://localhost:4000`. The suite starts its own on a free port, with schedules that do not fire during the run. The fetching and processing jobs need `ANTHROPIC_API_KEY`, and embedding needs `AWS_REGION` and AWS credentials.
 - **REST.** Search is `POST /v1/experiences/search` and changes are `POST /v1/experiences/changes`, with `Authorization: Bearer <key>` and a JSON body.
-- **MCP.** `POST /mcp` with the key in `Authorization`, `Accept: application/json, text/event-stream`, and a JSON-RPC `tools/call` naming `search_experiences` or `get_experience_changes` with the same arguments as the REST body. The answer is in `result.structuredContent`.
-- **The command line.** `admin`, for tenants, users and keys, run with `pnpm cli:admin <command>` from the root (the commands are in [apps/cli/README.md](../apps/cli/README.md)). `pipeline` and `captures`, run with `pnpm cli:pipeline <command>` and `pnpm cli:captures` from the root once the command line has moved to `apps/cli`, and with `pnpm pipeline <command>` and `pnpm --filter @magic-events/api captures` before that.
+- **MCP.** `POST /mcp` with the key in `Authorization`, `Accept: application/json, text/event-stream`, and a JSON-RPC `tools/call` naming `search_experiences` or `get_experience_changes` with the same arguments as the REST body. These are the only two tools. The answer is in `result.structuredContent`.
+- **The command line.** `admin`, for tenants, users and keys, run with `pnpm cli:admin <command>` from the root (the commands are in [apps/cli/README.md](../apps/cli/README.md)). `pipeline` and `captures`, run with `pnpm cli:pipeline <command>` and `pnpm cli:captures` from the root.
 - **Dates.** The dates below are chosen for a run before 5 December 2026. A later run keeps the same shape and moves the dates past today.
 - **A scenario passes** only when every condition under "Passes when" holds. "Depends on issue N" means the scenario fails until that issue in [issues.md](issues.md) lands.
 
@@ -57,8 +59,8 @@ Two stays are used throughout:
 - **Passes when:**
   - The answer is 200 with `total` 33.
   - Every item's status is expected, announced, confirmed or postponed, and every session it carries overlaps 20 to 30 June 2027.
-  - Items come in date order of their first session in the stay.
-  - `bookable` is true exactly when status is confirmed and booking is open.
+  - Items come most premium first (E2E-44), and within a tier in date order of their first session in the stay.
+  - `bookable` is true exactly when status is confirmed, booking is open and there is a link to book through: `bookingUrl`, or failing that `pageUrl`.
   - "2027 Hermanus FynArts Festival" is there: announced, booking not yet, not bookable, one session 24 June to 4 July 2027 with day precision.
   - "Sculpture on the Cliffs" is there with one session of month precision, June 2026 to June 2027.
   - "Hermanus Country Market" is there with exactly one session, Saturday 26 June, 09:00 to 14:00.
@@ -81,7 +83,7 @@ Two stays are used throughout:
 - **Passes when:**
   - The first answer includes "Paddakoor Akademie Presents - CHRISTMAS CARNIVAL" (12 December) and "New Years´s Eve Family Day at Landskein" (31 December), and includes experiences with no age limit recorded, such as Hermanus Country Market.
   - No item in it has audience adults or a minimum age above 10. "Electro DANCE - Sunset Beats to Late Night Bass" (18 and over) is not there.
-  - The second answer is only experiences with a recorded minimum age of 18 or more: "Electro DANCE - Sunset Beats to Late Night Bass", 16 December.
+  - The second answer is only experiences with a recorded minimum age of 18 or more: "Electro DANCE - Sunset Beats to Late Night Bass", one session starting on 16 December. It runs from 19:00 to 01:00, so the session ends on the 17th.
 
 #### E2E-04 · Only what can be booked now
 
@@ -89,7 +91,7 @@ Two stays are used throughout:
 - **Who and how:** Agency Planner, REST.
 - **Steps:** the winter stay with `"bookable": true`.
 - **Passes when:**
-  - Every item is confirmed, booking open and `bookable` true.
+  - Every item is confirmed, booking open, has a link to book through and is `bookable`.
   - The answer is the eight experiences that are: Cape Shark Adventures, Cuvée Weekends at Benguela Cove, Deli Dining at Dal-Italia, Harold Porter National Botanical Garden, Hermanus Whale Cruises boat-based whale watching, Panthera Africa Sunset Visits, Shark Cage Diving & Surface Viewing- Gansbaai and Sourdough Baking Class.
   - The FynArts Festival, whose booking has not opened, is not there.
 
@@ -100,7 +102,7 @@ Two stays are used throughout:
 - **Steps:** the winter stay as it is. Then with `"location": "cape-agulhas"`. Then with both `location` and `near`. Then with neither.
 - **Passes when:**
   - The first answer is E2E-01's.
-  - Each of the other three is 400 `invalid_input`: an unknown location with a detail on `location` that names it, both with a detail on `near`, neither with a detail on `location`.
+  - Each of the other three is 400 `invalid_input`: an unknown location with a detail on `location` that names it and the places the feed covers, both with a detail on `near`, neither with a detail on `location`.
 
 #### E2E-06 · Around a point, within a radius
 
@@ -108,7 +110,7 @@ Two stays are used throughout:
 - **Who and how:** Agency Planner, REST.
 - **Steps:** the winter stay with `"near": { "lat": -34.4187, "lng": 19.2345 }, "radiusKm": 25` in place of `location`. Then with `"radiusKm": 201`.
 - **Passes when:**
-  - The first answer has the same items, in the same order, as E2E-01, and every item has `distanceKm`.
+  - The first answer has the same items, in the same order, as the winter stay by `location` with `"radiusKm": 25`, and every item has `distanceKm`. E2E-01 reaches further, as the default radius is 60 km.
   - The second is 400 `invalid_input` with a detail on `radiusKm` that gives the limit, 200.
   - An experience whose listing states its venue's coordinates carries them in `venue.position`, and its `distanceKm` is its real distance: an experience in Stanford is about 20 km away and is left out by a radius of 10. Depends on issue 35.
   - An experience whose listing states none has an empty position and is searched from the centre of Hermanus, at distance 0. That is the version 1 limit in [v1-decisions.md](v1-decisions.md) and issue 45.
@@ -117,10 +119,10 @@ Two stays are used throughout:
 
 - **Goal:** "They like sculpture and quiet galleries. Put that first."
 - **Who and how:** Agency Planner, REST.
-- **Steps:** the winter stay with `"query": "sculpture and art galleries, quiet and outdoors"`. Then with `"query": "FynArts"`. Then the first again with the embedding model unreachable (the server started with `AWS_REGION` empty).
+- **Steps:** the winter stay with `"query": "sculpture and art galleries, quiet and outdoors"`. Then with `"query": "FynArts"`. Then the first again with the embedding model unreachable (the server started with `AWS_REGION` empty). `pnpm e2e` has no AWS settings, so all three are this last case.
 - **Passes when:**
   - Each answer has the same `total` and the same set of experiences as E2E-01. The query text only reorders.
-  - "Sculpture on the Cliffs" is in the first three of the first answer, and "2027 Hermanus FynArts Festival" is first in the second.
+  - Results come most premium first, and the query text orders within a tier. "Sculpture on the Cliffs" is in the first three of its tier in the first answer, and "2027 Hermanus FynArts Festival" is first in the second.
   - With the model unreachable the search still answers 200 with the same set, ordered by keyword, within the 5 second wait plus the search itself.
 
 #### E2E-08 · Paging through a long answer
@@ -136,7 +138,8 @@ Two stays are used throughout:
 - **Who and how:** Agency Planner, agent key, MCP.
 - **Steps:** `tools/list`. Then `tools/call` of `search_experiences` with the bodies of E2E-01, E2E-03 and E2E-07.
 - **Passes when:**
-  - `tools/list` lists `search_experiences` and `get_experience_changes`, each with a description and an input schema.
+  - `tools/list` lists `search_experiences` and `get_experience_changes` and no other tool, each with a description and an input schema. `initialize` declares `tools.listChanged` false.
+  - The log has a "Tool called" line at info for each call, with the tool, its arguments and `callerKind` agent.
   - Each `structuredContent` equals the REST answer for the same body: the same items, in the same order, with the same `total`.
 
 #### E2E-10 · A real AI agent plans the stay
@@ -182,7 +185,7 @@ The run and the weekly class are never returned for a day between their dates. T
 - **Who and how:** Agency Planner, REST.
 - **Steps:** search 14 to 15 August 2027. Then 1 to 5 September 2027.
 - **Passes when:**
-  - The first answer has "Kalfiefees Hermanus Kunstefees 2027": announced, not bookable, one session from 1 to 31 August 2027 with month precision and no times.
+  - The first answer has "Kalfiefees Hermanus Kunstefees 2027": expected, as its 2027 edition is known only by its month, not bookable, one session from 1 to 31 August 2027 with month precision and no times.
   - The second answer does not have it.
   - An experience whose days are announced has day precision: the FynArts Festival in E2E-01.
 
@@ -214,11 +217,12 @@ A season tag is on the experience, not on each session, so an experience carries
 
 - **Goal:** "The trip is in May 2028. What can we count on?"
 - **Who and how:** Agency Planner, REST.
-- **Steps:** search 1 to 14 May 2028, 17 months ahead. Then 1 to 30 September 2027.
+- **Steps:** search 1 to 14 May 2028, 17 months ahead. Then 1 to 30 September 2027, and 1 to 31 October 2027.
 - **Passes when:**
   - The May 2028 answer has the open-ended recurring experiences with their sessions in those dates: Hermanus Country Market on Saturdays 6 and 13 May 2028.
-  - The September 2027 answer has the annual festivals expected next year, with month precision and status expected: Hermanus Whale Festival, Hermanus Flower and Eco Fair and Hermanus Adventure Week. It has "Swallow Series Wine Tasting Lunches" with its one session on 4 September 2027.
-  - No item that far ahead is confirmed with booking open unless its source sells tickets now.
+  - The September 2027 answer has "Swallow Series Wine Tasting Lunches" with its one session on 4 September 2027.
+  - The October 2027 answer has the annual festival expected next year: "Hermanus Whale Festival", status expected, one session from 1 to 31 October 2027 with month precision. The development database also has Hermanus Flower and Eco Fair and Hermanus Adventure Week in September 2027, expected, from the seeded sources.
+  - Every bookable item that far ahead has a link to book through. That an item confirmed with booking open that far ahead has its tickets on sale now is checked by hand against its source.
 
 #### E2E-17 · Nothing beyond what is known
 
@@ -247,10 +251,10 @@ An annual festival known only by its month, with no announcement yet for the com
 
 - **Goal:** a source that is down for a while is fetched once it is back.
 - **Who and how:** the system admin, the server and its jobs.
-- **Steps:** run with E2E-18. Before the server starts, make one source's host unreachable, for example `127.0.0.1 www.wesgro.co.za` in `/etc/hosts`, and start it with `DISCOVERY_FETCH_RETRY_BACKOFF_MINUTES=1`. After the first failure, make the host reachable again.
+- **Steps:** on a database of its own, migrated and seeded, switch every seeded source off and add one source whose page is at a local port with nothing listening on it. Start the server with `DISCOVERY_SCHEDULE_CRON="* * * * *"` and `DISCOVERY_FETCH_RETRY_BACKOFF_MINUTES=1`. After the first failure, start a web server on that port. By hand the same holds for a real source made unreachable, for example with `127.0.0.1 www.wesgro.co.za` in `/etc/hosts`.
 - **Passes when:**
-  - That source's first run failed with a reason, and the log shows its fetch job failing.
-  - It is tried again after one to two minutes and then about every doubled wait, without waiting a week, and the first retry after the host is back succeeds.
+  - That source's first run failed with a reason, and the log shows its fetch job failing at warn, "A job failed and will be tried again", with the error and the wait before the next try, one to two minutes.
+  - It is tried again after one to two minutes, without waiting a week, as the same job's second attempt, and that retry succeeds. Each later retry waits about twice as long.
   - The failed run removed nothing: no listing of that source was counted as missing.
 
 #### E2E-20 · Scraped sources load through the same pipeline
@@ -258,7 +262,10 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Goal:** the sources a browser scrape read join the feed.
 - **Who and how:** the system admin, the command line.
 - **Steps:** copy `data/hermanus` to a working folder outside the repository. Run `captures --dir <that folder>`, then `pipeline embed`.
-- **Passes when:** every source in its `sources.json` is loaded with no failed run and no failed raw listing, and the summary names how many experiences were saved and how many were new.
+- **Passes when:**
+  - Every source in its `sources.json` is loaded with no failed run and no failed raw listing, and the summary names how many experiences were saved and how many were new.
+  - With `LOG_LEVEL=debug` the command's log shows each run started and finished with its counts, each raw listing processed with its outcome, each experience published, and one "Domain event published" line at info for every event recorded in the `events` table, with its `eventId`. No line is for an event that was not recorded.
+  - `pipeline embed` needs AWS, so it runs with `pnpm e2e:live`.
 
 #### E2E-21 · An unchanged listing changes nothing
 
@@ -267,7 +274,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Steps:** search with the December stay and record the time as T1. Run `captures --dir <that folder>` again. Run `pipeline refetch --source "Wesgro Cape Overberg events"` twice in a row.
 - **Passes when:**
   - The second load reports 0 new or changed for every source.
-  - The second refetch reports 0 new or changed.
+  - The second refetch reports 0 new or changed. The refetches fetch the live site, so they run with `pnpm e2e:live`.
   - No experience has a new version.
   - The Hermanus FynArts page is the one known exception: its fingerprint changes between fetches. Its experiences must still get no new version. Depends on issue 49 for the page itself.
 
@@ -289,6 +296,7 @@ An annual festival known only by its month, with no announcement yet for the com
   - Each load reports the edited pages as changed and every other page unchanged.
   - Each of the five experiences has one new version, and its own page or search shows the new values. Each keeps its ID.
   - No new experience was created.
+  - The log shows each change, with the experience and its kind, and one "Domain event published" line for every event recorded.
 
 #### E2E-23 · A listing that disappears leads to Removed
 
@@ -301,23 +309,23 @@ An annual festival known only by its month, with no announcement yet for the com
 
 #### E2E-24 · One experience across many sources
 
-- **Goal:** the same concert listed on six sites is one experience.
+- **Goal:** the same concert listed on several sites is one experience.
 - **Who and how:** Agency Planner, REST.
 - **Steps:** search 11 to 11 December 2026 with `"query": "Fleetwood Mac"`. Search 28 to 28 November 2026 with `"query": "Rosoberry"`.
-- **Passes when:** "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026" (Quicket, AllEvents.in, Facebook and The Village NEWS, six sources) is returned once, and "Rosoberry Harvest Fest 2026" (eight sources) is returned once.
+- **Passes when:** "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026" (four listings, on Quicket, AllEvents.in, Facebook and The Village NEWS) is returned once, and "Rosoberry Harvest Fest 2026" (five listings, on those four and Wesgro) is returned once. On the development database the seeded sources add listings: six for the concert and eight for the festival.
 
 #### E2E-25 · The operator fetches again and processes again
 
 - **Goal:** the system admin refreshes a source or a place now, or runs listings through processing again after a fix.
 - **Who and how:** the system admin, the command line.
 - **Steps:**
-  - `pipeline refetch --location hermanus`, `pipeline refetch --source "Hermanus FynArts"`, and `pipeline refetch --listing <ID>` with a listing's ID read from the database.
-  - `pipeline reprocess --experience <slug> --now` with the FynArts Festival's slug as search returns it. `pipeline reprocess --source "Quicket public pages"`, then `pipeline process`.
   - `pipeline reprocess` with no selector.
+  - `pipeline reprocess --experience <slug>` with the FynArts Festival's slug as search returns it, then `captures --source hermanus-fynarts`, which processes the listings sent back from the captured files. `pipeline reprocess --source "Quicket event pages"`, then `captures --source quicket`.
+  - With `pnpm e2e:live`, which has the language model: `pipeline refetch --location hermanus`, `pipeline refetch --source "Hermanus FynArts"`, and `pipeline refetch --listing <ID>` with a listing's ID read from the database. `pipeline reprocess --experience <slug> --now`. `pipeline reprocess --source "Quicket public pages"`, then `pipeline process`.
 - **Passes when:**
   - Each refetch prints a line per source fetched, with its counts. The listing's refetch says which source it belongs to and fetches that source whole.
   - The experience reprocess prints how many listings it sent back and processes them. The FynArts Festival keeps its ID, and no second FynArts Festival appears. Its version goes up only if a field really changed.
-  - The source reprocess sends every listing of that source back, and processing them creates no duplicate.
+  - The source reprocess sends every listing of that source back, and processing them creates no duplicate and no new version where nothing changed.
   - With no selector the command prints that it needs exactly one of `--listing`, `--experience`, `--source` and `--location`, and exits with an error.
 
 ### Checking back later (UC2)
@@ -326,7 +334,7 @@ An annual festival known only by its month, with no announcement yet for the com
 
 - **Goal:** "Has anything changed since I last looked?", when nothing has.
 - **Who and how:** Agency Planner, REST.
-- **Steps:** after E2E-21, ask for changes with the December stay and `"since"` T1.
+- **Steps:** after E2E-21 and before E2E-22, ask for changes with the December stay and `"since"` T1.
 - **Passes when:** the answer is 200 with no items and `total` 0.
 
 #### E2E-27 · What changed is reported, with what kind of change
@@ -335,8 +343,8 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Who and how:** Agency Planner, REST.
 - **Steps:** after E2E-22, ask for changes with `"location": "hermanus", "from": "2026-12-01", "to": "2027-05-31"` and `"since"` T1.
 - **Passes when:**
-  - The items are exactly the five experiences of E2E-22, and no other.
-  - Each `change.kind` is the one in E2E-22's table: cancelled, postponed, rescheduled, changed and confirmed.
+  - The items are exactly the five experiences of E2E-22 and "Swallow Series Wine Tasting Lunches", which E2E-23 removed, and no other.
+  - Each `change.kind` is the one in E2E-22's table: cancelled, postponed, rescheduled, changed and confirmed, and removed for the Swallow Series.
   - Each item's `changes` lists every change since T1, newest first, and the items come most recent change first.
   - The postponed concert is still returned by search for 9 January 2027 as postponed, booking closed and not bookable. The confirmed triathlon is bookable.
   - Asked for changes since a time before E2E-20's load, with the December stay, the experiences that load created are reported as new.
@@ -358,7 +366,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Steps:** ask for changes since T1 with 20 to 28 February 2027, the dates the planner searched before the show moved. Then with 1 to 10 March 2027.
 - **Passes when:**
   - Both answers report "That ’80s Show: 80s Tribute Concert" as rescheduled.
-  - The first holds only once changed-since matches on the sessions an experience had before the change. Depends on issue 47.
+  - The first, from dates it is no longer on, has `movedOut` true and the sessions it has now. The second has `movedOut` false.
 
 #### E2E-30 · Checking back through MCP
 
@@ -458,16 +466,16 @@ An annual festival known only by its month, with no announcement yet for the com
 
 - **Passes when:**
   - Each REST answer is 400 `invalid_input` in the one error format (`code`, `message`, `details` with `path` and `message`, `requestId`), with the detail above. Each MCP answer is a tool error that names the same field.
-  - Each detail's message is a plain sentence that says what to give instead, with an example where there is a form to follow, such as a date like 2027-06-20. No message holds a library's wording, such as `Invalid input`, `expected number` or `Too big`.
+  - Each detail's message is a plain sentence that says what to give instead, with an example where there is a form to follow, such as a date like 2027-06-20. No message or detail holds a library's wording: `Invalid input`, `expected`, `Too big`, `Too small`, `Unknown field` or `schema`.
   - A planner told the REST `message` alone would know what to change.
 
 #### E2E-39 · No system detail reaches a caller
 
 - **Goal:** when something breaks, the caller is told plainly and learns nothing about the system's insides.
 - **Who and how:** Agency Planner, REST and MCP, and anyone calling `/health`.
-- **Steps:** stop the database (`docker compose stop postgres`). Search over REST and MCP, and call `/health`. Start it again (`docker compose start postgres`) and repeat, without restarting the server.
+- **Steps:** take the server's database away. The suite starts a second server that reaches Postgres through a proxy and closes the proxy, so no other database goes down; by hand, `docker compose stop postgres`. Search over REST and MCP, ask for changes, and call `/health` and `/openapi.json`. Bring the database back and repeat, without restarting the server.
 - **Passes when:**
-  - While the database is down each answer is 503 `unavailable` with `Retry-After`, `/health` included. None is 401 or 500.
+  - While the database is down each answer is 503 `unavailable` with `Retry-After`, `/health` included, and so is every operation of the OpenAPI document. None is 401 or 500. The log has each failure at error, with the error itself.
   - Once it is back each answer is 200.
   - No answer in any scenario holds a stack trace, SQL, a table or column name, a file path, a library's name or error code, or a provider's error. A failure on our side gives only the general message and the request ID.
 
@@ -475,13 +483,13 @@ An annual festival known only by its month, with no announcement yet for the com
 
 - **Goal:** a client in a loop cannot take the service down for everyone.
 - **Who and how:** Agency Planner, REST.
-- **Steps:** restart the server with `API_RATE_LIMIT_MAX=5` and send six requests from one address within a minute. Restart it with `API_KEY_RATE_LIMIT_MAX=5` and the address limit at its default, issue a new key, and send six searches with it within a minute, then one with another key.
+- **Steps:** start a server with `API_RATE_LIMIT_MAX=5` and send six requests from one address within a minute. Then issue a new key with `pnpm cli:admin key issue` run with `API_KEY_RATE_LIMIT_MAX=5`, and send six searches with it within a minute to a server with the default limits, then one with another key.
 - **Passes when:**
   - The sixth request from the address is 429 `rate_limited` with `Retry-After`.
   - The sixth with the new key is 429 `rate_limited` with `Retry-After`, and the other key still gets 200.
   - With the defaults, 10000 a minute for each, no scenario in this document is ever limited.
 
-A key's limit is set when the key is issued (issue 26), which is why the test issues a new one.
+A key's limit is set when the key is issued, from the setting of the command that issues it, which is why the test issues a new one.
 
 #### E2E-41 · Every request is traced to who made it
 
@@ -491,7 +499,9 @@ A key's limit is set when the key is issued (issue 26), which is why the test is
 - **Passes when:**
   - Every answer has an `x-request-id` header, and an error body's `requestId` is the same.
   - The log line that closes each request carries the request ID, the tenant, the user, whether a person or an agent called, the key's ID, the status and the time it took. A refused call is logged with its reason, and a failure on our side in full.
-  - No key appears anywhere in the log.
+  - Given a request ID, all its lines come back in order: "Request started", then the domain service's lines, "Searching experiences" and "Searched experiences" for a search, then "Request completed".
+  - An incoming `x-request-id` that is a plain token is used as the request ID, and any other is replaced.
+  - No key appears anywhere in the log, nor `Bearer` followed by one.
 
 ### Quality of the answers
 
@@ -500,9 +510,9 @@ This is what the owner cares about most.
 #### E2E-42 · A sample of answers matches the sources
 
 - **Goal:** what the planner is told is what the source says.
-- **Who and how:** the tester, REST against the development database, and the sources.
+- **Who and how:** the tester, REST against the end-to-end database, and the captured pages. On the development database by hand.
 - **Steps:**
-  - **Choose the sample.** 20 experiences returned by a search of today to 24 months ahead with a radius of 60 km. Draw them at random within these groups, and draw again until every group is covered: at least 3 recurring, 3 runs, 3 on one day, 2 over several days in a row, 2 with month precision, 5 with three sources or more, 5 bookable, 3 from Quicket, 2 from the Whale Coast PDF calendars, and 2 from a page in Afrikaans. Add the named examples of E2E-11 to E2E-14.
+  - **Choose the sample.** 20 experiences returned by a search of today to 24 months ahead with a radius of 60 km. Draw them at random within these groups, and draw again until every group is covered: at least 3 recurring, 3 runs, 3 on one day, 2 over several days in a row, 2 with month precision, 5 with three sources or more, 5 bookable, 3 from Quicket, 2 from the Whale Coast PDF calendars, and 2 from a page in Afrikaans. Only the seeded sources fetch the PDF calendars, so the captures have none: that group is drawn on the development database, by hand. Add the named examples of E2E-11 to E2E-14.
   - **Check each one** against its captured page under `data/hermanus/raw/` (the page each listing came from, named in `extracted/<source>.json`), and against the live page where the capture is older than the source's latest version, or where the experience came from a seeded source with no capture.
 - **What counts as a match:**
 
@@ -521,7 +531,7 @@ This is what the owner cares about most.
 #### E2E-43 · Nothing false in the feed
 
 - **Goal:** a planner never sends a traveller to something that is not there.
-- **Who and how:** the tester, REST against the development database.
+- **Who and how:** the tester, REST against the end-to-end database. On the development database by hand. The last column is what the development database showed.
 - **Steps:** page through a search of today to 24 months ahead with a radius of 60 km, 100 at a time, and check every item.
 - **Passes when:**
 
@@ -529,17 +539,17 @@ This is what the owner cares about most.
 | --- | --- | --- |
 | Nothing already over | Every item has a session today or later | Holds |
 | Nothing outside the area | Every venue is in Hermanus or the towns around it listed under Coverage in [sources.md](sources.md), or in a neighbouring town such as Bot River or Franskraal. None is in Cape Town, Sandton or further | Holds |
-| No experience twice | No two items are the same experience. Two dates of one experience are one item | Fails: "Hermanus Whale Festival" is two items, September 2027 from Xplorio and October 2027 from SA-Venues |
+| No experience twice | No two items are the same event: same title, overlapping dates and the same page or booking address. One item per ticketed date, each with its own booking link | Failed: "Hermanus Whale Festival" was two items, September 2027 from Xplorio and October 2027 from SA-Venues, merged by issue 54 |
 | No season as an experience | No title names a season or a natural spectacle alone | Fails: "Southern Right Whales in Walker Bay". Issue 48 |
 | Titles a planner would recognise | Every title names an experience | Fails: "Time" and "Hermanus 2026". Issue 48 |
-| Festivals are one experience | No item is one item of a festival's programme on the festival's own dates | Holds |
-| Bookable means it can be booked | Every bookable item has a booking link or its own page address where it can be booked | Fails: 17 bookable items have neither, such as "Sourdough Baking Class" |
-| One session per date for Quicket | No experience from Quicket covers days its page does not list | To check against each page: "Sip & Solve: Blind Wine & Whisky Tasting" is one session from 19 to 30 December 2026. Issue 36 |
+| Festivals are one experience | No item is one item of a festival's programme on the festival's own dates. Checked by hand | Holds |
+| Bookable means it can be booked | Every bookable item has a booking link or its own page address where it can be booked | Failed: 17 bookable items had neither, such as "Sourdough Baking Class". Holds by rule since issue 55: bookable needs a link |
+| One session per date for Quicket | No experience from Quicket covers days its page does not list, whatever its times | To check against each page: "Sip & Solve: Blind Wine & Whisky Tasting" is one session from 19 to 30 December 2026. Issue 36 |
 
 #### E2E-44 · The most premium comes first
 
 - **Goal:** "This is a luxury trip. Show me the best of what is on, not the parkrun."
-- **Who and how:** Agency Planner over REST, and Agency Assistant over MCP.
+- **Who and how:** Agency Planner over REST, and the same user's agent key over MCP.
 - **Steps:** search 20 to 30 September 2027 with no query text, then with `"query": "whales"`, then with `"attributes": { "tier": ["luxury", "premium"] }`.
 - **Passes when:**
   - No item of a lower tier comes before an item of a higher tier, in either of the first two answers. The order of tiers is luxury, premium, standard, everyday, and an experience with no tier counts as standard.
@@ -559,10 +569,10 @@ These hold before the scenarios are run and again after any fix made during the 
 | C-03 | Every automated test passes | `pnpm db:migrate:test`, then `pnpm test` from the root, with no test failed or skipped |
 | C-04 | The migrations apply to an empty database | `pnpm db:migrate` against a new, empty database applies every migration with no error, and running it again applies nothing |
 | C-05 | The seed runs twice without changing anything | The first `pnpm db:seed` prints the counts and the new keys. The second prints the same counts and "No new API keys", and no row is added or changed |
-| C-06 | The server starts and stops cleanly | It logs that it is listening and that the jobs started, `/health` is 200, and on SIGTERM it logs "Stopping" then "Stopped" and exits with code 0, finishing the request or job in hand |
+| C-06 | The server starts and stops cleanly | It logs that it is listening, "Server started" with the settings that are safe to show and no secret, and that the jobs started, `/health` is 200, and on SIGTERM it logs "Stopping" then "Stopped" and exits with code 0, finishing the request or job in hand |
 | C-07 | The background jobs run | Within an hour of starting, `pgboss.job` shows a completed job for each of `discovery.find-due-sources`, `processing.process-pending`, `catalogue.embed-experiences` and `catalogue.keep-up`, and no job given up |
 | C-08 | Upkeep keeps the feed current | After the upkeep has run, no experience that search can return has its last session before today, and open-ended recurring experiences have sessions up to 24 months from today |
-| C-09 | A new checkout starts with a full feed | On a server with no `magic_events` database, `pnpm quickstart` restores the snapshot and seeds, printing the new keys. A search with one of them then returns the experiences of the snapshot, every one with an embedding, and `pnpm db:restore` run again changes nothing and says the database already has tables |
+| C-09 | A new checkout starts with a full feed | On a server with no `magic_events` database, `pnpm quickstart` restores the snapshot and seeds, printing the new keys. The suite does the same into a database of its own, with `DATABASE_URL` pointed at it: `pnpm db:restore`, then `pnpm db:seed`, and skips it while `packages/db/snapshot/hermanus.sql.gz` does not exist. A search with one of them then returns the experiences of the snapshot, every one with an embedding, and `pnpm db:restore` run again changes nothing and says the database already has tables |
 
 ## Results
 
