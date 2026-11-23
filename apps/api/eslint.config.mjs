@@ -5,7 +5,8 @@ import tseslint from "typescript-eslint";
 // The architecture rules from docs/architecture.md, checked here so they hold by tooling and not by convention.
 //
 //   src/core/<domain>/  ports.ts and service.ts: no adapter, no provider's SDK, no database client
-//   src/rest, src/mcp   the two inbound sides: they call the core through its ports only
+//   src/rest, src/mcp   the two inbound sides clients reach: they call the core through its ports only
+//   src/scheduler       the inbound side no client is behind: the same rule
 //   src/adapters/       outbound adapters: each implements a port and is the only code that imports its technology
 //   src/app.ts          wires the system together, and is the only code that imports adapters and services
 
@@ -39,7 +40,7 @@ const CALLS = {
 const DOMAINS = Object.keys(CALLS);
 
 const outsideTheCore = {
-  regex: "(^|/)(adapters|rest|mcp|seed)/|(^|/)app\\.ts$|(^|/)server\\.ts$",
+  regex: "(^|/)(adapters|rest|mcp|scheduler|seed|cli)/|(^|/)(app|server|worker)\\.ts$",
   message: "The core imports no adapter and nothing from the inbound sides.",
 };
 
@@ -106,13 +107,13 @@ export default defineConfig([
     ]),
   },
   {
-    files: ["src/rest/**/*.ts", "src/mcp/**/*.ts"],
+    files: ["src/rest/**/*.ts", "src/mcp/**/*.ts", "src/scheduler/**/*.ts"],
     rules: restrict([
       {
         group: ["@magic-events/db", "@magic-events/db/*", "drizzle-orm", "drizzle-orm/*", "postgres", ...BETTER_AUTH],
-        message: "REST and MCP reach data and credentials through the core's services, never directly.",
+        message: "The inbound sides reach data and credentials through the core's services, never directly.",
       },
-      { regex: "(^|/)adapters/", message: "REST and MCP import no adapter. They are handed the core's services." },
+      { regex: "(^|/)adapters/", message: "The inbound sides import no adapter. They are handed the core's services." },
       { regex: "/core/[^/]+/service(\\.ts)?$", message: "Import the domain's ports, not its service. app.ts hands over the service." },
       { regex: "(^|/)app\\.ts$", message: "Only app.ts wires the system together." },
     ]),
@@ -121,12 +122,15 @@ export default defineConfig([
     files: ["src/adapters/**/*.ts"],
     rules: restrict([
       { regex: "/core/[^/]+/service(\\.ts)?$", message: "An adapter imports the port it implements, not a service." },
-      { regex: "(^|/)(rest|mcp|seed)/|(^|/)app\\.ts$", message: "An adapter imports nothing from the inbound sides or the wiring." },
+      {
+        regex: "(^|/)(rest|mcp|scheduler|seed|cli)/|(^|/)(app|server|worker)\\.ts$",
+        message: "An adapter imports nothing from the inbound sides or the wiring.",
+      },
     ]),
   },
   {
     // Scripts run by a person at a terminal.
-    files: ["src/seed/**/*.ts"],
+    files: ["src/seed/**/*.ts", "src/cli/**/*.ts"],
     rules: { "no-console": "off" },
   },
 ]);
