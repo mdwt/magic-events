@@ -32,6 +32,12 @@ import { type LanguageModel, LanguageModelFailed, type LanguageModelRequest } fr
 
 const text = z.string().nullish();
 
+const attributeValue = z.union([z.string(), z.number(), z.boolean(), z.array(z.union([z.string(), z.number(), z.boolean()]))]);
+
+// How premium the experience is, read one by one from each capture. A capture without one gets the attribute's
+// default when it is classified.
+const tier = z.enum(["luxury", "premium", "standard", "everyday"]);
+
 const capturedExperienceSchema = z.object({
   rawFile: z.string(),
   url: text,
@@ -75,9 +81,7 @@ const capturedExperienceSchema = z.object({
   bookingUrl: text,
   imageUrl: text,
   hints: z.array(z.string()).nullish(),
-  attributes: z
-    .record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.array(z.union([z.string(), z.number(), z.boolean()]))]))
-    .nullish(),
+  attributes: z.object({ tier: tier.optional() }).catchall(attributeValue).nullish(),
   tags: z.array(z.string()).nullish(),
   profile: text,
 });
