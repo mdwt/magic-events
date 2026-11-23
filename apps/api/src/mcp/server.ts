@@ -18,9 +18,13 @@ export function createMcpServer(
     {
       instructions:
         "Find what is on near a place while a traveller is there: festivals, concerts, matches, markets, shows, " +
-        "exhibitions and seasons such as whale season. Use search_experiences with a point, a radius and the dates. " +
+        "exhibitions and seasons such as whale season. Use search_experiences with the place and the dates: the " +
+        "place is location, a location's slug such as hermanus, or near, a point, with a radius if you like. To " +
+        "check back on a trip, use get_experience_changes with the same parameters and when you last searched. " +
         "A system admin onboards a travel agency or travel app with create_tenant, add_tenant_user and " +
-        "issue_credential.",
+        "issue_credential. When a call is refused, the tool error's text is JSON with a code, a message and details: " +
+        "read the message and the details, fix each field the details name, and call again. A code of unavailable " +
+        "means try again after a few seconds; internal_error means the fault is ours, so quote the requestId.",
     },
   );
   registerCatalogueTools(server, deps, services.catalogue);
