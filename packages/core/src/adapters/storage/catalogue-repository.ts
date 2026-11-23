@@ -272,6 +272,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
           .select()
           .from(experienceSourceLink)
           .where(inArray(experienceSourceLink.experienceId, ids))
+          // In the order they were linked, the oldest first: a tie in priority goes to the listing linked first.
           .orderBy(asc(experienceSourceLink.createdAt), asc(experienceSourceLink.listingId)),
       ]);
 

@@ -343,7 +343,7 @@ export interface StoredExperience {
   sessions: (SessionResult & { status: "scheduled" | "cancelled"; origin: "listed" | "generated" })[];
   attributes: Record<string, AttributeValue[]>;
   tags: string[];
-  // The listings it is linked to.
+  // The listings it is linked to, in the order they were linked, the oldest first.
   listingIds: string[];
 }
 
@@ -374,6 +374,8 @@ export interface ExperienceMatch {
   // precision, and no recurrence.
   onlyMonthOrYear: boolean;
   recurrenceRule: string | null;
+  // The listings it is linked to, in the order they were linked, the oldest first. A tie in priority between
+  // sources goes to the listing linked first.
   listingIds: string[];
 }
 
