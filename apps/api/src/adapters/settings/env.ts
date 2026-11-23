@@ -23,11 +23,11 @@ const environmentSchema = z.object({
   API_ALLOWED_HOSTS: list.default(["localhost", "127.0.0.1", "[::1]"]),
   LOG_LEVEL: z.enum(LOG_LEVELS).default("info"),
   LOG_PRETTY: flag.default(false),
-  API_RATE_LIMIT_MAX: whole(1).default(300),
+  API_RATE_LIMIT_MAX: whole(1).default(10_000),
   API_RATE_LIMIT_WINDOW_SECONDS: whole(1).default(60),
   API_BODY_LIMIT_BYTES: whole(1024).default(65536),
   BETTER_AUTH_SECRET: z.string().min(32, "Must be at least 32 characters."),
-  API_KEY_RATE_LIMIT_MAX: whole(1).default(120),
+  API_KEY_RATE_LIMIT_MAX: whole(1).default(10_000),
   // The key's window is stored in milliseconds in a 32-bit column, which holds a little over 24 days.
   API_KEY_RATE_LIMIT_WINDOW_SECONDS: whole(1).max(2_073_600, "Must be at most 24 days, in seconds.").default(60),
   SEARCH_DEFAULT_RADIUS_KM: z.coerce.number().positive().default(25),

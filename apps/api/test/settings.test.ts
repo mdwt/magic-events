@@ -19,12 +19,12 @@ test("the defaults apply when only the required variables are set", () => {
       allowedHosts: ["localhost", "127.0.0.1", "[::1]"],
       logLevel: "info",
       logPretty: false,
-      rateLimitMax: 300,
+      rateLimitMax: 10_000,
       rateLimitWindowSeconds: 60,
       bodyLimitBytes: 65536,
     },
     database: { url: REQUIRED.DATABASE_URL },
-    identity: { authSecret: REQUIRED.BETTER_AUTH_SECRET, apiKeyRateLimitMax: 120, apiKeyRateLimitWindowSeconds: 60 },
+    identity: { authSecret: REQUIRED.BETTER_AUTH_SECRET, apiKeyRateLimitMax: 10_000, apiKeyRateLimitWindowSeconds: 60 },
     catalogue: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     discovery: {
       defaultFetchIntervalHours: 168,
@@ -73,7 +73,7 @@ test("given values are parsed, and an empty value counts as not set", () => {
   assert.equal(settings.api.logPretty, true);
   assert.deepEqual(settings.api.allowedHosts, ["api.example.com", "localhost"]);
   assert.equal(settings.api.corsOrigin, "https://app.example.com");
-  assert.equal(settings.identity.apiKeyRateLimitMax, 120);
+  assert.equal(settings.identity.apiKeyRateLimitMax, 10_000);
   assert.equal(settings.catalogue.searchMaxRadiusKm, 150.5);
 });
 
