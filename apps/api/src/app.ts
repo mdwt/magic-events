@@ -50,12 +50,13 @@ export interface Overrides {
 export function createServices(deps: { settings: Settings; db: Db; logger: Logger; overrides?: Overrides }): Services {
   const { settings, logger, overrides = {} } = deps;
   // Every repository is built with the same handle, so work inside transactions.run is saved together.
-  const { db, transactions, afterCommit } = createTransactionalDb(deps.db);
+  const storage = createTransactionalDb(deps.db);
+  const { db, transactions } = storage;
   // A domain event goes out once the change it records is saved: when the transaction it was published in commits.
   const domainEvents = overrides.domainEvents ?? createDomainEvents(logger);
   const events: DomainEventPublisher = {
     publish(event) {
-      afterCommit(() => {
+      storage.afterCommit(() => {
         domainEvents.publish(event);
       });
     },
