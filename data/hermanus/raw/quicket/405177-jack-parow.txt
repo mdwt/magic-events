@@ -1,0 +1,533 @@
+URL: https://www.quicket.co.za/events/405177-jack-parow/
+Fetched: 2026-11-23T13:31:54Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+No under 13s
+
+#
+Jack Parow
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By The Hangklip Hotel
+
+Follow
+
+http://thehangkliphotel.com
+
+Mon Dec 21, 20:00 - Mon Dec 21, 22:00
+
+The Hangklip Hotel - The BOMA
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+21 DEC @ 20:00 pm
+
+Tickets R350 on Quicket and R380 at the Door (If still available)
+
+The Ambassador of Good Times is back! JACK PAROW brings his legendary live show to the Hangklip Hotel.
+
+Rapper, poet, and South African pop culture icon, Parow has redefined Afrikaans culture through relatable lyrics, razor-sharp social observation, and unstoppable energy. Grab your crew and prepare for a classic Hangklip jol!
+
+This ticket grants you access to the performance only. Please arrive at least 30 minutes before the show to get through the queue and to find a standing spot in the venue. If you’d like to enjoy Dinner & SHOW, we recommend arriving well in advance from 5pm. NO FOOD during show **SHOW STARTS AT 8 PM.**
+
+The Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for minimum stay in December is 3 nights, if available at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special rate, especially if you're attending the show.
+
+Whats app only for more information
+
+Deborah 084 546 5214
+
+Tanya 060 663 1288
+
+Marius 063 348 3521
+
+## DIRECTIONS
+
+Jack Parow
+
+The Hangklip Hotel - The BOMA
+
+Overberg DC, 6940
+
+Get Directions
+
+## DISCOVER
+
+AFRIKAANS RAP
+
+ENGLISH RAP
+
+HIGH ENERGY
+
+POP
+
+RAP
+
+RAPPER
+
+From
+
+R350
+
+No under 13s
+
+Mon Dec 21, 20:00 - Mon Dec 21, 22:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+The Hangklip Hotel - The BOMA
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Jack Parow",
+  "startDate": "2026-12-21T18:00:00Z",
+  "endDate": "2026-12-21T20:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1011139_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "The Hangklip Hotel - The BOMA",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Overberg DC, 6940",
+      "addressLocality": "Pringle Bay",
+      "postalCode": "7196",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/405177-jack-parow/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "21 DEC @ 20:00 pmTickets R350 on Quicket and R380 at the Door (If still available)\r\nThe Ambassador of Good Times is back! JACK PAROW brings his legendary live show to the Hangklip Hotel.Rapper, poet, and South African pop culture icon, Parow has redefined Afrikaans culture through relatable lyrics, razor-sharp social observation, and unstoppable energy. Grab your crew and prepare for a classic Hangklip jol!\r\nThis ticket grants you access to the performance only. Please arrive at least 30 minutes before the show to get through the queue and to find a standing spot in the venue. If you’d like to enjoy Dinner &amp; SHOW, we recommend arriving well in advance from 5pm.  NO FOOD during show  **SHOW STARTS AT 8 PM.**\r\nThe Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for minimum stay in December is 3 nights, if available at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special rate, especially if you're attending the show.\r\nWhats app only for more informationDeborah 084 546 5214Tanya 060 663 1288Marius 063 348 3521",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/405177-jack-parow/#tickets",
+      "price": 350.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-25T00:00:00Z",
+      "sku": "766746"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "The Hangklip Hotel",
+    "url": "http://thehangkliphotel.com"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=405177, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1011140_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 405177,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Jack Parow",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 57333,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "10ee5bab-ac29-44ce-9954-4b76de6faa9e",
+ "seatingPricing": [],
+ "seatingProductId": "405177",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for the performance only.  Please arrive minimum 30 min before show to get settled.  If you might want to enjoy Dinner & SHOW please arrive by 5pm. SHOW STARTS 8pm",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 766746,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adult Admission-Standing Only",
+   "price": 350,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "21 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "The Hangklip Hotel - The BOMA"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=405177, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 57333,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:39:36Z) ===
+http://maps.google.co.za/maps?q=-34.3681325,18.8223162
+https://www.google.com/maps/dir/?api=1&destination=-34.3681325,18.8223162

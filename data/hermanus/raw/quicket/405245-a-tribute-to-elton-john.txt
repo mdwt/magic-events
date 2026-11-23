@@ -1,0 +1,624 @@
+URL: https://www.quicket.co.za/events/405245-a-tribute-to-elton-john/
+Fetched: 2026-11-23T13:32:00Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+No under 13s
+
+#
+A Tribute to Elton John
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By The Hangklip Hotel
+
+Follow
+
+http://thehangkliphotel.com
+
+Mon Jan 4, 20:00 - Mon Jan 4, 21:00
+
+The Hangklip Hotel
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Mon 4 Jan, @ 20.00 pm
+
+Ticket prices: R280 on Quicket and R320 at the door (IF any still available)
+
+A Tribute To Elton John by Rocket Max (UK)
+
+The ultimate celebration of a true musical megastar!
+
+The man himself may have retired from touring, but it doesn’t mean we have to say Goodbye to that Yellow Brick Road just yet..!
+
+Join Max Anthony (aka Rocket Max) and his sensational live band on a musical journey through the thrills and spills of Elton’s mesmerising career as they recreate the sound, feel and flamboyance of the Rocket Man in concert like it’s never been done before.
+
+Performing all the hits - Your Song, Bennie & The Jets, Saturday Night’s Alright (For Fighting), I Guess That’s Why They Call It The Blues and MANY more… the piano will be pounded and the house will be rocked!
+
+This show isn’t just another tribute act, it really is Elton… to the MAX.
+
+Just the SHOW
+
+This event requires pre-booked seating, and a floor plan is provided for you to select your specific seat. Please note that some seats offer a limited view as is indicated when you select seat number.
+
+DINNER & SHOW
+
+A **Mini Menu** will be offered for dinner selections beginning at **5 PM**. Please be aware that the last orders will be accepted at **7:00 PM**, and no food will be served during the show.
+
+This ticket grants you access to the performance only. Please arrive at least 30 minutes before the show to get settled in. If you’d like to enjoy Dinner & SHOW, we recommend arriving well in advance. **SHOW STARTS AT 8 PM.**
+
+In consideration of the artist, please refrain from speaking during the performance!
+
+The Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for a 2 nights at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special discounted rate, especially if you're attending the show.
+
+Whats app only for more information
+
+Deborah 084 546 5214
+
+Tanya 060 663 1288
+
+Marius 063 348 3521
+
+## DIRECTIONS
+
+A Tribute to Elton John
+
+The Hangklip Hotel
+
+Overberg DC, 6940
+
+Get Directions
+
+## DISCOVER
+
+CLASSIC
+
+ELTON JOHN
+
+TRIBUTE
+
+From
+
+R280
+
+No under 13s
+
+Mon Jan 4, 20:00 - Mon Jan 4, 21:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+The Hangklip Hotel
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "A Tribute to Elton John",
+  "startDate": "2027-01-04T18:00:00Z",
+  "endDate": "2027-01-04T19:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1011143_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "The Hangklip Hotel",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Overberg DC, 6940",
+      "addressLocality": "Pringle Bay",
+      "postalCode": "7196",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/405245-a-tribute-to-elton-john/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Mon 4 Jan, @ 20.00 pmTicket prices: R280 on Quicket and R320 at the door (IF any still available)\r\n\r\nA Tribute To Elton John by Rocket Max (UK)\r\nThe ultimate celebration of a true musical megastar! The man himself may have retired from touring, but it doesn’t mean we have to say Goodbye to that Yellow Brick Road just yet..!\r\nJoin Max Anthony (aka Rocket Max) and his sensational live band on a musical journey through the thrills and spills of Elton’s mesmerising career as they recreate the sound, feel and flamboyance of the Rocket Man in concert like it’s never been done before.\r\nPerforming all the hits - Your Song, Bennie &amp; The Jets, Saturday Night’s Alright (For Fighting), I Guess That’s Why They Call It The Blues and MANY more… the piano will be pounded and the house will be rocked!\r\nThis show isn’t just another tribute act, it really is Elton… to the MAX.\r\nJust the SHOW This event requires pre-booked seating, and a floor plan is provided for you to select your specific seat. Please note that some seats offer a limited view as is indicated when you select seat number.\r\nDINNER &amp; SHOWA **Mini Menu** will be offered for dinner selections beginning at **5 PM**. Please be aware that the last orders will be accepted at **7:00 PM**, and no food will be served during the show.\r\nThis ticket grants you access to the performance only. Please arrive at least 30 minutes before the show to get settled in. If you’d like to enjoy Dinner &amp; SHOW, we recommend arriving well in advance. **SHOW STARTS AT 8 PM.**\r\nIn consideration of the artist, please refrain from speaking during the performance!\r\nThe Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for a 2 nights at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special discounted rate, especially if you're attending the show.\r\nWhats app only for more informationDeborah 084 546 5214Tanya 060 663 1288Marius 063 348 3521",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/405245-a-tribute-to-elton-john/#tickets",
+      "price": 280.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-26T00:00:00Z",
+      "sku": "766863"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "The Hangklip Hotel",
+    "url": "http://thehangkliphotel.com"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=405245, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": true,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1011144_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 405245,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 9999,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "A Tribute to Elton John",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 57333,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "10ee5bab-ac29-44ce-9954-4b76de6faa9e",
+ "seatingPricing": [
+  {
+   "category": 1,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  },
+  {
+   "category": 2,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  },
+  {
+   "category": 4,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  },
+  {
+   "category": 6,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  },
+  {
+   "category": 7,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  },
+  {
+   "category": 8,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  },
+  {
+   "category": 9,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Admission",
+     "price": 280,
+     "ticketType": "766863"
+    }
+   ]
+  }
+ ],
+ "seatingProductId": "405245",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for the performance only.  Please arrive minimum 30 min before show to get settled.  If you might want to enjoy Dinner & SHOW please arrive around 5pm. SHOW STARTS 8pm No orders for food after 7pm no service during performance.",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": true,
+   "id": 766863,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adult Admission",
+   "price": 280,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "04 Jan 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useSeatNumbers": true,
+ "useTicketGroups": false,
+ "venueName": "The Hangklip Hotel"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=405245, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 57333,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:39:41Z) ===
+http://maps.google.co.za/maps?q=-34.3681325,18.8223162
+https://www.google.com/maps/dir/?api=1&destination=-34.3681325,18.8223162

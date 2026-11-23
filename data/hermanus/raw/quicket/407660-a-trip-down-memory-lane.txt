@@ -1,0 +1,551 @@
+URL: https://www.quicket.co.za/events/407660-a-trip-down-memory-lane/
+Fetched: 2026-11-23T13:33:16Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+#
+A TRIP DOWN MEMORY LANE
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Everything HERMANUS Events
+
+Follow
+
+http://www.everythinghermanus.co.za
+
+Sat Dec 12, 18:00 - Sat Dec 12, 20:00
+
+De Wet Hall
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+“A TRIP DOWN MEMORY LANE” WITH JAMES MARAIS & MONIQUE CASSELLS
+
+James Marais and Monique Cassells have become well-known for their “oldies” music tribute shows since they began performing together in 2009. Their popular duo show, “A Trip Down Memory Lane”, features songs by the legends you know and love from the 1950s, ‘60s, ‘70s and ‘80s, such as Elvis Presley, the Beatles, Cliff Richard, the Everly Brothers, the Platters, Cher and Creedence Clearwater Revival, as well as the likes of Marilyn Monroe, Roy Orbison, ABBA and Queen. The show is a mini-theatrical experience, featuring the dynamic vocal and visual performances of James and Monique, alternating as a duo and individual performers, who also do multiple costume changes throughout.
+
+James Marais is the no. 1 Elvis Presley tribute artist in the country, and has appeared on television several times, including appearances on SABC 2’s game shows, “Noot Vir Noot” and “Musiek Roulette”, as well as Kyknet’s “Jou Show”, presented by Emo Adams. After winning the title of South Africa’s no. 1 Elvis Tribute Artist at the Elvis Festival Africa held in Storms River Village, Tsitsikamma (Eastern Cape) in April 2010, James participated in the Elvis World Cup, held in Cardiff, Wales in 2010, finishing fourth out of the 11 countries participating. James performs a show-stopping Elvis tribute in this show, and also pays tribute to many other legends such as Cliff Richard, Neil Diamond, Tom Jones and Roy Orbison.
+
+Monique Cassells has developed a reputation of being a powerhouse, versatile and engaging performer, and is a very accomplished vocalist, having performed many different genres of music over the years, including rock ‘n roll, rock, pop, country, blues, ballads and even light classical. She made her television debut on SABC 2’s “Musiek Roulette” in May 2018. Monique has dazzled many an audience with her renditions of timeless songs such as The Righteous Brothers’ “Unchained Melody”, and she pays sensational, full-costumed tributes to both Marilyn Monroe and Cher in this show.
+
+James and Monique will also perform some exciting duets of legendary songs in their unique style. “A Trip Down Memory Lane” provides the kind of fun, colourful and entertaining show that audiences have come to expect from James and Monique. The show will leave you with a smile on your face and a song in your heart by the end!
+
+James and Monique have performed together at many different venues and for diverse functions over the years, such as the Roxy Revue Bar at GrandWest Casino in Goodwood, Die Boer Dinner Theatre in Durbanville, ReedValley in Mossel Bay, The Showroom Theatre in Prince Albert (Karoo), Heroes Restaurant Theatre in Brackenfell, The Drama Factory in Strand, Café Roux in Noordhoek, Die Bôrdienghuis Theatre in Wellington, Die Koelkamers Theatre in Paternoster, Hoedjiesbaai Hotel in Saldanha Bay, Caledon Casino, Garden Route Casino in Mossel Bay, Golden Valley Casino in Worcester, Mykonos Casino in Langebaan, Evita Se Perron in Darling, Villa Pascal Theatre in Durbanville, Bushman’s Cave Theatre in Clanwilliam, Bellville Civic Theatre in Bellville, Kraaifontein Civic Hall in Kraaifontein and Upington High School Hall in Upington. They have also performed at various golf clubs, bowling clubs, yacht clubs, retirement villages, restaurants, wine estates, festivals, corporate functions and more.
+
+James and Monique have 8 different productions in their portfolio, and have also written and produced original music, some of which have been playlisted on radio stations such as Radio Sonder Grense (RSG 100-104FM), Zone Radio (The Voice of the Valley 93.3FM and also broadcasting online) and Hosa Radio (now defunct online radio station).
+
+## DIRECTIONS
+
+A TRIP DOWN MEMORY LANE
+
+De Wet Hall
+
+8 Roos St, Onrus River, Onrus, 7201
+
+Get Directions
+
+From
+
+R250
+
+Sat Dec 12, 18:00 - Sat Dec 12, 20:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+De Wet Hall
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "A TRIP DOWN MEMORY LANE",
+  "startDate": "2026-12-12T16:00:00Z",
+  "endDate": "2026-12-12T18:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1020331_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "De Wet Hall",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "8 Roos St, Onrus River, Onrus, 7201",
+      "addressLocality": "Onrus",
+      "postalCode": "7201",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/407660-a-trip-down-memory-lane/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "“A TRIP DOWN MEMORY LANE” WITH JAMES MARAIS &amp; MONIQUE CASSELLSJames Marais and Monique Cassells have become well-known for their “oldies” music tribute shows since they began performing together in 2009.  Their popular duo show, “A Trip Down Memory Lane”, features songs by the legends you know and love from the 1950s, ‘60s, ‘70s and ‘80s, such as Elvis Presley, the Beatles, Cliff Richard, the Everly Brothers, the Platters, Cher and Creedence Clearwater Revival, as well as the likes of Marilyn Monroe, Roy Orbison, ABBA and Queen.  The show is a mini-theatrical experience, featuring the dynamic vocal and visual performances of James and Monique, alternating as a duo and individual performers, who also do multiple costume changes throughout.James Marais is the no. 1 Elvis Presley tribute artist in the country, and has appeared on television several times, including appearances on SABC 2’s game shows, “Noot Vir Noot” and “Musiek Roulette”, as well as Kyknet’s “Jou Show”, presented by Emo Adams.  After winning the title of South Africa’s no. 1 Elvis Tribute Artist at the Elvis Festival Africa held in Storms River Village, Tsitsikamma (Eastern Cape) in April 2010, James participated in the Elvis World Cup, held in Cardiff, Wales in 2010, finishing fourth out of the 11 countries participating.  James performs a show-stopping Elvis tribute in this show, and also pays tribute to many other legends such as Cliff Richard, Neil Diamond, Tom Jones and Roy Orbison.Monique Cassells has developed a reputation of being a powerhouse, versatile and engaging performer, and is a very accomplished vocalist, having performed many different genres of music over the years, including rock ‘n roll, rock, pop, country, blues, ballads and even light classical.  She made her television debut on SABC 2’s “Musiek Roulette” in May 2018.  Monique has dazzled many an audience with her renditions of timeless songs such as The Righteous Brothers’ “Unchained Melody”, and she pays sensational, full-costumed tributes to both Marilyn Monroe and Cher in this show.James and Monique will also perform some exciting duets of legendary songs in their unique style. “A Trip Down Memory Lane” provides the kind of fun, colourful and entertaining show that audiences have come to expect from James and Monique.  The show will leave you with a smile on your face and a song in your heart by the end!James and Monique have performed together at many different venues and for diverse functions over the years, such as the Roxy Revue Bar at GrandWest Casino in Goodwood, Die Boer Dinner Theatre in Durbanville, ReedValley in Mossel Bay, The Showroom Theatre in Prince Albert (Karoo), Heroes Restaurant Theatre in Brackenfell, The Drama Factory in Strand, Café Roux in Noordhoek, Die Bôrdienghuis Theatre in Wellington, Die Koelkamers Theatre in Paternoster, Hoedjiesbaai Hotel in Saldanha Bay, Caledon Casino, Garden Route Casino in Mossel Bay, Golden Valley Casino in Worcester, Mykonos Casino in Langebaan, Evita Se Perron in Darling, Villa Pascal Theatre in Durbanville, Bushman’s Cave Theatre in Clanwilliam, Bellville Civic Theatre in Bellville, Kraaifontein Civic Hall in Kraaifontein and Upington High School Hall in Upington.  They have also performed at various golf clubs, bowling clubs, yacht clubs, retirement villages, restaurants, wine estates, festivals, corporate functions and more.James and Monique have 8 different productions in their portfolio, and have also written and produced original music, some of which have been playlisted on radio stations such as Radio Sonder Grense (RSG 100-104FM), Zone Radio (The Voice of the Valley 93.3FM and also broadcasting online) and Hosa Radio (now defunct online radio station).\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/407660-a-trip-down-memory-lane/#tickets",
+      "price": 275.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-09T00:00:00Z",
+      "sku": "771326"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/407660-a-trip-down-memory-lane/#tickets",
+      "price": 250.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-09T00:00:00Z",
+      "sku": "771337"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Everything HERMANUS Events",
+    "url": "http://www.everythinghermanus.co.za"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=407660, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1020333_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 407660,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 9999,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "A TRIP DOWN MEMORY LANE",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 48134,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "7858ff76-cae0-4f5a-b462-ec26bcca029d",
+ "seatingPricing": [],
+ "seatingProductId": "407660",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "Reserved Table Seating \nPlease arrive before show starts.\nCash bar available.\nFood trucks at the show.",
+   "extraServiceFee": 15.5,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 771326,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Reserved Table Seating",
+   "price": 275,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "12 Dec 2026",
+   "serviceFee": 23,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "Table Seating\nPlease arrive before show starts.\nCash bar available.\nFood trucks at the show.",
+   "extraServiceFee": 14.09,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 771337,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Table Seating",
+   "price": 250,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "12 Dec 2026",
+   "serviceFee": 21.59,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "De Wet Hall"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=407660, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 48134,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:40:39Z) ===
+http://maps.google.co.za/maps?q=-34.4138028,19.1733371
+https://www.google.com/maps/dir/?api=1&destination=-34.4138028,19.1733371

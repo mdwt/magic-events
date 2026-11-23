@@ -1,0 +1,544 @@
+URL: https://www.quicket.co.za/events/401916-hidden-gems-wine-festival/
+Fetched: 2026-11-23T13:30:42Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+Hidden Gems Wine Festival
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Bartho Eksteen Wine Estate
+
+Follow
+
+http://www.barthoeksteen.co.za
+
+Sun Dec 20, 11:00 - Sun Dec 20, 17:00
+
+Bartho Eksteen Wine Estate
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Join us in the picturesque Hemel & Aarde Valley at Bartho Eksteen wine Estate just outside Hermanus, Western Cape on 20 December 2026 11am to 5pm to enjoy the wines of the Hidden Gem winemakers of the valley and surrounds, live music and foodie stalls' fare. Bring friends & family along and enjoy a relaxed day on the farm, there's lots of space for a picnic blanket and kids can roam safely.
+
+## DIRECTIONS
+
+Hidden Gems Wine Festival
+
+Bartho Eksteen Wine Estate
+
+Get Directions
+
+## DISCOVER
+
+@WINE @FOODANDWINEFESTIVAL
+
+From
+
+R100
+
+Family friendly
+
+Sun Dec 20, 11:00 - Sun Dec 20, 17:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Bartho Eksteen Wine Estate
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Hidden Gems Wine Festival",
+  "startDate": "2026-12-20T09:00:00Z",
+  "endDate": "2026-12-20T15:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1013483_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Bartho Eksteen Wine Estate",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/401916-hidden-gems-wine-festival/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Join us in the picturesque Hemel & Aarde Valley at Bartho Eksteen wine Estate just outside Hermanus, Western Cape on 20 December 2026 11am to 5pm to enjoy the wines of the Hidden Gem winemakers of the valley and surrounds, live music and foodie stalls' fare. Bring friends & family along and enjoy a relaxed day on the farm, there's lots of space for a picnic blanket and kids can roam safely.\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/401916-hidden-gems-wine-festival/#tickets",
+      "price": 225.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-13T00:00:00Z",
+      "sku": "762934"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/401916-hidden-gems-wine-festival/#tickets",
+      "price": 100.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-15T00:00:00Z",
+      "sku": "763581"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Bartho Eksteen Wine Estate",
+    "url": "http://www.barthoeksteen.co.za"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=401916, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": true,
+ "bannerUrl": "//images.quicket.co.za/1013484_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 401916,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Hidden Gems Wine Festival",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 73098,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "c7dfa7d0-3440-4126-8a47-57493f8f9db7",
+ "seatingPricing": [],
+ "seatingProductId": "401916",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 762934,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adults",
+   "price": 225,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "20 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 763581,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Age 12-17",
+   "price": 100,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "20 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Bartho Eksteen Wine Estate"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=401916, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 73098,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:38:44Z) ===
+http://maps.google.co.za/maps?q=-34.3992534,19.2179103
+https://www.google.com/maps/dir/?api=1&destination=-34.3992534,19.2179103

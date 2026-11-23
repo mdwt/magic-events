@@ -1,0 +1,528 @@
+URL: https://www.quicket.co.za/events/408245-andrew-young-live-hermanus-golf-club/
+Fetched: 2026-11-23T13:35:06Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+No under 13s
+
+#
+Andrew Young Live @ Hermanus Golf Club
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Andrew Young Management
+
+Follow
+
+https://www.andrewyoung.net
+
+Thu Feb 18, 18:00 - Thu Feb 18, 22:00
+
+Hermanus Golf Club
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+BACK BY POPULAR DEMAND — ANDREW YOUNG LIVE AT HERMANUS GOLF CLUB
+
+For the 8th consecutive year, international saxophonist Andrew Young returns to the Hermanus Golf Club, a firm favourite on his Coast to Coast Tour.
+
+With his unmistakable saxophone sound, infectious energy and warm humour, Andrew brings an evening of rock, pop and soul favourites to this beautiful setting. Expect timeless melodies, toe-tapping rhythms and songs that bring memories flooding back.
+
+Whether you’ve joined us year after year or are discovering Andrew for the first time, gather your friends and enjoy the music, atmosphere and magic that keep audiences coming back.
+
+Seven years of wonderful memories — let’s make some more!
+
+Book your tickets at www.andrewyoung.net or QUICKET
+
+## DIRECTIONS
+
+Andrew Young Live @ Hermanus Golf Club
+
+Hermanus Golf Club
+
+Get Directions
+
+## DISCOVER
+
+#ANDREWYOUNG
+
+#DINNERANDSHOW
+
+#LIVE MUSIC
+
+#SAXOPHONIST
+
+HERMANUS GOLF CLUB
+
+JAZZ
+
+ON TOUR
+
+POP
+
+ROCK
+
+From
+
+R350
+
+No under 13s
+
+Thu Feb 18, 18:00 - Thu Feb 18, 22:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Hermanus Golf Club
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Andrew Young Live @ Hermanus Golf Club",
+  "startDate": "2027-02-18T16:00:00Z",
+  "endDate": "2027-02-18T20:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1023446_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Hermanus Golf Club",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/408245-andrew-young-live-hermanus-golf-club/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "BACK BY POPULAR DEMAND — ANDREW YOUNG LIVE AT HERMANUS GOLF CLUB\r\nFor the 8th consecutive year, international saxophonist Andrew Young returns to the Hermanus Golf Club,  a firm favourite on his Coast to Coast Tour.\r\nWith his unmistakable saxophone sound, infectious energy and warm humour, Andrew brings an evening of rock, pop and soul favourites to this beautiful setting. Expect timeless melodies, toe-tapping rhythms and songs that bring memories flooding back.\r\nWhether you’ve joined us year after year or are discovering Andrew for the first time, gather your friends and enjoy the music, atmosphere and magic that keep audiences coming back.\r\nSeven years of wonderful memories — let’s make some more!\r\nBook your tickets at www.andrewyoung.net or QUICKET\r\n\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408245-andrew-young-live-hermanus-golf-club/#tickets",
+      "price": 350.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-15T00:00:00Z",
+      "sku": "773447"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Andrew Young Management",
+    "url": "https://www.andrewyoung.net"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=408245, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": true,
+ "bannerUrl": "//images.quicket.co.za/1023451_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 408245,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Andrew Young Live @ Hermanus Golf Club",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 50294,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "b196b3a7-b12b-40dd-b4aa-a2e7ed4aaff2",
+ "seatingPricing": [],
+ "seatingProductId": "408245",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 773447,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Show",
+   "price": 350,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "18 Feb 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Hermanus Golf Club"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=408245, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 50294,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:42:00Z) ===
+http://maps.google.co.za/maps?q=-34.4103164,19.2551593
+https://www.google.com/maps/dir/?api=1&destination=-34.4103164,19.2551593

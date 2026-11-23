@@ -1,0 +1,580 @@
+URL: https://www.quicket.co.za/events/405764-bnc10-the-2027-biznews-conference-in-hermanus/
+Fetched: 2026-11-23T13:32:08Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Spotify
+
+-
+
+Directions
+
+#
+BNC#10 - The 2027 BizNews Conference in Hermanus
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By BizNews
+
+Follow
+
+https://biznews.com
+
+Mon Mar 8, 15:00 - Fri Mar 12, 13:00
+
+Hermanus Municipal Auditorium
+
+-
+
+About
+
+-
+
+Spotify
+
+-
+
+Directions
+
+## ABOUT
+
+WELCOME TO BNC#10
+
+Ten conferences. One tribe. Who would have bet on that when we first gathered in the Drakensberg?
+
+The tenth annual BizNews Conference, BNC#10, takes place in Hermanus from Tuesday 9 to Thursday 11 March 2027. On-site registration opens Monday afternoon at 15:00. Leisure activities include golf, a mountain hike, and padel on the morning of Friday the 12th.
+
+Expect what the tribe has come to expect: three days of brain food, straight talk, and ideas for thriving in a country that rarely makes it easy.
+
+We open with a full morning Investment Masterclass. Our tribe's favourite fund managers share their latest thinking, then test each other’s ideas on a panel. Then it’s on to the keynotes, which each day run from 9 am to 5 pm. Then we gather for dinner in tribe-only venues where delegates catch up with old friends and new ones.
+
+Confirmed speakers for BNC#10 include:
+
+Helen Zille · Corné Mulder · Magda Wierzycka · Ivor Ichikowitz · Neal Froneman · Frans Cronje · Prince Mashele · Jason McCormick · Braam van Huyssteen · Rob Hersov · Dawie Roodt · Sean Summers · Magnus Heystek · GG Alcock · Iraj Abedian · Cy Jacobs · Piet Viljoen · David Shapiro · Sean Peche… more to follow.
+
+As for the keynotes, we have two formats. First is the traditional hour split three ways. Thirty minutes from the podium. Fifteen minutes in the hot seat with me. And fifteen minutes to answer your questions, sent via the dedicated BNC WhatsApp channel. Then there's a "fireside chat" where the first half hour is replaced by an informal conversation.
+
+No speeches into the void. No escaping the tough questions.
+
+This is the event's fourth edition in Hermanus. The tribe gathers in a purpose-built marquee in the Municipal precinct, a short walk from accommodation for every budget, excellent restaurants and the Cliff Path. Every session happens under one roof. Nobody has to choose.
+
+As always, the real value is in the people. Speakers, old friends from previous BNCs, new ones you haven’t met yet, and the BizNews team. All in one place, all week.
+
+Delegates will be fed and watered. Accommodation is for your own account. Paid-up delegates will receive our recommended list of places to stay and eat. You'll also receive options for evening activities.
+
+See you in Hermanus
+
+Alec Hogg, Founder, BizNews
+
+## SPOTIFY
+
+## DIRECTIONS
+
+BNC#10 - The 2027 BizNews Conference in Hermanus
+
+Hermanus Municipal Auditorium
+
+1 Harmony Ave, Hermanus, 7200
+
+Get Directions
+
+## DISCOVER
+
+BNC#10
+
+From
+
+R6,779
+
+Mon Mar 8, 15:00 - Fri Mar 12, 13:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Hermanus Municipal Auditorium
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "BNC#10 - The 2027 BizNews Conference in Hermanus",
+  "startDate": "2027-03-08T13:00:00Z",
+  "endDate": "2027-03-12T11:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1012814_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Hermanus Municipal Auditorium ",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "1 Harmony Ave, Hermanus, 7200",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/405764-bnc10-the-2027-biznews-conference-in-hermanus/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "WELCOME TO BNC#10  \r\nTen conferences. One tribe. Who would have bet on that when we first gathered in the Drakensberg?\r\nThe tenth annual BizNews Conference, BNC#10, takes place in Hermanus from Tuesday 9 to Thursday 11 March 2027. On-site registration opens Monday afternoon at 15:00. Leisure activities include golf, a mountain hike, and padel on the morning of Friday the 12th.   \r\nExpect what the tribe has come to expect: three days of brain food, straight talk, and ideas for thriving in a country that rarely makes it easy.\r\nWe open with a full morning Investment Masterclass. Our tribe's favourite fund managers share their latest thinking, then test each other’s ideas on a panel. Then it’s on to the keynotes, which each day run from 9 am to 5 pm. Then we gather for dinner in tribe-only venues where delegates catch up with old friends and new ones. \r\nConfirmed speakers for BNC#10 include:\r\nHelen Zille · Corné Mulder  · Magda Wierzycka  · Ivor Ichikowitz · Neal Froneman ·  Frans Cronje · Prince Mashele · Jason McCormick · Braam van Huyssteen · Rob Hersov  · Dawie Roodt · Sean Summers · Magnus Heystek · GG Alcock · Iraj Abedian  ·  Cy Jacobs · Piet Viljoen · David Shapiro · Sean Peche… more to follow.\r\nAs for the keynotes, we have two formats.  First is the traditional hour split three ways. Thirty minutes from the podium. Fifteen minutes in the hot seat with me. And fifteen minutes to answer your questions, sent via the dedicated BNC WhatsApp channel. Then there's a \"fireside chat\" where the first half hour is replaced by an informal conversation.\r\nNo speeches into the void. No escaping the tough questions. \r\nThis is the event's fourth edition in Hermanus. The tribe gathers in a purpose-built marquee in the Municipal precinct, a short walk from accommodation for every budget, excellent restaurants and the Cliff Path. Every session happens under one roof. Nobody has to choose.\r\nAs always, the real value is in the people. Speakers, old friends from previous BNCs, new ones you haven’t met yet, and the BizNews team. All in one place, all week.\r\nDelegates will be fed and watered. Accommodation is for your own account. Paid-up delegates will receive our recommended list of places to stay and eat. You'll also receive options for evening activities. \r\nSee you in Hermanus\r\nAlec Hogg, Founder, BizNews",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/405764-bnc10-the-2027-biznews-conference-in-hermanus/#tickets",
+      "price": 6779.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-28T13:22:00Z",
+      "sku": "767904"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/405764-bnc10-the-2027-biznews-conference-in-hermanus/#tickets",
+      "price": 7299.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-12-19T00:00:00Z",
+      "sku": "767905"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "BizNews",
+    "url": "https://biznews.com"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=405764, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1012808_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 405764,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "BNC#10 - The 2027 BizNews Conference in Hermanus",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 56952,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "e7dcabea-5541-4f21-bb76-40ea3f045424",
+ "seatingPricing": [],
+ "seatingProductId": "405764",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 767904,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "BNC#10 DELEGATE Early Bird",
+   "price": 6779,
+   "pureServiceFee": 0,
+   "salesPeriodStatusMsg": "18 Dec 2026",
+   "serviceFee": 0,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 767905,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "BNC#10 DELEGATE ",
+   "price": 7299,
+   "pureServiceFee": 0,
+   "salesNotStartedOrEnded": true,
+   "salesPeriodStatusMsg": "Starts: 19 Dec at 00h00",
+   "serviceFee": 0,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Hermanus Municipal Auditorium "
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=405764, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 56952,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:39:47Z) ===
+http://maps.google.co.za/maps?q=-34.4181818,19.2370295
+https://www.google.com/maps/dir/?api=1&destination=-34.4181818,19.2370295

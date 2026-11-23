@@ -1,0 +1,572 @@
+URL: https://www.quicket.co.za/events/404580-blessing-of-the-harvest/
+Fetched: 2026-11-23T13:31:47Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+Blessing of the Harvest
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Lomond Wine Estate
+
+Follow
+
+https://lomond.co.za/
+
+Sat Jan 30, 12:00 - Sat Jan 30, 15:00
+
+Lomond Wine Estate - Gansbaai
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Blessing of the Harvest 2027 - In collaboration with Lost Boy Wines
+
+Lomond Summer Events.
+
+Join us as we raise a glass to the season ahead and bless the 2027 harvest.
+
+This special tasting celebrates the promise of a new vintage, a moment of gratitude for the soil, the vines, and the hands that nurture them. Sip through a curated selection of Lomond and Lost Boy wines that reflect the journey from vine to bottle, each one a reminder of cellar stories and the beauty of patience.
+
+Together, let’s toast to a fruitful harvest, great wines, and the blessings of another year among the vines.
+
+Arrive at our Milkwoods Forest venue at 12:00am.
+
+Here you will enjoy a wine tasting hosted by Lomond Cellarmaster Anné van Heerden and Lost Boy Wines' Trevor DeRuisé, with our Farm-to-Table lunch set out under the Milkwoods canopy in true Cape Agulhas style.
+
+Cost:
+
+Adults: R500 per person, includes the wine tasting and farm - to - table lunch.
+
+Children: R300 per child under 18, includes lunch and a soft drink, no wine.
+
+Time: Arrive at 12h00 at our Milkwoods Forest venue. The event will end by 15h00.
+
+The Milkwood Forest has ablutions and WiFi.
+
+Fastest Fingers First as seats are limited.
+
+Our Lomond Summer Events are always thoroughly enjoyed by our enthusiastic, wine-loving Cellar Club Members. We really hope you can join us this year.
+
+Tel: 028 388 0095
+
+Email: info@lomond.co.za
+
+Whatsapp: 082 908 0098
+
+## DIRECTIONS
+
+Blessing of the Harvest
+
+Lomond Wine Estate - Gansbaai
+
+Get Directions
+
+From
+
+R300
+
+Family friendly
+
+Sat Jan 30, 12:00 - Sat Jan 30, 15:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Lomond Wine Estate - Gansbaai
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Blessing of the Harvest",
+  "startDate": "2027-01-30T10:00:00Z",
+  "endDate": "2027-01-30T13:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1009341_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Lomond Wine Estate - Gansbaai",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Gansbaai",
+      "postalCode": "7220",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/404580-blessing-of-the-harvest/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Blessing of the Harvest 2027 - In collaboration with Lost Boy Wines Lomond Summer Events. \r\nJoin us as we raise a glass to the season ahead and bless the 2027 harvest.This special tasting celebrates the promise of a new vintage, a moment of gratitude for the soil, the vines, and the hands that nurture them. Sip through a curated selection of Lomond and Lost Boy wines that reflect the journey from vine to bottle, each one a reminder of cellar stories and the beauty of patience.Together, let’s toast to a fruitful harvest, great wines, and the blessings of another year among the vines.\r\nArrive at our Milkwoods Forest venue at 12:00am. Here you will enjoy a wine tasting hosted by Lomond Cellarmaster Anné van Heerden and Lost Boy Wines' Trevor DeRuisé, with our Farm-to-Table lunch set out under the Milkwoods canopy in true Cape Agulhas style.\r\nCost: Adults: R500 per person, includes the wine tasting and farm - to - table lunch.Children: R300 per child under 18, includes lunch and a soft drink, no wine.\r\nTime:                 Arrive at 12h00 at our Milkwoods Forest venue. The event will end by 15h00.\r\nThe Milkwood Forest has ablutions and WiFi.\r\nFastest Fingers First as seats are limited.\r\nOur Lomond Summer Events are always thoroughly enjoyed by our enthusiastic, wine-loving Cellar Club Members. We really hope you can join us this year.\r\nTel: 028 388 0095Email: info@lomond.co.zaWhatsapp: 082 908 0098\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/404580-blessing-of-the-harvest/#tickets",
+      "price": 500.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-21T00:00:00Z",
+      "sku": "765667"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/404580-blessing-of-the-harvest/#tickets",
+      "price": 300.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-21T00:00:00Z",
+      "sku": "765668"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Lomond Wine Estate",
+    "url": "https://lomond.co.za/"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=404580, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1009342_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 404580,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Blessing of the Harvest",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 73986,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "97669309-3f7c-4de6-80cc-15fb7e0a7072",
+ "seatingPricing": [],
+ "seatingProductId": "404580",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 765667,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adult",
+   "price": 500,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "30 Jan 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 765668,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Children",
+   "price": 300,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "30 Jan 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Lomond Wine Estate - Gansbaai"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=404580, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 73986,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:39:30Z) ===
+http://maps.google.co.za/maps?q=-34.5661351,19.4830942
+https://www.google.com/maps/dir/?api=1&destination=-34.5661351,19.4830942

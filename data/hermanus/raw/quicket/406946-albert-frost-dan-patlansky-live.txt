@@ -1,0 +1,541 @@
+URL: https://www.quicket.co.za/events/406946-albert-frost-dan-patlansky-live/
+Fetched: 2026-11-23T13:32:49Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Spotify
+
+-
+
+Directions
+
+Family friendly
+
+#
+Albert Frost & Dan Patlansky Live
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Albert Frost
+
+Follow
+
+https://www.albertfrostmusic.com/
+
+Sun Dec 20, 15:00 - Sun Dec 20, 20:00
+
+Stanford Hills Estate
+
+-
+
+About
+
+-
+
+Spotify
+
+-
+
+Directions
+
+## ABOUT
+
+## Stanford Hills Sunset Sessions
+
+### Albert Frost & Dan Patlansky, Live
+
+Sunday, 20 December 2026 | Stanford Hills, Stanford
+
+Two of South Africa’s most celebrated guitarists share one stage for a single afternoon and evening in the Overberg.
+
+Albert Frost and Dan Patlansky are known for fearless, soulful playing, blending blues, rock and roots into sets that feel raw and alive. Each has built a loyal following over years of touring and recording. Together, they promise something rarer: a combined show where two distinct voices trade licks, swap spotlights and push each other into the kind of spontaneous moments you only get live.
+
+Doors open at 3 PM, so arrive early, claim your spot and soak up the relaxed atmosphere of Stanford Hills. Food vendors and a cash bar will be on site, so you can graze and sip while the afternoon unfolds. Bring a picnic blanket or fold-out chair and settle in. Then, as the sun sets over the Overberg, expect searing solos, heartfelt songs and plenty of crowd favourites. Bring your friends, your family and your festive spirit, and kick off the December holidays with a night of world-class guitar.
+
+Don’t miss it. Book early.
+
+Stanford Hills, Stanford, Western Cape
+
+Sunday, 20 December 2026
+
+Doors open 3:00 PM | Show 6:00 PM to 8:00 PM
+
+Adults R300 | Kids (5 to 16 years) R200
+
+Food vendors and cash bar on site
+
+Bring a picnic blanket or fold-out chair
+
+## SPOTIFY
+
+## DIRECTIONS
+
+Albert Frost & Dan Patlansky Live
+
+Stanford Hills Estate
+
+Weltevrede Farm, Stanford, 7210, South Africa
+
+Get Directions
+
+## DISCOVER
+
+BLUES
+
+ROCK
+
+From
+
+R300
+
+Family friendly
+
+Sun Dec 20, 15:00 - Sun Dec 20, 20:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Stanford Hills Estate
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Albert Frost & Dan Patlansky Live",
+  "startDate": "2026-12-20T13:00:00Z",
+  "endDate": "2026-12-20T18:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1018022_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Stanford Hills Estate",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Weltevrede Farm, Stanford, 7210, South Africa",
+      "addressLocality": "Stanford",
+      "postalCode": "7210",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/406946-albert-frost-dan-patlansky-live/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Stanford Hills Sunset SessionsAlbert Frost &amp; Dan Patlansky, LiveSunday, 20 December 2026 | Stanford Hills, StanfordTwo of South Africa’s most celebrated guitarists share one stage for a single afternoon and evening in the Overberg.Albert Frost and Dan Patlansky are known for fearless, soulful playing, blending blues, rock and roots into sets that feel raw and alive. Each has built a loyal following over years of touring and recording. Together, they promise something rarer: a combined show where two distinct voices trade licks, swap spotlights and push each other into the kind of spontaneous moments you only get live.Doors open at 3 PM, so arrive early, claim your spot and soak up the relaxed atmosphere of Stanford Hills. Food vendors and a cash bar will be on site, so you can graze and sip while the afternoon unfolds. Bring a picnic blanket or fold-out chair and settle in. Then, as the sun sets over the Overberg, expect searing solos, heartfelt songs and plenty of crowd favourites. Bring your friends, your family and your festive spirit, and kick off the December holidays with a night of world-class guitar.Don’t miss it. Book early. Stanford Hills, Stanford, Western Cape Sunday, 20 December 2026 Doors open 3:00 PM | Show 6:00 PM to 8:00 PM Adults R300 | Kids (5 to 16 years) R200 Food vendors and cash bar on site Bring a picnic blanket or fold-out chair\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/406946-albert-frost-dan-patlansky-live/#tickets",
+      "price": 300.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-04T00:00:00Z",
+      "sku": "770077"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Albert Frost",
+    "url": "https://www.albertfrostmusic.com/"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=406946, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": true,
+ "bannerUrl": "//images.quicket.co.za/1018024_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 406946,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Albert Frost & Dan Patlansky Live",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 69757,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "ff379073-99ab-4cf9-b7b1-ca31a6485040",
+ "seatingPricing": [],
+ "seatingProductId": "406946",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 770077,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adults",
+   "price": 300,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "20 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Stanford Hills Estate"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=406946, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 69757,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:40:19Z) ===
+http://maps.google.co.za/maps?q=-34.4226932,19.4738643
+https://www.google.com/maps/dir/?api=1&destination=-34.4226932,19.4738643

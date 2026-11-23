@@ -1,0 +1,511 @@
+URL: https://www.quicket.co.za/events/371790-jingle-bell-rock-with-the-family-band-at-hermanus-golf-club/
+Fetched: 2026-11-23T13:29:25Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+JINGLE BELL ROCK with The Family Band at Hermanus Golf Club
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Monique ms events
+
+Follow
+
+https://www.msevents.co.za/
+
+Thu Dec 3, 18:00 - Thu Dec 3, 22:30
+
+Hermanus Golf Club
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+This festive season, get ready for an unforgettable night of music, nostalgia, laughter, and holiday magic with The Family Band presents Jingle Bell Rock
+
+Jingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.
+
+Featuring a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists. Audiences can look forward to festive favourites from legendary names like Wham, Boney M, Bing Crosby, Frank Sinatra, and Johnny Mathis, alongside energetic rock anthems, nostalgic 90’s medleys, Disney favourites, and even music inspired by the iconic Home Alone soundtrack.
+
+More than just a concert, Jingle Bell Rock is a fully scripted musical journey that captures the memories, emotions, and traditions that make Christmas so special. The production combines dazzling performances, rich vocal harmonies, soaring guitar solos, and storytelling to create a magical theatre experience for the whole family.
+
+The show stars acclaimed performers including Dewald Louw, Dee Dee Theunissen and The Family Band Trio, delivering unforgettable renditions of the songs audiences know and love.
+
+Whether you want to get up and dance, sing along to festive classics, or simply soak in the holiday atmosphere, Jingle Bell Rock promises world-class live entertainment filled with Christmas cheer and Rock n Roll!
+
+## DIRECTIONS
+
+JINGLE BELL ROCK with The Family Band at Hermanus Golf Club
+
+Hermanus Golf Club
+
+Golf Road, off Main Rd, Fernkloof Estate, Hermanus, 7200
+
+Get Directions
+
+From
+
+R350
+
+Family friendly
+
+Thu Dec 3, 18:00 - Thu Dec 3, 22:30
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Hermanus Golf Club
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "JINGLE BELL ROCK with The Family Band at Hermanus Golf Club",
+  "startDate": "2026-12-03T16:00:00Z",
+  "endDate": "2026-12-03T20:30:00Z",
+  "image": [
+    "//images.quicket.co.za/0937409_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Hermanus Golf Club",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Golf Road, off Main Rd, Fernkloof Estate, Hermanus, 7200",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/371790-jingle-bell-rock-with-the-family-band-at-hermanus-golf-club/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "This festive season, get ready for an unforgettable night of music, nostalgia, laughter, and holiday magic with The Family Band presents Jingle Bell Rock Jingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season. Featuring a powerhouse 8-piece live band, Jingle Bell Rock  brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists. Audiences can look forward to festive favourites from legendary names like Wham, Boney M, Bing Crosby, Frank Sinatra, and Johnny Mathis, alongside energetic rock anthems, nostalgic 90’s medleys, Disney favourites, and even music inspired by the iconic Home Alone soundtrack. More than just a concert, Jingle Bell Rock  is a fully scripted musical journey that captures the memories, emotions, and traditions that make Christmas so special. The production combines dazzling performances, rich vocal harmonies, soaring guitar solos, and storytelling to create a magical theatre experience for the whole family. The show stars acclaimed performers including Dewald Louw, Dee Dee Theunissen and The Family Band Trio, delivering unforgettable renditions of the songs audiences know and love. Whether you want to get up and dance, sing along to festive classics, or simply soak in the holiday atmosphere, Jingle Bell Rock  promises world-class live entertainment filled with Christmas cheer and Rock n Roll!\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/371790-jingle-bell-rock-with-the-family-band-at-hermanus-golf-club/#tickets",
+      "price": 350.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-06-10T00:00:00Z",
+      "sku": "720048"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Monique ms events",
+    "url": "https://www.msevents.co.za/"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=371790, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": true,
+ "bannerUrl": "//images.quicket.co.za/0937412_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 371790,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "JINGLE BELL ROCK with The Family Band at Hermanus Golf Club",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 62228,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "d306bc98-fd9d-4ab5-a41c-e88f72f4cc89",
+ "seatingPricing": [],
+ "seatingProductId": "371790",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 720048,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "JINGLE BELL ROCK with The Family Band at Hermanus Golf Club",
+   "price": 350,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "03 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Hermanus Golf Club"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=371790, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 62228,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:37:48Z) ===
+http://maps.google.co.za/maps?q=-34.4103164,19.2551593
+https://www.google.com/maps/dir/?api=1&destination=-34.4103164,19.2551593

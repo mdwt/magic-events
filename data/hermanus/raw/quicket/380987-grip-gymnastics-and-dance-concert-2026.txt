@@ -1,0 +1,530 @@
+URL: https://www.quicket.co.za/events/380987-grip-gymnastics-and-dance-concert-2026/
+Fetched: 2026-11-23T13:29:31Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+#
+Grip Gymnastics and Dance Concert 2026
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Grip Gymnastics
+
+Follow
+
+Sat Nov 28, 10:00 - Sun Nov 29, 16:45
+
+Road House Cinema at Whale Coast Mall
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Join us for our end-of-year production, showcasing the talent, hard work and dedication of our acrobatic gymnastics and dance students. For the first time, we’re bringing our annual production to the theatre stage for an evening of acrobatics, dance and exciting performances as we celebrate everything our students have achieved throughout the year.
+
+## DIRECTIONS
+
+Grip Gymnastics and Dance Concert 2026
+
+Road House Cinema at Whale Coast Mall
+
+Whale Coast Mall, R43, Sandbaai, Hermanus, 7200, South Africa
+
+Get Directions
+
+From
+
+R250
+
+Sat Nov 28, 10:00 - Sun Nov 29, 16:45
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Road House Cinema at Whale Coast Mall
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Grip Gymnastics and Dance Concert 2026",
+  "startDate": "2026-11-28T08:00:00Z",
+  "endDate": "2026-11-29T14:45:00Z",
+  "image": [
+    "//images.quicket.co.za/1003527_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Road House Cinema at Whale Coast Mall",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Whale Coast Mall, R43, Sandbaai, Hermanus, 7200, South Africa",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/380987-grip-gymnastics-and-dance-concert-2026/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Join us for our end-of-year production, showcasing the talent, hard work and dedication of our acrobatic gymnastics and dance students. For the first time, we’re bringing our annual production to the theatre stage for an evening of acrobatics, dance and exciting performances as we celebrate everything our students have achieved throughout the year.",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/380987-grip-gymnastics-and-dance-concert-2026/#tickets",
+      "price": 250.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-10-12T00:00:00Z",
+      "sku": "762224"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Grip Gymnastics",
+    "url": "https://www.quicket.co.za/app/#/account/event/380987/profile"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=380987, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": true,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1013627_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 380987,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 9999,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Grip Gymnastics and Dance Concert 2026",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": true,
+ "organiserId": 73351,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "3454ad19-96b4-4b97-9774-70f63c9bdf8f",
+ "seatingPricing": [],
+ "seatingProductId": "380987",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    0
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": true,
+   "id": 762224,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Admission",
+   "price": 250,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "29 Nov 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "soldOut": true,
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useSeatNumbers": true,
+ "useTicketGroups": false,
+ "venueName": "Road House Cinema at Whale Coast Mall"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=380987, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 73351,
+ "schedules": [
+  {
+   "booked_out": false,
+   "date_string": "Sat 28th Nov 2026 10:00 - 12:00 - Saturday Show 1",
+   "id": 455421,
+   "name": "Saturday Show 1",
+   "sold_out": false,
+   "start_date": "2026-11-28T10:00:00"
+  },
+  {
+   "booked_out": false,
+   "date_string": "Sat 28th Nov 2026 14:45 - 16:45 - Saturday Show 2",
+   "id": 455422,
+   "name": "Saturday Show 2",
+   "sold_out": false,
+   "start_date": "2026-11-28T14:45:00"
+  },
+  {
+   "booked_out": false,
+   "date_string": "Sun 29th Nov 2026 10:00 - 12:00 - Sunday Show 1",
+   "id": 455423,
+   "name": "Sunday Show 1",
+   "sold_out": false,
+   "start_date": "2026-11-29T10:00:00"
+  },
+  {
+   "booked_out": false,
+   "date_string": "Sun 29th Nov 2026 14:45 - 16:45 - Sunday Show 2",
+   "id": 455424,
+   "name": "Sunday Show 2",
+   "sold_out": false,
+   "start_date": "2026-11-29T14:45:00"
+  }
+ ]
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:37:53Z) ===
+http://maps.google.co.za/maps?q=-34.4146116,19.2050836
+https://www.google.com/maps/dir/?api=1&destination=-34.4146116,19.2050836

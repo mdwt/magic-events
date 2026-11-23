@@ -1,0 +1,655 @@
+URL: https://www.quicket.co.za/events/408095-the-festive-pop-up-series-pringle-bay-fomo-gallery/
+Fetched: 2026-11-23T13:34:52Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+The Festive Pop-Up Series: Pringle Bay (FoMo Gallery)
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Southern Light Strings
+
+Follow
+
+Thu Dec 10, 18:00 - Thu Dec 10, 19:15
+
+FoMo Fine Art Gallery & Events
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Experience an intimate, sun-drenched evening of live string quartet music, fine art, and local wine in the heart of Pringle Bay!
+
+Join Southern Light Strings at FoMo Fine Art Gallery & Events on Thursday, 10 December 2026 for an exclusive stop on The Festive Pop-Up Series.
+
+Forget heavy winter snowscapes—our vibrant, 75-minute sunset performance is crafted as a warm South African summer lifestyle experience. Enjoy timeless classical masterpieces (Bach’s Jesu, Joy of Man’s Desiring and Corelli’s Christmas Concerto), beloved carols (Carol of the Bells, Silent Night), upbeat Bridgerton-style holiday pop crossovers (All I Want For Christmas, Feliz Navidad), and iconic South African summer favourites like Somerkersfees and Mango Groove’s Special Star.
+
+With seating strictly capped at 80 guests inside the gallery, every seat offers rich acoustic immersion and up-close artistry.
+
+Your Quartet for the Evening
+
+• Violin I: Elma Salt
+
+• Violin II: Petra Magner
+
+• Viola: Maja van Dyk
+
+• Cello: Barbara Kennedy
+
+Evening Schedule (Thursday, 10 December 2026)
+
+• 17:00 — General Doors Open (Welcome drinks, gallery browsing, cash bar & platter service)
+
+• 18:00 – 19:15 — Live String Quartet Performance (75-minute continuous set, no intermission)
+
+• 19:15 onwards — Evening concludes; guests are welcome to linger for post-show drinks at the bar
+
+Ticket Options & Inclusions
+
+Every ticket includes a complimentary welcome drink on arrival—choose between a glass of Ken Forrester Petit Range wine or a 300ml Diesel & Dust Blonde Ale—plus automatic entry into our Grand Festive Giveaway!
+
+• General Admission (R350): Includes unnumbered theatre seating, 1 complimentary welcome drink on arrival, and 1 entry into our Festive Lucky Draw. (70 tickets available)
+
+• VIP Front Row (R390): Includes guaranteed reserved front-row seating, 1 complimentary welcome drink on arrival, and 2 entries into our Festive Lucky Draw. (Strictly limited to 10 seats)
+
+• Optional Add-On — Gourmet Charcuterie Board (R300): Pre-order FoMo’s signature artisanal cheese and charcuterie board (ideal for sharing between two) to enjoy before or during the concert.
+
+Included With Your Ticket: The Festive Pop-Up Lucky Draw (Over R7,300 in Prizes!)
+
+Every ticket purchased automatically enters you into our Grand Festive Giveaway, drawn after our final Christmas concert on 19 December (VIP Front-Row guests receive double entries!):
+
+• 1st Prize (Valued at R4,000): A 60-Minute Private String Duo Performance by Southern Light Strings for your 2027 dinner party, anniversary, or celebration in the Overstrand/Helderberg region!
+
+• 2nd Prize (Valued at R2,500): 30 Minutes of Free Live String Duo Music when booking any 60-minute performance in 2027!
+
+• 3rd Prize (Valued at R800+): Two (2) VIP Front-Row Tickets to Southern Light Strings’ New Year’s Sunset Gala at Benguela Cove on Saturday, 2 January 2027!
+
+Venue & Practical Info
+
+• Location: FoMo Fine Art Gallery & Events, Cnr Hangklip Road & Clarence Drive, Pringle Bay 7196
+
+• Hospitality: A cash bar will be operating throughout the evening. Pre-order your R300 Charcuterie Board at checkout to guarantee availability on the night.
+
+• Seating: All tickets include seated chairs provided by the venue.
+
+Seats are strictly limited to 80 guests—book early to secure your spot!
+
+## DIRECTIONS
+
+The Festive Pop-Up Series: Pringle Bay (FoMo Gallery)
+
+FoMo Fine Art Gallery & Events
+
+Clarence Drive, Pringle Bay, 7196, South Africa
+
+Get Directions
+
+## DISCOVER
+
+BRIDGERTON
+
+CHRISTMAS CONCERT
+
+CLASSICAL
+
+FESTIVE
+
+LIVE MUSIC
+
+OVERSTRAND
+
+PRINGLE BAY
+
+STRING QUARTET
+
+From
+
+R350
+
+Family friendly
+
+Thu Dec 10, 18:00 - Thu Dec 10, 19:15
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+FoMo Fine Art Gallery & Events
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "The Festive Pop-Up Series: Pringle Bay (FoMo Gallery)",
+  "startDate": "2026-12-10T16:00:00Z",
+  "endDate": "2026-12-10T17:15:00Z",
+  "image": [
+    "//images.quicket.co.za/1025618_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "FoMo Fine Art Gallery & Events",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Clarence Drive, Pringle Bay, 7196, South Africa",
+      "addressLocality": "Pringle Bay",
+      "postalCode": "7196",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/408095-the-festive-pop-up-series-pringle-bay-fomo-gallery/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Experience an intimate, sun-drenched evening of live string quartet music, fine art, and local wine in the heart of Pringle Bay!\r\nJoin Southern Light Strings at FoMo Fine Art Gallery &amp; Events on Thursday, 10 December 2026 for an exclusive stop on The Festive Pop-Up Series.\r\nForget heavy winter snowscapes—our vibrant, 75-minute sunset performance is crafted as a warm South African summer lifestyle experience. Enjoy timeless classical masterpieces (Bach’s Jesu, Joy of Man’s Desiring and Corelli’s Christmas Concerto), beloved carols (Carol of the Bells, Silent Night), upbeat Bridgerton-style holiday pop crossovers (All I Want For Christmas, Feliz Navidad), and iconic South African summer favourites like Somerkersfees and Mango Groove’s Special Star.\r\nWith seating strictly capped at 80 guests inside the gallery, every seat offers rich acoustic immersion and up-close artistry.\r\nYour Quartet for the Evening\r\n• Violin I: Elma Salt• Violin II: Petra Magner• Viola: Maja van Dyk• Cello: Barbara Kennedy\r\nEvening Schedule (Thursday, 10 December 2026)\r\n• 17:00 — General Doors Open (Welcome drinks, gallery browsing, cash bar &amp; platter service)• 18:00 – 19:15 — Live String Quartet Performance (75-minute continuous set, no intermission)• 19:15 onwards — Evening concludes; guests are welcome to linger for post-show drinks at the bar\r\nTicket Options &amp; Inclusions\r\nEvery ticket includes a complimentary welcome drink on arrival—choose between a glass of Ken Forrester Petit Range wine or a 300ml Diesel &amp; Dust Blonde Ale—plus automatic entry into our Grand Festive Giveaway!\r\n• General Admission (R350): Includes unnumbered theatre seating, 1 complimentary welcome drink on arrival, and 1 entry into our Festive Lucky Draw. (70 tickets available)• VIP Front Row (R390): Includes guaranteed reserved front-row seating, 1 complimentary welcome drink on arrival, and 2 entries into our Festive Lucky Draw. (Strictly limited to 10 seats)• Optional Add-On — Gourmet Charcuterie Board (R300): Pre-order FoMo’s signature artisanal cheese and charcuterie board (ideal for sharing between two) to enjoy before or during the concert.\r\nIncluded With Your Ticket: The Festive Pop-Up Lucky Draw (Over R7,300 in Prizes!)\r\nEvery ticket purchased automatically enters you into our Grand Festive Giveaway, drawn after our final Christmas concert on 19 December (VIP Front-Row guests receive double entries!):• 1st Prize (Valued at R4,000): A 60-Minute Private String Duo Performance by Southern Light Strings for your 2027 dinner party, anniversary, or celebration in the Overstrand/Helderberg region!• 2nd Prize (Valued at R2,500): 30 Minutes of Free Live String Duo Music when booking any 60-minute performance in 2027!• 3rd Prize (Valued at R800+): Two (2) VIP Front-Row Tickets to Southern Light Strings’ New Year’s Sunset Gala at Benguela Cove on Saturday, 2 January 2027!\r\nVenue &amp; Practical Info\r\n• Location: FoMo Fine Art Gallery &amp; Events, Cnr Hangklip Road &amp; Clarence Drive, Pringle Bay 7196• Hospitality: A cash bar will be operating throughout the evening. Pre-order your R300 Charcuterie Board at checkout to guarantee availability on the night.• Seating: All tickets include seated chairs provided by the venue.\r\nSeats are strictly limited to 80 guests—book early to secure your spot!",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408095-the-festive-pop-up-series-pringle-bay-fomo-gallery/#tickets",
+      "price": 350.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T00:00:00Z",
+      "sku": "774819"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408095-the-festive-pop-up-series-pringle-bay-fomo-gallery/#tickets",
+      "price": 390.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T00:00:00Z",
+      "sku": "774820"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408095-the-festive-pop-up-series-pringle-bay-fomo-gallery/#tickets",
+      "price": 300.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T00:00:00Z",
+      "sku": "774821"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Southern Light Strings ",
+    "url": "https://www.quicket.co.za/app/#/account/event/408095/profile"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=408095, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1024910_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 408095,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "The Festive Pop-Up Series: Pringle Bay (FoMo Gallery)",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 99512,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "e123d480-1d46-421b-9166-6d987eaedc16",
+ "seatingPricing": [],
+ "seatingProductId": "408095",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 774819,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "General Admission",
+   "price": 350,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "10 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    10
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 774820,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "VIP Front Row",
+   "price": 390,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "10 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 774821,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Add-On Item (Gourmet Charcuterie Board)",
+   "price": 300,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "10 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "FoMo Fine Art Gallery & Events"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=408095, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 99512,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:41:50Z) ===
+http://maps.google.co.za/maps?q=-34.3391441,18.8445314
+https://www.google.com/maps/dir/?api=1&destination=-34.3391441,18.8445314

@@ -1,0 +1,614 @@
+URL: https://www.quicket.co.za/events/389570-andrew-young-live-benguela-cove/
+Fetched: 2026-11-23T13:29:46Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+Andrew Young Live @ Benguela Cove
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Andrew Young Management
+
+Follow
+
+https://www.andrewyoung.net
+
+Sat Jan 9, 17:30 - Sat Jan 9, 19:30
+
+Benguela Cove Lagoon Wine Estate
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+An Afternoon of Music. An Evening to Savour.
+
+Treat yourself to an unforgettable afternoon at the magnificent Benguela Cove Wine Estate, where breathtaking lagoon views, award-winning wines and world-class music combine to create a truly memorable experience.
+
+Internationally acclaimed saxophonist Andrew Young has been entertaining audiences at Benguela Cove for the past 7 years, transforming beloved songs into unforgettable live performances. From Beatles classics and iconic movie themes to soul, rock and timeless favourites, every show is filled with energy, humour, nostalgia and exceptional musicianship.
+
+One moment you'll be laughing at a story from Andrew's travels. The next, you'll be singing along to a song you haven't heard in years.
+
+You don't need to love jazz or know anything about saxophones. You simply need to enjoy outstanding music in a spectacular setting.
+
+Many people attend their first Andrew Young concert out of curiosity, they leave wondering when they can experience it again.
+
+Extend the occasion with dinner from the popup Pizza Bar or from the menu of the elegant Moody Lagoon Restaurant, where superb cuisine, award-winning wines and panoramic lagoon views provide the perfect, remarkable day.
+
+Come expecting a saxophone concert.
+
+Leave having experienced so much more.
+
+Book your tickets today.
+
+Doors Open 16:30. Show 17:30
+
+## DIRECTIONS
+
+Andrew Young Live @ Benguela Cove
+
+Benguela Cove Lagoon Wine Estate
+
+Get Directions
+
+## DISCOVER
+
+#ANDREWYOUNG
+
+#BENGUELACOVE
+
+#HERMANUSEVENTS
+
+#LIVECONCERT
+
+#SAXOPHONIST
+
+From
+
+R150
+
+Family friendly
+
+Sat Jan 9, 17:30 - Sat Jan 9, 19:30
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Benguela Cove Lagoon Wine Estate
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Andrew Young Live @ Benguela Cove",
+  "startDate": "2027-01-09T15:30:00Z",
+  "endDate": "2027-01-09T17:30:00Z",
+  "image": [
+    "//images.quicket.co.za/0963142_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Benguela Cove Lagoon Wine Estate",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/389570-andrew-young-live-benguela-cove/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "An Afternoon of Music. An Evening to Savour.Treat yourself to an unforgettable afternoon at the magnificent Benguela Cove Wine Estate, where breathtaking lagoon views, award-winning wines and world-class music combine to create a truly memorable experience.\r\nInternationally acclaimed saxophonist Andrew Young has been entertaining audiences at Benguela Cove for the past 7 years, transforming beloved songs into unforgettable live performances. From Beatles classics and iconic movie themes to soul, rock and timeless favourites, every show is filled with energy, humour, nostalgia and exceptional musicianship.\r\nOne moment you'll be laughing at a story from Andrew's travels. The next, you'll be singing along to a song you haven't heard in years.You don't need to love jazz or know anything about saxophones. You simply need to enjoy outstanding music in a spectacular setting.Many people attend their first Andrew Young concert out of curiosity, they leave wondering when they can experience it again.\r\nExtend the occasion with dinner from the popup Pizza Bar or from the menu of the elegant Moody Lagoon Restaurant, where superb cuisine, award-winning wines and panoramic lagoon views provide the perfect, remarkable day.\r\nCome expecting a saxophone concert.Leave having experienced so much more.Book your tickets today.\r\nDoors Open 16:30. Show 17:30",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/389570-andrew-young-live-benguela-cove/#tickets",
+      "price": 275.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "sku": "737641"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/389570-andrew-young-live-benguela-cove/#tickets",
+      "price": 300.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "sku": "737642"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/389570-andrew-young-live-benguela-cove/#tickets",
+      "price": 150.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-08-01T00:00:00Z",
+      "sku": "737643"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Andrew Young Management",
+    "url": "https://www.andrewyoung.net"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=389570, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": true,
+ "bannerUrl": "//images.quicket.co.za/0963144_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 389570,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Andrew Young Live @ Benguela Cove",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 50294,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "b196b3a7-b12b-40dd-b4aa-a2e7ed4aaff2",
+ "seatingPricing": [],
+ "seatingProductId": "389570",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 737641,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Early Bird",
+   "price": 275,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "09 Jan 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 737642,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adults ",
+   "price": 300,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "09 Jan 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 737643,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Child",
+   "price": 150,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "09 Jan 2027",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Benguela Cove Lagoon Wine Estate"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=389570, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 50294,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:38:03Z) ===
+http://maps.google.co.za/maps?q=-34.3458633,19.1347293
+https://www.google.com/maps/dir/?api=1&destination=-34.3458633,19.1347293

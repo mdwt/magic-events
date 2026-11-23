@@ -1,0 +1,642 @@
+URL: https://www.quicket.co.za/events/409895-christmas-lunch-boma-asado-de-navidad/
+Fetched: 2026-11-23T13:36:02Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+#
+Christmas Lunch Boma - Asado de Navidad
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By The Hangklip Hotel
+
+Follow
+
+http://thehangkliphotel.com
+
+Fri Dec 25, 12:30 - Fri Dec 25, 17:00
+
+The Hangklip Hotel - The BOMA
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Event name
+
+Asado de Navidad – Christmas Lunch Feast on Fire
+
+Short description
+
+An Argentine-inspired Christmas Day lunch cooked over open fire at The Hangklip Hotel, Pringle Bay: slow-fired meats, fire-roasted sides and festive communal tables beneath Hangklip Mountain.
+
+Date and time
+
+Friday, 25 December 2026
+
+Arrival: 12:30 | Feast served from 13:30
+
+Venue
+
+The Boma, The Hangklip Hotel, Pringle Bay, Western Cape
+
+# DESCRIPTION
+
+The Hangklip Hotel invites you to celebrate Christmas Day with Asado de Navidad, our Argentine-inspired Christmas feast. In Argentina, the asado is more than a meal. It is a celebration of fire, family and friends gathered around the coals for a long, slow afternoon. We bring that tradition to Pringle Bay, with meats hung and slow-roasted over open flames and glowing embers, served at our festive communal tables in the Boma, beneath Hangklip Mountain.
+
+## From the First Embers – Starters
+
+- Log-Seared Ostrich Fillet: whole ostrich fillet seared over the coals and thinly carved, with watercress, baby spinach, wild rocket and a berry-balsamic glaze.
+
+- Garlic White Wine Mussel Bowl: whole-shell mussels simmered in garlic, white wine and butter with fresh herbs, served with fire-toasted buttered flatbread.
+
+## The Main Fire – The Asado Feast
+
+- Slow-Fired Tomahawk: bone-in beef tomahawks slowly roasted over wood embers, then flame-seared and carved into slivers.
+
+- The Hanging Chooks: whole free-range chickens hung over the fire and basted with butter until golden.
+
+- Pistachio & Herb Porchetta: pork belly rolled with pistachio and herb pesto, slow-roasted over the coals and carved into slices.
+
+## From the Coals & Earth – Accompaniments
+
+- Coal-Roasted Beetroot with bitter leaves and a light dressing
+
+- Whole Fire-Roasted Pumpkin with local honey and balsamic reduction
+
+- Hung Burnt Cabbage & Cauli Slaw with fresh herbs and burnt-citrus dressing
+
+- Fire-Crispy Smashed Potatoes with aromatic ghee and confit garlic
+
+## The Last Embers – Dessert
+
+- Warm Fire-Baked Summer Fruit: seasonal fruit baked over the coals, with golden cinnamon crumble and cold homemade custard.
+
+# Ticket types
+
+TicketPrice
+
+AdultR1 090.00 per person
+
+Child (7–12 years)R760.00 per child
+
+Ticket prices include a 10% staff gratuity on the food only. Drinks are bought separately from the bar, and the gratuity on drinks is at your discretion.
+
+# IMPORTANT INFORMATION
+
+- All bookings are made online through Quicket. For more information, call 028 273 8310 or WhatsApp 084 546 5214.
+
+- Children under 7 are seated on a parent's lap and do not have their own place setting. Parents are asked to provide their child's food. Please let us know when booking if you will be bringing a child under 7.
+
+- The menu is set and served as a communal feast. Please let us know if you are vegetarian as soon as you have booked so we can make a note. Last chance to confirm a vegetarian version is 7 days before event.
+
+- Drinks are not included in the ticket price and can be bought from your waitron at the table on the day.
+
+- Tickets are non-refundable but may be transferred to another guest. Please let us know the new guest's name before the event.
+
+- The Hangklip Hotel may make minor changes to the menu depending on what is in season.
+
+Enquiries
+
+Tel: 028 273 8310 | WhatsApp: 084 546 5214
+
+## DIRECTIONS
+
+Christmas Lunch Boma - Asado de Navidad
+
+The Hangklip Hotel - The BOMA
+
+Overberg DC, 6940
+
+Get Directions
+
+## DISCOVER
+
+FEAST ON FIRE
+
+FIRE COOKING
+
+XMAS LUNCH
+
+From
+
+R1,090
+
+Fri Dec 25, 12:30 - Fri Dec 25, 17:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+The Hangklip Hotel - The BOMA
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Christmas Lunch Boma - Asado de Navidad",
+  "startDate": "2026-12-25T10:30:00Z",
+  "endDate": "2026-12-25T15:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1026554_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "The Hangklip Hotel - The BOMA",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Overberg DC, 6940",
+      "addressLocality": "Pringle Bay",
+      "postalCode": "7196",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/409895-christmas-lunch-boma-asado-de-navidad/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Event nameAsado de Navidad – Christmas Lunch Feast on FireShort descriptionAn Argentine-inspired Christmas Day lunch cooked over open fire at The Hangklip Hotel, Pringle Bay: slow-fired meats, fire-roasted sides and festive communal tables beneath Hangklip Mountain.Date and timeFriday, 25 December 2026Arrival: 12:30 | Feast served from 13:30VenueThe Boma, The Hangklip Hotel, Pringle Bay, Western Cape\r\nDESCRIPTIONThe Hangklip Hotel invites you to celebrate Christmas Day with Asado de Navidad, our Argentine-inspired Christmas feast. In Argentina, the asado is more than a meal. It is a celebration of fire, family and friends gathered around the coals for a long, slow afternoon. We bring that tradition to Pringle Bay, with meats hung and slow-roasted over open flames and glowing embers, served at our festive communal tables in the Boma, beneath Hangklip Mountain.\r\nFrom the First Embers – StartersLog-Seared Ostrich Fillet: whole ostrich fillet seared over the coals and thinly carved, with watercress, baby spinach, wild rocket and a berry-balsamic glaze.Garlic White Wine Mussel Bowl: whole-shell mussels simmered in garlic, white wine and butter with fresh herbs, served with fire-toasted buttered flatbread.\r\nThe Main Fire – The Asado FeastSlow-Fired Tomahawk: bone-in beef tomahawks slowly roasted over wood embers, then flame-seared and carved into slivers.The Hanging Chooks: whole free-range chickens hung over the fire and basted with butter until golden.Pistachio &amp; Herb Porchetta: pork belly rolled with pistachio and herb pesto, slow-roasted over the coals and carved into slices.\r\nFrom the Coals &amp; Earth – AccompanimentsCoal-Roasted Beetroot with bitter leaves and a light dressingWhole Fire-Roasted Pumpkin with local honey and balsamic reductionHung Burnt Cabbage &amp; Cauli Slaw with fresh herbs and burnt-citrus dressingFire-Crispy Smashed Potatoes with aromatic ghee and confit garlic\r\nThe Last Embers – DessertWarm Fire-Baked Summer Fruit: seasonal fruit baked over the coals, with golden cinnamon crumble and cold homemade custard.\r\nTicket typesTicketPriceAdultR1 090.00 per personChild (7–12 years)R760.00 per childTicket prices include a 10% staff gratuity on the food only. Drinks are bought separately from the bar, and the gratuity on drinks is at your discretion.\r\nIMPORTANT INFORMATIONAll bookings are made online through Quicket. For more information, call 028 273 8310 or WhatsApp 084 546 5214.Children under 7 are seated on a parent's lap and do not have their own place setting. Parents are asked to provide their child's food. Please let us know when booking if you will be bringing a child under 7.The menu is set and served as a communal feast. Please let us know if you are vegetarian as soon as you have booked so we can make a note.  Last chance to confirm a vegetarian version is 7 days before event.Drinks are not included in the ticket price and can be bought from your waitron at the table on the day.Tickets are non-refundable but may be transferred to another guest. Please let us know the new guest's name before the event.The Hangklip Hotel may make minor changes to the menu depending on what is in season.\r\nEnquiriesTel: 028 273 8310 | WhatsApp: 084 546 5214",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/409895-christmas-lunch-boma-asado-de-navidad/#tickets",
+      "price": 1090.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-22T00:00:00Z",
+      "sku": "775798"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/409895-christmas-lunch-boma-asado-de-navidad/#tickets",
+      "price": 760.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-22T00:00:00Z",
+      "sku": "775799"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "The Hangklip Hotel",
+    "url": "http://thehangkliphotel.com"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=409895, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": true,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1026556_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 409895,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 9999,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Christmas Lunch Boma - Asado de Navidad",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 57333,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "10ee5bab-ac29-44ce-9954-4b76de6faa9e",
+ "seatingPricing": [
+  {
+   "category": 2,
+   "ticketTypes": [
+    {
+     "fee": 7.5,
+     "label": "Adult Lunch",
+     "price": 1090,
+     "ticketType": "775798"
+    },
+    {
+     "fee": 7.5,
+     "label": "Child Lunch",
+     "price": 760,
+     "ticketType": "775799"
+    }
+   ]
+  }
+ ],
+ "seatingProductId": "409895",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for a 3 course meal for a Adult 13 years or older.",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": true,
+   "id": 775798,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adult Lunch",
+   "price": 1090,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "16 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for a 3 course meal for a child 12 years and younger",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": true,
+   "id": 775799,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Child Lunch",
+   "price": 760,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "25 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useSeatNumbers": true,
+ "useTicketGroups": false,
+ "venueName": "The Hangklip Hotel - The BOMA"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=409895, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 57333,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:42:43Z) ===
+http://maps.google.co.za/maps?q=-34.3681325,18.8223162
+https://www.google.com/maps/dir/?api=1&destination=-34.3681325,18.8223162

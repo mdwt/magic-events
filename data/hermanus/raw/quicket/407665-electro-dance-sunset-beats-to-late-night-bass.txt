@@ -1,0 +1,540 @@
+URL: https://www.quicket.co.za/events/407665-electro-dance-sunset-beats-to-late-night-bass/
+Fetched: 2026-11-23T13:33:23Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+No under 18s
+
+#
+Electro DANCE - Sunset Beats to Late Night Bass
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By The Hangklip Hotel
+
+Follow
+
+http://thehangkliphotel.com
+
+Wed Dec 16, 19:00 - Thu Dec 17, 01:00
+
+Plankies
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+***Electro DANCE - Sunset Beats to Late Night Bass***
+
+16 December @ 7pm
+
+Tickets R100 on Quicket and R130 @ the Door (if still available)
+
+NO UNDER 18 years
+
+(Right of admission reserved)
+
+As the summer sun dips below the horizon, join us for a journey through sound at the foot of Hangklip. We’re taking you from sun-drenched golden hour grooves all the way into deep-night energy - with Burgh, Snakes & Femme Phonix on the decks
+
+We kick off in the warmth of the late afternoon with nice and bouncy downtempo as the sky turns to gold. As dusk settles, we elevate the vibe into organic house, soulful Afro house, and sparkling nu-disco - setting the stage for a late-night descent into high-energy tech house and driving rhythms.
+
+Expect ocean breezes, coastal summer heat, heavy basslines, and non-stop dancing
+
+The Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for a 3night Stay at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at
+
+bookings@thehangkliphotel.com for a special rate, especially if you're attending the show.
+
+Whats app only for more information
+
+Deborah 084 546 5214
+
+Tanya 060 663 1288
+
+Marius 063 348 3521
+
+## DIRECTIONS
+
+Electro DANCE - Sunset Beats to Late Night Bass
+
+Plankies
+
+Get Directions
+
+## DISCOVER
+
+AFRO HOUSE
+
+BASS
+
+DANCE PARTY
+
+ELECTRO DANCE
+
+NU-DISCO
+
+SOULFUL
+
+SUNSET BEATS
+
+From
+
+R80
+
+No under 18s
+
+Wed Dec 16, 19:00 - Thu Dec 17, 01:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Plankies
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Electro DANCE - Sunset Beats to Late Night Bass",
+  "startDate": "2026-12-16T17:00:00Z",
+  "endDate": "2026-12-16T23:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1020366_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Plankies",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pringle Bay",
+      "postalCode": "7196",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/407665-electro-dance-sunset-beats-to-late-night-bass/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "***Electro DANCE - Sunset Beats to Late Night Bass***\r\n16 December @ 7pmTickets R100 on Quicket and R130 @ the Door (if still available)\r\nNO UNDER 18 years(Right of admission reserved)\r\nAs the summer sun dips below the horizon, join us for a journey through sound at the foot of Hangklip. We’re taking you from sun-drenched golden hour grooves all the way into deep-night energy - with Burgh, Snakes &amp; Femme Phonix on the decks\r\nWe kick off in the warmth of the late afternoon with nice and bouncy downtempo as the sky turns to gold. As dusk settles, we elevate the vibe into organic house, soulful Afro house, and sparkling nu-disco - setting the stage for a late-night descent into high-energy tech house and driving rhythms. \r\nExpect ocean breezes, coastal summer heat, heavy basslines, and non-stop dancing\r\nThe Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for a 3night  Stay at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special rate, especially if you're attending the show.\r\nWhats app only for more informationDeborah 084 546 5214Tanya 060 663 1288Marius 063 348 3521",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/407665-electro-dance-sunset-beats-to-late-night-bass/#tickets",
+      "price": 80.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-09T00:00:00Z",
+      "sku": "771346"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "The Hangklip Hotel",
+    "url": "http://thehangkliphotel.com"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=407665, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1020374_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 407665,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Electro DANCE - Sunset Beats to Late Night Bass",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 57333,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "10ee5bab-ac29-44ce-9954-4b76de6faa9e",
+ "seatingPricing": [],
+ "seatingProductId": "407665",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for the performance only.  Please arrive minimum 15min before show to get settled.  If you might want to enjoy Dinner & SHOW please arrive well before 7pm. Dinner available at Restaurant",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 771346,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Early Bird Show Tickets NOVEMBER",
+   "price": 80,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "01 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Plankies"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=407665, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 57333,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:40:44Z) ===
+http://maps.google.co.za/maps?q=-34.3684603,18.8225684
+https://www.google.com/maps/dir/?api=1&destination=-34.3684603,18.8225684

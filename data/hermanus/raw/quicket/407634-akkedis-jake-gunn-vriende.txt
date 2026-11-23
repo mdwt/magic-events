@@ -1,0 +1,569 @@
+URL: https://www.quicket.co.za/events/407634-akkedis-jake-gunn-vriende/
+Fetched: 2026-11-23T13:33:02Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+Akkedis - Jake Gunn & Vriende
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By The Hangklip Hotel
+
+Follow
+
+http://thehangkliphotel.com
+
+Sat Dec 26, 14:00 - Sat Dec 26, 17:00
+
+The Hangklip Hotel - The BOMA
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Sat 26 December 14.00 @ The Boma
+
+Tickets: R200 on Quicket / R230 at the door (IF STILL AVAILABLE)
+
+Na al die Kersfees-kos en familieverpligtinge is dit tyd om uit die huis te kom! Akkedis, Jake Gunn en vriende sorg vir 'n goeie dosis Suid-Afrikaanse blues-rock en oorspronklike musiek. Bring jou vriende, kry 'n koue een, en kom geniet 'n lekker feesdag onder die Klip by die see!
+
+After all the Christmas food and family obligations, it’s time to get out of the house! Akkedis, Jake Gunn, and friends will provide a good dose of South African blues-rock and original music. Bring your friends, grab a cold one, and come enjoy a great festival day under the Rock by the sea!
+
+SHOW ONLY - FOOD Trucks outside Boma and Lunch available at Restaurant
+
+Seating operates on a first-come, first-served basis. Make sure to arrive early, as doors open at 12 pm.
+
+Doors close at 2pm no late entry.
+
+The Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for a minimum 3 night stay at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special rate, especially if you're attending the show.
+
+Whats app only for more information
+
+Deborah 084 546 5214
+
+Tanya 060 663 1288
+
+Marius 063 348 3521
+
+## DIRECTIONS
+
+Akkedis - Jake Gunn & Vriende
+
+The Hangklip Hotel - The BOMA
+
+Overberg DC, 6940
+
+Get Directions
+
+## DISCOVER
+
+BLUES-ROCK
+
+From
+
+R200
+
+Family friendly
+
+Sat Dec 26, 14:00 - Sat Dec 26, 17:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+The Hangklip Hotel - The BOMA
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Akkedis - Jake Gunn  & Vriende",
+  "startDate": "2026-12-26T12:00:00Z",
+  "endDate": "2026-12-26T15:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1020238_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "The Hangklip Hotel - The BOMA",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Overberg DC, 6940",
+      "addressLocality": "Pringle Bay",
+      "postalCode": "7196",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/407634-akkedis-jake-gunn-vriende/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Sat 26 December 14.00 @ The Boma Tickets: R200 on Quicket / R230 at the door (IF STILL AVAILABLE)\r\nNa al die Kersfees-kos en familieverpligtinge is dit tyd om uit die huis te kom! Akkedis, Jake Gunn en vriende sorg vir 'n goeie dosis Suid-Afrikaanse blues-rock en oorspronklike musiek. Bring jou vriende, kry 'n koue een, en kom geniet 'n lekker feesdag onder die Klip by die see!\r\nAfter all the Christmas food and family obligations, it’s time to get out of the house! Akkedis, Jake Gunn, and friends will provide a good dose of South African blues-rock and original music. Bring your friends, grab a cold one, and come enjoy a great festival day under the Rock by the sea!\r\nSHOW ONLY - FOOD Trucks outside Boma and Lunch available at RestaurantSeating operates on a first-come, first-served basis. Make sure to arrive early, as doors open at 12 pm. Doors close at 2pm no late entry.\r\nThe Hangklip Hotel offers a range of room options for your stay. You can conveniently book online for a minimum 3 night stay at www.thehangkliphotel.com. If you're considering a longer stay, please reach out via email at bookings@thehangkliphotel.com for a special rate, especially if you're attending the show.\r\nWhats app only for more informationDeborah 084 546 5214Tanya 060 663 1288Marius 063 348 3521\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/407634-akkedis-jake-gunn-vriende/#tickets",
+      "price": 200.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-09T00:00:00Z",
+      "sku": "771285"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/407634-akkedis-jake-gunn-vriende/#tickets",
+      "price": 50.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-09T00:00:00Z",
+      "sku": "771286"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "The Hangklip Hotel",
+    "url": "http://thehangkliphotel.com"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=407634, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1020239_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 407634,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Akkedis - Jake Gunn  & Vriende",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 57333,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "10ee5bab-ac29-44ce-9954-4b76de6faa9e",
+ "seatingPricing": [],
+ "seatingProductId": "407634",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for the performance only.  Please arrive minimum 15min before show to get settled.  If you might want to enjoy Lunch & SHOW please arrive well before 1pm. SHOW STARTS 2pm",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 771285,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adult Standing Ticket",
+   "price": 200,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "26 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "This ticket is for the performance only.  Please arrive minimum15min before show to get settled.  If you might want to enjoy Lunch & SHOW please arrive well before 1pm. SHOW STARTS 2pm",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 771286,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Child Standing Ticket 13 years and under",
+   "price": 50,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "26 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "The Hangklip Hotel - The BOMA"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=407634, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 57333,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:40:29Z) ===
+http://maps.google.co.za/maps?q=-34.3681325,18.8223162
+https://www.google.com/maps/dir/?api=1&destination=-34.3681325,18.8223162
