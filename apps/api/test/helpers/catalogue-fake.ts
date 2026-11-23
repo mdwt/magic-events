@@ -6,6 +6,7 @@ import type {
   StoredExperience,
 } from "../../src/core/catalogue/ports.ts";
 import { CatalogueService } from "../../src/core/catalogue/service.ts";
+import type { DomainEvent, DomainEventPublisher } from "../../src/core/shared/domain-events.ts";
 import type { Logger } from "../../src/core/shared/logger.ts";
 
 // Catalogue's save side with no database: a repository that keeps what it is handed in memory, a clock that a
@@ -56,13 +57,30 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
         [...experiences.values()].map((one) => one.slug).filter((slug) => slug === base || slug.startsWith(`${base}-`)),
       ),
     saveExperiences: (batch) => {
+      const appended: DomainEvent[] = [];
       for (const write of batch) {
         const stored = experiences.get(write.experience.id);
         if ((stored?.version ?? null) !== write.previousVersion) throw new Error("version mismatch");
         experiences.set(write.experience.id, structuredClone(write.experience));
         writes.push(structuredClone(write));
+        if (write.event !== null) {
+          const row = { id: crypto.randomUUID(), resourceId: write.experience.id, recordedAt: write.at.toISOString() };
+          appended.push(
+            write.event.type === "experience.published"
+              ? { ...row, type: write.event.type, data: write.event.data }
+              : { ...row, type: write.event.type, data: write.event.data },
+          );
+        }
       }
-      return Promise.resolve();
+      return Promise.resolve(appended);
+    },
+  };
+
+  // Records what the service publishes.
+  const published: DomainEvent[] = [];
+  const events: DomainEventPublisher = {
+    publish: (event) => {
+      published.push(event);
     },
   };
 
@@ -76,6 +94,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
 
   const service = new CatalogueService({
     repository,
+    events,
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
     logger,
     clock: () => clock.now,
@@ -85,7 +104,12 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     service,
     experiences,
     writes,
+    published,
     warnings,
+    // The published domain events, as type, resource and data.
+    publishedEvents() {
+      return published.map(({ type, resourceId, data }) => ({ type, resourceId, data }));
+    },
     // Sets the time now.
     at(iso: string) {
       clock.now = new Date(iso);

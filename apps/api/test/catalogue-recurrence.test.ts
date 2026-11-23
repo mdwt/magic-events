@@ -181,6 +181,10 @@ describe("as time passes and the rule changes", () => {
     assert.equal(write.change, null);
     assert.equal(write.event, null);
     assert.equal(write.replace.sessions, true);
+    assert.deepEqual(
+      catalogue.publishedEvents().map((event) => event.type),
+      ["experience.published"],
+    );
   });
 
   test("a recurring experience that becomes a single loses its generated sessions", async () => {

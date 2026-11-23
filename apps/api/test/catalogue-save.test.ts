@@ -59,6 +59,13 @@ describe("creating an experience", () => {
     assert.deepEqual(write.links, { add: [LISTING_A], remove: [] });
     assert.deepEqual(write.change, { kind: "new", previous: null });
     assert.deepEqual(write.event, { type: "experience.published", data: { version: 1, raw_listing_id: RAW_A } });
+
+    // The event the repository appended is the one published, once.
+    assert.equal(catalogue.published.length, 1);
+    assert.deepEqual(catalogue.publishedEvents(), [
+      { type: "experience.published", resourceId: saved.id, data: { version: 1, raw_listing_id: RAW_A } },
+    ]);
+    assert.equal(catalogue.published[0]?.recordedAt, "2026-11-23T10:00:00.000Z");
   });
 
   test("gives a taken slug the year of its first date, then a counter", async () => {
@@ -234,6 +241,10 @@ describe("an update with precedence lead", () => {
       type: "experience.changed",
       data: { version: 2, change: "rescheduled", raw_listing_id: RAW_B },
     });
+    assert.deepEqual(catalogue.publishedEvents(), [
+      { type: "experience.published", resourceId: id, data: { version: 1, raw_listing_id: RAW_A } },
+      { type: "experience.changed", resourceId: id, data: { version: 2, change: "rescheduled", raw_listing_id: RAW_B } },
+    ]);
   });
 
   test("writes nothing when nothing changed", async () => {
@@ -245,6 +256,10 @@ describe("an update with precedence lead", () => {
       { changed: false, change: null, created: false, version: 1 },
     );
     assert.equal(catalogue.writes.length, 1);
+    assert.deepEqual(
+      catalogue.publishedEvents().map((event) => event.type),
+      ["experience.published"],
+    );
   });
 
   test("writes nothing when only the form of the values differs", async () => {
@@ -262,6 +277,7 @@ describe("an update with precedence lead", () => {
     );
     assert.equal(result.changed, false);
     assert.equal(catalogue.writes.length, 1);
+    assert.equal(catalogue.published.length, 1);
   });
 
   test("saves a change to the profile alone with no version, change row or domain event", async () => {
@@ -278,6 +294,10 @@ describe("an update with precedence lead", () => {
     assert.equal(write.change, null);
     assert.equal(write.event, null);
     assert.equal(write.clearEmbedding, true);
+    assert.deepEqual(
+      catalogue.publishedEvents().map((event) => event.type),
+      ["experience.published"],
+    );
   });
 
   test("keeps the embedding when neither the title nor the profile changed", async () => {
@@ -381,6 +401,11 @@ describe("an update with precedence fill", () => {
     assert.ok(write);
     assert.deepEqual(write.links, { add: [LISTING_B], remove: [] });
     assert.deepEqual(write.change?.previous, { listingIds: [LISTING_A] });
+    assert.deepEqual(catalogue.publishedEvents()[1], {
+      type: "experience.changed",
+      resourceId: id,
+      data: { version: 2, change: "changed", raw_listing_id: RAW_B },
+    });
   });
 });
 
@@ -534,7 +559,10 @@ describe("change kinds", () => {
       assert.equal(result.change, kind);
       assert.equal(result.experience.version, 2);
       assert.equal(catalogue.writes[1]?.change?.kind, kind);
-      assert.equal(catalogue.writes[1].event?.data.change, kind);
+      assert.deepEqual(catalogue.publishedEvents(), [
+        { type: "experience.published", resourceId: id, data: { version: 1, raw_listing_id: RAW_A } },
+        { type: "experience.changed", resourceId: id, data: { version: 2, change: kind, raw_listing_id: RAW_A } },
+      ]);
     });
   }
 });
@@ -556,6 +584,12 @@ describe("removing a source link", () => {
       previous: { status: "confirmed", booking: "open", listingIds: [LISTING_A] },
     });
     assert.deepEqual(write.event?.data, { version: 2, change: "removed", raw_listing_id: RAW_B });
+    assert.deepEqual(catalogue.publishedEvents()[1], {
+      type: "experience.changed",
+      resourceId: id,
+      data: { version: 2, change: "removed", raw_listing_id: RAW_B },
+    });
+    assert.equal(catalogue.published.length, 2);
   });
 
   test("an experience with links left keeps its status and gets a new version", async () => {
@@ -570,6 +604,11 @@ describe("removing a source link", () => {
     assert.equal(stored.version, 3);
     assert.deepEqual(stored.listingIds, [LISTING_B]);
     assert.equal(catalogue.writes[2]?.change?.kind, "changed");
+    assert.deepEqual(catalogue.publishedEvents(), [
+      { type: "experience.published", resourceId: id, data: { version: 1, raw_listing_id: RAW_A } },
+      { type: "experience.changed", resourceId: id, data: { version: 2, change: "changed", raw_listing_id: RAW_B } },
+      { type: "experience.changed", resourceId: id, data: { version: 3, change: "changed", raw_listing_id: RAW_B } },
+    ]);
   });
 
   for (const status of ["past", "cancelled"] as const) {
@@ -584,6 +623,7 @@ describe("removing a source link", () => {
       assert.deepEqual(stored.listingIds, []);
       assert.equal(catalogue.writes[1]?.change, null);
       assert.equal(catalogue.writes[1].event, null);
+      assert.equal(catalogue.published.length, 1);
     });
   }
 

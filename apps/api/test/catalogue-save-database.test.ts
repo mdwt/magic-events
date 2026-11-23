@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, test } from "node:test";
 import { events, experience, experienceChange, experienceSession, experienceSourceLink } from "@magic-events/db";
 import { count, eq, sql } from "drizzle-orm";
+import { createDomainEvents } from "../src/adapters/events/node-events.ts";
 import { createLogger } from "../src/adapters/logging/pino.ts";
 import { createCatalogueRepository } from "../src/adapters/storage/catalogue-repository.ts";
 import { createTransactionalDb } from "../src/adapters/storage/transactions.ts";
 import type { Catalogue, Location, SaveExperienceInput } from "../src/core/catalogue/ports.ts";
 import { CatalogueService } from "../src/core/catalogue/service.ts";
+import type { DomainEvent } from "../src/core/shared/domain-events.ts";
 import { input as listing, LISTING_A, LISTING_B, RAW_A, RAW_B } from "./helpers/catalogue-fake.ts";
 import { createHarness, testSettings, type Harness } from "./helpers/harness.ts";
 
@@ -17,6 +19,12 @@ const NOW = new Date("2026-11-23T10:00:00.000Z");
 let harness: Harness;
 let catalogue: Catalogue;
 let hermanus: Location;
+// The domain events delivered to a subscriber of every type, since the test began.
+const domainEvents = createDomainEvents(createLogger(testSettings(process.env.TEST_DATABASE_URL ?? "").api));
+const received: DomainEvent[] = [];
+domainEvents.subscribe("*", (event) => {
+  received.push(event);
+});
 
 function input(overrides: Partial<SaveExperienceInput> = {}): SaveExperienceInput {
   return listing({ locationId: hermanus.id, ...overrides });
@@ -37,12 +45,13 @@ async function total(table: typeof experience | typeof events | typeof experienc
 }
 
 before(async () => {
-  harness = await createHarness({ clock: () => NOW });
+  harness = await createHarness({ domainEvents, clock: () => NOW });
   catalogue = harness.services.catalogue;
 });
 
 beforeEach(async () => {
   await harness.db.execute(sql`truncate table experience, events, location cascade`);
+  received.length = 0;
   hermanus = await catalogue.saveLocation({
     name: "Hermanus",
     slug: "hermanus",
@@ -213,6 +222,47 @@ describe("saving an experience", () => {
   });
 });
 
+describe("publishing domain events", () => {
+  test("a create then an update deliver experience.published then experience.changed, as stored", async () => {
+    const { experience: saved } = await catalogue.saveExperience(input());
+    await catalogue.saveExperience(
+      input({ experienceId: saved.id, status: "cancelled", source: { listingId: LISTING_A, rawListingId: RAW_B } }),
+    );
+    // A save that makes no version publishes nothing.
+    await catalogue.saveExperience(
+      input({ experienceId: saved.id, status: "cancelled", source: { listingId: LISTING_A, rawListingId: RAW_B } }),
+    );
+
+    assert.deepEqual(
+      received.map((event) => [event.type, event.resourceId, event.data]),
+      [
+        ["experience.published", saved.id, { version: 1, raw_listing_id: RAW_A }],
+        ["experience.changed", saved.id, { version: 2, change: "cancelled", raw_listing_id: RAW_B }],
+      ],
+    );
+    const logged = await harness.db.select().from(events).where(eq(events.resourceId, saved.id));
+    const stored = logged
+      .map((row) => ({
+        id: row.id,
+        type: row.type,
+        resourceId: row.resourceId,
+        data: row.data,
+        recordedAt: row.recordedAt.toISOString(),
+      }))
+      .sort((a, b) => a.type.localeCompare(b.type))
+      .reverse();
+    assert.deepEqual(received, stored);
+  });
+
+  test("removing the last link delivers the move to Removed", async () => {
+    const { experience: saved } = await catalogue.saveExperience(input());
+    await catalogue.removeSourceLink({ listingId: LISTING_A, rawListingId: RAW_B });
+    assert.deepEqual(received.at(-1)?.data, { version: 2, change: "removed", raw_listing_id: RAW_B });
+    assert.equal(received.at(-1)?.resourceId, saved.id);
+    assert.equal(received.length, 2);
+  });
+});
+
 describe("removing source links", () => {
   test("removing the last link sets Removed", async () => {
     const { experience: saved } = await catalogue.saveExperience(input());
@@ -265,14 +315,27 @@ describe("in a surrounding transaction", () => {
   test("everything a save writes is rolled back when the transaction fails", async () => {
     // A service set like the one app.ts builds, with the transactions handle in reach.
     const settings = testSettings(process.env.TEST_DATABASE_URL ?? "");
-    const { db, transactions } = createTransactionalDb(harness.db);
+    const transactional = createTransactionalDb(harness.db);
+    const { db, transactions } = transactional;
     const service = new CatalogueService({
       repository: createCatalogueRepository(db),
+      // Published as app.ts does: once the surrounding transaction commits.
+      events: {
+        publish(event) {
+          transactional.afterCommit(() => {
+            domainEvents.publish(event);
+          });
+        },
+      },
       settings: settings.catalogue,
       logger: createLogger(settings.api),
       clock: () => NOW,
     });
     const { experience: kept } = await service.saveExperience(input({ title: "Kept" }));
+    assert.deepEqual(
+      received.map((event) => [event.type, event.resourceId]),
+      [["experience.published", kept.id]],
+    );
 
     await assert.rejects(
       transactions.run(async () => {
@@ -298,6 +361,8 @@ describe("in a surrounding transaction", () => {
       [LISTING_A],
     );
     assert.equal(written.changes.length, 1);
+    // Nothing that was rolled back was delivered.
+    assert.equal(received.length, 1);
   });
 
   test("a save worked out from a version that has since moved on fails", async () => {

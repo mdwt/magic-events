@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { Clock } from "../shared/clock.ts";
+import type { DomainEventPublisher } from "../shared/domain-events.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { CatalogueSettings } from "../shared/settings.ts";
@@ -47,9 +48,17 @@ export class CatalogueService implements Catalogue {
   readonly #settings: CatalogueSettings;
   readonly #logger: Logger;
   readonly #clock: Clock;
+  readonly #events: DomainEventPublisher;
 
-  constructor(deps: { repository: CatalogueRepository; settings: CatalogueSettings; logger: Logger; clock?: Clock }) {
+  constructor(deps: {
+    repository: CatalogueRepository;
+    events: DomainEventPublisher;
+    settings: CatalogueSettings;
+    logger: Logger;
+    clock?: Clock;
+  }) {
     this.#repository = deps.repository;
+    this.#events = deps.events;
     this.#settings = deps.settings;
     this.#logger = deps.logger;
     this.#clock = deps.clock ?? (() => new Date());
@@ -126,7 +135,7 @@ export class CatalogueService implements Catalogue {
     // A change to the profile alone, or sessions generated further ahead, is saved without a new version.
     const kind = fields.length > 0 ? changeKind(stored, next) : null;
     const experience: StoredExperience = { ...next, version: kind === null ? stored.version : stored.version + 1 };
-    await this.#repository.saveExperiences([
+    await this.#save([
       {
         experience,
         previousVersion: stored.version,
@@ -192,7 +201,7 @@ export class CatalogueService implements Catalogue {
         },
       };
     });
-    await this.#repository.saveExperiences(writes);
+    await this.#save(writes);
 
     for (const write of writes) {
       this.#logger.info(
@@ -234,7 +243,7 @@ export class CatalogueService implements Catalogue {
       booking: this.#booking(fields.status, fields.booking, null),
       sessions,
     };
-    await this.#repository.saveExperiences([
+    await this.#save([
       {
         experience,
         previousVersion: null,
@@ -298,6 +307,12 @@ export class CatalogueService implements Catalogue {
       this.#logger.warn({ experienceId, status, booking, saved: allowed }, "Booking not allowed for the status");
     }
     return allowed;
+  }
+
+  // Stores the saves, then publishes the domain event each new version appended: one per version, none otherwise.
+  async #save(writes: ExperienceWrite[]): Promise<void> {
+    const appended = await this.#repository.saveExperiences(writes);
+    for (const event of appended) this.#events.publish(event);
   }
 
   #horizon(today: string): string {

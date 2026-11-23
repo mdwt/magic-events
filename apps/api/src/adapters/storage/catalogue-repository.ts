@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   events,
   experience,
@@ -38,6 +39,7 @@ import {
   type SearchableStatus,
   type StoredExperience,
 } from "../../core/catalogue/ports.ts";
+import type { DomainEvent } from "../../core/shared/domain-events.ts";
 
 // Rows per insert, well inside Postgres's limit on the parameters of one statement.
 const INSERT_CHUNK = 1000;
@@ -355,7 +357,9 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
     },
 
     async saveExperiences(writes) {
-      if (writes.length === 0) return;
+      if (writes.length === 0) return [];
+      // The domain events as they are appended, so the service can publish exactly what was stored.
+      const appended = writes.flatMap((write) => (write.event === null ? [] : [domainEvent(write, write.event)]));
       await db.transaction(async (tx) => {
         for (const write of writes) await saveRow(tx, write);
 
@@ -418,11 +422,13 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
                 },
               ],
         );
-        const eventRows = writes.flatMap((write) =>
-          write.event === null
-            ? []
-            : [{ type: write.event.type, resourceId: write.experience.id, data: write.event.data, recordedAt: write.at }],
-        );
+        const eventRows = appended.map((event) => ({
+          id: event.id,
+          type: event.type,
+          resourceId: event.resourceId,
+          data: event.data,
+          recordedAt: new Date(event.recordedAt),
+        }));
 
         await Promise.all([
           ...chunks(sessionRows).map((rows) => tx.insert(experienceSession).values(rows)),
@@ -433,8 +439,17 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
           ...chunks(eventRows).map((rows) => tx.insert(events).values(rows)),
         ]);
       });
+      return appended;
     },
   };
+}
+
+// The domain event row a save appends, with its ID and time set here so the row and what is returned agree.
+function domainEvent(write: ExperienceWrite, event: NonNullable<ExperienceWrite["event"]>): DomainEvent {
+  const row = { id: randomUUID(), resourceId: write.experience.id, recordedAt: write.at.toISOString() };
+  return event.type === "experience.published"
+    ? { ...row, type: event.type, data: event.data }
+    : { ...row, type: event.type, data: event.data };
 }
 
 // Every column a stored experience is read from. The embedding and the search text are left out: they are

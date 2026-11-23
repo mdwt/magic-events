@@ -70,7 +70,7 @@ function fakeRepository(items: ExperienceRecord[] = []) {
     loadExperiences: () => Promise.resolve([]),
     findMatchCandidateIds: () => Promise.resolve([]),
     findTakenSlugs: () => Promise.resolve([]),
-    saveExperiences: () => Promise.resolve(),
+    saveExperiences: () => Promise.resolve([]),
   };
   return { repository, queries };
 }
@@ -78,6 +78,7 @@ function fakeRepository(items: ExperienceRecord[] = []) {
 function service(repository: CatalogueRepository) {
   return new CatalogueService({
     repository,
+    events: { publish: () => {} },
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
     logger: silent,
   });

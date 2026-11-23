@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { DomainEvent, DomainEventData } from "../shared/domain-events.ts";
 
 // Catalogue: the experiences as clients see them, and the locations the system covers.
 // It calls no other domain.
@@ -367,7 +368,11 @@ export interface ExperienceWrite {
   clearEmbedding: boolean;
   // The change row of a new version, whose number is `experience.version`.
   change: { kind: ChangeKind; previous: Record<string, unknown> | null } | null;
-  event: { type: "experience.published" | "experience.changed"; data: Record<string, unknown> } | null;
+  // The domain event of a new version, appended with it.
+  event:
+    | { type: "experience.published"; data: DomainEventData["experience.published"] }
+    | { type: "experience.changed"; data: DomainEventData["experience.changed"] }
+    | null;
   at: Date;
 }
 
@@ -388,6 +393,7 @@ export interface CatalogueRepository {
   }): Promise<string[]>;
   // The slugs that are the base or start with it and a hyphen.
   findTakenSlugs(base: string): Promise<string[]>;
-  // Stores the saves in one transaction.
-  saveExperiences(writes: ExperienceWrite[]): Promise<void>;
+  // Stores the saves in one transaction. Returns the domain events it appended, as stored, in the order of the
+  // saves; it does not publish them.
+  saveExperiences(writes: ExperienceWrite[]): Promise<DomainEvent[]>;
 }
