@@ -103,8 +103,11 @@ export function registerChecks(): void {
     c.ok(migrated.code === 0, `pnpm db:migrate:test exited with ${String(migrated.code)}: ${lastLines(migrated.output, 5)}`);
     const tested = await pnpm(["test"]);
     c.ok(tested.code === 0, `pnpm test exited with ${String(tested.code)}: ${lastLines(tested.output, 12)}`);
-    const skipped = [...tested.output.matchAll(/^# (skipped|todo) (\d+)$/gm)].filter((match) => Number(match[2]) > 0);
+    // Each project's runner ends with its counts, as "ℹ skipped 0" or, in TAP, "# skipped 0".
+    const skipped = [...tested.output.matchAll(/^(?:#|ℹ) (skipped|todo) (\d+)$/gm)].filter((match) => Number(match[2]) > 0);
     c.equal(skipped.map((match) => match[0]), [], "tests skipped");
+    const passed = [...tested.output.matchAll(/^(?:#|ℹ) pass (\d+)$/gm)].reduce((total, match) => total + Number(match[1]), 0);
+    c.note(`${passed} tests passed.`);
   });
 
   byHand("C-07", "The background jobs run", "Within an hour of a server starting, pgboss.job shows a completed job of each of the four queues: the suite does not wait an hour.");
