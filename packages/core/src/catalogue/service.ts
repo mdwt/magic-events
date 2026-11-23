@@ -746,7 +746,10 @@ function toMatch(experience: StoredExperience): ExperienceMatch {
     city: experience.venue.city,
     firstDate: sessions[0]?.startDate ?? null,
     lastDate,
-    sessions: sessions.slice(0, MATCH_SESSIONS).map(({ startDate, endDate }) => ({ startDate, endDate })),
+    // A stored time is HH:MM:SS; matching shows HH:MM.
+    sessions: sessions
+      .slice(0, MATCH_SESSIONS)
+      .map(({ startDate, endDate, startTime }) => ({ startDate, endDate, startTime: startTime?.slice(0, 5) ?? null })),
     onlyMonthOrYear:
       experience.recurrence === null &&
       sessions.length > 0 &&

@@ -162,7 +162,7 @@ export function stored(overrides: Partial<ExperienceMatch> = {}): ExperienceMatc
     city: "Hermanus",
     firstDate: "2027-06-12",
     lastDate: "2027-06-21",
-    sessions: [{ startDate: "2027-06-12", endDate: "2027-06-21" }],
+    sessions: [{ startDate: "2027-06-12", endDate: "2027-06-21", startTime: null }],
     onlyMonthOrYear: false,
     recurrenceRule: null,
     listingIds: [LISTING],

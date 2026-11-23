@@ -106,7 +106,7 @@ describe("Matching in code", () => {
       city: "Hermanus",
       firstDate: "2026-11-23",
       lastDate: null,
-      sessions: [{ startDate: "2026-11-23", endDate: "2026-11-23" }],
+      sessions: [{ startDate: "2026-11-23", endDate: "2026-11-23", startTime: null }],
       recurrenceRule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
     });
     const whaleSpan = { start: "2026-11-23", end: "2028-11-23" };
@@ -125,7 +125,7 @@ describe("Matching in code", () => {
       city: "Stanford",
       firstDate: "2026-12-01",
       lastDate: "2026-12-31",
-      sessions: [{ startDate: "2026-12-01", endDate: "2026-12-31" }],
+      sessions: [{ startDate: "2026-12-01", endDate: "2026-12-31", startTime: null }],
       onlyMonthOrYear: true,
     });
     for (const [title, day] of [
@@ -153,7 +153,7 @@ describe("Matching in code", () => {
       title: "Kalfiefees Hermanus Kunstefees 2027",
       firstDate: "2027-08-01",
       lastDate: "2027-08-31",
-      sessions: [{ startDate: "2027-08-01", endDate: "2027-08-31" }],
+      sessions: [{ startDate: "2027-08-01", endDate: "2027-08-31", startTime: null }],
       onlyMonthOrYear: true,
     });
     // The days, when a source gives them (the dates here are made up; the capture has only August).

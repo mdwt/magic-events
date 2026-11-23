@@ -508,8 +508,8 @@ export interface ExperienceMatch {
   // The start of its first session and the end of its last. Empty when it has no sessions.
   firstDate: string | null;
   lastDate: string | null;
-  // Its sessions' dates, in order, capped to the first fifty.
-  sessions: { startDate: string; endDate: string }[];
+  // Its sessions' dates, in order, capped to the first fifty, each with its start time as HH:MM when one is known.
+  sessions: { startDate: string; endDate: string; startTime: string | null }[];
   // True when its dates are known only to the month or year: it has sessions, every one of month or year
   // precision, and no recurrence.
   onlyMonthOrYear: boolean;

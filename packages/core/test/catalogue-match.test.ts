@@ -150,10 +150,28 @@ describe("findMatchCandidates", () => {
     assert.equal(match.status, "confirmed");
     assert.equal(match.firstDate, "2027-09-24");
     assert.equal(match.lastDate, "2027-09-26");
-    assert.deepEqual(match.sessions, [{ startDate: "2027-09-24", endDate: "2027-09-26" }]);
+    assert.deepEqual(match.sessions, [{ startDate: "2027-09-24", endDate: "2027-09-26", startTime: null }]);
     assert.equal(match.onlyMonthOrYear, false);
     assert.equal(match.recurrenceRule, null);
     assert.equal(match.listingIds.length, 1);
+  });
+
+  test("gives each session's start time as HH:MM", async () => {
+    await catalogue.saveExperience(
+      listing({
+        locationId: hermanus.id,
+        title: "Focker In-Law Premiere Night",
+        sessions: [{ startDate: "2026-11-26", precision: "day", startTime: "18:30" }],
+        source: { listingId: crypto.randomUUID(), rawListingId: crypto.randomUUID() },
+      }),
+    );
+    const [screening] = await catalogue.findMatchCandidates({
+      locationId: hermanus.id,
+      title: "Ladies Night: Focker In-Law",
+      from: "2026-11-26",
+      to: "2026-11-26",
+    });
+    assert.deepEqual(screening?.sessions, [{ startDate: "2026-11-26", endDate: "2026-11-26", startTime: "18:30" }]);
   });
 
   test("returns at most ten, and caps a match's sessions at fifty", async () => {
