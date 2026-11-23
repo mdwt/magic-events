@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { tenant, user, type Db } from "@magic-events/db";
 import { asc, eq, sql } from "drizzle-orm";
 import type { Membership, OrganizationsRepository, Tenant, User } from "../../organizations/ports.ts";
+import { differsFromStored } from "./upsert.ts";
 
 // Tenants are Organizations' own table. Users, membership and roles are on Better Auth's user table, which
 // Organizations uses directly (the documented exception), so a user saved here is the user Better Auth knows.
@@ -13,6 +14,7 @@ type UserRow = typeof user.$inferSelect;
 
 export function createOrganizationsRepository(db: Db): OrganizationsRepository {
   return {
+    // A tenant saved as it is stored is left as it is, updated_at too.
     async upsertTenant(input) {
       const [row] = await db
         .insert(tenant)
@@ -26,10 +28,12 @@ export function createOrganizationsRepository(db: Db): OrganizationsRepository {
             configuration: input.configuration,
             updatedAt: sql`now()`,
           },
+          setWhere: differsFromStored([tenant.name, tenant.kind, tenant.status, tenant.configuration]),
         })
         .returning();
-      if (!row) throw new Error("The tenant upsert returned no row");
-      return toTenant(row);
+      const saved = row ?? (await db.select().from(tenant).where(eq(tenant.slug, input.slug)))[0];
+      if (!saved) throw new Error("The tenant upsert returned no row");
+      return toTenant(saved);
     },
 
     async insertTenant(input) {
@@ -64,6 +68,7 @@ export function createOrganizationsRepository(db: Db): OrganizationsRepository {
       return row ? toTenant(row) : null;
     },
 
+    // A user saved as it is stored is left as it is, updated_at too.
     async upsertUser(input) {
       const [row] = await db
         .insert(user)
@@ -72,10 +77,12 @@ export function createOrganizationsRepository(db: Db): OrganizationsRepository {
         .onConflictDoUpdate({
           target: user.email,
           set: { name: input.name, role: input.role, tenantId: input.tenantId, updatedAt: sql`now()` },
+          setWhere: differsFromStored([user.name, user.role, user.tenantId]),
         })
         .returning();
-      if (!row) throw new Error("The user upsert returned no row");
-      return toUser(row);
+      const saved = row ?? (await db.select().from(user).where(eq(user.email, input.email)))[0];
+      if (!saved) throw new Error("The user upsert returned no row");
+      return toUser(saved);
     },
 
     async insertUser(input) {

@@ -127,3 +127,40 @@ test("a user is found by their email address, however it is written, and an unkn
   assert.deepEqual(await organizations.getUserByEmail(" Tom@Teal.example.COM "), created);
   await assert.rejects(organizations.getUserByEmail("nobody@teal.example.com"), failsWith("not_found"));
 });
+
+test("saving a tenant as it is stored changes no column, and saving a change updates it and updated_at", async () => {
+  const input = { name: "Amber Agency", slug: "amber", kind: "travel_agency", configuration: { region: "Overberg" } } as const;
+  await organizations.saveTenant(input);
+  const [stored] = await harness.db.select().from(tenant).where(eq(tenant.slug, "amber"));
+  assert.ok(stored);
+
+  const again = await organizations.saveTenant(input);
+  assert.equal(again.id, stored.id);
+  assert.deepEqual(await harness.db.select().from(tenant).where(eq(tenant.slug, "amber")), [stored]);
+
+  await organizations.saveTenant({ ...input, configuration: { region: "Cape Winelands" } });
+  const [changed] = await harness.db.select().from(tenant).where(eq(tenant.slug, "amber"));
+  assert.ok(changed);
+  assert.deepEqual(changed.configuration, { region: "Cape Winelands" });
+  assert.equal(changed.id, stored.id);
+  assert.deepEqual(changed.createdAt, stored.createdAt);
+  assert.ok(changed.updatedAt > stored.updatedAt);
+});
+
+test("saving a user as they are stored changes no column, and saving a change updates it and updated_at", async () => {
+  await organizations.saveTenant({ name: "Olive Agency", slug: "olive", kind: "travel_agency" });
+  const input = { name: "Oli", email: "oli@olive.example.com", role: "client", tenantSlug: "olive" } as const;
+  await organizations.saveUser(input);
+  const [stored] = await harness.db.select().from(user).where(eq(user.email, "oli@olive.example.com"));
+  assert.ok(stored);
+
+  const again = await organizations.saveUser(input);
+  assert.equal(again.id, stored.id);
+  assert.deepEqual(await harness.db.select().from(user).where(eq(user.email, "oli@olive.example.com")), [stored]);
+
+  await organizations.saveUser({ ...input, name: "Oliver" });
+  const [changed] = await harness.db.select().from(user).where(eq(user.email, "oli@olive.example.com"));
+  assert.ok(changed);
+  assert.deepEqual({ ...changed, updatedAt: stored.updatedAt }, { ...stored, name: "Oliver" });
+  assert.ok(changed.updatedAt > stored.updatedAt);
+});
