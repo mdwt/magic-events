@@ -7,7 +7,7 @@ What version 1 leaves out, and why. Each of these is described somewhere in the 
 | # | Left out of version 1 | Use cases it touches | Issue |
 | --- | --- | --- | --- |
 | 1 | The Quicket and Ticketmaster API adapters | None. UC3 sources Quicket another way | [28](issues.md) |
-| 2 | Venue coordinates | UC1: the radius is less exact | [35](issues.md), [5](issues.md) |
+| 2 | Venue coordinates from a geocoding service | UC1: the radius is approximate for a venue whose listing states no coordinates | [35](issues.md), [5](issues.md) |
 | 3 | The next source taking over when the leading listing goes | None. UC3 keeps slightly stale values in one case | [37](issues.md) |
 | 4 | MCP sign-in with OAuth | None. UC1, UC2 and UC4 use API keys | [4](issues.md) |
 | 5 | A reader for the data warehouse | None | [15](issues.md) |
@@ -35,26 +35,23 @@ Sending a listing back to be processed again was on this list on the morning of 
 
 **To decide.** Whether Quicket's public pages are good enough for version 1, and whether Ticketmaster stays a source kind at all while it holds nothing for Hermanus.
 
-## 2. Venue coordinates
+## 2. Venue coordinates from a geocoding service
 
-**The situation.** An experience has an optional position of its own, the venue's coordinates, and radius search uses it. Listings almost never give coordinates, and the language model cannot know them, so extraction returns a venue's name, address and city, and no position.
+**The situation.** An experience has an optional position of its own, the venue's coordinates, and radius search uses it. A listing rarely states coordinates, and the language model cannot know them.
 
-**What version 1 does instead.** Search uses the location's centre for any experience that has no position ([issue 5](issues.md)). Every experience from the pipeline is therefore placed at the centre of Hermanus.
+**What version 1 does.** Extraction takes a venue's coordinates whenever the listing states them, in its structured data or its text ([issue 35](issues.md)). An experience whose listing states none has no position, and search uses its location's centre for it ([issue 5](issues.md)). Nothing looks a venue's address up.
 
-**What it costs.**
+**What it costs.** Only for the experiences with no position:
 
-- **The radius cannot tell places apart.** An experience in Stanford, 25 kilometres away, is returned at distance 0 from Hermanus.
-- **A search centred elsewhere misses them.** A search around Stanford with a small radius returns nothing, although Stanford experiences are in the catalogue.
-- **The distance in a result is not the venue's distance.**
+- **The radius cannot tell them apart.** An experience in Stanford, 25 kilometres away, whose listing gives no coordinates is returned at distance 0 from Hermanus.
+- **A search centred elsewhere misses them.** A search around Stanford with a small radius does not return it.
+- **The distance in its result is not the venue's distance.**
 
-UC1 as written, a search within a radius around Hermanus, works. It is less exact than the result suggests.
+UC1 as written, a search within a radius around Hermanus, works. It is exact for the experiences that have a position and approximate for the rest.
 
-**What building it needs.** Coordinates from somewhere:
+**What building it needs.** A geocoding service behind a new port, which turns a venue's name and address into a position. This is a new outside dependency and a new adapter.
 
-- **From the page**, where its structured data carries them. Some Quicket and AllEvents.in pages do. This needs no new service.
-- **From a geocoding service**, behind a new port, which turns a venue's name and address into a position. This is a new outside dependency and a new adapter.
-
-**To decide.** Whether version 1 needs real venue positions, and if so which of the two ways.
+**Decided.** Not in version 1. Version 1 takes coordinates from the listing only.
 
 ## 3. The next source taking over when the leading listing goes
 
