@@ -196,6 +196,16 @@ Experiences are sourced from today to 24 months ahead, the sourcing horizon (`DI
 - An adapter whose source can be asked for a range of dates asks for today to the horizon.
 - A page, feed or calendar is fetched whole, so the horizon is applied in extraction: an experience whose first date is beyond the horizon is left out (see [data-processing.md](data-processing.md)). It is picked up by a later run, once its date is inside the horizon.
 
+### Fetching on demand
+
+A system admin can fetch now from the command line, whether or not a source is due, with `pipeline refetch` and one of:
+
+- `--location SLUG`: every active source of the location, one after another.
+- `--source NAME`: one source.
+- `--listing ID`: the source of one listing.
+
+A listing is never fetched on its own, because an adapter fetches a whole source. A fetch on demand is a run like any other, and a source that is already being fetched is not fetched twice. A listing whose content has not changed is not processed again; sending it back is what processing again is for (see [data-processing.md](data-processing.md)).
+
 ## Listings that disappear
 
 A listing that a source stops returning is checked again before anything changes:
@@ -210,16 +220,17 @@ Removed is not Cancelled. Cancelled means a source said the organisers cancelled
 
 ## Hand-off to Data processing
 
-Data processing never reads Discovery's tables. It uses two calls on the Discovery service:
+Data processing never reads Discovery's tables. It uses three calls on the Discovery service:
 
 - **Claim** pending raw listings. Two workers never get the same one: Discovery's repository claims them with `FOR UPDATE SKIP LOCKED`. Each comes with its source's kind and location.
 - **Mark** a raw listing processed, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
+- **Send back** listings to be processed again: the latest version of each listing that is still listed goes back to pending, with its attempts at 0 and its error cleared. One that is already pending is left as it is, and a removed listing is skipped (see Processing again in [data-processing.md](data-processing.md)).
 
 | Status | Means | Moves to |
 | --- | --- | --- |
 | Pending | Saved by a run, waiting for processing | Processed, Failed |
-| Processed | Its experiences are extracted and saved | Nothing |
-| Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
+| Processed | Its experiences are extracted and saved | Pending, when it is sent back |
+| Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts, or when it is sent back |
 
 Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded, and publishes it (see [domain-events.md](domain-events.md)). Nothing depends on them; the hand-off is the status.
 
@@ -262,8 +273,8 @@ The language model settings (`LANGUAGE_MODEL_PROVIDER`, `LANGUAGE_MODEL`, `LANGU
 
 | Service | Calls | For |
 | --- | --- | --- |
-| Discovery | Catalogue | The location of each source |
-| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
+| Discovery | Catalogue | The location of each source, and a location by its slug for a fetch on demand |
+| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, sending listings back to be processed again |
 
 Catalogue calls neither of these two for fetching or the hand-off. It calls Data processing for the attribute definitions (see How domains talk in [architecture.md](architecture.md)).
 
