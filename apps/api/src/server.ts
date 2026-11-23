@@ -23,7 +23,8 @@ const database = createDb(settings.database.url);
 
 try {
   const { app, services } = await buildApp({ settings, db: database.db, logger });
-  let schedule: Schedule | undefined;
+  // Empty until the server is listening, which is when the schedule starts.
+  const running: { schedule?: Schedule } = {};
 
   let stopping = false;
   const stop = async (signal: NodeJS.Signals): Promise<void> => {
@@ -32,7 +33,7 @@ try {
     logger.info({ signal }, "Stopping");
     try {
       // The schedule first, so the fetch or the raw listing in hand finishes before the database closes.
-      await schedule?.stop();
+      await running.schedule?.stop();
       await app.close();
       await database.close();
       logger.info("Stopped");
@@ -45,7 +46,7 @@ try {
   process.once("SIGTERM", (signal) => void stop(signal));
 
   await app.listen({ host: settings.api.host, port: settings.api.port });
-  schedule = startSchedule({
+  running.schedule = startSchedule({
     discovery: services.discovery,
     dataProcessing: services.dataProcessing,
     discoverySettings: settings.discovery,
