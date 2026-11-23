@@ -93,6 +93,9 @@ export interface EmbeddingSettings {
   batchSize: number;
   // How long a search waits for its query's embedding before it ranks by keyword alone.
   queryTimeoutSeconds: number;
+  // How many rounds the model may fail on an experience's text before it is set aside until its title or profile
+  // changes.
+  maxAttempts: number;
   // The Bedrock adapter's own setting. Needed only where embeddings are made.
   awsRegion: string | undefined;
 }

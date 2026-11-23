@@ -52,6 +52,7 @@ test("the defaults apply when only the required variables are set", () => {
       model: "amazon.titan-embed-text-v2:0",
       batchSize: 100,
       queryTimeoutSeconds: 5,
+      maxAttempts: 3,
       awsRegion: undefined,
     },
   });
@@ -97,6 +98,7 @@ test("each invalid value stops startup and names its variable", () => {
     EMBEDDING_PROVIDER: "openai",
     EMBEDDING_BATCH_SIZE: "0",
     EMBEDDING_QUERY_TIMEOUT_SECONDS: "0",
+    EMBEDDING_MAX_ATTEMPTS: "0",
   };
   for (const [name, value] of Object.entries(invalid)) {
     assert.throws(() => loadSettings({ ...REQUIRED, [name]: value }), new RegExp(`The settings .*\\n  ${name}: `), name);

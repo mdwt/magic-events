@@ -31,6 +31,7 @@ const settings: EmbeddingSettings = {
   model: "amazon.titan-embed-text-v2:0",
   batchSize: 100,
   queryTimeoutSeconds: 5,
+  maxAttempts: 3,
   awsRegion: "us-east-1",
 };
 

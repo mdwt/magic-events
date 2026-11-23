@@ -56,6 +56,7 @@ const environmentSchema = z.object({
   EMBEDDING_MODEL: z.string().min(1).default("amazon.titan-embed-text-v2:0"),
   EMBEDDING_BATCH_SIZE: whole(1).default(100),
   EMBEDDING_QUERY_TIMEOUT_SECONDS: z.coerce.number().positive().default(5),
+  EMBEDDING_MAX_ATTEMPTS: whole(1).default(3),
   AWS_REGION: z.string().min(1).optional(),
 });
 
@@ -133,6 +134,7 @@ export function loadSettings(env: NodeJS.ProcessEnv = process.env): Settings {
       model: e.EMBEDDING_MODEL,
       batchSize: e.EMBEDDING_BATCH_SIZE,
       queryTimeoutSeconds: e.EMBEDDING_QUERY_TIMEOUT_SECONDS,
+      maxAttempts: e.EMBEDDING_MAX_ATTEMPTS,
       awsRegion: e.AWS_REGION,
     },
   };

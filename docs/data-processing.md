@@ -464,6 +464,7 @@ Catalogue's embedding settings:
 | `EMBEDDING_MODEL` | `amazon.titan-embed-text-v2:0` | The model name handed to that adapter, for profiles and query texts alike |
 | `EMBEDDING_BATCH_SIZE` | 100 | How many experiences the embedding job takes in one round |
 | `EMBEDDING_QUERY_TIMEOUT_SECONDS` | 5 | How long a search waits for the query's embedding before ranking by keyword alone |
+| `EMBEDDING_MAX_ATTEMPTS` | 3 | How many rounds the model may fail on an experience's text before it is set aside until its title or profile changes (see Embedding) |
 
 When embedding runs is not a setting: the job `catalogue.embed-experiences` is queued after a processing job that processed anything, and every 15 minutes (see Embedding).
 

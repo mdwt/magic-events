@@ -16,6 +16,7 @@ export const EMBEDDING_SETTINGS: EmbeddingSettings = {
   model: "fake-embedding-model",
   batchSize: 100,
   queryTimeoutSeconds: 5,
+  maxAttempts: 3,
   awsRegion: undefined,
 };
 
