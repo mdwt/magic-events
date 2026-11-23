@@ -2409,7 +2409,7 @@
                     "additionalProperties": false
                   },
                   "radiusKm": {
-                    "description": "How far from the location's centre or the point to search, in kilometres. The default is used when it is left out.",
+                    "description": "How far from the location's centre or the point to search, in kilometres. Left out, the default radius is used.",
                     "type": "number",
                     "exclusiveMinimum": 0
                   },
@@ -2684,7 +2684,7 @@
                           },
                           "distanceKm": {
                             "type": "number",
-                            "description": "The distance from the search point, in kilometres."
+                            "description": "How far it is from the search point, in kilometres: from the venue when its position is known, otherwise from its location's centre."
                           },
                           "timezone": {
                             "type": "string",
@@ -2701,14 +2701,14 @@
                             "type": "object",
                             "properties": {
                               "min": {
-                                "description": "The lowest price, in currency.",
+                                "description": "The lowest price, in its currency.",
                                 "type": [
                                   "number",
                                   "null"
                                 ]
                               },
                               "max": {
-                                "description": "The highest price, in currency.",
+                                "description": "The highest price, in its currency.",
                                 "type": [
                                   "number",
                                   "null"
@@ -2771,7 +2771,7 @@
                             ]
                           },
                           "pageUrl": {
-                            "description": "The experience's own page, when it has one.",
+                            "description": "A page about this experience alone, when its source gives one. Where to book is bookingUrl.",
                             "type": [
                               "string",
                               "null"
@@ -2864,7 +2864,7 @@
                               ],
                               "additionalProperties": false
                             },
-                            "description": "The sessions that fall inside the dates asked for. The experience is on no other day in that range."
+                            "description": "Its sessions during the stay asked for. It is on no other day of the stay."
                           },
                           "version": {
                             "type": "integer",
@@ -3505,7 +3505,7 @@
                     "additionalProperties": false
                   },
                   "radiusKm": {
-                    "description": "How far from the location's centre or the point to search, in kilometres. The default is used when it is left out.",
+                    "description": "How far from the location's centre or the point to search, in kilometres. Left out, the default radius is used.",
                     "type": "number",
                     "exclusiveMinimum": 0
                   },
@@ -3692,7 +3692,7 @@
                                   "cancelled",
                                   "removed"
                                 ],
-                                "description": "Cancelled and removed experiences are final."
+                                "description": "expected, announced, confirmed or postponed, as in a search; or cancelled, called off by its organisers, or removed, listed by no source any more. Cancelled and removed are final."
                               },
                               "booking": {
                                 "type": "string",
@@ -3786,7 +3786,7 @@
                               },
                               "distanceKm": {
                                 "type": "number",
-                                "description": "The distance from the search point, in kilometres."
+                                "description": "How far it is from the search point, in kilometres: from the venue when its position is known, otherwise from its location's centre."
                               },
                               "timezone": {
                                 "type": "string",
@@ -3803,14 +3803,14 @@
                                 "type": "object",
                                 "properties": {
                                   "min": {
-                                    "description": "The lowest price, in currency.",
+                                    "description": "The lowest price, in its currency.",
                                     "type": [
                                       "number",
                                       "null"
                                     ]
                                   },
                                   "max": {
-                                    "description": "The highest price, in currency.",
+                                    "description": "The highest price, in its currency.",
                                     "type": [
                                       "number",
                                       "null"
@@ -3873,7 +3873,7 @@
                                 ]
                               },
                               "pageUrl": {
-                                "description": "The experience's own page, when it has one.",
+                                "description": "A page about this experience alone, when its source gives one. Where to book is bookingUrl.",
                                 "type": [
                                   "string",
                                   "null"
@@ -3966,7 +3966,7 @@
                                   ],
                                   "additionalProperties": false
                                 },
-                                "description": "The sessions inside the dates asked for. When movedOut is true it has none there, and these are the sessions it has now, all outside the dates: where it moved to. Empty when it has no dates left."
+                                "description": "Its sessions during the stay asked for. When movedOut is true it has none there, and these are the sessions it has now, all outside the stay: where it moved to. Empty when it has no dates left."
                               },
                               "version": {
                                 "type": "integer",
@@ -4017,7 +4017,7 @@
                           },
                           "movedOut": {
                             "type": "boolean",
-                            "description": "True when the experience was on during the dates asked for before a change since then, and is not on during them now: it moved out of the dates, or its sessions in them were dropped or cancelled. Treat it as no longer on during the stay."
+                            "description": "True when the experience was on during the stay asked for before a change since then, and is not on during it now: it moved out of the stay, or its sessions in it were dropped or cancelled. Treat it as no longer on during the stay."
                           },
                           "change": {
                             "type": "object",

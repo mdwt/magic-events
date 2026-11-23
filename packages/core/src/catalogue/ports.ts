@@ -95,8 +95,8 @@ export const searchExperiencesInputSchema = z.strictObject({
     .positive()
     .optional()
     .describe(
-      "How far from the location's centre or the point to search, in kilometres. The default is used when it is " +
-        "left out.",
+      "How far from the location's centre or the point to search, in kilometres. Left out, the default radius is " +
+        "used.",
     ),
   from: z.iso
     .date({ error: "Give from, the first day of the stay, as a date such as 2027-06-20." })
@@ -249,7 +249,12 @@ export const experienceRecordSchema = z.object({
         ),
     })
     .describe("Where it takes place."),
-  distanceKm: z.number().describe("The distance from the search point, in kilometres."),
+  distanceKm: z
+    .number()
+    .describe(
+      "How far it is from the search point, in kilometres: from the venue when its position is known, otherwise " +
+        "from its location's centre.",
+    ),
   timezone: z.string().describe("The timezone its times are in, such as Africa/Johannesburg."),
   openingHours: z
     .string()
@@ -257,8 +262,8 @@ export const experienceRecordSchema = z.object({
     .describe("Opening hours in the source's words, for something open over a period. Empty when not stated."),
   price: z
     .object({
-      min: z.number().nullable().describe("The lowest price, in currency."),
-      max: z.number().nullable().describe("The highest price, in currency."),
+      min: z.number().nullable().describe("The lowest price, in its currency."),
+      max: z.number().nullable().describe("The highest price, in its currency."),
       currency: z.string().nullable().describe("The currency's code, such as ZAR."),
     })
     .describe("The lowest and highest price. A min and max of 0 mean it is free; empty means the source states no price."),
@@ -269,7 +274,10 @@ export const experienceRecordSchema = z.object({
     .describe("When booking closes, as an ISO timestamp. Empty when not known."),
   bookingUrl: z.string().nullable().describe("Where to book it. Empty when the source gives no booking link."),
   imageUrl: z.string().nullable().describe("An image of it, from its source. Empty when there is none."),
-  pageUrl: z.string().nullable().describe("The experience's own page, when it has one."),
+  pageUrl: z
+    .string()
+    .nullable()
+    .describe("A page about this experience alone, when its source gives one. Where to book is bookingUrl."),
   attributes: z
     .record(z.string(), z.array(attributeValueSchema))
     .describe(
@@ -284,7 +292,7 @@ export const experienceRecordSchema = z.object({
     ),
   sessions: z
     .array(sessionResultSchema)
-    .describe("The sessions that fall inside the dates asked for. The experience is on no other day in that range."),
+    .describe("Its sessions during the stay asked for. It is on no other day of the stay."),
   version: z.number().int().describe("Goes up by one with every real change to the experience."),
   updatedAt: z.iso.datetime().describe("When it last changed, as an ISO timestamp."),
 });
@@ -570,20 +578,25 @@ export type ReportedChange = z.infer<typeof reportedChangeSchema>;
 
 export const experienceChangeSchema = z.object({
   experience: experienceResultSchema.extend({
-    status: z.enum(REPORTED_STATUSES).describe("Cancelled and removed experiences are final."),
+    status: z
+      .enum(REPORTED_STATUSES)
+      .describe(
+        "expected, announced, confirmed or postponed, as in a search; or cancelled, called off by its organisers, " +
+          "or removed, listed by no source any more. Cancelled and removed are final.",
+      ),
     sessions: z
       .array(sessionResultSchema)
       .describe(
-        "The sessions inside the dates asked for. When movedOut is true it has none there, and these are the " +
-          "sessions it has now, all outside the dates: where it moved to. Empty when it has no dates left.",
+        "Its sessions during the stay asked for. When movedOut is true it has none there, and these are the " +
+          "sessions it has now, all outside the stay: where it moved to. Empty when it has no dates left.",
       ),
   }).describe("The experience as it is now, as a search returns it."),
   movedOut: z
     .boolean()
     .describe(
-      "True when the experience was on during the dates asked for before a change since then, and is not on " +
-        "during them now: it moved out of the dates, or its sessions in them were dropped or cancelled. Treat it " +
-        "as no longer on during the stay.",
+      "True when the experience was on during the stay asked for before a change since then, and is not on " +
+        "during it now: it moved out of the stay, or its sessions in it were dropped or cancelled. Treat it as no " +
+        "longer on during the stay.",
     ),
   change: reportedChangeSchema.describe("The change that matters most to a planner."),
   changes: z.array(reportedChangeSchema).describe("Every change since the time given, newest first."),

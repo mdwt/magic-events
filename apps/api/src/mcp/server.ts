@@ -35,9 +35,10 @@ failing that pageUrl. Never tell a traveller something can be booked when bookab
 the source states no price; a min of 0 below a higher max means some, such as young children, get in free.
 - total is how many match across all pages. Page with limit (at most 100, 20 by default) and offset.
 
-A refused call is a tool error whose text is JSON: {"error": {"code", "message", "details", "requestId"}}. Each \
-detail names a field and what is wrong with it: fix those fields and call again. unavailable means try again in a \
-few seconds; internal_error is a fault on our side, so give the requestId to whoever reports it.`;
+A refused call is a tool error whose text is JSON: {"error": {"code", "message", "details", "requestId"}}. The \
+message is plain words you can pass on to the person. Each detail names a field and what to give instead: fix those \
+fields and call again. unavailable means try again in a few seconds; internal_error is a fault on our side, so give \
+the requestId to whoever reports it.`;
 
 // A fresh MCP server for one request, with the tools bound to the caller of that request.
 export function createMcpServer(deps: ToolDeps, catalogue: Catalogue): McpServer {

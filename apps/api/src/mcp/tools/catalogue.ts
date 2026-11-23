@@ -61,12 +61,11 @@ attributes.tier: ["luxury", "premium"]. Within a tier and with no query, the soo
 dates, status, bookable, booking, venue, distanceKm, price, attributes, tags, bookingUrl and pageUrl. Tell the person \
 each experience's dates from its sessions; for a session of month or year precision, say the month or year and that \
 the days are not announced yet. Say an experience is expected or announced rather than confirmed when it is, and \
-give bookingUrl, or failing that pageUrl, only when bookable is true. price: a min and max of 0 mean the experience \
-is free, because the source says so in words; an empty price means the source states no price; a min of 0 below a \
-higher max means some, such as young children, get in free.
+give bookingUrl, or failing that pageUrl, only when bookable is true.
 
 Limits: the feed covers Hermanus and the towns near it, so a place far from there returns nothing, and nothing is \
-known beyond 24 months ahead. Cancelled and removed experiences are never returned here; get_experience_changes \
+known beyond 24 months ahead. When nothing matches, try wider dates, a larger radius or fewer filters before telling \
+the person nothing is on. Cancelled and removed experiences are never returned here; get_experience_changes \
 reports them.`;
 
 const CHANGES_DESCRIPTION = `What changed for a place and dates searched before: what is new, confirmed, \
@@ -91,7 +90,7 @@ happened:
 - changed: anything else, such as the price, the venue, or booking opening or closing.
 changes lists every change since then, newest first.
 
-Every item has movedOut. True means it had a scheduled session inside the dates before a change made since since, \
+Every item has movedOut. True means it had a scheduled session inside the dates before a change made after since, \
 and has none there now: treat it as no longer on during the stay. Its sessions are then the ones it has now, all \
 outside the dates, or none. When movedOut is false, its sessions are the ones inside the dates.
 
