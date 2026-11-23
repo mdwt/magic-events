@@ -7,7 +7,7 @@ What version 1 leaves out, and why. Each of these is described somewhere in the 
 | # | Left out of version 1 | Use cases it touches | Issue |
 | --- | --- | --- | --- |
 | 1 | The Quicket and Ticketmaster API adapters | None. UC3 sources Quicket another way | [28](issues.md) |
-| 2 | Venue coordinates from a geocoding service | UC1: the radius is approximate for a venue whose listing states no coordinates | [35](issues.md), [5](issues.md) |
+| 2 | Venue coordinates from a geocoding service | UC1: the radius is approximate for a venue whose listing states no coordinates | [45](issues.md), [35](issues.md), [5](issues.md) |
 | 3 | The next source taking over when the leading listing goes | None. UC3 keeps slightly stale values in one case | [37](issues.md) |
 | 4 | MCP sign-in with OAuth | None. UC1, UC2 and UC4 use API keys | [4](issues.md) |
 | 5 | A reader for the data warehouse | None | [15](issues.md) |
@@ -51,7 +51,7 @@ UC1 as written, a search within a radius around Hermanus, works. It is exact for
 
 **What building it needs.** A geocoding service behind a new port, which turns a venue's name and address into a position. This is a new outside dependency and a new adapter.
 
-**Decided.** Not in version 1. Version 1 takes coordinates from the listing only.
+**Decided.** Not in version 1. Version 1 takes coordinates from the listing only ([issue 45](issues.md)).
 
 ## 3. The next source taking over when the leading listing goes
 
