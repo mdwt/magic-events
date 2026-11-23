@@ -48,6 +48,7 @@ export function registerSetup(): void {
     c.ok(found.second.code === 0, `the second migration exited with ${String(found.second.code)}`);
     c.ok(found.applied > 0, `${found.applied} migrations applied`);
     c.equal(found.again, found.applied, "migrations recorded after the second run");
+    c.saw(`migrate on an empty database: exit ${String(found.first.code)}, ${found.applied} migrations; again: exit ${String(found.second.code)}, still ${found.again}`);
     return Promise.resolve();
   });
 
@@ -67,6 +68,7 @@ export function registerSetup(): void {
     c.equal(changed, [], "tables with a row whose content the second seed changed");
     const touched = tables.filter((table) => !changed.includes(table) && found.before.digests[table] !== found.after.digests[table]);
     c.equal(touched, [], "tables whose rows the second seed wrote again unchanged, with a new updated_at");
+    c.saw(`seed: "${counts(found.first.stdout) ?? ""}" and ${String(found.first.stdout.match(/mev_/g)?.length ?? 0)} keys; again: the same counts, "No new API keys", no row of ${tables.length} tables changed`);
     return Promise.resolve();
   });
 
@@ -80,6 +82,7 @@ export function registerSetup(): void {
     c.ok(settings !== undefined && typeof settings.port === "number", "it logs the settings that are safe to show when it starts");
     c.ok(!main.text().includes(state.secret) && !main.text().includes(state.dbUrl), "no secret or database address in the start lines");
     c.equal((await send(main, { path: "/health" })).status, 200, "/health");
+    c.saw(`"Server started" port ${String(settings?.port)}, log level ${String(settings?.logLevel)}, no secret; "The jobs started" with ${String(jobs?.findDueSourcesCron)} and ${String(jobs?.upkeepCron)}; /health 200`);
   });
 }
 
@@ -91,10 +94,13 @@ export function registerChecks(): void {
       c.note("Skipped with E2E_SKIP_CHECKS=1.");
       return;
     }
+    const exits: string[] = [];
     for (const script of ["typecheck", "lint", "build"]) {
       const result = await pnpm([script]);
       c.ok(result.code === 0, `pnpm ${script} exited with ${String(result.code)}: ${lastLines(result.output, 8)}`);
+      exits.push(`pnpm ${script} exit ${String(result.code)}`);
     }
+    c.saw(exits.join(", "));
   });
 
   scenario("C-03", "Every automated test passes", async ({ c }) => {
@@ -110,6 +116,7 @@ export function registerChecks(): void {
     const skipped = [...tested.output.matchAll(/^(?:#|ℹ) (skipped|todo) (\d+)$/gm)].filter((match) => Number(match[2]) > 0);
     c.equal(skipped.map((match) => match[0]), [], "tests skipped");
     const passed = [...tested.output.matchAll(/^(?:#|ℹ) pass (\d+)$/gm)].reduce((total, match) => total + Number(match[1]), 0);
+    c.saw(`pnpm db:migrate:test exit ${String(migrated.code)}; pnpm test exit ${String(tested.code)}, ${passed} passed, ${skipped.length} projects with skipped tests`);
     c.note(`${passed} tests passed.`);
   });
 
@@ -140,6 +147,7 @@ export function registerChecks(): void {
       );
       c.equal(short.map((one) => `${one.title} (${one.last})`), [], `open-ended recurring experiences without sessions up to ${horizon}`);
       c.equal((await send(upkeep, { path: "/v1/experiences/search", client: client("agency person"), body: WINTER })).status, 200, "search after upkeep");
+      c.saw(`upkeep every minute: "Kept the catalogue up" past ${String(line.past)}, closed ${String(line.bookingsClosed)}, generated ${String(line.sessionsGenerated)}; ${over.length} searchable experiences over, ${short.length} recurring short of ${horizon}`);
     } finally {
       await upkeep.stop();
     }
@@ -182,26 +190,66 @@ function newCheckout(): void {
           where u.email = 'planner@agency.example.com' and k.name = 'seed person key'`,
       );
       const server = await startServer("snapshot", { DATABASE_URL: url });
+      const planner = {
+        label: "snapshot agency person",
+        key: printed.key,
+        email: printed.email,
+        userId: ids.user_id,
+        tenantId: ids.tenant_id,
+        tenantSlug: "example-travel-agency",
+        kind: "person" as const,
+        role: "client" as const,
+        credentialId: ids.credential_id,
+      };
       let answer: Call | undefined;
+      let changed: Call | undefined;
+      let september: Call | undefined;
       try {
         answer = await send(server, {
           path: "/v1/experiences/search",
-          client: {
-            label: "snapshot agency person",
-            key: printed.key,
-            email: printed.email,
-            userId: ids.user_id,
-            tenantId: ids.tenant_id,
-            tenantSlug: "example-travel-agency",
-            kind: "person",
-            role: "client",
-            credentialId: ids.credential_id,
-          },
+          client: planner,
           body: { location: "hermanus", from: today(), to: addMonths(today(), 24), limit: 100 },
+        });
+        // The nine changes made for demonstration, as packages/db/snapshot/README.md lists them.
+        changed = await send(server, {
+          path: "/v1/experiences/changes",
+          client: planner,
+          body: { location: "hermanus", from: "2026-12-01", to: "2027-09-30", since: "2026-11-23T17:10:00Z", limit: 100 },
+        });
+        september = await send(server, {
+          path: "/v1/experiences/search",
+          client: planner,
+          body: { location: "hermanus", from: "2027-09-20", to: "2027-09-30" },
         });
       } finally {
         await server.stop();
       }
+      const items = (changed.json as { items?: { experience: { title: string }; change: { kind: string } }[] } | undefined)?.items ?? [];
+      c.equal(changed.status, 200, "the changes call on the snapshot");
+      c.sameSet(
+        items.map((item) => item.experience.title),
+        [
+          "Neil Diamond Tribute - Johan Liebenberg",
+          "Crimson House",
+          "Riaan Benadé Live",
+          "A Tribute to Elton John",
+          "The Latin Guitar with James Grace",
+          "Ballyhoo: The 50 Year Celebration",
+          "Stanford Festive Market",
+          "Studio 54 New Years Eve Party",
+          "ISA Miniature Convention",
+        ],
+        "the nine demonstration changes",
+      );
+      const kindOf = (title: string) => items.find((item) => item.experience.title === title)?.change.kind;
+      c.equal(
+        [kindOf("Neil Diamond Tribute - Johan Liebenberg"), kindOf("Crimson House"), kindOf("Riaan Benadé Live"), kindOf("Ballyhoo: The 50 Year Celebration"), kindOf("Studio 54 New Years Eve Party")],
+        ["cancelled", "postponed", "rescheduled", "confirmed", "removed"],
+        "the kinds of the cancelled, postponed, rescheduled, confirmed and removed ones",
+      );
+      c.equal(items.filter((item) => item.change.kind === "changed").length, 4, "changes of kind changed");
+      const first = (september.json as { items?: { title: string }[] } | undefined)?.items?.[0]?.title;
+      c.equal(first, "Private whale watching charter with Southern Right Charters", "the first of 20 to 30 September 2027 on the snapshot");
       const total = (answer.json as { total?: number } | undefined)?.total ?? 0;
       const searchable = await one<{ n: number }>(url, "select count(*)::int as n from experience where status in ('expected','announced','confirmed','postponed')");
       c.ok(answer.status === 200 && total > 0, `a search with the new key returns the snapshot's experiences: ${answer.status}, total ${total} of ${searchable.n}`);
@@ -212,6 +260,10 @@ function newCheckout(): void {
       c.equal(unembedded.n, 0, "searchable experiences without an embedding");
       const again = await runNode(join(ROOT, "packages/db/src/cli/snapshot.ts"), ["restore"], { env, timeoutMs: 120_000 });
       c.ok(again.code !== 0 && /already has tables/.test(again.output), `restore run again changes nothing and says so: ${lastLines(again.output, 2)}`);
+      c.saw(
+        `restore and seed: a search with the new key: ${answer.status}, total ${total}; ${searchable.n} searchable, ${unembedded.n} without an embedding; ` +
+          `changes since 17:10: ${items.length} (${items.map((item) => `${item.experience.title}: ${item.change.kind}`).join(", ")}); 20 to 30 Sep 2027 first "${String(first)}"; restore again: exit ${String(again.code)}, "already has tables"`,
+      );
     } finally {
       await dropDatabase(name);
     }
@@ -233,5 +285,6 @@ export function registerStop(): void {
     const stopping = messages.indexOf("Stopping");
     const stopped = messages.indexOf("Stopped");
     c.ok(stopping !== -1 && stopped > stopping, `it logs "Stopping" then "Stopped": ${show(messages.slice(-6))}`);
+    c.saw(`SIGTERM with a search in hand: the search ${String(answered?.status)}, "Stopping" then "Stopped", exit ${String(code)}`);
   });
 }

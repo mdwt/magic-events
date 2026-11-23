@@ -81,6 +81,7 @@ export function registerEndpoints(): void {
     // An unknown address is 401 without a key and 404 with one, by design (E2E-37).
     const unknown = calls.filter((call) => call.operationId === null && call.status !== 404 && call.status !== 401);
     for (const call of unknown) c.fail(`${call.method} ${call.path} answered ${call.status} and is in no operation of the document`);
+    c.saw(`${operations.length} operations in apps/api/openapi.json, each called with success and in every documented refusal but 500; ${calls.length} answers, ${problems.length} against their schema`);
     c.note(`${calls.length} requests over the run reached ${new Set(calls.map((call) => call.operationId)).size - 1} operations. 500 cannot be caused from outside.`);
   });
 }

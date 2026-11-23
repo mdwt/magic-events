@@ -105,6 +105,10 @@ export function registerOnboarding(): void {
     c.ok(again.code === 1 && /slug/i.test(again.stderr) && /taken|already|exists/i.test(again.stderr), `creating it again fails and says the slug is taken: ${again.stderr.trim()}`);
     const twice = await admin(["user", "add", "--tenant", "second-example-agency", "--name", "Second Planner", "--email", SECOND]);
     c.ok(twice.code === 1 && /email/i.test(twice.stderr) && /taken|already|exists/i.test(twice.stderr), `adding the user again fails and says the email is taken: ${twice.stderr.trim()}`);
+    c.saw(
+      `tenant ${tenant.kind} ${tenant.status}, user ${user.role}; two keys printed once; person key over REST and agent key over MCP: E2E-01's ${String(recall<{ total: number }>("E2E-01")?.total)} items; ` +
+        `again: exit ${String(again.code)} "${again.stderr.trim().split("\n")[0] ?? ""}", exit ${String(twice.code)} "${twice.stderr.trim().split("\n")[0] ?? ""}"`,
+    );
 
     logs((lc) => {
       const lines = [created, added, ...state.commands.filter((one) => one.command.includes("key issue"))].flatMap(logLinesOf);
@@ -143,6 +147,7 @@ export function registerOnboarding(): void {
       try {
         const answer = await session.callTool("search_experiences", { ...WINTER, limit: 100 });
         sameAsWinter(c, answer.structuredContent, "the app's key over MCP, straight away");
+        c.saw(`tenant second-example-app ${tenant.kind} ${tenant.status} ${show(tenant.configuration)}; tenant list shows ${slugs.length} tenants; the new agent key over MCP: ${String((answer.structuredContent as { total?: number } | undefined)?.total)} items`);
       } finally {
         await session.close();
       }
@@ -160,10 +165,13 @@ export function registerOnboarding(): void {
       c.ok(call.status === 403 && error?.code === "forbidden", `while suspended ${call.client?.label ?? ""} ${call.path} is ${call.status} ${error?.code ?? ""}`);
     }
     checkCommand(c, await admin(["tenant", "update", "--slug", "second-example-agency", "--status", "active"]), "tenant update active");
+    const back: number[] = [];
     for (const call of [await restSearch(person), await restSearch(agent), await mcpSearch(person), await mcpSearch(agent)]) {
       c.ok(call.status === 200, `once active ${call.client?.label ?? ""} ${call.path} is ${call.status}`);
       if (call.path === "/mcp") c.ok(toolResultOf(call)?.isError === false, "once active the MCP search is not a tool error");
+      back.push(call.status);
     }
+    c.saw(`suspended: ${refused.map((call) => `${call.path} ${call.status} ${errorOf(call.json)?.code ?? ""}`).join(", ")}; active again: ${back.join(", ")}`);
     logs((lc) => {
       for (const call of refused) {
         const line = mainServer().find((one) => one.requestId === call.requestId && one.msg === "Action refused");
@@ -189,6 +197,7 @@ export function registerOnboarding(): void {
     const after = await admin(["key", "list", "--user", SECOND]);
     c.ok(/revoked\s+person\s+planning desk/.test(after.stdout), `the list shows the person key revoked: ${after.stdout.trim()}`);
     c.ok(/enabled\s+agent\s+trip assistant/.test(after.stdout), "the list shows the agent key enabled");
+    c.saw(`key revoke: "${revoked.stdout.trim()}"; the revoked key: 401 with WWW-Authenticate, twice; the agent key: 200; key list: "planning desk" revoked, "trip assistant" enabled`);
   });
 
   scenario("E2E-35", "Every tenant sees the same feed", async ({ c }) => {
@@ -212,6 +221,7 @@ export function registerOnboarding(): void {
     for (const answer of answers) {
       if (first && !isDeepStrictEqual(answer.result, first.result)) c.fail(`${answer.who}'s answer differs from ${first.who}'s`);
     }
+    c.saw(`${everyone.length} keys, REST and MCP at once, 3 rounds: ${answers.length} answers, all 200 and equal (total ${String((first?.result as { total?: number } | undefined)?.total)}), none naming a tenant or user`);
   });
 
   scenario("E2E-36", "A client cannot reach tenants, users or keys", async ({ c }) => {
@@ -247,5 +257,6 @@ export function registerOnboarding(): void {
     c.equal(paths2.filter((path) => /tenant|user|credential/.test(path)), [], "tenant, user or credential paths in the OpenAPI document");
     c.equal((await restSearch(app)).status, 200, "the App Planner's person key still works");
     c.equal((await restSearch(client("app agent"))).status, 200, "the App Planner's agent key still works");
+    c.saw(`${paths.length} admin addresses with the planner's and the admin's keys: all 404 not_found; tools/list: two tools; list_tenants and issue_credential: -32602; OpenAPI has no tenant, user or credential path; App Planner's keys: 200`);
   });
 }

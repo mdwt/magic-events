@@ -306,6 +306,7 @@ export function registerQuality(): void {
     for (const field of ["title", "dates", "status"] as const) c.ok(tally[field] === n, `${field} match on ${tally[field]} of ${n}`);
     for (const field of ["venue", "price", "classes"] as const) c.ok(tally[field] >= n - 2, `${field} match on ${tally[field]} of ${n}`);
     c.note(`Sample of ${n}: ${show(tally)}. The live pages, where a capture is older than the source, are checked by hand.`);
+    c.saw(`${n} experiences against their captured pages: title ${tally.title}, dates ${tally.dates}, status ${tally.status}, venue ${tally.venue}, price ${tally.price}, categories and tags ${tally.classes}`);
   });
 
   scenario("E2E-43", "Nothing false in the feed", async ({ c }) => {
@@ -350,5 +351,6 @@ export function registerQuality(): void {
     }
     if (elsewhere.size > 0) c.note(`Venues in towns not named under Coverage in sources.md, to check by hand: ${[...elsewhere].sort().join(", ")}`);
     c.note(`Checked ${items.length} items. Whether an item is one item of a festival's programme is checked by hand.`);
+    c.saw(`today to 24 months, 60 km, ${items.length} items: none over, none far away, none twice, no season, every title an experience, every bookable item with a link, Quicket days as listed`);
   });
 }

@@ -4,7 +4,7 @@ import { capturedSources, captures, logLinesOf, pipeline, printedOf } from "../h
 import type { Checks } from "../harness/checks.ts";
 import { show } from "../harness/checks.ts";
 import { one, query, literal } from "../harness/db.ts";
-import { DECEMBER, search, searchAll, sessionDays, titled, WINTER } from "../harness/feed.ts";
+import { brief, DECEMBER, search, searchAll, sessionDays, titled, WINTER } from "../harness/feed.ts";
 import type { CommandResult } from "../harness/process.ts";
 import { scenario } from "../harness/scenario.ts";
 import { failedFetchIsRetried } from "./retry.ts";
@@ -72,6 +72,8 @@ async function checkDomainEvents(c: Checks, results: CommandResult[], since: str
   const ids = new Set(recorded.map((event) => event.id));
   const stray = lines.filter((line) => !ids.has(String(line.eventId)));
   c.equal(stray.length, 0, "event lines for events that were not recorded");
+  const first = lines[0];
+  c.saw(`${recorded.length} events recorded, ${lines.length} "Domain event published" lines at info, e.g. ${String(first?.type)} ${String(first?.eventId)}`);
 }
 
 function sourceLine(result: CommandResult, name: string) {
@@ -117,12 +119,14 @@ export function registerFeed(): void {
       lc.ok(lines.some((line) => line.msg === "Run started"), "the load logs each run started");
       lc.ok(lines.some((line) => line.msg === "Raw listing processed" && typeof line.experiences === "number"), "each raw listing processed is logged with its outcome");
       lc.ok(lines.some((line) => line.msg === "Experience published"), "each experience published is logged");
+      lc.saw(`${finished.length} "Run finished" lines with counts, ${lines.filter((line) => line.msg === "Raw listing processed").length} "Raw listing processed", ${lines.filter((line) => line.msg === "Experience published").length} "Experience published"`);
       await checkDomainEvents(lc, [loaded], t0);
     });
     const runs = await query<{ status: string; n: number }>(state.dbUrl, "select status::text as status, count(*)::int as n from run group by 1");
     c.equal(runs.filter((run) => run.status !== "succeeded"), [], "runs that did not succeed");
     const raw = await query<{ status: string; n: number }>(state.dbUrl, "select status::text as status, count(*)::int as n from raw_listing group by 1");
     c.equal(raw.filter((one) => one.status !== "processed"), [], "raw listings not processed");
+    c.saw(`captures --no-model: ${lines.length} sources loaded, ${summary?.[2] ?? "?"} experiences saved, ${summary?.[3] ?? "?"} new, ${summary?.[4] ?? "?"} failed; runs ${show(runs)}; raw listings ${show(raw)}`);
     if (state.live) {
       const embed = recall<CommandResult>("embed");
       c.ok(embed !== undefined && / 0 remain\./.test(embed.stdout), `pipeline embed leaves 0: ${embed?.stdout.trim() ?? ""}`);
@@ -142,6 +146,7 @@ export function registerFeed(): void {
     c.ok(/: \d+ saved, 0 new, 0 changed, 0 failed\./.test(again.stdout), "the second load's summary is 0 new and 0 changed");
     c.equal(await versions(), before, "no experience has a new version");
     c.note('pipeline refetch --source "Wesgro Cape Overberg events" fetches the live site: it runs with pnpm e2e:live, after every scenario that reads the captured feed.');
+    c.saw(`second captures load: ${lines.length} sources, every one 0 new or changed; ${before.length} experiences, no new version`);
     logs((lc) => {
       lc.ok(logLinesOf(again).every((line) => (line.level ?? 0) < 50), "the second load logged no error");
     });
@@ -249,6 +254,10 @@ export function registerFeedChanges(): void {
     const r2h = titled(await searchAll({ location: "hermanus", from: "2027-05-02", to: "2027-05-02" }), "Race2Hermanus Triathlon")[0];
     c.ok(r2h?.status === "confirmed" && r2h.booking === "open" && r2h.bookable, `the triathlon is confirmed, open and bookable: ${show(r2h?.status)}`);
     c.ok(r2h?.bookingUrl === "https://r2h.bikeruntri.co.za/enter", `the triathlon's booking link: ${show(r2h?.bookingUrl)}`);
+    c.saw(
+      `Benguela Cove load: ${String(cove?.newOrChanged)} of ${String(cove?.listings)} pages changed; Race2Hermanus ${String(triathlon?.newOrChanged)} of ${String(triathlon?.listings)}; ` +
+        `${after.length} experiences, as before; ${brief(andrew)}; ${brief(eighties)}; Christmas Eve Dinner R${String(dinner?.price.min)}; ${brief(r2h)}`,
+    );
   });
 
   scenario("E2E-23", "A listing that disappears leads to Removed", async ({ c }) => {
@@ -263,6 +272,7 @@ export function registerFeedChanges(): void {
     c.ok(titled(await searchAll(range), title).length === 0, "after the third load it is not returned");
     const stored = await query<{ status: string }>(state.dbUrl, `select status::text as status from experience where title = ${literal(title)}`);
     c.equal(stored.map((one) => one.status), ["removed"], "its status");
+    c.saw(`page deleted, three Benguela Cove loads: returned after the second, not after the third; stored status ${stored.map((one) => one.status).join(", ")}`);
   });
 
   scenario("E2E-24", "One experience across many sources", async ({ c }) => {
@@ -284,6 +294,7 @@ export function registerFeedChanges(): void {
       );
       c.equal(linked.listings, sources, `"${title}" is one experience of this many listings`);
       c.note(`"${title}": ${linked.listings} listings on ${linked.sites} sources.`);
+      c.saw(`${day}, query "${text}": "${title}" returned once, one experience of ${linked.listings} listings on ${linked.sites} sources`);
     }
   });
 
@@ -322,6 +333,7 @@ export function registerFeedChanges(): void {
     c.equal(after.filter((one) => before.find((was) => was.id === one.id)?.version !== one.version).map((one) => one.title), [], "experiences with a new version");
     const pending = await one<{ n: number }>(state.dbUrl, "select count(*)::int as n from raw_listing where status <> 'processed'");
     c.equal(pending.n, 0, "raw listings left unprocessed");
+    c.saw(`reprocess with no selector: exit ${String(none.code)}; FynArts Festival reprocessed and keeps its ID and version; Quicket: ${requeued} of ${listings.n} listings sent back, ${after.length} experiences as before, none with a new version, ${pending.n} pending`);
     c.note("The suite processes the listings sent back with the captures command, which answers from the captured files; pipeline process and --now need the language model and run with pnpm e2e:live.");
     c.note("pipeline refetch fetches live sites: it runs with pnpm e2e:live, after every scenario that reads the captured feed.");
   });

@@ -15,6 +15,10 @@ function cell(text: string): string {
   return text.replaceAll("|", "\\|").replaceAll("\n", " ");
 }
 
+function evidence(row: Row | undefined): string {
+  return (row?.evidence ?? []).map(cell).join("; ");
+}
+
 function seen(row: Row | undefined): string {
   if (row === undefined) return "No scenario was registered for it.";
   const problems = row.seen.slice(0, 6).map(cell);
@@ -28,16 +32,16 @@ export function resultsTable(meta: { commit: string; startedAt: Date; durationMs
     "",
     `Run on ${meta.startedAt.toISOString()} against ${meta.commit}, in ${Math.round(meta.durationMs / 1000)} s.`,
     "",
-    "| ID | Result | Logs | What was seen |",
-    "| --- | --- | --- | --- |",
+    "| ID | Result | Logs | Evidence | What was seen |",
+    "| --- | --- | --- | --- | --- |",
   ];
   for (const id of IDS) {
     const row = rows.get(id);
-    lines.push(`| ${id} | ${row?.result ?? "not run"} | ${row?.logs ?? ""} | ${seen(row)} |`);
+    lines.push(`| ${id} | ${row?.result ?? "not run"} | ${row?.logs ?? ""} | ${evidence(row)} | ${seen(row)} |`);
   }
   // The suite's own rows: the set-up, and every operation of the OpenAPI document.
   for (const row of rows.values()) {
-    if (!IDS.includes(row.id)) lines.push(`| ${row.id} | ${row.result} | ${row.logs} | ${seen(row)} |`);
+    if (!IDS.includes(row.id)) lines.push(`| ${row.id} | ${row.result} | ${row.logs} | ${evidence(row)} | ${seen(row)} |`);
   }
   const counts = new Map<string, number>();
   for (const id of IDS) {
@@ -49,12 +53,15 @@ export function resultsTable(meta: { commit: string; startedAt: Date; durationMs
   return `${lines.join("\n")}\n`;
 }
 
-export function writeResults(table: string): string {
-  const dir = join(ROOT, "apps/e2e/results");
-  mkdirSync(dir, { recursive: true });
-  const path = join(dir, "latest.md");
-  writeFileSync(path, table);
-  return path;
+export const RESULTS_DIR = join(ROOT, "apps/e2e/results");
+
+// The table as latest.md, and in the run's own folder when E2E_KEEP_LOGS=1 kept one.
+export function writeResults(table: string, keptDir: string | undefined): string[] {
+  mkdirSync(RESULTS_DIR, { recursive: true });
+  const paths = [join(RESULTS_DIR, "latest.md")];
+  if (keptDir !== undefined) paths.push(join(keptDir, "results.md"));
+  for (const path of paths) writeFileSync(path, table);
+  return paths;
 }
 
 export function anyFailed(): boolean {

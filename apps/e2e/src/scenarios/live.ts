@@ -75,6 +75,7 @@ export async function liveSchedule(c: Checks): Promise<void> {
     c.ok(festival !== undefined, `the winter stay returns the FynArts Festival: ${show(result.items.map((item) => item.title))}`);
     const searched = server.find((line) => line.requestId === call.requestId && line.msg === "Searched experiences");
     c.ok(searched?.byMeaning === true, "a query text orders by meaning, with a real embedding");
+    c.saw(`schedule every minute, one source: run ${String(run.status)}, found ${String(run.found)}; "Nothing was pending."; 0 to embed; winter stay with a query: ${String(festival?.title)}, by meaning ${String(searched?.byMeaning)}`);
   } finally {
     await server.stop();
     await dropDatabase(name);
@@ -90,6 +91,7 @@ export async function liveRefetchUnchanged(c: Checks): Promise<void> {
   c.ok(/: \d+ found, 0 new or changed/.test(second.stdout), `the second refetch reports 0 new or changed: ${printedOf(second).trim()}`);
   const after = await query<{ id: string; version: number }>(state.dbUrl, "select id, version from experience order by id");
   c.equal(after, before, "no experience has a new version");
+  c.saw(`refetch "Wesgro Cape Overberg events" twice: ${(/^ {2}.*$/m.exec(second.stdout) ?? [""])[0].trim()}; ${after.length} experiences, no new version`);
   // What the first refetch found is processed by the language model, so no page of it is left pending.
   const processed = await pipeline(["process"]);
   c.ok(processed.code === 0 && !/FAILED/.test(processed.stdout), `pipeline process: ${printedOf(processed).trim().slice(-300)}`);
@@ -128,4 +130,5 @@ export async function liveRefetch(c: Checks): Promise<void> {
   const location = await pipeline(["refetch", "--location", "hermanus"]);
   c.ok(/^ {2}.+: \d+ found, \d+ new or changed, \d+ unchanged, \d+ removed/m.test(location.stdout), "refetch --location prints a line per source with its counts");
   c.note("The pages refetch --location found are left unprocessed: processing them is a model call each.");
+  c.saw(`refetch --source, --listing and --location printed their counts; reprocess --experience --now kept the FynArts Festival's ID; ${String(location.stdout.split("\n").filter((line) => / found, /.test(line)).length)} sources fetched for the place`);
 }

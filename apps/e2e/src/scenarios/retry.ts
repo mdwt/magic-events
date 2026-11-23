@@ -102,6 +102,10 @@ export async function failedFetchIsRetried(c: Checks): Promise<void> {
     c.equal(failedRun.removed, 0, "the failed run counted no listing as missing");
     const removed = await query<{ n: number }>(url, "select count(*)::int as n from listing where state <> 'listed'");
     c.equal(removed[0]?.n, 0, "listings counted as missing");
+    c.saw(
+      `run 1 ${String(failedRun.status)}: "${String(reason?.error)}"; "A job failed and will be tried again" at warn, attempt ${String(retrying.attempt)}, wait ${show(wait)} s; ` +
+        `port opened, run 2 ${String(back.status)} ${Math.round(waited)} s later as attempt 2 of job ${String(back.jobId)}; ${String(removed[0]?.n)} listings missing`,
+    );
   } finally {
     await server?.stop();
     if (site.listening) await close(site);

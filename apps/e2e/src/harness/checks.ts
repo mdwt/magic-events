@@ -6,6 +6,12 @@ import { isDeepStrictEqual } from "node:util";
 export class Checks {
   readonly problems: string[] = [];
   readonly notes: string[] = [];
+  // What was asked and what came back, with a count or a name, for the test report.
+  readonly evidence: string[] = [];
+
+  saw(line: string): void {
+    this.evidence.push(line);
+  }
 
   ok(condition: boolean, what: string): boolean {
     if (!condition) this.problems.push(what);

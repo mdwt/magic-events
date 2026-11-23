@@ -34,7 +34,7 @@ after(async () => {
   const notes = await tearDown();
   const commit = await commitRunAgainst();
   const table = resultsTable({ commit, startedAt: state.startedAt, durationMs: Date.now() - state.startedAt.getTime(), notes });
-  const path = writeResults(table);
-  process.stdout.write(`\n${table}\nWritten to ${path}\n`);
+  const paths = writeResults(table, state.keptDir);
+  process.stdout.write(`\n${table}\nWritten to ${paths.join(" and ")}\n`);
   if (anyFailed()) process.exitCode = 1;
 });

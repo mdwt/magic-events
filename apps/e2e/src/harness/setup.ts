@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { cpSync, mkdtempSync, rmSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Client } from "./api.ts";
@@ -155,11 +155,25 @@ export async function prepare(): Promise<void> {
   remember("main started", Date.now() - startedAt);
 }
 
+// The servers' logs and every command's output, into apps/e2e/results/<the run's start>/, which git ignores.
+function keepLogs(notes: string[]): void {
+  const dir = join(ROOT, "apps/e2e/results", state.startedAt.toISOString().replaceAll(":", "-").replace(/\.\d+Z$/, "Z"));
+  mkdirSync(dir, { recursive: true });
+  for (const server of state.servers) {
+    if (existsSync(server.logPath)) copyFileSync(server.logPath, join(dir, `${server.name}.log`));
+  }
+  const commands = state.commands.map((one) => `$ ${one.command.replace(ROOT, "")}\n(exit ${String(one.code)}, ${one.durationMs} ms)\n${one.output}`);
+  writeFileSync(join(dir, "commands.log"), commands.join("\n\n"));
+  state.keptDir = dir;
+  notes.push(`The servers' logs and the commands' output are in ${dir}.`);
+}
+
 export async function tearDown(): Promise<string[]> {
   const notes: string[] = [];
   for (const server of state.servers) {
     if (server.running) await server.stop("SIGTERM");
   }
+  if (state.keepLogs) keepLogs(notes);
   if (state.keep) {
     notes.push(`Kept the database ${state.dbName} and ${state.tmp} (E2E_KEEP=1).`);
     return notes;

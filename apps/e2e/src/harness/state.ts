@@ -9,6 +9,11 @@ export interface State {
   live: boolean;
   keep: boolean;
   skipChecks: boolean;
+  // E2E_KEEP_LOGS=1: the servers' logs, the commands' output and the table are copied to a folder of results/.
+  keepLogs: boolean;
+  keptDir: string | undefined;
+  // E2E_ONLY=C-09,E2E-05: only these scenarios run, after the set-up.
+  only: string[];
   startedAt: Date;
   tmp: string;
   dbName: string;
@@ -32,6 +37,9 @@ export const state: State = {
   live: process.argv.includes("--live"),
   keep: process.env.E2E_KEEP === "1",
   skipChecks: process.env.E2E_SKIP_CHECKS === "1",
+  keepLogs: process.env.E2E_KEEP_LOGS === "1",
+  keptDir: undefined,
+  only: (process.env.E2E_ONLY ?? "").split(",").map((id) => id.trim()).filter(Boolean),
   startedAt: new Date(),
   tmp: "",
   dbName: "magic_events_e2e",

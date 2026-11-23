@@ -5,6 +5,7 @@ import { show } from "../harness/checks.ts";
 import { query } from "../harness/db.ts";
 import {
   addMonths,
+  brief,
   DECEMBER,
   distanceKm,
   hhmm,
@@ -139,8 +140,11 @@ export function registerPlanning(): void {
         "Hermanus Country Market sessions",
       );
     }
+    c.saw(`winter stay: 200, total ${result.total}; ${brief(festival)}; ${brief(sculpture)}; ${brief(market)}`);
     logs((lc) => {
       searchLogs(lc, call);
+      const line = mainServer().find((l) => l.requestId === call.requestId && l.msg === "Searched experiences");
+      lc.saw(`"Searched experiences" at info: count ${String(line?.count)}, total ${String(line?.total)}, ${String(line?.durationMs)} ms, userId ${String(line?.userId)}`);
     });
   });
 
@@ -152,6 +156,7 @@ export function registerPlanning(): void {
     const whales = await searchAll({ ...WINTER, tags: ["whales"] });
     c.ok(titled(whales, "Hermanus Whale Cruises boat-based whale watching").length === 1, "the whale cruises are there");
     for (const item of whales) c.ok(item.tags.includes("whales"), `"${item.title}" does not carry whales`);
+    c.saw(`category visual_arts: ${art.length} (${titles(art).join(", ")}); tag whales: ${whales.length}, every one tagged whales`);
   });
 
   scenario("E2E-03", "A family with young children", async ({ c }) => {
@@ -182,6 +187,7 @@ export function registerPlanning(): void {
     const electro = titled(adults, "Electro Dance - Sunset Beats to Late Night Bass")[0];
     // The night runs from 19:00 on the 16th to 01:00 on the 17th, which is one session starting on the 16th.
     if (electro) c.equal(electro.sessions.map((s) => s.startDate), ["2026-12-16"], "Electro DANCE sessions start");
+    c.saw(`12 to 31 Dec, family and minimum age up to 10: ${family.length} items, none for adults; minimum age 18 or more: ${adults.length} (${titles(adults).join(", ")})`);
   });
 
   scenario("E2E-04", "Only what can be booked now", async ({ c }) => {
@@ -191,6 +197,7 @@ export function registerPlanning(): void {
     }
     c.sameSet(titles(items), BOOKABLE_IN_WINTER, "the bookable experiences");
     absent(c, items, "Hermanus FynArts Festival", "as bookable");
+    c.saw(`winter stay, bookable true: ${items.length}, all confirmed, open and bookable (${titles(items).join(", ")})`);
   });
 
   scenario("E2E-05", "By the place's name", async ({ c, logs }) => {
@@ -212,6 +219,8 @@ export function registerPlanning(): void {
       c.ok(detail !== undefined, `${show(body)} has a detail on ${path}: ${show(error?.details)}`);
       if (names && detail) c.ok(names.test(detail.message), `the detail on location names it: "${detail.message}"`);
     }
+    const said = refused.map((call) => `${call.status} ${errorOf(call.json)?.details.map((d) => `${d.path}: ${d.message}`).join("; ") ?? ""}`);
+    c.saw(`by location: same ${all.length} items as E2E-01; cape-agulhas, both, neither: ${said.join(" | ")}`);
     logs((lc) => {
       for (const call of refused) {
         const line = mainServer().find((l) => l.requestId === call.requestId && l.msg === "Search refused");
@@ -257,6 +266,10 @@ export function registerPlanning(): void {
       const near = await searchAll({ ...horizon, radiusKm: 10 });
       c.ok(titled(near, stanford.title).length === 0, `"${stanford.title}" in Stanford is left out by a radius of 10`);
     }
+    c.saw(
+      `near the centre within 25 km: ${around.length} items, the same as by location; radius 201: ${tooFar.status} "${detail?.message ?? ""}"; ` +
+        `${placed.length} with a position, ${unplaced.length} at 0 km; "${stanford?.title ?? ""}" in Stanford at ${String(stanford?.distanceKm)} km, out at 10 km`,
+    );
   });
 
   scenario("E2E-07", "In the order the traveller would like", async ({ c, logs }) => {
@@ -279,6 +292,10 @@ export function registerPlanning(): void {
     const festival = titled(fynarts.result.items, "Hermanus FynArts Festival")[0];
     const festivalTier = festival === undefined ? [] : fynarts.result.items.filter((item) => tierOf(item) === tierOf(festival));
     c.equal(festivalTier[0]?.title, "Hermanus FynArts Festival", "the first of its tier for FynArts");
+    c.saw(
+      `"sculpture and art galleries…": total ${quiet.result.total}, first three of the tier ${show(titles(sameTier.slice(0, 3)))}, ${Math.round(tookMs)} ms; ` +
+        `"FynArts": first of its tier "${festivalTier[0]?.title ?? ""}", first overall "${fynarts.result.items[0]?.title ?? ""}"`,
+    );
     if (state.live) {
       c.note("The run with the embedding model unreachable is E2E-07 on the server without AWS_REGION, in the live run.");
     } else {
@@ -304,6 +321,7 @@ export function registerPlanning(): void {
     const together = pages.flatMap((page) => ids(page.items));
     c.equal(new Set(together).size, together.length, "no experience is on two pages");
     if (first) c.equal(together, ids(first.items), "together they are E2E-01's items in its order");
+    c.saw(`limit 10, offsets 0 to 30: totals ${pages.map((page) => page.total).join(", ")}, sizes ${pages.map((page) => page.items.length).join(", ")}, ${new Set(together).size} distinct, E2E-01's order`);
   });
 
   scenario("E2E-09", "The same answer for an AI agent over MCP", async ({ c, logs }) => {
@@ -338,6 +356,7 @@ export function registerPlanning(): void {
         c.ok(isDeepStrictEqual(answer.structuredContent, rest.result), `structuredContent equals the REST answer for ${show(body)}`);
       }
       remember("E2E-09 request", toolCalls[0]);
+      c.saw(`tools/list: ${tools.map((tool) => tool.name).join(", ")}; listChanged ${String(capabilities?.tools?.listChanged)}; ${bodies.length} search_experiences calls, each equal to its REST answer`);
       logs((lc) => {
         for (const requestId of toolCalls) {
           const lines = mainServer().lines().filter((line) => line.requestId === requestId);
@@ -347,6 +366,8 @@ export function registerPlanning(): void {
           const info = lines.find((line) => line.msg === "Tool called" && line.tool === "search_experiences");
           lc.ok(info?.level === LEVEL.info && info.arguments !== undefined, `the tool call is logged at info as "Tool called" with its arguments (${requestId})`);
         }
+        const first = mainServer().find((line) => line.requestId === toolCalls[0] && line.msg === "Tool called");
+        lc.saw(`"Tool called" at info: tool ${String(first?.tool)}, callerKind ${String(first?.callerKind)}, arguments ${show(first?.arguments, 120)}`);
       });
     } finally {
       await session.close();
@@ -375,6 +396,7 @@ export function registerPlanning(): void {
       c.ok(Boolean(show11.bookingUrl), "it has a booking link");
     }
     absent(c, await searchAll({ location: "hermanus", from: "2026-12-12", to: "2026-12-12" }), title, "on 12 December");
+    c.saw(`11 Dec: ${brief(show11)}, ${show11?.venue.name ?? ""}, R${String(show11?.price.min)}; 12 Dec: not returned`);
   });
 
   scenario("E2E-12", "Something that runs, only on its own dates", async ({ c }) => {
@@ -398,6 +420,7 @@ export function registerPlanning(): void {
       "Where the Wild Things Come to Rest: Carol Bryant Wildlife Sculpture Exhibition",
     );
     if (exhibition) c.equal(sessionDays(exhibition), ["2026-10-03..2027-03-31"], "the exhibition's session");
+    c.saw(`1 Dec to 10 Jan: ${brief(run)}; 7 to 10 Dec: ${brief(weekly)}; 1 to 7 Feb: ${brief(exhibition)}; not returned between their dates`);
   });
 
   scenario("E2E-13", "Something months away, known only by its month", async ({ c }) => {
@@ -414,6 +437,7 @@ export function registerPlanning(): void {
     absent(c, await searchAll({ location: "hermanus", from: "2027-09-01", to: "2027-09-05" }), title, "in September");
     const festival = titled(recall<{ items: Experience[] }>("E2E-01")?.items ?? [], "Hermanus FynArts Festival")[0];
     c.ok(festival?.sessions.every((s) => s.precision === "day") === true, "the FynArts Festival, whose days are announced, has day precision");
+    c.saw(`14 to 15 Aug 2027: ${brief(fees)}; 1 to 5 Sep: not returned`);
   });
 
   scenario("E2E-14", "A recurring market", async ({ c }) => {
@@ -442,6 +466,7 @@ export function registerPlanning(): void {
       "Hermanus Country Market Summer Night Markets",
       "in February",
     );
+    c.saw(`December stay: ${brief(market)}; ${brief(night)}; Mon to Fri: no Saturday market; February: no night market`);
   });
 
   scenario("E2E-15", "Seasons are tags, never experiences", async ({ c }) => {
@@ -465,6 +490,7 @@ export function registerPlanning(): void {
     const horizon = await searchAll({ location: "hermanus", from: today(), to: addMonths(today(), 24) });
     absent(c, horizon, "Southern Right Whales in Walker Bay", "as an experience");
     for (const one of seasons) absent(c, horizon, one.name, "as an experience: it is a season");
+    c.saw(`winter stay, tag whale-season: ${season.length} items; FynArts tags ${fynarts.join(", ")}; Christmas Eve Dinner tags ${dinner.join(", ")}; no season among ${horizon.length} experiences`);
   });
 
   scenario("E2E-16", "Planning 6 to 18 months ahead", async ({ c }) => {
@@ -493,6 +519,7 @@ export function registerPlanning(): void {
       if (item.bookable) c.ok(Boolean(item.bookingUrl ?? item.pageUrl), `"${item.title}" is bookable and has nowhere to book`);
     }
     c.note("Whether a source sells tickets now for a confirmed item that far ahead is checked by hand against the source.");
+    c.saw(`May 2028: ${brief(market)}; September 2027: ${brief(swallow)}; next editions: ${editions.map(([items, title]) => brief(titled(items, title)[0])).join("; ")}`);
   });
 
   scenario("E2E-17", "Nothing beyond what is known", async ({ c }) => {
@@ -509,6 +536,7 @@ export function registerPlanning(): void {
       c.ok(!generated.some((one) => one.title === item.title), `"${item.title}" has only a generated session ${from} to ${to}`);
     }
     c.note(`Searched ${from} to ${to}: ${items.length} items.`);
+    c.saw(`${from} to ${to}, past the 24 month horizon: ${items.length} items, none recurring`);
   });
 
   scenario("E2E-44", "The most premium comes first", async ({ c }) => {
@@ -550,6 +578,11 @@ export function registerPlanning(): void {
       const answer = await session.callTool("search_experiences", { ...stay, attributes: { tier: ["luxury", "premium"] }, limit: 100 });
       const rest = await search({ ...stay, attributes: { tier: ["luxury", "premium"] }, limit: 100 });
       c.ok(isDeepStrictEqual(answer.structuredContent, rest.result), "over MCP the luxury and premium answer is the same");
+      const plainAnswer = await searchAll(stay);
+      c.saw(
+        `20 to 30 Sep 2027: ${plainAnswer.length} items, first "${plainAnswer[0]?.title ?? ""}" (${show(plainAnswer[0]?.attributes.tier)}), tiers in order; ` +
+          `luxury and premium: ${premium.length}, no parkrun or market; REST and MCP equal`,
+      );
     } finally {
       await session.close();
     }

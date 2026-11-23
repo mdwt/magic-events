@@ -36,6 +36,7 @@ export function registerNothingChanged(): void {
   scenario("E2E-26", "Nothing changed, nothing reported", async ({ c, logs }) => {
     const { call, result } = await changes({ ...DECEMBER, since: since(c) });
     c.equal([result.items.length, result.total], [0, 0], "items and total");
+    c.saw(`December stay since T1: ${call.status}, ${result.items.length} items, total ${result.total}`);
     logs((lc) => {
       const lines = mainServer().lines().filter((line) => line.requestId === call.requestId);
       lc.ok(lines.some((line) => line.msg === "Finding changes" && line.level === LEVEL.debug), "the resolved changes query is logged at debug");
@@ -92,6 +93,10 @@ export function registerChanges(): void {
       for (const item of fresh) {
         c.ok(item.changes.some((change) => change.kind === "new"), `"${item.experience.title}" is not reported as new since before the load`);
       }
+      c.saw(
+        `1 Dec 2026 to 31 May 2027 since T1: ${items.length} items, ${items.map((item) => `${item.experience.title} (${item.change.kind})`).join(", ")}; ` +
+          `since before the load, December stay: ${fresh.length} items, each new`,
+      );
     }
   });
 
@@ -99,6 +104,7 @@ export function registerChanges(): void {
     const dropped = await searchAll({ location: "hermanus", from: "2027-01-30", to: "2027-01-30" });
     c.equal(titled(dropped, "Dancing Queen: The Ultimate ABBA Experience").length, 0, "search returns the cancelled show");
     const range = { location: "hermanus", from: "2026-12-01", to: "2027-09-30", since: since(c) };
+    const reported: string[] = [];
     for (const body of [range, { ...range, bookable: true }, { ...range, status: ["confirmed"] }]) {
       const items = await allChanges(body);
       const what = show(body);
@@ -110,17 +116,22 @@ export function registerChanges(): void {
         const last = item.experience.sessions.map((session) => session.endDate).sort().at(-1);
         c.ok(last === undefined || last >= today(), `${what}: "${item.experience.title}" is over`);
       }
+      reported.push(`${items.length} items, Dancing Queen ${dancing?.change.kind ?? "absent"}, Swallow Series ${swallow?.change.kind ?? "absent"}`);
     }
+    c.saw(`search 30 Jan 2027: Dancing Queen not returned; changes since T1, plain, bookable true, status confirmed: ${reported.join(" | ")}`);
   });
 
   scenario("E2E-29", "Moved out of the dates searched", async ({ c }) => {
     const title = "That ’80s Show";
+    const seen: string[] = [];
     for (const [from, to, movedOut] of [["2027-02-20", "2027-02-28", true], ["2027-03-01", "2027-03-10", false]] as const) {
       const items = await allChanges({ location: "hermanus", from, to, since: since(c) });
       const show80s = items.find((item) => item.experience.title === title);
       c.ok(show80s?.change.kind === "rescheduled", `${from} to ${to}: the 80s show is reported rescheduled (${show(show80s?.change)})`);
       c.equal(show80s?.movedOut, movedOut, `${from} to ${to}: movedOut`);
+      seen.push(`${from} to ${to}: ${show80s?.change.kind ?? "absent"}, movedOut ${String(show80s?.movedOut)}, sessions ${show80s ? show80s.experience.sessions.map((s) => s.startDate).join(", ") : ""}`);
     }
+    c.saw(`"${title}" since T1: ${seen.join(" | ")}`);
   });
 
   scenario("E2E-30", "Checking back through MCP", async ({ c, logs }) => {
@@ -142,6 +153,7 @@ export function registerChanges(): void {
       }
       c.equal(error.error?.code, "invalid_input", "the tool error's code");
       c.ok(error.error?.details?.some((detail) => detail.path === "since") === true, `its details name since: ${show(error.error?.details)}`);
+      c.saw(`get_experience_changes with E2E-27's arguments: ${String((answer.structuredContent as { total?: number } | undefined)?.total)} items, equal to REST; since an hour ahead: tool error ${String(error.error?.code)}, ${show(error.error?.details)}`);
       logs((lc) => {
         const lines = mainServer().lines().filter((line) => line.requestId === refused.call?.requestId);
         const line = lines.find((one) => one.msg === "Tool call refused");

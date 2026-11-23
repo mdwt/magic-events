@@ -90,10 +90,12 @@ export function registerSafety(): void {
     c.ok(isDeepStrictEqual(document.json, committedDocument), "the served /openapi.json equals the committed apps/api/openapi.json");
     const header = await send(main, { ...search, client: client("agency person"), apiKeyHeader: true });
     c.equal(header.status, 200, "the key in x-api-key");
+    c.saw(`no key, Bearer nonsense, "Token abc", "Bearer", /mcp and /v1/nothing-here without a key: 401 with WWW-Authenticate; /v1/nothing-here with a key: ${unknown.status}; /health: ${health.status} ${health.text}; /openapi.json: 401, then ${document.status} equal to the committed file; x-api-key: ${header.status}`);
   });
 
   scenario("E2E-38", "Wrong input gets a message that names the field", async ({ c }) => {
     const main = mainServer();
+    const said: string[] = [];
     for (const [what, body, path, says] of WRONG) {
       const call =
         typeof body === "string"
@@ -125,7 +127,9 @@ export function registerSafety(): void {
         named = false;
       }
       c.ok(named, `${what} over MCP names ${path}: ${(result?.text ?? "").slice(0, 200)}`);
+      said.push(`${path}: "${detail.message}"`);
     }
+    c.saw(`${WRONG.length} wrong inputs, each 400 invalid_input over REST and a tool error over MCP naming the field: ${said.join(" | ")}`);
   });
 
   scenario("E2E-39", "No system detail reaches a caller", async ({ c, logs }) => {
@@ -165,7 +169,12 @@ export function registerSafety(): void {
         30_000,
         500,
       );
-      for (const call of await asked(server)) c.equal(call.status, 200, `once the database is back ${call.method} ${call.path}`);
+      const again = await asked(server);
+      for (const call of again) c.equal(call.status, 200, `once the database is back ${call.method} ${call.path}`);
+      c.saw(
+        `database cut: ${down.map((call) => `${call.path} ${call.status} ${errorOf(call.json)?.code ?? ""} Retry-After ${call.headers.get("retry-after") ?? "none"}`).join(", ")}; ` +
+          `every operation 503; database back: ${again.map((call) => call.status).join(", ")}`,
+      );
       logs((lc) => {
         for (const call of down) {
           const lines = linesOf(call.server, call.requestId ?? "");
@@ -181,9 +190,11 @@ export function registerSafety(): void {
 
   scenario("E2E-40", "Rate limits stop a runaway client", async ({ c, logs }) => {
     const limited = await startServer("rate-limited", { API_RATE_LIMIT_MAX: "5" });
+    const addressStatuses: number[] = [];
     try {
       const sent: Call[] = [];
       for (let index = 0; index < 6; index += 1) sent.push(await send(limited, { path: "/health" }));
+      addressStatuses.push(...sent.map((call) => call.status));
       const sixth = sent[5];
       c.ok(sixth?.status === 429 && errorOf(sixth.json)?.code === "rate_limited", `the sixth request from the address is ${String(sixth?.status)}`);
       c.ok(sixth?.headers.get("retry-after") !== null, "the 429 has Retry-After");
@@ -210,6 +221,7 @@ export function registerSafety(): void {
     c.equal((await send(mainServer(), { path: "/v1/experiences/search", client: client("agency person"), body: WINTER })).status, 200, "another key");
     const throttled = calls.filter((call) => call.server === mainServer() && call.status === 429 && call.client !== low);
     c.equal(throttled.map((call) => `${call.scenario} ${call.path}`), [], "requests limited with the default limits");
+    c.saw(`API_RATE_LIMIT_MAX=5: requests 1 to 6 from one address ${addressStatuses.join(", ")}; a key issued with a limit of 5: searches ${searches.map((call) => call.status).join(", ")}, Retry-After ${sixth?.headers.get("retry-after") ?? "none"}; another key 200; no 429 with the defaults`);
     logs((lc) => {
       const line = sixth?.requestId ? mainServer().find((one) => one.requestId === sixth.requestId && one.msg === "API key over its rate limit") : undefined;
       lc.ok(line?.level === LEVEL.warn, "the key over its limit is logged at warn");
@@ -253,6 +265,11 @@ export function registerSafety(): void {
       const found = secretsIn(server.text(), [...state.keys]);
       c.equal(found, [], `keys in ${server.name}'s log`);
     }
+    const closing = traced?.requestId ? linesOf(main, traced.requestId).find((line) => line.msg === "Request completed") : undefined;
+    c.saw(
+      `E2E-01's request ${String(traced?.requestId)}: "Request completed" ${String(closing?.statusCode)} in ${String(closing?.durationMs)} ms, tenantId ${String(closing?.tenantId)}, userId ${String(closing?.userId)}, ` +
+        `callerKind ${String(closing?.callerKind)}, credentialId ${String(closing?.credentialId)}; ${state.keys.size} keys searched for in ${state.servers.length} logs: none found`,
+    );
   });
 
 }
@@ -269,6 +286,8 @@ export function registerSweep(): void {
       const error = errorOf(call.json);
       if (call.status === 500) c.ok(error?.details.length === 0, `${call.scenario}: a 500 gives only the general message`);
     }
+    const errors = calls.filter((call) => call.status >= 400).length;
+    c.saw(`${calls.length} answers of the run, ${errors} of them errors: none holds a stack trace, SQL, a table, a path, a library or a provider`);
     return Promise.resolve();
   });
 }

@@ -118,6 +118,15 @@ export function ids(items: { id: string }[]): string[] {
   return items.map((item) => item.id);
 }
 
+// An experience in a few words, for the evidence of a scenario.
+export function brief(item: Experience | undefined): string {
+  if (item === undefined) return "not returned";
+  const days = item.sessions.map((s) =>
+    `${s.startDate === s.endDate ? s.startDate : `${s.startDate}..${s.endDate}`}${s.precision === "day" ? "" : ` (${s.precision})`}${s.startTime ? ` ${s.startTime.slice(0, 5)}` : ""}`,
+  );
+  return `"${item.title}" ${item.status}, booking ${item.booking}${item.bookable ? ", bookable" : ""}, ${days.join(", ")}`;
+}
+
 export function hhmm(time: string | null): string | null {
   return time === null ? null : time.slice(0, 5);
 }

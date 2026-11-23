@@ -16,6 +16,7 @@ export interface Row {
   logs: "pass" | "fail" | "";
   seen: string[];
   notes: string[];
+  evidence: string[];
 }
 
 export const rows = new Map<string, Row>();
@@ -29,9 +30,13 @@ export interface Scenario {
 function row(id: string, title: string): Row {
   const existing = rows.get(id);
   if (existing !== undefined) return existing;
-  const created: Row = { id, title, result: "not run", logs: "", seen: [], notes: [] };
+  const created: Row = { id, title, result: "not run", logs: "", seen: [], notes: [], evidence: [] };
   rows.set(id, created);
   return created;
+}
+
+function selected(id: string): boolean {
+  return state.only.length === 0 || id === "SETUP" || state.only.includes(id);
 }
 
 function combine(current: Outcome, next: Outcome): Outcome {
@@ -51,6 +56,10 @@ export function scenario(
   run: (s: Scenario) => Promise<void>,
   options: { live?: boolean; needsSetup?: boolean } = {},
 ): void {
+  if (!selected(id)) {
+    test(`${id} ${title}`, { skip: "not in E2E_ONLY" }, () => undefined);
+    return;
+  }
   const record = row(id, title);
   if (options.live === true && !state.live) {
     record.result = combine(record.result, "live");
@@ -75,6 +84,7 @@ export function scenario(
     record.result = combine(record.result, c.passed ? "pass" : "fail");
     record.seen.push(...c.problems);
     record.notes.push(...c.notes);
+    record.evidence.push(...c.evidence);
     if (!c.passed) throw new Error(c.problems.join("\n"));
   });
 
@@ -94,12 +104,14 @@ export function scenario(
     const before = record.logs;
     record.logs = before === "fail" || !c.passed ? "fail" : "pass";
     record.seen.push(...c.problems.map((problem) => `log: ${problem}`));
+    record.evidence.push(...c.evidence.map((line) => `log: ${line}`));
     if (!c.passed) throw new Error(c.problems.join("\n"));
   });
 }
 
 // A scenario that cannot run yet, with the reason.
 export function skipped(id: string, title: string, reason: string): void {
+  if (!selected(id)) return;
   const record = row(id, title);
   record.result = combine(record.result, "skipped");
   record.notes.push(reason);
@@ -108,6 +120,7 @@ export function skipped(id: string, title: string, reason: string): void {
 
 // A scenario that needs a person or a live service the suite cannot stand in for.
 export function byHand(id: string, title: string, what: string): void {
+  if (!selected(id)) return;
   const record = row(id, title);
   record.result = combine(record.result, "by hand");
   record.notes.push(what);

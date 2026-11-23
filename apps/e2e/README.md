@@ -28,11 +28,14 @@ Needs Postgres up on port 5434 (`pnpm db:up`), `psql` on the path, and an instal
    its schema, and starts extra servers for the rate limits and for a database that goes away (a TCP proxy in front of
    Postgres, so no other database is touched). E2E-19 runs on a scratch database whose one active source is at a
    closed local port, and C-09 restores the snapshot into another, once `packages/db/snapshot/hermanus.sql.gz` exists.
-6. Stops the servers, drops its database, removes its files, and writes the results table to `results/latest.md`.
+6. Stops the servers, drops its database, removes its files, and writes the results table to `results/latest.md`, with
+   one line of evidence per scenario: what was asked and what came back.
 
 | Variable | Does |
 | --- | --- |
 | `E2E_KEEP=1` | Keeps the database and the temporary folder with the logs, to look into a failure |
 | `E2E_SKIP_CHECKS=1` | Leaves out C-02 and C-03, the workspace's type checks, lint, build and tests, which take longest |
+| `E2E_KEEP_LOGS=1` | Copies every server's log, every command's output and the table to `results/<the run's start>/`, to quote as evidence |
+| `E2E_ONLY=C-09,E2E-05` | Runs the set-up, then only the scenarios named |
 
 The run exits non-zero when any scenario or its log check failed. It is not part of `pnpm test` or CI.
