@@ -1,20 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { after, before, describe, test } from "node:test";
-import {
-  apikey,
-  attribute,
-  attributeOption,
-  experience,
-  location,
-  season,
-  seasonPeriod,
-  source,
-  tag,
-  tenant,
-  user,
-} from "@magic-events/db";
-import { eq } from "drizzle-orm";
+import { attribute, attributeOption, experience, tag, user } from "@magic-events/db";
+import { eq, sql } from "drizzle-orm";
 import type { SearchExperiencesInput } from "@magic-events/core/catalogue/ports.ts";
 import { seedDefaults, seedSamples, type DefaultsSeeded } from "../src/seed/seed.ts";
 import { createHarness, type Harness } from "@magic-events/core/testing/harness.ts";
@@ -22,14 +10,19 @@ import { createHarness, type Harness } from "@magic-events/core/testing/harness.
 let harness: Harness;
 let first: DefaultsSeeded;
 let second: DefaultsSeeded;
-let countsAfterFirst: Record<string, number>;
-let countsAfterSecond: Record<string, number>;
+let rowsAfterFirst: Record<string, string[]>;
+let rowsAfterSecond: Record<string, string[]>;
 
-const TABLES = { location, attribute, attributeOption, tag, season, seasonPeriod, source, tenant, user, apikey };
-
-async function countRows(): Promise<Record<string, number>> {
-  const result: Record<string, number> = {};
-  for (const [name, table] of Object.entries(TABLES)) result[name] = await harness.db.$count(table);
+// Every row of every table, whole, each as JSON and in a fixed order.
+async function everyRow(): Promise<Record<string, string[]>> {
+  const tables = await harness.db.execute<{ tablename: string }>(
+    sql`select tablename from pg_tables where schemaname = 'public' order by tablename`,
+  );
+  const result: Record<string, string[]> = {};
+  for (const { tablename } of tables) {
+    const rows = await harness.db.execute(sql`select * from ${sql.identifier(tablename)}`);
+    result[tablename] = rows.map((row) => JSON.stringify(row)).sort();
+  }
   return result;
 }
 
@@ -82,9 +75,9 @@ const documentedTags = table("| Usually with | Tags |").flatMap(([, list = ""]) 
 before(async () => {
   harness = await createHarness();
   first = await seedDefaults(harness.services);
-  countsAfterFirst = await countRows();
+  rowsAfterFirst = await everyRow();
   second = await seedDefaults(harness.services);
-  countsAfterSecond = await countRows();
+  rowsAfterSecond = await everyRow();
 });
 
 after(async () => {
@@ -92,12 +85,15 @@ after(async () => {
 });
 
 describe("seedDefaults", () => {
-  test("a second run leaves the same rows", () => {
-    assert.deepEqual(countsAfterSecond, countsAfterFirst);
-    assert.equal(countsAfterFirst.location, 1);
-    assert.equal(countsAfterFirst.tenant, 2);
-    assert.equal(countsAfterFirst.user, 3);
-    assert.equal(countsAfterFirst.apikey, 5);
+  test("a second run changes no row of any table, IDs and timestamps included", () => {
+    assert.deepEqual(rowsAfterSecond, rowsAfterFirst);
+    assert.equal(rowsAfterFirst.location?.length, 1);
+    assert.equal(rowsAfterFirst.tenant?.length, 2);
+    assert.equal(rowsAfterFirst.user?.length, 3);
+    assert.equal(rowsAfterFirst.apikey?.length, 5);
+    for (const table of ["attribute", "attribute_option", "tag", "season", "season_period", "source"]) {
+      assert.ok((rowsAfterFirst[table]?.length ?? 0) > 0, `the seed wrote no ${table}`);
+    }
   });
 
   test("a second run issues no new key", () => {
