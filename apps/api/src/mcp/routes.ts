@@ -11,6 +11,7 @@ import {
   methodNotAllowedResponse,
   notAcceptableResponse,
 } from "../rest/errors.ts";
+import { callerOf } from "../rest/auth.ts";
 import { createMcpServer } from "./server.ts";
 
 // The MCP endpoint: Streamable HTTP, stateless. Every POST gets a fresh server and transport, answered as JSON.
@@ -137,7 +138,7 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
     },
     async (request, reply) => {
       const server = createMcpServer(
-        { caller: request.caller, identity, logger: request.log, requestId: request.id, isUnavailable },
+        { caller: callerOf(request), identity, logger: request.log, requestId: request.id, isUnavailable },
         catalogue,
       );
       const transport = new WebStandardStreamableHTTPServerTransport({

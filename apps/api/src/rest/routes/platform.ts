@@ -17,7 +17,6 @@ export const platformRoutes: FastifyPluginAsyncZod<{ checkDatabase: () => Promis
           "Whether the service is up and can reach its database. Needs no API key. Answers 503 with Retry-After while " +
           "the database cannot be reached.",
         tags: ["Platform"],
-        security: [],
         querystring: z.strictObject({}),
         response: {
           200: z.object({ status: z.literal("ok") }).describe("The service is up."),

@@ -33,18 +33,24 @@ export function addCallerToLogContext(request: FastifyRequest, caller: Caller): 
   });
 }
 
+// The address as logged. A key is never read from the address, but a client may still put one there, so anything that
+// looks like a key, by its prefix, is replaced before the address reaches the logs.
+export function loggedUrl(url: string): string {
+  return url.replace(/mev_[^&#/]*/g, "mev_[redacted]");
+}
+
 // Fastify's request lines: started at debug, completed at info with the status and duration. Both run outside the
 // request's async context, so they add the log context themselves.
 export class RequestLogController extends LogController {
   override incomingRequest(request: FastifyRequest): void {
-    request.log.debug({ ...contextOf(request), method: request.method, url: request.url }, "Request started");
+    request.log.debug({ ...contextOf(request), method: request.method, url: loggedUrl(request.url) }, "Request started");
   }
 
   override requestCompleted(error: Error | null | undefined, request: FastifyRequest, reply: FastifyReply): void {
     const fields = {
       ...contextOf(request),
       method: request.method,
-      url: request.url,
+      url: loggedUrl(request.url),
       statusCode: reply.statusCode,
       durationMs: Math.round(reply.elapsedTime),
     };

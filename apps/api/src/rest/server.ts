@@ -14,7 +14,13 @@ import type { Identity } from "@magic-events/core/identity/ports.ts";
 import { AppError } from "@magic-events/core/shared/errors.ts";
 import type { ApiSettings } from "@magic-events/core/shared/settings.ts";
 import { mcpRoutes } from "../mcp/routes.ts";
-import { addAuthenticationHook, requireActionOnEveryRoute } from "./auth.ts";
+import {
+  addAuthenticationHook,
+  API_KEY_SECURITY,
+  credentialOf,
+  documentAuthentication,
+  requireActionOnEveryRoute,
+} from "./auth.ts";
 import { errorBody, MESSAGES, toErrorReply } from "./errors.ts";
 import "./fastify-types.ts";
 import { addLogContextHooks, RequestLogController, requestId } from "./logging.ts";
@@ -51,7 +57,11 @@ function sendError(
       "Request refused",
     );
   }
-  if (answer.status === 401) reply.header("www-authenticate", 'Bearer realm="magic-events"');
+  // RFC 6750: a request that sent a key is told the key is not valid; one that sent none gets the challenge alone.
+  if (answer.status === 401) {
+    const challenge = credentialOf(request) === undefined ? "" : ', error="invalid_token"';
+    reply.header("www-authenticate", `Bearer realm="magic-events"${challenge}`);
+  }
   if (answer.retryAfterSeconds !== undefined) reply.header("retry-after", String(answer.retryAfterSeconds));
   return reply.code(answer.status).type("application/json").send(errorBody(answer, request.id));
 }
@@ -140,21 +150,35 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
         version: "1.0.0",
         description:
           "What is on in a place while a traveller is there: festivals, concerts, matches, markets, shows, " +
-          "exhibitions and seasons. Every endpoint but /health needs an API key.",
+          "exhibitions and seasons. Every endpoint but /health needs an API key, sent on every request as " +
+          "Authorization: Bearer <key> or as x-api-key: <key>.",
       },
       components: {
         securitySchemes: {
           bearer: {
             type: "http",
             scheme: "bearer",
-            description: "The API key, as: Authorization: Bearer <key>.",
+            bearerFormat: "API key",
+            description:
+              "An API key, sent on every request as Authorization: Bearer <key>. A key starts with mev_. The " +
+              "operator issues it with pnpm cli:admin key issue and shows it once, so ask them for one.",
           },
-          apiKeyHeader: { type: "apiKey", in: "header", name: "x-api-key", description: "The API key, as: x-api-key: <key>." },
+          apiKeyHeader: {
+            type: "apiKey",
+            in: "header",
+            name: "x-api-key",
+            description:
+              "The same API key, sent on every request as x-api-key: <key> instead. A key starts with mev_, and the " +
+              "operator issues it with pnpm cli:admin key issue. When both headers are sent, Authorization is the " +
+              "one read.",
+          },
         },
       },
-      security: [{ bearer: [] }, { apiKeyHeader: [] }],
+      security: API_KEY_SECURITY,
     },
-    transform: jsonSchemaTransform,
+    // Each operation states its own security and its 401 and 403, from the route's config.
+    transform: (input) =>
+      jsonSchemaTransform({ ...input, schema: documentAuthentication(input.schema, input.route.config) }),
   });
 
   app.setErrorHandler((error, request, reply) => sendError(error, request, reply, deps.isUnavailable));

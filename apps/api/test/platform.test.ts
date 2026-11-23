@@ -60,7 +60,7 @@ describe("authentication", () => {
       for (const headers of [{}, bearer("mev_wrong"), { "x-api-key": "mev_wrong" }, { authorization: "Basic abc" }]) {
         const response = await harness.app.inject({ ...route, headers });
         assert.equal(response.statusCode, 401);
-        assert.equal(response.headers["www-authenticate"], 'Bearer realm="magic-events"');
+        assert.match(String(response.headers["www-authenticate"]), /^Bearer realm="magic-events"/);
         const error = errorOf(response);
         assert.equal(error.code, "unauthenticated");
         assert.deepEqual(error.details, []);
@@ -367,12 +367,15 @@ describe("the OpenAPI document", () => {
     }>();
 
     assert.match(document.openapi, /^3\.1/);
-    assert.deepEqual(document.components.securitySchemes.bearer, {
-      type: "http",
-      scheme: "bearer",
-      description: "The API key, as: Authorization: Bearer <key>.",
-    });
+    assert.equal(document.components.securitySchemes.bearer?.type, "http");
+    assert.equal(document.components.securitySchemes.bearer.scheme, "bearer");
+    assert.equal(document.components.securitySchemes.apiKeyHeader?.type, "apiKey");
     assert.deepEqual(document.security, [{ bearer: [] }, { apiKeyHeader: [] }]);
+    for (const path of ["/openapi.json", "/mcp", "/v1/experiences/search", "/v1/experiences/changes"]) {
+      for (const operation of Object.values(document.paths[path] ?? {})) {
+        assert.deepEqual(operation.security, [{ bearer: [] }, { apiKeyHeader: [] }], path);
+      }
+    }
 
     const expected = {
       "/health": ["get"],

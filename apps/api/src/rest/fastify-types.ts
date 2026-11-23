@@ -3,9 +3,9 @@ import type { Action, Caller } from "@magic-events/core/identity/ports.ts";
 // What the server adds to Fastify's own types.
 declare module "fastify" {
   interface FastifyRequest {
-    // Who is calling. The authentication hook sets it before any handler runs, so every handler can rely on it.
-    // A public route has no caller.
-    caller: Caller;
+    // Who is calling. The authentication hook sets it before any handler runs on a route that is not public; a public
+    // route has none. A handler reads it with callerOf.
+    caller: Caller | null;
   }
 
   interface FastifyContextConfig {

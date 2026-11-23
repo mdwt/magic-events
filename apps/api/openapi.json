@@ -3,20 +3,21 @@
   "info": {
     "title": "magic-events",
     "version": "1.0.0",
-    "description": "What is on in a place while a traveller is there: festivals, concerts, matches, markets, shows, exhibitions and seasons. Every endpoint but /health needs an API key."
+    "description": "What is on in a place while a traveller is there: festivals, concerts, matches, markets, shows, exhibitions and seasons. Every endpoint but /health needs an API key, sent on every request as Authorization: Bearer <key> or as x-api-key: <key>."
   },
   "components": {
     "securitySchemes": {
       "bearer": {
         "type": "http",
         "scheme": "bearer",
-        "description": "The API key, as: Authorization: Bearer <key>."
+        "bearerFormat": "API key",
+        "description": "An API key, sent on every request as Authorization: Bearer <key>. A key starts with mev_. The operator issues it with pnpm cli:admin key issue and shows it once, so ask them for one."
       },
       "apiKeyHeader": {
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "The API key, as: x-api-key: <key>."
+        "description": "The same API key, sent on every request as x-api-key: <key> instead. A key starts with mev_, and the operator issues it with pnpm cli:admin key issue. When both headers are sent, Authorization is the one read."
       }
     },
     "schemas": {}
@@ -322,6 +323,14 @@
           "Platform"
         ],
         "description": "This API's OpenAPI document.",
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "apiKeyHeader": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "The OpenAPI 3.1 document.",
@@ -800,6 +809,14 @@
           },
           "description": "A JSON-RPC message, or a batch."
         },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "apiKeyHeader": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "The JSON-RPC answer.",
@@ -1454,6 +1471,14 @@
           "MCP"
         ],
         "description": "Not offered: this MCP endpoint is stateless and has no event stream or session to end.",
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "apiKeyHeader": []
+          }
+        ],
         "responses": {
           "400": {
             "description": "Some of the request needs changing. Each detail names a field and says what to give.",
@@ -1912,6 +1937,14 @@
           "MCP"
         ],
         "description": "Not offered: this MCP endpoint is stateless and has no event stream or session to end.",
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "apiKeyHeader": []
+          }
+        ],
         "responses": {
           "400": {
             "description": "Some of the request needs changing. Each detail names a field and says what to give.",
@@ -2532,6 +2565,14 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "apiKeyHeader": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "The experiences that are on near the place during the dates and pass every filter.",
@@ -3629,6 +3670,14 @@
             }
           }
         },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "apiKeyHeader": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "The experiences that changed since the time given, among those the search parameters select.",
