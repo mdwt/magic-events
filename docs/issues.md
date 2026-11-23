@@ -42,8 +42,8 @@ built where it needed building.
 | # | Issue | Area | How it was closed |
 | --- | --- | --- | --- |
 | 1 | The Docker engine was down, and port 5432 belongs to another project | Environment | The project has its own Postgres on port 5434, on the `pgvector/pgvector:pg18` image, under the compose project name `magic-events`. The main checkout's `.env` still points at 5432 and needs the same change after the merge |
-| 2 | Which table holds the tenant | Organizations | Our own `tenant` table. Better Auth's organization plugin is not used. There is no sign-up: the seed creates the tenants, their users on Better Auth's `user` table with `tenant_id` and `role`, and their API keys |
-| 3 | Who an agent's credential belongs to | Identity | A user. Every credential is an API key that belongs to one user, and the key records whether a person or an agent uses it |
+| 2 | Which table holds the tenant | Organizations | Our own `tenant` table. Better Auth's organization plugin is not used. There is no sign-up: the seed creates the tenants, their users on Better Auth's `user` table with `tenant_id` and `role`, and their API keys. A system admin can also create a tenant and add its users through the API |
+| 3 | Who an agent's credential belongs to | Identity | A user. Every credential is an API key that belongs to one user, and the key records whether a person or an agent uses it. A system admin issues and revokes keys through the API |
 | 4 | MCP sign-in with OAuth | Identity | No OAuth in version 1. MCP authenticates with an API key, like REST |
 | 5 | An experience with no position of its own | Catalogue | It is searched from its location's centre |
 | 6 | Search cannot check attribute filters against the definitions | Catalogue | Catalogue calls Data processing's service for the attribute definitions. A key that is no attribute, an attribute that cannot be filtered on, a value that is none of its options or a value of the wrong type is refused, and the error lists what can be used |
@@ -62,7 +62,7 @@ built where it needed building.
 | 19 | Does a location need a radius | Discovery | No. Extraction keeps experiences in the location and in neighbouring towns within about half an hour by road |
 | 20 | Recurring experiences with no feed | Discovery | They come in from the organisers' own pages and from pages a browser scrape captures. A research source is for phase 2 |
 | 21 | Quicket never makes a complete run | Discovery | Closed with 28. Quicket comes in as web pages, whose runs are complete |
-| 23 | A web page's fingerprint changes on every fetch | Discovery | As built: the fingerprint is taken from the page's visible text and its structured data |
+| 23 | A web page's fingerprint changes on every fetch | Discovery | As built: the fingerprint is taken from the page's visible text and its structured data. It does not hold for every site: see 49 |
 | 24 | A range filter leaves out experiences that have no value | Catalogue | A range with only a max also matches an experience with no value, so `minimum_age: { max: 12 }` finds it. A range with a min matches a recorded value only |
 | 26 | A key's rate limit is fixed when the key is issued | Identity | Left as it is. The limit is a default, 10000 requests a minute, and is not a blocker |
 | 27 | Seed values the documents do not give | Seed | As seeded. They are rows in `apps/api/src/seed/data/` and can be changed and seeded again |
