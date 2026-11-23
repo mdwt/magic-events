@@ -3,6 +3,7 @@ import { and, asc, count, desc, eq, gt, gte, inArray, lt, lte, ne, sql } from "d
 import { alias } from "drizzle-orm/pg-core";
 import type { DiscoveryRepository, LastRun, ListingVersion, Source } from "../../discovery/ports.ts";
 import type { DomainEvent, DomainEventType } from "../../shared/domain-events.ts";
+import { differsFromStored } from "./upsert.ts";
 
 type SourceRow = typeof source.$inferSelect;
 
@@ -86,14 +87,36 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
         maxProcessingAttempts: input.maxProcessingAttempts,
         active: input.active,
       };
-      // The sync state is the adapter's, kept between runs, so saving a source never touches it.
+      // The sync state is the adapter's, kept between runs, so saving a source never touches it. A source saved
+      // as it is stored is left as it is, updated_at too.
       const [row] = await db
         .insert(source)
         .values({ name: input.name, locationId: input.locationId, ...fields })
-        .onConflictDoUpdate({ target: [source.name, source.locationId], set: { ...fields, updatedAt: sql`now()` } })
+        .onConflictDoUpdate({
+          target: [source.name, source.locationId],
+          set: { ...fields, updatedAt: sql`now()` },
+          setWhere: differsFromStored([
+            source.kind,
+            source.settings,
+            source.credentialsSetting,
+            source.priority,
+            source.fetchIntervalHours,
+            source.missedRunsBeforeRemoval,
+            source.maxProcessingAttempts,
+            source.active,
+          ]),
+        })
         .returning();
-      if (!row) throw new Error("Saving the source returned no row");
-      return toSource(row);
+      const saved =
+        row ??
+        (
+          await db
+            .select()
+            .from(source)
+            .where(and(eq(source.name, input.name), eq(source.locationId, input.locationId)))
+        )[0];
+      if (!saved) throw new Error("Saving the source returned no row");
+      return toSource(saved);
     },
 
     async listSources() {
