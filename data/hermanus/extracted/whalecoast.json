@@ -23,6 +23,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -58,6 +59,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -97,6 +99,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -129,6 +132,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -162,6 +166,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts"
       ],
@@ -195,6 +200,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "nature_and_wildlife"
@@ -230,6 +236,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "performing_arts",
         "holidays_and_celebrations",
@@ -269,6 +276,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -302,6 +310,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "business_and_professional"
       ],
@@ -337,6 +346,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [],
       "scale": "local"
     },
@@ -366,6 +376,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -398,6 +409,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -439,6 +451,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -474,6 +487,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -507,6 +521,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -541,6 +556,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -576,6 +592,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts"
       ],
@@ -611,6 +628,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -645,6 +663,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "music"
       ],
@@ -681,6 +700,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -713,6 +733,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "visual_arts"
@@ -746,6 +767,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "wellness"
       ],
@@ -780,6 +802,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -814,6 +837,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [],
       "setting": "outdoor",
       "scale": "local"
@@ -844,6 +868,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -877,6 +902,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts"
       ],
@@ -914,6 +940,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -948,6 +975,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -980,6 +1008,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -1013,6 +1042,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -1046,6 +1076,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -1081,6 +1112,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts"
       ],
@@ -1117,6 +1149,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [],
       "scale": "local"
     },
@@ -1146,6 +1179,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [],
       "format": "party",
       "scale": "local"
@@ -1176,6 +1210,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [],
       "setting": "outdoor",
       "scale": "local"
@@ -1206,6 +1241,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts"
       ],
@@ -1241,6 +1277,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -1276,6 +1313,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1317,6 +1355,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "performing_arts"
       ],
@@ -1352,6 +1391,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1387,6 +1427,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -1419,6 +1460,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1453,6 +1495,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -1488,6 +1531,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [],
       "format": "party",
       "audience": "adults",
@@ -1519,6 +1563,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "music",
         "faith_and_spirituality",
@@ -1556,6 +1601,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "visual_arts"
@@ -1586,6 +1632,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ]
@@ -1614,6 +1661,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -1645,6 +1693,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ]
@@ -1675,6 +1724,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1705,6 +1755,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -1736,6 +1787,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes"
       ],
@@ -1766,6 +1818,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": []
     },
     "tags": [],
@@ -1792,6 +1845,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport"
       ],
@@ -1824,6 +1878,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport"
       ],
@@ -1855,6 +1910,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1890,6 +1946,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1925,6 +1982,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1960,6 +2018,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1993,6 +2052,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -2023,6 +2083,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -2062,6 +2123,7 @@
       "Hermanus"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -2106,6 +2168,7 @@
       "Stanford"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -2149,6 +2212,7 @@
       "Stanford"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "music"
