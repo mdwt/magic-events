@@ -1,24 +1,70 @@
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, test } from "node:test";
-import { source } from "@magic-events/db";
-import { eq } from "drizzle-orm";
-import type { SaveSourceInput } from "../src/core/discovery/ports.ts";
+import { events, listing, rawListing, run, source } from "@magic-events/db";
+import { asc, eq, sql } from "drizzle-orm";
+import { createDiscoveryRepository } from "../src/adapters/storage/discovery-repository.ts";
+import { createTransactionalDb } from "../src/adapters/storage/transactions.ts";
+import type {
+  ClaimedRawListing,
+  Discovery,
+  FetchedListing,
+  FetchResult,
+  SaveSourceInput,
+  SourceFetcher,
+} from "../src/core/discovery/ports.ts";
+import { DiscoveryService } from "../src/core/discovery/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
-import { createHarness, type Harness } from "./helpers/harness.ts";
+import type { Logger } from "../src/core/shared/logger.ts";
+import type { Transactions } from "../src/core/shared/transactions.ts";
+import { createHarness, testSettings, type Harness } from "./helpers/harness.ts";
 
-// Saving sources against the database, through the Discovery service.
+// Discovery against the database: sources, runs, listings and raw listings, the hand-off to Data processing,
+// and the domain events. The adapters are fakes and the clock is the test's.
+
+const silent: Logger = { debug: () => {}, info: () => {}, warn: () => {}, error: () => {}, child: () => silent };
+
+// What each fake adapter returns next.
+const next: Record<string, () => Promise<FetchResult>> = {};
+function fakeFetcher(kind: string): SourceFetcher {
+  return {
+    kind,
+    fetch: () => (next[kind] ?? (() => Promise.resolve({ listings: [], complete: true, syncState: {} })))(),
+  };
+}
+function returns(kind: string, listings: FetchedListing[], complete = true, syncState: Record<string, unknown> = {}) {
+  next[kind] = () => Promise.resolve({ listings, complete, syncState });
+}
+function page(id: string, content: string): FetchedListing {
+  return { sourceListingId: id, url: `https://example.com/${id}`, contentType: "text/html", content };
+}
+
+let now = new Date("2026-11-23T08:00:00Z");
+const clock = () => now;
+function later(hours: number) {
+  now = new Date(now.getTime() + hours * 60 * 60 * 1000);
+}
 
 let harness: Harness;
+// Discovery wired with the Transactions it shares its database handle with, as Data processing uses it.
+let discovery: Discovery;
+let transactions: Transactions;
 
-const quicket: SaveSourceInput = {
-  name: "Quicket",
-  kind: "quicket",
-  locationSlug: "hermanus",
-  credentialsSetting: "QUICKET_API_KEY",
-};
+const pages: SaveSourceInput = { name: "Organiser pages", kind: "web_page", locationSlug: "hermanus", priority: 10 };
 
 before(async () => {
-  harness = await createHarness();
+  const fetchers = [fakeFetcher("web_page"), fakeFetcher("rss_feed")];
+  harness = await createHarness({ fetchers, clock });
+  const wired = createTransactionalDb(harness.db);
+  transactions = wired.transactions;
+  const url = process.env.TEST_DATABASE_URL ?? "";
+  discovery = new DiscoveryService({
+    repository: createDiscoveryRepository(wired.db),
+    catalogue: harness.services.catalogue,
+    fetchers,
+    settings: testSettings(url).discovery,
+    logger: silent,
+    clock,
+  });
 });
 
 after(async () => {
@@ -26,24 +72,47 @@ after(async () => {
 });
 
 beforeEach(async () => {
-  await harness.db.delete(source);
-  for (const [slug, latitude, longitude] of [
-    ["hermanus", -34.4187, 19.2345],
-    ["stanford", -34.4416, 19.4589],
-  ] as const) {
-    await harness.services.catalogue.saveLocation({
-      name: slug,
-      slug,
-      country: "South Africa",
-      region: "Western Cape",
-      timezone: "Africa/Johannesburg",
-      latitude,
-      longitude,
-    });
-  }
+  await harness.db.execute(sql`truncate table ${events}, ${rawListing}, ${listing}, ${run}, ${source} cascade`);
+  for (const kind of Object.keys(next)) Reflect.deleteProperty(next, kind);
+  now = new Date("2026-11-23T08:00:00Z");
+  await harness.services.catalogue.saveLocation({
+    name: "Hermanus",
+    slug: "hermanus",
+    country: "South Africa",
+    region: "Western Cape",
+    timezone: "Africa/Johannesburg",
+    latitude: -34.4187,
+    longitude: 19.2345,
+  });
 });
 
+async function eventsOf(type: string) {
+  return harness.db.select().from(events).where(eq(events.type, type)).orderBy(asc(events.recordedAt));
+}
+
+async function rawListingsOf(sourceListingId: string) {
+  return harness.db
+    .select({ raw: rawListing })
+    .from(rawListing)
+    .innerJoin(listing, eq(listing.id, rawListing.listingId))
+    .where(eq(listing.sourceListingId, sourceListingId))
+    .orderBy(asc(rawListing.fetchedAt))
+    .then((rows) => rows.map((row) => row.raw));
+}
+
+// Claims in a transaction and does the work with the claim before it ends, as a processing worker does.
+function claimed<T>(work: (claim: ClaimedRawListing | null) => Promise<T>): Promise<T> {
+  return transactions.run(async () => work(await discovery.claimPendingRawListing()));
+}
+
 describe("Discovery repository: saving a source", () => {
+  const quicket: SaveSourceInput = {
+    name: "Quicket",
+    kind: "quicket",
+    locationSlug: "hermanus",
+    credentialsSetting: "QUICKET_API_KEY",
+  };
+
   test("creates the source with the defaults from the settings", async () => {
     const saved = await harness.services.discovery.saveSource(quicket);
     const [row] = await harness.db.select().from(source).where(eq(source.id, saved.id));
@@ -76,6 +145,15 @@ describe("Discovery repository: saving a source", () => {
   });
 
   test("keeps a source of the same name in another location apart", async () => {
+    await harness.services.catalogue.saveLocation({
+      name: "Stanford",
+      slug: "stanford",
+      country: "South Africa",
+      region: "Western Cape",
+      timezone: "Africa/Johannesburg",
+      latitude: -34.4416,
+      longitude: 19.4589,
+    });
     await harness.services.discovery.saveSource(quicket);
     await harness.services.discovery.saveSource({ ...quicket, locationSlug: "stanford" });
     assert.equal(await harness.db.$count(source), 2);
@@ -87,5 +165,411 @@ describe("Discovery repository: saving a source", () => {
       (error) => error instanceof AppError && error.code === "not_found",
     );
     assert.equal(await harness.db.$count(source), 0);
+  });
+});
+
+describe("Discovery: a run against the database", () => {
+  test("saves new listings as pending raw listings with their domain events, and closes the run", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "<p>A</p>"), page("b", "<p>B</p>")], true, { cursor: "x" });
+
+    const summary = await harness.services.discovery.runSource(saved.id);
+
+    assert.equal(summary.status, "succeeded");
+    const [runRow] = await harness.db.select().from(run).where(eq(run.id, summary.runId));
+    assert.ok(runRow);
+    assert.equal(runRow.status, "succeeded");
+    assert.equal(runRow.complete, true);
+    assert.deepEqual([runRow.listingsFound, runRow.listingsNewOrChanged, runRow.listingsUnchanged], [2, 2, 0]);
+    assert.equal(runRow.startedAt.toISOString(), "2026-11-23T08:00:00.000Z");
+    assert.ok(runRow.finishedAt);
+    assert.equal(runRow.error, null);
+
+    const listings = await harness.db.select().from(listing).orderBy(asc(listing.sourceListingId));
+    assert.deepEqual(
+      listings.map((one) => [one.sourceListingId, one.url, one.state, one.firstSeenRunId, one.lastSeenRunId]),
+      [
+        ["a", "https://example.com/a", "listed", summary.runId, summary.runId],
+        ["b", "https://example.com/b", "listed", summary.runId, summary.runId],
+      ],
+    );
+
+    const [a] = await rawListingsOf("a");
+    assert.ok(a);
+    assert.equal(a.status, "pending");
+    assert.equal(a.kind, "listing");
+    assert.equal(a.content, "<p>A</p>");
+    assert.equal(a.contentType, "text/html");
+    assert.equal(a.fingerprint, listings[0]?.fingerprint);
+    assert.equal(a.runId, summary.runId);
+
+    const captured = await eventsOf("raw_listing.captured");
+    assert.equal(captured.length, 2);
+    const forA = captured.find((event) => event.resourceId === a.id);
+    assert.deepEqual(forA?.data, { listing_id: a.listingId, run_id: summary.runId, kind: "listing" });
+
+    const [sourceRow] = await harness.db.select().from(source).where(eq(source.id, saved.id));
+    assert.deepEqual(sourceRow?.syncState, { cursor: "x" });
+  });
+
+  test("a changed listing gets a new raw listing; an unchanged one is only seen", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "A"), page("b", "B")]);
+    await harness.services.discovery.runSource(saved.id);
+    later(24);
+    returns("web_page", [page("a", "A"), page("b", "B, moved to Sunday")]);
+
+    const second = await harness.services.discovery.runSource(saved.id);
+
+    assert.deepEqual([second.listingsNewOrChanged, second.listingsUnchanged], [1, 1]);
+    assert.equal((await rawListingsOf("a")).length, 1);
+    const b = await rawListingsOf("b");
+    assert.deepEqual(
+      b.map((raw) => raw.content),
+      ["B", "B, moved to Sunday"],
+    );
+    const rows = await harness.db.select().from(listing).orderBy(asc(listing.sourceListingId));
+    assert.ok(rows.every((one) => one.lastSeenRunId === second.runId));
+    assert.equal(rows[1]?.fingerprint, b[1]?.fingerprint);
+    assert.notEqual(rows[1]?.firstSeenRunId, second.runId);
+  });
+
+  test("a failed fetch is a failed run in the database", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    next.web_page = () => Promise.reject(new Error("GET https://example.com answered 503 Service Unavailable"));
+
+    const summary = await harness.services.discovery.runSource(saved.id);
+
+    const [runRow] = await harness.db.select().from(run).where(eq(run.id, summary.runId));
+    assert.equal(runRow?.status, "failed");
+    assert.equal(runRow.error, "GET https://example.com answered 503 Service Unavailable");
+    assert.ok(runRow.finishedAt);
+  });
+
+  test("a source of a kind with no adapter is a failed run, not an error", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, name: "Quicket", kind: "quicket" });
+    const summary = await harness.services.discovery.runSource(saved.id);
+    assert.equal(summary.status, "failed");
+    assert.match(summary.error ?? "", /quicket/);
+  });
+
+  test("an unknown source is not_found", async () => {
+    await assert.rejects(
+      harness.services.discovery.runSource("00000000-0000-4000-8000-00000000abcd"),
+      (error) => error instanceof AppError && error.code === "not_found",
+    );
+  });
+});
+
+describe("Discovery: listings that disappear", () => {
+  test("removes a listing after the missed runs, with a pending raw listing of kind removed", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, missedRunsBeforeRemoval: 2 });
+    returns("web_page", [page("a", "A"), page("b", "B")]);
+    await harness.services.discovery.runSource(saved.id);
+    returns("web_page", [page("a", "A")]);
+    later(24);
+    assert.equal((await harness.services.discovery.runSource(saved.id)).listingsRemoved, 0);
+    later(24);
+    const removing = await harness.services.discovery.runSource(saved.id);
+
+    assert.equal(removing.listingsRemoved, 1);
+    const [b] = await harness.db.select().from(listing).where(eq(listing.sourceListingId, "b"));
+    assert.equal(b?.state, "removed");
+    const versions = await rawListingsOf("b");
+    const removed = versions.at(-1);
+    assert.ok(removed);
+    assert.equal(removed.kind, "removed");
+    assert.equal(removed.status, "pending");
+    assert.equal(removed.content, null);
+    assert.equal(removed.runId, removing.runId);
+    const event = (await eventsOf("raw_listing.captured")).find((one) => one.resourceId === removed.id);
+    assert.deepEqual(event?.data, { listing_id: b.id, run_id: removing.runId, kind: "removed" });
+  });
+
+  test("an incomplete run never counts as a miss", async () => {
+    const saved = await harness.services.discovery.saveSource({
+      ...pages,
+      name: "Hermanus Times",
+      kind: "rss_feed",
+      missedRunsBeforeRemoval: 1,
+    });
+    returns("rss_feed", [page("post-1", "Post")], false);
+    await harness.services.discovery.runSource(saved.id);
+    returns("rss_feed", [], false);
+    for (let day = 0; day < 3; day += 1) {
+      later(24);
+      await harness.services.discovery.runSource(saved.id);
+    }
+    const [post] = await harness.db.select().from(listing);
+    assert.equal(post?.state, "listed");
+  });
+
+  test("a failed run never counts as a miss", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, missedRunsBeforeRemoval: 1 });
+    returns("web_page", [page("a", "A")]);
+    await harness.services.discovery.runSource(saved.id);
+    next.web_page = () => Promise.reject(new Error("timed out"));
+    later(24);
+    await harness.services.discovery.runSource(saved.id);
+    const [a] = await harness.db.select().from(listing);
+    assert.equal(a?.state, "listed");
+  });
+
+  test("a listing that comes back is listed again with a new raw listing", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, missedRunsBeforeRemoval: 1 });
+    returns("web_page", [page("a", "A")]);
+    await harness.services.discovery.runSource(saved.id);
+    returns("web_page", []);
+    later(24);
+    await harness.services.discovery.runSource(saved.id);
+    returns("web_page", [page("a", "A")]);
+    later(24);
+    const back = await harness.services.discovery.runSource(saved.id);
+
+    assert.equal(back.listingsNewOrChanged, 1);
+    const [a] = await harness.db.select().from(listing);
+    assert.equal(a?.state, "listed");
+    assert.equal(a.lastSeenRunId, back.runId);
+    assert.deepEqual(
+      (await rawListingsOf("a")).map((raw) => raw.kind),
+      ["listing", "removed", "listing"],
+    );
+  });
+});
+
+describe("Discovery: sources that are due", () => {
+  test("runs the active sources whose interval has passed or that never ran, and skips one that is running", async () => {
+    const services = harness.services.discovery;
+    const daily = await services.saveSource({ ...pages, name: "Daily", fetchIntervalHours: 24 });
+    const weekly = await services.saveSource({ ...pages, name: "Weekly", fetchIntervalHours: 168 });
+    await services.saveSource({ ...pages, name: "Never ran" });
+    await services.saveSource({ ...pages, name: "Inactive", active: false });
+    const busy = await services.saveSource({ ...pages, name: "Busy", fetchIntervalHours: 1 });
+    await services.runSource(daily.id);
+    await services.runSource(weekly.id);
+    await harness.db.insert(run).values({ sourceId: busy.id, startedAt: now, status: "running" });
+
+    later(24);
+    const due = await services.runDueSources();
+
+    assert.deepEqual(due.map((one) => one.sourceName).sort(), ["Daily", "Never ran"]);
+    // Both just ran, so nothing is due an hour later.
+    later(1);
+    assert.deepEqual(await services.runDueSources(), []);
+  });
+
+  test("lists every source", async () => {
+    await harness.services.discovery.saveSource({ ...pages, name: "B" });
+    await harness.services.discovery.saveSource({ ...pages, name: "A" });
+    assert.deepEqual(
+      (await harness.services.discovery.listSources()).map((one) => one.name),
+      ["A", "B"],
+    );
+  });
+});
+
+describe("Discovery: the hand-off to Data processing", () => {
+  test("claims the latest version of a listing, with its source, and supersedes the older one", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "first")]);
+    await harness.services.discovery.runSource(saved.id);
+    later(24);
+    returns("web_page", [page("a", "second")]);
+    await harness.services.discovery.runSource(saved.id);
+    const [older, newer] = await rawListingsOf("a");
+    assert.ok(older && newer);
+
+    const claim = await claimed((one) => Promise.resolve(one));
+
+    assert.ok(claim);
+    assert.equal(claim.id, newer.id);
+    assert.equal(claim.content, "second");
+    assert.equal(claim.kind, "listing");
+    assert.equal(claim.url, "https://example.com/a");
+    assert.equal(claim.contentType, "text/html");
+    assert.equal(claim.fetchedAt, newer.fetchedAt.toISOString());
+    assert.equal(claim.attempts, 0);
+    const location = await harness.services.catalogue.getLocation({ slug: "hermanus" });
+    assert.deepEqual(claim.source, {
+      id: saved.id,
+      name: "Organiser pages",
+      kind: "web_page",
+      priority: 10,
+      locationId: location?.id,
+    });
+
+    const [olderNow] = await harness.db.select().from(rawListing).where(eq(rawListing.id, older.id));
+    assert.equal(olderNow?.status, "superseded");
+    const superseded = await eventsOf("raw_listing.superseded");
+    assert.equal(superseded.length, 1);
+    assert.equal(superseded[0]?.resourceId, older.id);
+    assert.deepEqual(superseded[0].data, { listing_id: older.listingId, raw_listing_id: newer.id });
+
+    // Nothing else is pending: the claim was not marked, so the latest is pending again, and the older is not.
+    const again = await claimed((one) => Promise.resolve(one));
+    assert.equal(again?.id, newer.id);
+  });
+
+  test("returns null when nothing is pending", async () => {
+    assert.equal(await claimed((one) => Promise.resolve(one)), null);
+  });
+
+  test("two transactions at once never claim the same raw listing", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "A"), page("b", "B")]);
+    await harness.services.discovery.runSource(saved.id);
+
+    // Each holds its claim until both have claimed.
+    let release: () => void = () => {};
+    const bothClaimed = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let count = 0;
+    const worker = () =>
+      claimed(async (claim) => {
+        count += 1;
+        if (count === 2) release();
+        await bothClaimed;
+        return claim?.id ?? null;
+      });
+
+    const [first, second] = await Promise.all([worker(), worker()]);
+    assert.ok(first && second);
+    assert.notEqual(first, second);
+
+    // With one pending and two workers, one gets it and the other gets nothing.
+    count = 0;
+    const single = await Promise.all([
+      claimed(async (claim) => {
+        await discovery.markRawListingProcessed(claim?.id ?? "");
+        return claim?.id ?? null;
+      }),
+    ]);
+    assert.ok(single[0]);
+    let releaseOne: () => void = () => {};
+    const held = new Promise<void>((resolve) => {
+      releaseOne = resolve;
+    });
+    const holder = claimed(async (claim) => {
+      await held;
+      return claim?.id ?? null;
+    });
+    // Give the holder time to lock the one left.
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    const other = await claimed((claim) => Promise.resolve(claim?.id ?? null));
+    releaseOne();
+    assert.ok(await holder);
+    assert.equal(other, null);
+  });
+
+  test("marks a raw listing processed, with its domain event", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    returns("web_page", [page("a", "A")]);
+    await harness.services.discovery.runSource(saved.id);
+
+    const id = await claimed(async (claim) => {
+      assert.ok(claim);
+      await discovery.markRawListingProcessed(claim.id);
+      return claim.id;
+    });
+
+    const [row] = await harness.db.select().from(rawListing).where(eq(rawListing.id, id));
+    assert.equal(row?.status, "processed");
+    const processed = await eventsOf("raw_listing.processed");
+    assert.deepEqual(
+      processed.map((event) => [event.resourceId, event.data]),
+      [[id, { listing_id: row.listingId }]],
+    );
+    assert.equal(await claimed((one) => Promise.resolve(one)), null);
+    // Only a pending raw listing can be marked.
+    await assert.rejects(discovery.markRawListingProcessed(id), /only a pending one can be marked/);
+  });
+
+  test("marks a raw listing failed, back to pending until the source's max attempts, then failed", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, maxProcessingAttempts: 2 });
+    returns("web_page", [page("a", "A")]);
+    await harness.services.discovery.runSource(saved.id);
+
+    const first = await claimed(async (claim) => {
+      assert.ok(claim);
+      return { id: claim.id, outcome: await discovery.markRawListingFailed(claim.id, "wrong shape") };
+    });
+    assert.deepEqual(first.outcome, { attempts: 1, willRetry: true });
+    const [pending] = await harness.db.select().from(rawListing).where(eq(rawListing.id, first.id));
+    assert.deepEqual([pending?.status, pending?.attempts, pending?.error], ["pending", 1, "wrong shape"]);
+
+    const second = await claimed(async (claim) => {
+      assert.ok(claim);
+      assert.equal(claim.attempts, 1);
+      return discovery.markRawListingFailed(claim.id, "timed out");
+    });
+    assert.deepEqual(second, { attempts: 2, willRetry: false });
+    const [failed] = await harness.db.select().from(rawListing).where(eq(rawListing.id, first.id));
+    assert.ok(failed);
+    assert.deepEqual([failed.status, failed.attempts, failed.error], ["failed", 2, "timed out"]);
+    assert.equal(await claimed((one) => Promise.resolve(one)), null);
+
+    const failedEvents = await eventsOf("raw_listing.failed");
+    assert.deepEqual(
+      failedEvents.map((event) => event.data),
+      [
+        { listing_id: failed.listingId, error: "wrong shape", attempt: 1, will_retry: true },
+        { listing_id: failed.listingId, error: "timed out", attempt: 2, will_retry: false },
+      ],
+    );
+  });
+
+  test("a newer version supersedes an older one that failed for good", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, maxProcessingAttempts: 1 });
+    returns("web_page", [page("a", "first")]);
+    await harness.services.discovery.runSource(saved.id);
+    await claimed(async (claim) => {
+      assert.ok(claim);
+      await discovery.markRawListingFailed(claim.id, "wrong shape");
+    });
+    later(24);
+    returns("web_page", [page("a", "second")]);
+    await harness.services.discovery.runSource(saved.id);
+
+    const claim = await claimed((one) => Promise.resolve(one));
+
+    assert.equal(claim?.content, "second");
+    const [older] = await rawListingsOf("a");
+    assert.equal(older?.status, "superseded");
+  });
+
+  test("hands over a removed listing's raw listing with no content", async () => {
+    const saved = await harness.services.discovery.saveSource({ ...pages, missedRunsBeforeRemoval: 1 });
+    returns("web_page", [page("a", "A")]);
+    await harness.services.discovery.runSource(saved.id);
+    await claimed(async (claim) => {
+      assert.ok(claim);
+      await discovery.markRawListingProcessed(claim.id);
+    });
+    returns("web_page", []);
+    later(24);
+    await harness.services.discovery.runSource(saved.id);
+
+    const claim = await claimed((one) => Promise.resolve(one));
+
+    assert.equal(claim?.kind, "removed");
+    assert.equal(claim.content, null);
+    assert.equal(claim.contentType, null);
+  });
+
+  test("gives the priority of each listing's source", async () => {
+    const high = await harness.services.discovery.saveSource({ ...pages, name: "High", priority: 20 });
+    const low = await harness.services.discovery.saveSource({ ...pages, name: "Low", priority: 10 });
+    returns("web_page", [page("h", "H")]);
+    await harness.services.discovery.runSource(high.id);
+    returns("web_page", [page("l", "L")]);
+    await harness.services.discovery.runSource(low.id);
+    const rows = await harness.db.select().from(listing);
+    const id = (sourceListingId: string) => rows.find((one) => one.sourceListingId === sourceListingId)?.id ?? "";
+
+    const priorities = await harness.services.discovery.getListingPriorities([id("h"), id("l")]);
+
+    assert.deepEqual(priorities, { [id("h")]: 20, [id("l")]: 10 });
+    assert.deepEqual(await harness.services.discovery.getListingPriorities([]), {});
   });
 });

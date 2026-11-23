@@ -1,5 +1,5 @@
 import { events, listing, rawListing, run, source, type Db, type Tx } from "@magic-events/db";
-import { and, asc, eq, inArray, isNull, lte, ne, notExists, or, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, isNull, lte, ne, notExists, or, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import type { DiscoveryRepository, ListingVersion, Source } from "../../core/discovery/ports.ts";
 
@@ -203,11 +203,20 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
           and(
             eq(listing.sourceId, sourceId),
             eq(listing.state, "listed"),
-            sql`(select count(*) from ${later}
-                 where ${later.sourceId} = ${listing.sourceId}
-                   and ${later.status} = 'succeeded'
-                   and ${later.complete}
-                   and ${later.startedAt} > ${seen.startedAt}) >= ${missedRuns}`,
+            gte(
+              db
+                .select({ count: count() })
+                .from(later)
+                .where(
+                  and(
+                    eq(later.sourceId, listing.sourceId),
+                    eq(later.status, "succeeded"),
+                    eq(later.complete, true),
+                    gt(later.startedAt, seen.startedAt),
+                  ),
+                ),
+              missedRuns,
+            ),
           ),
         );
       return rows.map((row) => row.id);
@@ -255,9 +264,12 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
             locationId: source.locationId,
           },
           // Ties on the fetched time are broken by ID, the same way the oldest is picked.
-          latestRawListingId: sql<string>`(select ${latest.id} from ${latest}
-            where ${latest.listingId} = ${rawListing.listingId}
-            order by ${latest.fetchedAt} desc, ${latest.id} desc limit 1)`,
+          latestRawListingId: sql<string>`(${db
+            .select({ id: latest.id })
+            .from(latest)
+            .where(eq(latest.listingId, rawListing.listingId))
+            .orderBy(desc(latest.fetchedAt), desc(latest.id))
+            .limit(1)})`,
         })
         .from(rawListing)
         .innerJoin(listing, eq(listing.id, rawListing.listingId))
