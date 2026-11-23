@@ -411,6 +411,57 @@ describe("Matching", () => {
     assert.equal(state.saves[0]?.experienceId, undefined);
   });
 
+  test("an experience the listing is linked to under another title is offered to the model first, marked as linked", async () => {
+    // The listing gives two experiences. The screening was linked to it by hand under the cinema's title.
+    const screening = stored({
+      id: "e-screening",
+      title: "Focker In-Law Premiere Night",
+      venueName: "Road House Cinema",
+      firstDate: "2026-11-26",
+      lastDate: "2026-11-26",
+      sessions: [{ startDate: "2026-11-26", endDate: "2026-11-26", startTime: "18:30" }],
+    });
+    const opera = stored({ id: "e-opera", title: "The Met Opera: Manon", firstDate: "2026-11-26", lastDate: "2026-11-26" });
+    const ladiesNight = answered({
+      title: "Ladies Night: Focker In-Law",
+      sessions: [session({ start: "2026-11-26", end: "", startTime: "18:30" })],
+      venueName: "Whale Coast Mall",
+    });
+    const manon = answered({ title: "The Met Opera: Manon", sessions: [session({ start: "2026-11-26", end: "" })] });
+    const model = fakeLanguageModel({
+      extract: [extraction(ladiesNight, manon)],
+      match: [{ experienceId: "e-screening" }],
+    });
+    const { service, state } = setup({ model, experiences: [screening, opera], candidates: [] });
+    await service.processNext();
+    assert.deepEqual(
+      state.saves.map((save) => save.experienceId),
+      ["e-screening", "e-opera"],
+    );
+    assert.deepEqual(state.removals, []);
+    const [request, ...more] = model.of("match");
+    assert.equal(more.length, 0);
+    const text = request?.text ?? "";
+    assert.match(text, /- ID e-screening: Focker In-Law Premiere Night; venue: Road House Cinema, Hermanus; dates: 2026-11-26 to 2026-11-26 at 18:30; this listing already links to it/);
+    // The opera is another experience of this listing, so it is not offered for the screening.
+    assert.doesNotMatch(text, /e-opera/);
+  });
+
+  test("when the model declines the linked experience, a new one is made and the link falls away", async () => {
+    const screening = stored({ id: "e-screening", title: "Focker In-Law Premiere Night", firstDate: "2026-11-26", lastDate: "2026-11-26" });
+    const other = stored({ id: "e-other", title: "Christmas Market", firstDate: "2026-12-13", lastDate: "2026-12-13" });
+    const ladiesNight = answered({ title: "Ladies Night: Focker In-Law", sessions: [session({ start: "2026-11-26", end: "" })] });
+    const market = answered({ title: "Christmas Market", sessions: [session({ start: "2026-12-13", end: "" })] });
+    const model = fakeLanguageModel({ extract: [extraction(ladiesNight, market)], match: [{ experienceId: "" }] });
+    const { service, state } = setup({ model, experiences: [screening, other], candidates: [] });
+    await service.processNext();
+    assert.deepEqual(
+      state.saves.map((save) => save.experienceId),
+      [undefined, "e-other"],
+    );
+    assert.deepEqual(state.removals, [{ listingId: LISTING, experienceId: "e-screening", rawListingId: RAW }]);
+  });
+
   test("when no title matches, the model picks among the candidates", async () => {
     const candidate = stored({ id: "e-other", title: "FynArts Festival of the Arts", listingIds: [OTHER_LISTING] });
     const model = fakeLanguageModel({ extract: [extraction(answered())], match: [{ experienceId: "e-other" }] });

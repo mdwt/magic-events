@@ -33,12 +33,14 @@ import {
 } from "./extract.ts";
 import { MATCH_INSTRUCTIONS } from "./instructions.ts";
 import {
+  datesFit,
   isFinal,
   matchAnswerSchema,
   matchInCode,
   matchLinked,
   matchText,
   nearDates,
+  normaliseTitle,
   onlyMonthOrYear,
   pickedCandidate,
   precedenceOf,
@@ -447,25 +449,35 @@ export class DataProcessingService implements DataProcessing {
     );
     const byLink = matchLinked(experience, comparable);
     if (byLink) return byLink;
+    // The listing's other links whose dates fit are offered to the model beside the candidates, marked as linked:
+    // the listing was matched to them before, by processing or by hand, under another title. One whose title is
+    // another experience of this listing is left out, since that one will take it.
+    const others = new Set(input.extracted.filter((one) => one !== experience).map((one) => normaliseTitle(one.title)));
+    const linkedFit = comparable.filter(
+      (match) => !others.has(normaliseTitle(match.title)) && datesFit(experience, span, match),
+    );
 
     // Dates known only to the month or year need only be near, on whichever side they are (see datesFit).
     const near = nearDates(span);
     const dates = onlyMonthOrYear(experience) ? { from: near.start, to: near.end } : { from: span.start, to: span.end };
-    const candidates = (
+    const found = (
       await this.#catalogue.findMatchCandidates({
         locationId: input.location.id,
         title: experience.title,
         ...dates,
         monthOrYear: { from: near.start, to: near.end },
       })
-    ).filter((candidate) => !taken.has(candidate.id) && !isFinal(candidate));
+    ).filter(
+      (candidate) => !taken.has(candidate.id) && !isFinal(candidate) && !linkedFit.some((one) => one.id === candidate.id),
+    );
+    const candidates = [...linkedFit, ...found];
     if (candidates.length === 0) return undefined;
     const inCode = matchInCode(experience, span, candidates);
     if (inCode) return inCode;
 
     const answer = await this.#languageModel.ask({
       instructions: MATCH_INSTRUCTIONS,
-      text: matchText(experience, span, candidates),
+      text: matchText(experience, span, candidates, new Set(linkedFit.map((one) => one.id))),
       schema: matchAnswerSchema,
     });
     return pickedCandidate(answer, candidates);
