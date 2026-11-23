@@ -1,5 +1,7 @@
 import type {
   CatalogueRepository,
+  ChangedExperienceRecord,
+  ExperienceChangesQuery,
   ExperienceWrite,
   Location,
   SaveExperienceInput,
@@ -33,6 +35,12 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
   const locations = new Map((options.locations ?? [HERMANUS]).map((one) => [one.id, one]));
   const writes: ExperienceWrite[] = [];
   const warnings: { context: object; message: string }[] = [];
+  const errors: { context: object; message: string }[] = [];
+  // What changed-since is answered with, and the queries it was handed.
+  const changes = { answer: { items: [] as ChangedExperienceRecord[], total: 0 }, queries: [] as ExperienceChangesQuery[] };
+  // Experiences whose save fails, and the batch sizes the upkeep asked for.
+  const failing = new Set<string>();
+  const upkeepLimits: number[] = [];
   const clock = { now: new Date(options.now ?? "2026-11-23T10:00:00.000Z") };
 
   const repository: CatalogueRepository = {
@@ -58,6 +66,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
       ),
     saveExperiences: (batch) => {
       const appended: DomainEvent[] = [];
+      if (batch.some((write) => failing.has(write.experience.id))) return Promise.reject(new Error("the save failed"));
       for (const write of batch) {
         const stored = experiences.get(write.experience.id);
         if ((stored?.version ?? null) !== write.previousVersion) throw new Error("version mismatch");
@@ -74,6 +83,16 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
       }
       return Promise.resolve(appended);
     },
+    findChangesSince: (query) => {
+      changes.queries.push(query);
+      return Promise.resolve(structuredClone(changes.answer));
+    },
+    // Every experience, in ID order: the service, not the query, decides what is due.
+    findUpkeepCandidates: (query) => {
+      upkeepLimits.push(query.limit);
+      const ids = [...experiences.keys()].sort().filter((id) => query.after === null || id > query.after);
+      return Promise.resolve(ids.slice(0, query.limit));
+    },
   };
 
   // Records what the service publishes.
@@ -88,7 +107,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     debug: () => {},
     info: () => {},
     warn: (context, message) => warnings.push({ context, message }),
-    error: () => {},
+    error: (context, message) => errors.push({ context, message }),
     child: () => logger,
   };
 
@@ -106,6 +125,10 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     writes,
     published,
     warnings,
+    errors,
+    changes,
+    failing,
+    upkeepLimits,
     // The published domain events, as type, resource and data.
     publishedEvents() {
       return published.map(({ type, resourceId, data }) => ({ type, resourceId, data }));

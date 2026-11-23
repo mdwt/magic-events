@@ -171,7 +171,11 @@ export interface ExperienceSearchQuery {
   bookings?: (typeof BOOKING_STATUSES)[number][];
   attributes: Record<string, AttributeFilter>;
   tags: string[];
+  // The query text, which orders the results by keyword and by meaning. It never adds or removes one.
   query?: string;
+  // The query text's embedding, and the model that made it. Left out when the model did not answer in time, and
+  // the results are then ordered by keyword alone.
+  queryEmbedding?: { vector: number[]; model: string };
   limit: number;
   offset: number;
 }
@@ -331,6 +335,137 @@ export interface ExperienceMatch {
   listingIds: string[];
 }
 
+// ---- Changed since ----
+
+// The statuses changed-since reports. Cancelled and Removed experiences are reported, though search no longer
+// returns them. Past ones never are.
+export const REPORTED_STATUSES = [...SEARCHABLE_STATUSES, "cancelled", "removed"] as const;
+export type ReportedStatus = (typeof REPORTED_STATUSES)[number];
+
+// The kinds of change changed-since reports, what matters most to a planner first. A move to Past is never reported.
+export const REPORTED_CHANGE_KINDS = [
+  "cancelled",
+  "removed",
+  "postponed",
+  "rescheduled",
+  "confirmed",
+  "new",
+  "changed",
+] as const;
+export type ReportedChangeKind = (typeof REPORTED_CHANGE_KINDS)[number];
+
+// The same search parameters as a search, without the query text, and the time of the last search.
+export const experienceChangesInputSchema = searchExperiencesInputSchema
+  .omit({ query: true, status: true, bookable: true, limit: true, offset: true })
+  .extend({
+    status: searchExperiencesInputSchema.shape.status.describe(
+      "Only experiences with one of these statuses. Cancelled and removed experiences are reported whatever it says.",
+    ),
+    bookable: searchExperiencesInputSchema.shape.bookable.describe(
+      "True reports only experiences that can be booked now, confirmed with booking open, and the cancelled and " +
+        "removed ones.",
+    ),
+    since: z.iso
+      .datetime({ offset: true })
+      .describe("When you last searched, as an ISO timestamp such as 2027-02-01T09:30:00Z. Only later changes are reported."),
+    limit: z.number().int().min(1).max(100).default(20).describe("How many changed experiences to return."),
+    offset: z.number().int().min(0).default(0).describe("How many changed experiences to skip, for paging."),
+  });
+export type ExperienceChangesInput = z.infer<typeof experienceChangesInputSchema>;
+
+export const reportedChangeSchema = z.object({
+  kind: z
+    .enum(REPORTED_CHANGE_KINDS)
+    .describe(
+      "new: first published. confirmed: its dates are now fixed. rescheduled: a date was added, moved or removed. " +
+        "postponed: not happening on its dates, new dates unknown. cancelled: called off by its organisers. " +
+        "removed: no source lists it any more. changed: anything else, booking and price included.",
+    ),
+  at: z.iso.datetime().describe("When it changed."),
+});
+export type ReportedChange = z.infer<typeof reportedChangeSchema>;
+
+export const experienceChangeSchema = z.object({
+  experience: experienceResultSchema.extend({
+    status: z.enum(REPORTED_STATUSES).describe("Cancelled and removed experiences are final."),
+  }),
+  change: reportedChangeSchema.describe("The change that matters most to a planner."),
+  changes: z.array(reportedChangeSchema).describe("Every change since the time given, newest first."),
+});
+export type ExperienceChange = z.infer<typeof experienceChangeSchema>;
+
+export const experienceChangesResultSchema = z.object({
+  items: z.array(experienceChangeSchema).describe("The experiences that changed, the most recent change first."),
+  total: z.number().int().describe("How many experiences changed, across all pages."),
+  limit: z.number().int(),
+  offset: z.number().int(),
+});
+export type ExperienceChangesResult = z.infer<typeof experienceChangesResultSchema>;
+
+// Changed-since as the repository receives it: every default applied and every rule already checked.
+export interface ExperienceChangesQuery extends Omit<ExperienceSearchQuery, "query" | "queryEmbedding"> {
+  since: Date;
+}
+
+// An experience that changed, as the repository returns it.
+export interface ChangedExperienceRecord {
+  experience: Omit<ExperienceRecord, "status"> & { status: ReportedStatus };
+  // Its changes after the time given, newest first. Moves to Past are left out.
+  changes: { kind: Exclude<ChangeKind, "past">; at: string }[];
+}
+
+// ---- Upkeep ----
+
+// What one run of Catalogue's upkeep did.
+export interface UpkeepResult {
+  // Experiences set to Past.
+  past: number;
+  // Experiences whose booking was closed because the close time passed.
+  bookingsClosed: number;
+  // Sessions generated further ahead for open-ended recurring experiences.
+  sessionsGenerated: number;
+}
+
+// ---- Embeddings ----
+
+// The embedding model port. Catalogue embeds each experience's title and profile, and a search's query text, to
+// order a search's results by meaning. The adapter owns everything about the provider: its SDK, model name,
+// credentials, limits and how its failures are read.
+export interface EmbeddingModel {
+  // The model's name, saved with every embedding. A different name makes every experience be embedded again.
+  model: string;
+  // How many numbers an embedding has. Must be 1024, the size of the column.
+  dimensions: number;
+  // One embedding per text, in the order of the texts. A profile is a document and a query text is a query; a
+  // model that embeds the two the same way ignores the purpose. Fails only with EmbeddingFailed.
+  embed(texts: string[], purpose: "document" | "query"): Promise<number[][]>;
+}
+
+// The one kind of failure `embed` has. A text too long for the model is one, and is never cut to fit.
+export class EmbeddingFailed extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "EmbeddingFailed";
+  }
+}
+
+// An experience whose embedding is due, with what it is embedded from.
+export interface ExperienceToEmbed {
+  id: string;
+  title: string;
+  profile: string | null;
+}
+
+// One round of embedding.
+export interface EmbedExperiencesResult {
+  // Experiences given an embedding this round.
+  embedded: number;
+  // Experiences whose text the model failed on. They are taken again in a later round.
+  failed: number;
+  // Experiences still due after this round, the failed ones included.
+  remaining: number;
+}
+
 // ---- Ports ----
 
 // Inbound port: what Catalogue offers.
@@ -353,6 +488,15 @@ export interface Catalogue {
   // An experience left with no links is set to Removed, unless it is already Past or Cancelled.
   // Returns the IDs of the experiences that lost the link.
   removeSourceLink(input: { listingId: string; experienceId?: string; rawListingId: string }): Promise<string[]>;
+  // What changed since a time among the experiences the search parameters select: new, confirmed, rescheduled,
+  // postponed, cancelled, removed or otherwise changed. Cancelled and Removed ones are reported; Past ones never are.
+  getChangesSince(input: ExperienceChangesInput): Promise<ExperienceChangesResult>;
+  // Catalogue's scheduled upkeep: sets finished experiences to Past, closes bookings whose close time has passed,
+  // and generates the sessions of open-ended recurring experiences further ahead.
+  keepUp(): Promise<UpkeepResult>;
+  // One round of embedding: up to a batch of the experiences search can return whose embedding is empty or was
+  // made by another model. Storing an embedding makes no new version, change row or domain event.
+  embedExperiences(): Promise<EmbedExperiencesResult>;
 }
 
 // One experience's save as the service decided it. The repository stores it as it is handed.
@@ -396,4 +540,21 @@ export interface CatalogueRepository {
   // Stores the saves in one transaction. Returns the domain events it appended, as stored, in the order of the
   // saves; it does not publish them.
   saveExperiences(writes: ExperienceWrite[]): Promise<DomainEvent[]>;
+  // A page of the experiences changed-since reports, the most recent change first, and how many there are.
+  findChangesSince(query: ExperienceChangesQuery): Promise<{ items: ChangedExperienceRecord[]; total: number }>;
+  // Up to `limit` IDs, in order after `after`, of the experiences the upkeep may have work on: Expected, Announced
+  // or Confirmed ones whose last session ends before `lastDateBefore`, ones with booking Not yet or Open whose close
+  // time is at or before `bookingClosedBy`, and open-ended recurring ones that are not final.
+  findUpkeepCandidates(query: {
+    lastDateBefore: string;
+    bookingClosedBy: Date;
+    after: string | null;
+    limit: number;
+  }): Promise<string[]>;
+  // Up to `limit` searchable experiences with no embedding from this model, oldest first, and how many there are.
+  findExperiencesToEmbed(query: { model: string; limit: number }): Promise<{ items: ExperienceToEmbed[]; total: number }>;
+  // Stores each embedding with the model's name, on an experience whose title and profile are still the ones it was
+  // made from. The version, the update time, the change rows and the domain events are left as they are. Returns
+  // how many it stored.
+  storeEmbeddings(input: { model: string; embeddings: (ExperienceToEmbed & { vector: number[] })[] }): Promise<number>;
 }

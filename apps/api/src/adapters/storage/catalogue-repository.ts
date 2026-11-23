@@ -14,16 +14,22 @@ import {
 import {
   and,
   asc,
+  cosineDistance,
   count,
   desc,
   eq,
   exists,
+  gt,
   gte,
   inArray,
   isNotNull,
+  isNull,
   like,
   lte,
+  max,
   min,
+  ne,
+  notInArray,
   or,
   sql,
   type SQL,
@@ -38,6 +44,12 @@ import {
   type Location,
   type SearchableStatus,
   type StoredExperience,
+} from "../../core/catalogue/ports.ts";
+import {
+  REPORTED_STATUSES,
+  type ChangedExperienceRecord,
+  type ExperienceChangesQuery,
+  type ReportedStatus,
 } from "../../core/catalogue/ports.ts";
 import type { DomainEvent } from "../../core/shared/domain-events.ts";
 
@@ -68,6 +80,101 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       if (page.length === 0) return { items: [], total };
       const items = await toRecords(db, page, sessionInRange(query), searchable);
       return { items, total };
+    },
+
+    async findChangesSince(query) {
+      // Its changes after the time given. A move to Past is never reported.
+      const reportable = and(
+        eq(experienceChange.experienceId, experience.id),
+        gt(experienceChange.changedAt, query.since),
+        ne(experienceChange.kind, "past"),
+      );
+      const where = and(
+        or(searchableNow(db, query), cancelledOrRemoved(db, query)),
+        ...placeAndClassification(db, query),
+        exists(db.select({ one: sql`1` }).from(experienceChange).where(reportable)),
+      );
+      const latest = db.select({ latest: max(experienceChange.changedAt) }).from(experienceChange).where(reportable);
+
+      const [page, [counted]] = await Promise.all([
+        selectRecords(db, query.near)
+          .where(where)
+          .orderBy(sql`${latest} desc`, asc(experience.id))
+          .limit(query.limit)
+          .offset(query.offset),
+        db
+          .select({ total: count() })
+          .from(experience)
+          .innerJoin(location, eq(location.id, experience.locationId))
+          .where(where),
+      ]);
+      const total = counted?.total ?? 0;
+      if (page.length === 0) return { items: [], total };
+
+      const ids = page.map((row) => row.id);
+      // A Cancelled or Removed experience carries its sessions in the dates whatever their status, as it matched.
+      const ended = page.filter((row) => isReported(row.status) && !isSearchable(row.status)).map((row) => row.id);
+      const sessions = or(
+        sessionInRange(query),
+        ended.length === 0 ? undefined : and(inArray(experienceSession.experienceId, ended), sessionOverlaps(query)),
+      );
+      const [records, changes] = await Promise.all([
+        toRecords(db, page, sessions, reported),
+        db
+          .select({ experienceId: experienceChange.experienceId, kind: experienceChange.kind, at: experienceChange.changedAt })
+          .from(experienceChange)
+          .where(
+            and(
+              inArray(experienceChange.experienceId, ids),
+              gt(experienceChange.changedAt, query.since),
+              ne(experienceChange.kind, "past"),
+            ),
+          )
+          .orderBy(desc(experienceChange.changedAt), desc(experienceChange.version)),
+      ]);
+      const changesOf = groupBy(changes, (row) => row.experienceId);
+      const items = records.map(
+        (record): ChangedExperienceRecord => ({
+          experience: record,
+          changes: (changesOf.get(record.id) ?? []).flatMap(({ kind, at }) =>
+            kind === "past" ? [] : [{ kind, at: at.toISOString() }],
+          ),
+        }),
+      );
+      return { items, total };
+    },
+
+    async findUpkeepCandidates(query) {
+      const lastEnd = db
+        .select({ last: max(experienceSession.endDate) })
+        .from(experienceSession)
+        .where(eq(experienceSession.experienceId, experience.id));
+      const rows = await db
+        .select({ id: experience.id })
+        .from(experience)
+        .where(
+          and(
+            query.after === null ? undefined : gt(experience.id, query.after),
+            or(
+              and(
+                inArray(experience.status, ["expected", "announced", "confirmed"]),
+                sql`${lastEnd} < ${query.lastDateBefore}::date`,
+              ),
+              and(
+                inArray(experience.booking, ["not_yet", "open"]),
+                lte(experience.bookingClosesAt, query.bookingClosedBy),
+              ),
+              and(
+                isNotNull(experience.recurrenceRule),
+                isNull(experience.recurrenceEnd),
+                notInArray(experience.status, ["cancelled", "removed", "past"]),
+              ),
+            ),
+          ),
+        )
+        .orderBy(asc(experience.id))
+        .limit(query.limit);
+      return rows.map((row) => row.id);
     },
 
     async upsertLocation(input) {
@@ -323,6 +430,49 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
         ]);
       });
       return appended;
+    },
+
+    async findExperiencesToEmbed(query) {
+      const due = and(
+        inArray(experience.status, [...SEARCHABLE_STATUSES]),
+        or(isNull(experience.embedding), sql`${experience.embeddingModel} is distinct from ${query.model}`),
+      );
+      const [items, [counted]] = await Promise.all([
+        db
+          .select({ id: experience.id, title: experience.title, profile: experience.profile })
+          .from(experience)
+          .where(due)
+          .orderBy(asc(experience.createdAt), asc(experience.id))
+          .limit(query.limit),
+        db.select({ total: count() }).from(experience).where(due),
+      ]);
+      return { items, total: counted?.total ?? 0 };
+    },
+
+    async storeEmbeddings(input) {
+      if (input.embeddings.length === 0) return 0;
+      const rows = sql.join(
+        input.embeddings.map(
+          (one) =>
+            sql`(${one.id}::uuid, ${one.title}::text, ${one.profile}::text, ${JSON.stringify(one.vector)}::vector)`,
+        ),
+        sql`, `,
+      );
+      // One statement for the round. Only the embedding and its model are set: no version, no update time.
+      const stored = await db
+        .update(experience)
+        .set({ embedding: sql`made.embedding`, embeddingModel: input.model })
+        .from(sql`(values ${rows}) as made (id, title, profile, embedding)`)
+        .where(
+          and(
+            sql`${experience.id} = made.id`,
+            // The title and profile it was made from, so one that changed meanwhile is left due.
+            sql`${experience.title} = made.title`,
+            sql`${experience.profile} is not distinct from made.profile`,
+          ),
+        )
+        .returning({ id: experience.id });
+      return stored.length;
     },
   };
 }
@@ -590,6 +740,16 @@ function searchableNow(db: Db, query: ExperienceSearchQuery): SQL | undefined {
   );
 }
 
+// A Cancelled or Removed experience that changed-since reports though search does not: matched on its sessions in
+// the dates as stored, whatever their status.
+function cancelledOrRemoved(db: Db, query: ExperienceChangesQuery): SQL | undefined {
+  const overlapping = and(eq(experienceSession.experienceId, experience.id), sessionOverlaps(query));
+  return and(
+    inArray(experience.status, ["cancelled", "removed"]),
+    exists(db.select({ one: sql`1` }).from(experienceSession).where(overlapping)),
+  );
+}
+
 // The filters search and changed-since share: the place and radius, the attributes and the tags.
 function placeAndClassification(db: Db, query: ExperienceSearchQuery): (SQL | undefined)[] {
   return [
@@ -633,8 +793,9 @@ function attributeMatches(filter: AttributeFilter): SQL | undefined {
   );
 }
 
-// Without a query text: by the first matching session, then title. With one: keyword rank first, and the
-// experiences its words do not match after the ones they do. The query text never adds or removes a result.
+// Without a query text: by the first matching session, then title. With one: by the reciprocal rank fusion of the
+// semantic list and the keyword list, then by the first matching session, as in docs/data-processing.md. The
+// query text never adds or removes a result.
 function searchOrder(db: Db, query: ExperienceSearchQuery): SQL[] {
   const firstSession = db
     .select({ first: min(experienceSession.startDate) })
@@ -642,11 +803,28 @@ function searchOrder(db: Db, query: ExperienceSearchQuery): SQL[] {
     .where(and(eq(experienceSession.experienceId, experience.id), sessionInRange(query)));
   const byDate = [sql`${firstSession} asc`, asc(experience.title), asc(experience.id)];
   if (query.query === undefined) return byDate;
+  return [sql`${fusedScore(query.query, query.queryEmbedding)} desc`, ...byDate];
+}
 
-  // The query text's words, stemmed and joined with OR, as in docs/data-processing.md.
-  const words = sql`to_tsquery('english', array_to_string(tsvector_to_array(to_tsvector('english', ${query.query}::text)), ' | '))`;
-  const rank = sql`(case when ${experience.searchText} @@ ${words} then ts_rank(${experience.searchText}, ${words}) end) desc nulls last`;
-  return [rank, ...byDate];
+// How far down a list a place counts in reciprocal rank fusion.
+const FUSION_K = 60;
+
+// A candidate's score: 1 / (60 + its place) in each list it is in, added up. The places are window functions over
+// the rows the filters leave, so the lists hold the candidates only, and the distance is worked out exactly for
+// each of them, with no vector index.
+function fusedScore(text: string, embedding: ExperienceSearchQuery["queryEmbedding"]): SQL {
+  // The query text's words, stemmed and joined with OR.
+  const words = sql`to_tsquery('english', array_to_string(tsvector_to_array(to_tsvector('english', ${text}::text)), ' | '))`;
+  const inKeyword = sql`(${experience.searchText} @@ ${words})`;
+  const keyword = sql`(case when ${inKeyword} then 1.0 / (${FUSION_K} + row_number() over (
+    partition by ${inKeyword} order by ts_rank(${experience.searchText}, ${words}) desc, ${experience.id})) else 0 end)`;
+  if (embedding === undefined) return keyword;
+
+  // Only an embedding from the query's model is compared with it.
+  const inSemantic = sql`(${experience.embedding} is not null and ${experience.embeddingModel} = ${embedding.model})`;
+  const semantic = sql`(case when ${inSemantic} then 1.0 / (${FUSION_K} + row_number() over (
+    partition by ${inSemantic} order by ${cosineDistance(experience.embedding, embedding.vector)}, ${experience.id})) else 0 end)`;
+  return sql`(${semantic} + ${keyword})`;
 }
 
 // Kilometres from the point, by the haversine formula. The experience's own position, or its location's centre.
@@ -668,6 +846,20 @@ function searchable(status: string): SearchableStatus {
   const found = SEARCHABLE_STATUSES.find((value) => value === status);
   if (found === undefined) throw new Error(`Search returned an experience with status ${status}`);
   return found;
+}
+
+function isSearchable(status: string): status is SearchableStatus {
+  return SEARCHABLE_STATUSES.some((value) => value === status);
+}
+
+function isReported(status: string): status is ReportedStatus {
+  return REPORTED_STATUSES.some((value) => value === status);
+}
+
+// The query only asks for statuses changed-since reports, so any other is a fault in the query.
+function reported(status: string): ReportedStatus {
+  if (!isReported(status)) throw new Error(`Changed-since returned an experience with status ${status}`);
+  return status;
 }
 
 function groupBy<T>(rows: T[], key: (row: T) => string): Map<string, T[]> {

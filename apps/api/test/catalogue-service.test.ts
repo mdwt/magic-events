@@ -71,6 +71,8 @@ function fakeRepository(items: ExperienceRecord[] = []) {
     findMatchCandidateIds: () => Promise.resolve([]),
     findTakenSlugs: () => Promise.resolve([]),
     saveExperiences: () => Promise.resolve([]),
+    findChangesSince: () => Promise.resolve({ items: [], total: 0 }),
+    findUpkeepCandidates: () => Promise.resolve([]),
   };
   return { repository, queries };
 }

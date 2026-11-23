@@ -3,14 +3,17 @@ import type { Clock } from "../shared/clock.ts";
 import type { DomainEventPublisher } from "../shared/domain-events.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
-import type { CatalogueSettings } from "../shared/settings.ts";
+import type { CatalogueSettings, EmbeddingSettings } from "../shared/settings.ts";
 import {
   SEARCHABLE_STATUSES,
   type Catalogue,
   type CatalogueRepository,
+  type EmbedExperiencesResult,
+  type EmbeddingModel,
   type ExperienceMatch,
   type ExperienceSearchQuery,
   type ExperienceStatus,
+  type ExperienceToEmbed,
   type ExperienceWrite,
   type Location,
   type SaveExperienceInput,
@@ -37,11 +40,22 @@ import {
   uniqueSlug,
   type Draft,
 } from "./save.ts";
+import { reportedChange } from "./changes.ts";
+import type {
+  ExperienceChange,
+  ExperienceChangesInput,
+  ExperienceChangesQuery,
+  ExperienceChangesResult,
+  UpkeepResult,
+} from "./ports.ts";
+import { LATEST_TIMEZONE, upkeepOf } from "./upkeep.ts";
 
 // The most match candidates Data processing is shown.
 const MAX_CANDIDATES = 10;
 // The most sessions a match carries.
 const MATCH_SESSIONS = 50;
+// How many experiences the upkeep loads at a time.
+const UPKEEP_BATCH = 200;
 
 export class CatalogueService implements Catalogue {
   readonly #repository: CatalogueRepository;
@@ -49,29 +63,43 @@ export class CatalogueService implements Catalogue {
   readonly #logger: Logger;
   readonly #clock: Clock;
   readonly #events: DomainEventPublisher;
+  readonly #embeddings: EmbeddingModel;
+  readonly #embeddingSettings: EmbeddingSettings;
 
   constructor(deps: {
     repository: CatalogueRepository;
     events: DomainEventPublisher;
     settings: CatalogueSettings;
+    embeddings: EmbeddingModel;
+    embeddingSettings: EmbeddingSettings;
     logger: Logger;
     clock?: Clock;
   }) {
     this.#repository = deps.repository;
     this.#events = deps.events;
     this.#settings = deps.settings;
+    this.#embeddings = deps.embeddings;
+    this.#embeddingSettings = deps.embeddingSettings;
     this.#logger = deps.logger;
     this.#clock = deps.clock ?? (() => new Date());
   }
 
   async searchExperiences(input: SearchExperiencesInput): Promise<SearchExperiencesResult> {
-    const query = this.#resolve(input);
-    this.#logger.debug({ query }, "Searching experiences");
+    const resolved = this.#resolve(input);
+    this.#logger.debug({ query: resolved }, "Searching experiences");
 
     const started = performance.now();
+    // A query text is embedded to order by meaning. Without its embedding the order is by keyword alone.
+    const queryEmbedding = resolved.query === undefined ? null : await this.#queryEmbedding(resolved.query);
+    const query = queryEmbedding === null ? resolved : { ...resolved, queryEmbedding };
     const { items, total } = await this.#repository.searchExperiences(query);
     this.#logger.debug(
-      { count: items.length, total, durationMs: Math.round(performance.now() - started) },
+      {
+        count: items.length,
+        total,
+        byMeaning: queryEmbedding !== null,
+        durationMs: Math.round(performance.now() - started),
+      },
       "Searched experiences",
     );
 
@@ -215,6 +243,196 @@ export class CatalogueService implements Catalogue {
       );
     }
     return targets.map((one) => one.id);
+  }
+
+  async getChangesSince(input: ExperienceChangesInput): Promise<ExperienceChangesResult> {
+    const since = new Date(input.since);
+    const details: ErrorDetail[] = [];
+    if (Number.isNaN(since.getTime())) {
+      details.push({ path: "since", message: "since must be an ISO timestamp." });
+    } else if (since > this.#clock()) {
+      details.push({ path: "since", message: "since must not be in the future." });
+    }
+    if (details.length > 0) {
+      this.#logger.warn({ details }, "Changes refused");
+      throw new AppError("invalid_input", details.map((detail) => detail.message).join(" "), details);
+    }
+
+    // The same rules as a search. The input has no query text, so none is resolved.
+    const search = this.#resolve(input);
+    const query: ExperienceChangesQuery = {
+      near: search.near,
+      radiusKm: search.radiusKm,
+      from: search.from,
+      to: search.to,
+      statuses: search.statuses,
+      ...(search.bookings === undefined ? {} : { bookings: search.bookings }),
+      attributes: search.attributes,
+      tags: search.tags,
+      limit: search.limit,
+      offset: search.offset,
+      since,
+    };
+    this.#logger.debug({ query }, "Finding changes");
+    const { items, total } = await this.#repository.findChangesSince(query);
+
+    const changed = items.flatMap(({ experience, changes }): ExperienceChange[] => {
+      const change = reportedChange(changes);
+      if (change === null) return [];
+      return [
+        {
+          experience: { ...experience, bookable: experience.status === "confirmed" && experience.booking === "open" },
+          change,
+          changes,
+        },
+      ];
+    });
+    this.#logger.debug({ count: changed.length, total }, "Found changes");
+    return { items: changed, total, limit: query.limit, offset: query.offset };
+  }
+
+  async keepUp(): Promise<UpkeepResult> {
+    const at = this.#clock();
+    const result: UpkeepResult = { past: 0, bookingsClosed: 0, sessionsGenerated: 0 };
+    let failed = 0;
+    let after: string | null = null;
+    // In batches by ID, so a large catalogue is never loaded at once. Each experience is saved on its own, so one
+    // that fails does not stop the others.
+    for (;;) {
+      const ids = await this.#repository.findUpkeepCandidates({
+        lastDateBefore: dayIn(LATEST_TIMEZONE, at),
+        bookingClosedBy: at,
+        after,
+        limit: UPKEEP_BATCH,
+      });
+      if (ids.length === 0) break;
+      for (const stored of await this.#repository.loadExperiences({ ids })) {
+        try {
+          const upkeep = upkeepOf(stored, at, this.#settings.sessionHorizonMonths);
+          if (upkeep === null) continue;
+          const { experience, change } = upkeep;
+          await this.#save([
+            {
+              experience,
+              previousVersion: stored.version,
+              replace: { sessions: upkeep.sessionsChanged, attributes: false, tags: false },
+              links: { add: [], remove: [] },
+              clearEmbedding: false,
+              change:
+                change === null
+                  ? null
+                  : { kind: change, previous: previousValues(stored, changedFields(stored, experience)) },
+              event:
+                change === null
+                  ? null
+                  : { type: "experience.changed", data: { version: experience.version, change } },
+              at,
+            },
+          ]);
+          if (change === "past") result.past += 1;
+          if (change === "changed") result.bookingsClosed += 1;
+          result.sessionsGenerated += upkeep.generated;
+          const log = { experienceId: stored.id, generated: upkeep.generated };
+          if (change === null) {
+            this.#logger.debug(log, "Generated sessions further ahead");
+          } else {
+            this.#logger.info({ ...log, version: experience.version, change, booking: experience.booking }, "Kept up");
+          }
+        } catch (error) {
+          failed += 1;
+          this.#logger.error({ experienceId: stored.id, err: error }, "Upkeep of an experience failed");
+        }
+      }
+      after = ids[ids.length - 1] ?? null;
+      if (ids.length < UPKEEP_BATCH) break;
+    }
+
+    const level = result.past + result.bookingsClosed + result.sessionsGenerated + failed > 0 ? "info" : "debug";
+    this.#logger[level]({ ...result, failed }, "Kept the catalogue up");
+    return result;
+  }
+
+  async embedExperiences(): Promise<EmbedExperiencesResult> {
+    const model = this.#embeddings.model;
+    const { items: due, total } = await this.#repository.findExperiencesToEmbed({
+      model,
+      limit: this.#embeddingSettings.batchSize,
+    });
+    if (due.length === 0) return { embedded: 0, failed: 0, remaining: 0 };
+
+    const started = performance.now();
+    const vectors = await this.#embedDocuments(due);
+    const embeddings = due.flatMap((one, index) => {
+      const vector = vectors[index];
+      return vector === undefined || vector === null ? [] : [{ ...one, vector }];
+    });
+    // An experience whose title or profile changed while it was embedded is not stored, and stays due.
+    const embedded = embeddings.length === 0 ? 0 : await this.#repository.storeEmbeddings({ model, embeddings });
+    const failed = due.length - embeddings.length;
+    const remaining = total - embedded;
+    this.#logger.debug(
+      { model, embedded, failed, remaining, durationMs: Math.round(performance.now() - started) },
+      "Embedded a round of experiences",
+    );
+    return { embedded, failed, remaining };
+  }
+
+  // The experiences' embeddings as documents. When the round fails as a whole, each text is tried alone, so a text
+  // the model fails on is left for the next round and does not hold back the others. Null for a text that failed.
+  async #embedDocuments(due: ExperienceToEmbed[]): Promise<(number[] | null)[]> {
+    const texts = due.map(embeddingText);
+    try {
+      return await this.#embeddings.embed(texts, "document");
+    } catch (error) {
+      if (texts.length === 1) {
+        this.#logger.error({ experienceIds: due.map((one) => one.id), err: error }, "The embedding model failed");
+        return [null];
+      }
+      this.#logger.warn({ count: texts.length, err: error }, "The embedding model failed on a round; trying each text");
+    }
+    const vectors: (number[] | null)[] = [];
+    const failedIds: string[] = [];
+    let lastError: unknown;
+    for (const one of due) {
+      try {
+        const [vector] = await this.#embeddings.embed([embeddingText(one)], "document");
+        vectors.push(vector ?? null);
+      } catch (error) {
+        vectors.push(null);
+        failedIds.push(one.id);
+        lastError = error;
+      }
+    }
+    if (failedIds.length > 0) {
+      this.#logger.error({ experienceIds: failedIds, err: lastError }, "The embedding model failed");
+    }
+    return vectors;
+  }
+
+  // The query text's embedding, or null when the model fails or does not answer in time. A search never fails
+  // because of the embedding model.
+  async #queryEmbedding(text: string): Promise<{ vector: number[]; model: string } | null> {
+    const timeoutMs = this.#embeddingSettings.queryTimeoutSeconds * 1000;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const timeout = new Promise<"timed out">((resolve) => {
+      timer = setTimeout(() => {
+        resolve("timed out");
+      }, timeoutMs);
+    });
+    try {
+      const answer = await Promise.race([this.#embeddings.embed([text], "query"), timeout]);
+      if (answer === "timed out") {
+        this.#logger.warn({ timeoutMs }, "The embedding model did not answer in time; ranking by keyword alone");
+        return null;
+      }
+      const [vector] = answer;
+      return vector === undefined ? null : { vector, model: this.#embeddings.model };
+    } catch (error) {
+      this.#logger.error({ err: error }, "The embedding model failed; ranking by keyword alone");
+      return null;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   async #create(input: SaveExperienceInput, incoming: Draft, at: Date): Promise<SaveExperienceResult> {
@@ -381,4 +599,11 @@ function toMatch(experience: StoredExperience): ExperienceMatch {
     recurrenceRule: experience.recurrence?.rule ?? null,
     listingIds: experience.listingIds,
   };
+}
+
+// What an experience is embedded from: its title on the first line, then its profile. Its title alone when it has
+// no profile.
+function embeddingText(experience: ExperienceToEmbed): string {
+  const profile = experience.profile?.trim() ?? "";
+  return profile === "" ? experience.title : `${experience.title}\n${profile}`;
 }

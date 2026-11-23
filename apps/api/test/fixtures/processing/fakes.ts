@@ -313,6 +313,8 @@ export function setup(
       }
       return Promise.resolve(ids);
     },
+    getChangesSince: () => Promise.reject(new Error("not used")),
+    keepUp: () => Promise.reject(new Error("not used")),
   };
 
   const repository: DataProcessingRepository = {

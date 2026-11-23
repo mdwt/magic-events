@@ -42,6 +42,8 @@ const catalogue: Catalogue = {
   findMatchCandidates: notUsed,
   saveExperience: notUsed,
   removeSourceLink: notUsed,
+  getChangesSince: notUsed,
+  keepUp: notUsed,
 };
 
 const discovery: Discovery = {
