@@ -7,8 +7,8 @@ import { createLogger } from "../src/adapters/logging/pino.ts";
 import { buildApp } from "../src/app.ts";
 import { createHarness, testSettings, type Harness } from "./helpers/harness.ts";
 
-// The server end to end over app.inject: authentication on every endpoint, the error format, request IDs,
-// the OpenAPI document and the MCP endpoint.
+// The server end to end over app.inject: authentication on every endpoint but the health check, the error format,
+// request IDs, the OpenAPI document and the MCP endpoint.
 
 let harness: Harness;
 let key: string;
@@ -44,7 +44,6 @@ function mcp(body: object, headers: Record<string, string> = bearer(key)) {
 
 describe("authentication", () => {
   const routes = [
-    { method: "GET", url: "/health" },
     { method: "GET", url: "/openapi.json" },
     { method: "POST", url: "/mcp", payload: { jsonrpc: "2.0", id: 1, method: "tools/list" } },
     { method: "GET", url: "/mcp" },
@@ -76,13 +75,21 @@ describe("authentication", () => {
   }
 
   test("a known and an unknown path refuse a caller without a key with the same answer", async () => {
-    const known = errorOf(await harness.app.inject({ method: "GET", url: "/health" }));
+    const known = errorOf(await harness.app.inject({ method: "GET", url: "/openapi.json" }));
     const unknown = errorOf(await harness.app.inject({ method: "GET", url: "/no/such/path" }));
     assert.deepEqual({ ...known, requestId: "" }, { ...unknown, requestId: "" });
   });
 
   test("a valid key over Authorization or x-api-key is let in", async () => {
     for (const headers of [bearer(key), { "x-api-key": key }]) {
+      const response = await harness.app.inject({ method: "GET", url: "/openapi.json", headers });
+      assert.equal(response.statusCode, 200);
+    }
+  });
+
+  test("the health check needs no key, and a wrong or suspended one changes nothing", async () => {
+    const suspended = await harness.createCaller({ tenantStatus: "suspended" });
+    for (const headers of [{}, bearer("mev_wrong"), bearer(key), bearer(suspended.key)]) {
       const response = await harness.app.inject({ method: "GET", url: "/health", headers });
       assert.equal(response.statusCode, 200);
       assert.deepEqual(response.json(), { status: "ok" });
@@ -98,7 +105,7 @@ describe("authentication", () => {
   test("a client in a suspended tenant is forbidden everywhere", async () => {
     const suspended = await harness.createCaller({ tenantStatus: "suspended" });
     for (const route of [
-      { method: "GET", url: "/health" },
+      { method: "GET", url: "/openapi.json" },
       { method: "POST", url: "/v1/experiences/search", payload: SEARCH },
       { method: "POST", url: "/mcp", payload: { jsonrpc: "2.0", id: 1, method: "tools/list" } },
     ] as const) {
@@ -111,9 +118,9 @@ describe("authentication", () => {
   test("a key over its rate limit answers 429 with Retry-After", async () => {
     const limited = await harness.createCaller();
     await harness.db.update(apikey).set({ rateLimitMax: 1 }).where(eq(apikey.referenceId, limited.userId));
-    const first = await harness.app.inject({ method: "GET", url: "/health", headers: bearer(limited.key) });
+    const first = await harness.app.inject({ method: "GET", url: "/openapi.json", headers: bearer(limited.key) });
     assert.equal(first.statusCode, 200);
-    const second = await harness.app.inject({ method: "GET", url: "/health", headers: bearer(limited.key) });
+    const second = await harness.app.inject({ method: "GET", url: "/openapi.json", headers: bearer(limited.key) });
     assert.equal(second.statusCode, 429);
     assert.equal(errorOf(second).code, "rate_limited");
     assert.ok(Number(second.headers["retry-after"]) > 0);
@@ -181,7 +188,7 @@ describe("the error format", () => {
       const url = process.env.TEST_DATABASE_URL ?? "";
       const settings = testSettings(url);
       ({ app } = await buildApp({ settings, db: harness.db, logger: createLogger(settings.api) }));
-      app.get("/boom", { config: { action: "health.read" } }, () => {
+      app.get("/boom", { config: { action: "openapi.read" } }, () => {
         throw new Error('relation "users_secret" does not exist at postgres://magic@db');
       });
       await app.ready();
@@ -242,7 +249,10 @@ describe("the OpenAPI document", () => {
       openapi: string;
       security: Record<string, string[]>[];
       components: { securitySchemes: Record<string, { type: string; scheme?: string }> };
-      paths: Record<string, Record<string, { operationId?: string; responses: Record<string, unknown>; requestBody?: unknown }>>;
+      paths: Record<
+        string,
+        Record<string, { operationId?: string; security?: unknown[]; responses: Record<string, unknown>; requestBody?: unknown }>
+      >;
     }>();
 
     assert.match(document.openapi, /^3\.1/);
@@ -271,11 +281,16 @@ describe("the OpenAPI document", () => {
         const operation = document.paths[path]?.[method];
         assert.ok(operation, `${method} ${path} is missing`);
         assert.ok(operation.operationId, `${method} ${path} has no operationId`);
-        for (const status of ["401", "403", "429", "500"]) {
+        // The health check is public, so it never answers 401 or 403.
+        for (const status of path === "/health" ? ["429", "500"] : ["401", "403", "429", "500"]) {
           assert.ok(operation.responses[status], `${method} ${path} does not document ${status}`);
         }
       }
     }
+    const health = document.paths["/health"]?.get;
+    assert.deepEqual(health?.security, []);
+    assert.equal(health.responses["401"], undefined);
+    assert.equal(health.responses["403"], undefined);
     assert.ok(document.paths["/v1/experiences/search"]?.post?.requestBody);
     assert.ok(document.paths["/v1/experiences/search"].post.responses["200"]);
     for (const [path, method] of [

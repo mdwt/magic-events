@@ -18,7 +18,6 @@ export type Action =
   // Onboarding: creating tenants, adding their users and issuing their credentials. A system admin's alone.
   | "tenants.manage"
   | "mcp.use"
-  | "health.read"
   | "openapi.read";
 
 // Who is calling, as established by Identity for one request.

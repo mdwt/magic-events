@@ -42,7 +42,7 @@ const identity = new IdentityService({
   logger: silent,
 });
 
-const ACTIONS: Action[] = ["experiences.search", "mcp.use", "health.read", "openapi.read"];
+const ACTIONS: Action[] = ["experiences.search", "mcp.use", "openapi.read"];
 
 function caller(overrides: Partial<Caller>): Caller {
   return {

@@ -65,11 +65,11 @@ message that names the variable.
 | `API_ALLOWED_HOSTS` | `localhost,127.0.0.1,[::1]` | The host names the MCP endpoint answers to, against DNS rebinding |
 | `LOG_LEVEL` | `info` | `fatal`, `error`, `warn`, `info`, `debug`, `trace` or `silent` |
 | `LOG_PRETTY` | `false` | Readable log lines for a terminal instead of JSON |
-| `API_RATE_LIMIT_MAX` | `300` | Requests one address may make in a window, before any key is checked |
+| `API_RATE_LIMIT_MAX` | `10000` | Requests one address may make in a window, before any key is checked |
 | `API_RATE_LIMIT_WINDOW_SECONDS` | `60` | That window |
 | `API_BODY_LIMIT_BYTES` | `65536` | The largest request body |
 | `BETTER_AUTH_SECRET` | required | At least 32 characters: `openssl rand -base64 48` |
-| `API_KEY_RATE_LIMIT_MAX` | `120` | Requests one API key may make in a window. A key gets this when it is issued |
+| `API_KEY_RATE_LIMIT_MAX` | `10000` | Requests one API key may make in a window. A key gets this when it is issued |
 | `API_KEY_RATE_LIMIT_WINDOW_SECONDS` | `60` | That window |
 | `SEARCH_DEFAULT_RADIUS_KM` | `25` | The radius of a search that gives none |
 | `SEARCH_MAX_RADIUS_KM` | `200` | The largest radius a search may ask for |
@@ -84,16 +84,18 @@ records whether a person or an agent uses it. Keys start with `mev_`, are stored
 when they are issued. Version 1 has no sign-up, sign-in or key-management endpoint: keys are issued by the seed
 (`pnpm db:seed` prints them), through Identity's `issueCredential`.
 
-Every endpoint checks the key, `/health`, `/openapi.json` and `/mcp` included, and a path that does not exist answers
-401 to a caller without a valid key. A client may act while their tenant is active, and a system admin may do
-everything. Each key is rate limited on its own, and each address before any key is checked.
+Every endpoint checks the key except `/health`, which needs none so that a load balancer or an uptime check can call
+it. `/openapi.json` and `/mcp` check it too, and a path that does not exist answers 401 to a caller without a valid
+key. A client may act while their tenant is active, and a system admin may do everything. Each key is rate limited on
+its own, and each address before any key is checked. Both limits are set high by default: version 1 runs as one
+instance, and they are there to stop a runaway client, not to meter use.
 
 Over REST, send the key in the Authorization header (or as `x-api-key: <key>`):
 
 ```sh
-curl -H "Authorization: Bearer mev_..." http://localhost:4000/health
+curl http://localhost:4000/health
 curl -H "Authorization: Bearer mev_..." -H "Content-Type: application/json" \
-  -d '{"near":{"lat":-34.4187,"lng":19.2345},"from":"2027-06-10","to":"2027-06-20"}' \
+  -d '{"location":"hermanus","from":"2027-06-10","to":"2027-06-20"}' \
   http://localhost:4000/v1/experiences/search
 ```
 

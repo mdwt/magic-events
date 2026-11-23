@@ -2,19 +2,26 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { errorResponses } from "../errors.ts";
 
-// The platform's own endpoints. Like every endpoint, they need a valid API key.
+// The platform's own endpoints. The health check needs no API key; the OpenAPI document does, like every other
+// endpoint.
 export const platformRoutes: FastifyPluginAsyncZod<{ checkDatabase: () => Promise<void> }> = (app, { checkDatabase }) => {
   app.get(
     "/health",
     {
-      config: { action: "health.read" },
+      config: { public: true },
       schema: {
         operationId: "getHealth",
         summary: "Health",
-        description: "Whether the service is up and can reach its database.",
+        description: "Whether the service is up and can reach its database. Needs no API key.",
         tags: ["Platform"],
+        security: [],
         querystring: z.strictObject({}),
-        response: { 200: z.object({ status: z.literal("ok") }).describe("The service is up."), ...errorResponses },
+        response: {
+          200: z.object({ status: z.literal("ok") }).describe("The service is up."),
+          400: errorResponses[400],
+          429: errorResponses[429],
+          500: errorResponses[500],
+        },
       },
     },
     async () => {

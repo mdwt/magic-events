@@ -116,14 +116,14 @@ test("a client in an active tenant may act, and a client in a suspended tenant m
     identity.authorise(suspended, "experiences.search");
   }, forbidden);
   assert.throws(() => {
-    identity.authorise(suspended, "health.read");
+    identity.authorise(suspended, "openapi.read");
   }, forbidden);
 });
 
 test("a system admin belongs to no tenant and may do everything", async () => {
   const admin = await identity.authenticate((await harness.createCaller({ role: "system_admin" })).key);
   assert.equal(admin.tenant, null);
-  for (const action of ["experiences.search", "mcp.use", "health.read", "openapi.read"] as const) {
+  for (const action of ["experiences.search", "mcp.use", "openapi.read"] as const) {
     identity.authorise(admin, action);
   }
 });
