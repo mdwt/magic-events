@@ -5,7 +5,7 @@ import type {
   SaveExperienceInput,
   SaveExperienceResult,
 } from "../catalogue/ports.ts";
-import type { ClaimedRawListing, Discovery } from "../discovery/ports.ts";
+import type { ClaimedRawListing, Discovery, RequeueResult } from "../discovery/ports.ts";
 import type { Clock } from "../shared/clock.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
 import { type LanguageModel, LanguageModelFailed } from "../shared/language-model.ts";
@@ -45,6 +45,7 @@ import type {
   DataProcessing,
   DataProcessingRepository,
   ProcessingOutcome,
+  ReprocessTarget,
   SaveSeasonInput,
   Season,
   TagDefinition,
@@ -70,6 +71,9 @@ function defaultValueProblem(input: AttributeDefinition): string | null {
       return typeof value === "string" && isIsoDate(value) ? null : "Must be a date as YYYY-MM-DD.";
   }
 }
+
+// The shape of an ID, which tells an experience's ID from its slug.
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // The longest error text kept on a failed raw listing.
 const ERROR_TEXT_LIMIT = 1000;
@@ -221,6 +225,40 @@ export class DataProcessingService implements DataProcessing {
       outcomes.push(outcome);
     }
     return outcomes;
+  }
+
+  async reprocess(target: ReprocessTarget): Promise<RequeueResult> {
+    let result: RequeueResult;
+    if ("listingId" in target) {
+      result = await this.#discovery.requeueListings({ listingIds: [target.listingId] });
+    } else if ("experienceId" in target) {
+      // An experience is named by its ID or by its slug, and a slug is never a UUID.
+      const name = target.experienceId;
+      const found = await this.#catalogue.getExperience(UUID.test(name) ? { id: name } : { slug: name });
+      if (!found) throw new AppError("not_found", `No experience with the ID or slug "${name}".`);
+      if (found.listingIds.length === 0) {
+        throw new AppError(
+          "invalid_input",
+          `The experience "${found.slug}" is linked to no listing, so there is nothing to process again.`,
+        );
+      }
+      result = await this.#discovery.requeueListings({ listingIds: found.listingIds });
+    } else if ("sourceName" in target) {
+      // A name is unique within a location, so one name can be a source in each of several locations.
+      const sources = (await this.#discovery.listSources()).filter((source) => source.name === target.sourceName);
+      if (sources.length === 0) throw new AppError("not_found", `No source named "${target.sourceName}".`);
+      const listingIds: string[] = [];
+      for (const source of sources) {
+        listingIds.push(...(await this.#discovery.requeueListings({ sourceId: source.id })).listingIds);
+      }
+      result = { requeued: listingIds.length, listingIds };
+    } else {
+      const location = await this.#catalogue.getLocation({ slug: target.locationSlug });
+      if (!location) throw new AppError("not_found", `No location with the slug "${target.locationSlug}".`);
+      result = await this.#discovery.requeueListings({ locationId: location.id });
+    }
+    this.#logger.debug({ target, requeued: result.requeued }, "Listings sent back to be processed again");
+    return result;
   }
 
   async #process(raw: ClaimedRawListing): Promise<ProcessingOutcome> {

@@ -1,3 +1,5 @@
+import type { RequeueResult } from "../discovery/ports.ts";
+
 // Data processing: turns raw listings into clean, categorised, tagged experiences.
 // It calls Discovery and Catalogue. It owns the attribute, option and tag definitions and the seasons.
 
@@ -69,6 +71,14 @@ export interface ProcessingOutcome {
   error: string | null;
 }
 
+// What to process again: one listing, every listing an experience was built from, every listing of a source, or
+// every listing of a location. An experience is named by its ID or its slug, a source by its name.
+export type ReprocessTarget =
+  | { listingId: string }
+  | { experienceId: string }
+  | { sourceName: string }
+  | { locationSlug: string };
+
 // Inbound port: what Data processing offers.
 export interface DataProcessing {
   // Claims one pending raw listing and processes it in one transaction: extract, classify, match, save, append
@@ -77,6 +87,9 @@ export interface DataProcessing {
   processNext(): Promise<ProcessingOutcome | null>;
   // Processes pending raw listings one after another until none is left, or until the limit is reached.
   processPending(options?: { limit?: number }): Promise<ProcessingOutcome[]>;
+  // Sends the target's listings back for processing: the latest version of each goes back to pending through
+  // Discovery. It only sends them back; the processing job, or processPending, processes them.
+  reprocess(target: ReprocessTarget): Promise<RequeueResult>;
 
   // Creates the attribute with its options, or updates the one that has this key. Options left out are removed.
   saveAttribute(input: AttributeDefinition): Promise<AttributeDefinition>;

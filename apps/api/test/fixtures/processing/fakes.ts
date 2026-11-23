@@ -255,6 +255,9 @@ export function setup(
     listSources: () => Promise.reject(new Error("not used")),
     findDueSources: () => Promise.reject(new Error("not used")),
     runSource: () => Promise.reject(new Error("not used")),
+    runLocation: () => Promise.reject(new Error("not used")),
+    getListing: () => Promise.reject(new Error("not used")),
+    requeueListings: () => Promise.reject(new Error("not used")),
     claimPendingRawListing: () => Promise.resolve(state.pending.shift() ?? null),
     markRawListingProcessed(id) {
       state.processed.push(id);
@@ -277,6 +280,7 @@ export function setup(
     searchExperiences: () => Promise.reject(new Error("not used")),
     saveLocation: () => Promise.reject(new Error("not used")),
     getLocation: (by) => Promise.resolve(("id" in by ? by.id === HERMANUS.id : by.slug === HERMANUS.slug) ? HERMANUS : null),
+    getExperience: () => Promise.reject(new Error("not used")),
     findExperiencesByListing: (listingId) =>
       Promise.resolve([...state.experiences.values()].filter((one) => one.listingIds.includes(listingId))),
     findMatchCandidates: () =>
@@ -315,6 +319,7 @@ export function setup(
     },
     getChangesSince: () => Promise.reject(new Error("not used")),
     keepUp: () => Promise.reject(new Error("not used")),
+    embedExperiences: () => Promise.reject(new Error("not used")),
   };
 
   const repository: DataProcessingRepository = {
