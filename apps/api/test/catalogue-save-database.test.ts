@@ -10,6 +10,7 @@ import type { Catalogue, Location, SaveExperienceInput } from "../src/core/catal
 import { CatalogueService } from "../src/core/catalogue/service.ts";
 import type { DomainEvent } from "../src/core/shared/domain-events.ts";
 import { input as listing, LISTING_A, LISTING_B, RAW_A, RAW_B } from "./helpers/catalogue-fake.ts";
+import { FakeEmbeddingModel } from "./helpers/fake-embedding-model.ts";
 import { createHarness, testSettings, type Harness } from "./helpers/harness.ts";
 
 // Saving experiences against the database. Today is 23 November 2026.
@@ -328,6 +329,8 @@ describe("in a surrounding transaction", () => {
         },
       },
       settings: settings.catalogue,
+      embeddings: new FakeEmbeddingModel(),
+      embeddingSettings: settings.embedding,
       logger: createLogger(settings.api),
       clock: () => NOW,
     });

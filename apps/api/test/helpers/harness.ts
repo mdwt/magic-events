@@ -9,6 +9,7 @@ import { buildApp, type Overrides, type Services } from "../../src/app.ts";
 import type { CallerKind } from "../../src/core/identity/ports.ts";
 import type { Role, TenantStatus } from "../../src/core/organizations/ports.ts";
 import type { Settings } from "../../src/core/shared/settings.ts";
+import { FakeEmbeddingModel } from "./fake-embedding-model.ts";
 
 // The app against the test database, which is emptied first. Drive it with app.inject().
 
@@ -48,7 +49,8 @@ async function emptyEveryTable(db: Db): Promise<void> {
   await db.execute(sql`truncate table ${names} restart identity cascade`);
 }
 
-// The overrides put a fake in place of the language model, the source adapters or the clock.
+// The overrides put a fake in place of the language model, the embedding model, the source adapters or the clock.
+// The embedding model is always a fake, so no test reaches a cloud service.
 export async function createHarness(overrides: Overrides = {}): Promise<Harness> {
   const url = process.env.TEST_DATABASE_URL;
   if (url === undefined || url === "") throw new Error("Set TEST_DATABASE_URL to run the database tests.");
@@ -63,7 +65,7 @@ export async function createHarness(overrides: Overrides = {}): Promise<Harness>
     settings,
     db: database.db,
     logger: createLogger(settings.api),
-    overrides,
+    overrides: { embeddingModel: new FakeEmbeddingModel(), ...overrides },
   });
   await app.ready();
 

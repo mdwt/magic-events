@@ -59,6 +59,8 @@ const INSERT_CHUNK = 1000;
 // The mean radius of the Earth, in kilometres.
 const EARTH_RADIUS_KM = 6371.0088;
 
+const EXPERIENCE_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export function createCatalogueRepository(db: Db): CatalogueRepository {
   return {
     async searchExperiences(query) {
@@ -194,6 +196,17 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
         .where("id" in by ? eq(location.id, by.id) : eq(location.slug, by.slug))
         .limit(1);
       return found === undefined ? null : toLocation(found);
+    },
+
+    async findExperienceId(by) {
+      // The ID column is a UUID, so anything else names no experience.
+      if ("id" in by && !EXPERIENCE_ID.test(by.id)) return null;
+      const [found] = await db
+        .select({ id: experience.id })
+        .from(experience)
+        .where("id" in by ? eq(experience.id, by.id) : eq(experience.slug, by.slug))
+        .limit(1);
+      return found?.id ?? null;
     },
 
     async loadExperiences(by) {

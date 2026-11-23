@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import type pino from "pino";
 import { createAuth } from "./adapters/auth/better-auth.ts";
+import { createEmbeddingModel } from "./adapters/embedding/bedrock.ts";
 import { createDomainEvents } from "./adapters/events/node-events.ts";
 import { createLanguageModel } from "./adapters/language-model/anthropic.ts";
 import { createSourceFetchers } from "./adapters/sources/index.ts";
@@ -11,7 +12,7 @@ import { createDataProcessingRepository } from "./adapters/storage/data-processi
 import { createDiscoveryRepository } from "./adapters/storage/discovery-repository.ts";
 import { createOrganizationsRepository } from "./adapters/storage/organizations-repository.ts";
 import { createTransactionalDb } from "./adapters/storage/transactions.ts";
-import type { Catalogue } from "./core/catalogue/ports.ts";
+import type { Catalogue, EmbeddingModel } from "./core/catalogue/ports.ts";
 import { CatalogueService } from "./core/catalogue/service.ts";
 import type { DataProcessing } from "./core/data-processing/ports.ts";
 import { DataProcessingService } from "./core/data-processing/service.ts";
@@ -41,6 +42,7 @@ export interface Services {
 // What a test, or a run without the real providers, puts in place of an outbound adapter.
 export interface Overrides {
   languageModel?: LanguageModel;
+  embeddingModel?: EmbeddingModel;
   fetchers?: SourceFetcher[];
   clock?: Clock;
   // A test hands in its own, so it can subscribe and see what was published.
@@ -63,6 +65,7 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
   };
   const clock: Clock = overrides.clock ?? (() => new Date());
   const languageModel = overrides.languageModel ?? createLanguageModel(settings.languageModel, logger);
+  const embeddings = overrides.embeddingModel ?? createEmbeddingModel(settings.embedding, logger);
   const fetchers =
     overrides.fetchers ?? createSourceFetchers({ languageModel, settings: settings.discovery, logger });
 
@@ -70,6 +73,8 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
     repository: createCatalogueRepository(db),
     events,
     settings: settings.catalogue,
+    embeddings,
+    embeddingSettings: settings.embedding,
     logger,
     clock,
   });

@@ -119,6 +119,13 @@ export class CatalogueService implements Catalogue {
     return this.#repository.findLocation(by);
   }
 
+  async getExperience(by: { id: string } | { slug: string }): Promise<StoredExperience | null> {
+    const id = await this.#repository.findExperienceId(by);
+    if (id === null) return null;
+    const [found] = await this.#repository.loadExperiences({ ids: [id] });
+    return found ?? null;
+  }
+
   async findExperiencesByListing(listingId: string): Promise<ExperienceMatch[]> {
     const experiences = await this.#repository.loadExperiences({ listingId });
     return experiences.map(toMatch);
@@ -294,7 +301,6 @@ export class CatalogueService implements Catalogue {
   async keepUp(): Promise<UpkeepResult> {
     const at = this.#clock();
     const result: UpkeepResult = { past: 0, bookingsClosed: 0, sessionsGenerated: 0 };
-    let failed = 0;
     let after: string | null = null;
     // In batches by ID, so a large catalogue is never loaded at once. Each experience is saved on its own, so one
     // that fails does not stop the others.
@@ -339,16 +345,12 @@ export class CatalogueService implements Catalogue {
             this.#logger.info({ ...log, version: experience.version, change, booking: experience.booking }, "Kept up");
           }
         } catch (error) {
-          failed += 1;
           this.#logger.error({ experienceId: stored.id, err: error }, "Upkeep of an experience failed");
         }
       }
       after = ids[ids.length - 1] ?? null;
       if (ids.length < UPKEEP_BATCH) break;
     }
-
-    const level = result.past + result.bookingsClosed + result.sessionsGenerated + failed > 0 ? "info" : "debug";
-    this.#logger[level]({ ...result, failed }, "Kept the catalogue up");
     return result;
   }
 
