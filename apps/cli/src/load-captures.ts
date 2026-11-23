@@ -16,9 +16,9 @@ import { type LanguageModel, LanguageModelFailed, type LanguageModelRequest } fr
 
 // Loads pages captured by a browser scrape through the pipeline, as if the sources had just been fetched.
 //
-//   pnpm --filter @magic-events/api captures                 load every source in data/hermanus/sources.json
-//   pnpm --filter @magic-events/api captures --source SLUG   load one source by its slug
-//   pnpm --filter @magic-events/api captures --no-model      never ask the language model, even for an unsure match
+//   pnpm cli:captures                    load every source in data/hermanus/sources.json
+//   pnpm cli:captures -- --source SLUG   load one source by its slug
+//   pnpm cli:captures -- --no-model      never ask the language model, even for an unsure match
 //
 // A capture directory holds sources.json, raw/<slug>/ with one file per captured page (its first line is
 // "URL: <address>"), and extracted/<slug>.json with the experiences read from those pages.
