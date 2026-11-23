@@ -124,9 +124,10 @@ An extractor returns the dates a listing gives and no others. Catalogue saves th
 
 The three language model extractors share one implementation. Each kind only prepares the content differently. The model is given the content, the location's name and region, the fetch time and the extracted experience shape, and must answer in that shape. The model is reached through the language model port (see Ports).
 
-Two things every extractor leaves out:
+Three things every extractor leaves out:
 
 - **What is already over.** An experience whose last date is before the fetch time is not returned. A news post about last weekend produces nothing.
+- **What is beyond the sourcing horizon.** An experience whose first date is more than `DISCOVERY_HORIZON_MONTHS` after the fetch time is not returned (see [discovery.md](discovery.md)). An open-ended recurring experience starts inside the horizon, so it is returned.
 - **Festival programme items.** A festival is one experience. The talks, concerts and exhibitions on its programme are not extracted separately.
 
 ## Classification
@@ -469,6 +470,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Dates | An extractor returns the dates a listing gives and no others: listed dates as sessions, a stated pattern as a recurrence. It never fills in the days between a first and a last date, and never works a pattern out into dates |
 | Seasons | Predefined rows per location, not experiences. An experience is given the seasons its dates fall inside, as tags |
 | Already over | An extractor leaves out experiences whose last date is before the fetch time |
+| Beyond the horizon | An extractor leaves out experiences whose first date is beyond the sourcing horizon, 24 months by default |
 | Festival programmes | A festival is one experience. Its programme items are not extracted separately |
 | Undefined values | An attribute, option or tag that is not defined is not put on the experience. It is saved for review with as much detail as possible, and version 1 does nothing more with it |
 | Data warehouse | A table in the same Postgres database. After saving, Data processing appends each experience it saved |

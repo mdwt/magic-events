@@ -158,7 +158,7 @@ An adapter that filters by place does it here. Quicket has no location filter, s
 
 ## Fetching
 
-1. The schedule starts Discovery for each active source, at that source's fetch interval. How often the schedule looks for sources that are due is a setting (see Settings).
+1. The schedule starts Discovery for each active source, at that source's fetch interval. A source is fetched once a week unless its row says otherwise, and each fetch is a full update of everything the source lists. How often the schedule looks for sources that are due is a setting (see Settings).
 2. Discovery gets the source's location (name, centre point, timezone) from the Catalogue service and inserts a run with status running.
 3. Discovery calls the adapter for the source's kind with the source's settings, credentials, sync state and the location.
 4. The adapter calls the source and returns the listings whole: one per API event, page, post or calendar. For each listing it returns the source's listing ID, the web address, the content type and the raw content. It does not clean, split or interpret anything.
@@ -170,6 +170,13 @@ An adapter that filters by place does it here. Quicket has no location filter, s
 7. If the run succeeded and the adapter reported it complete, Discovery checks for listings that have gone missing (below). An incremental run only returns what changed, so it never counts as a miss.
 
 If the fetch fails part way, the listings already saved stay saved and the run is marked failed. A failed run never counts as a miss.
+
+### How far ahead
+
+Experiences are sourced from today to 24 months ahead, the sourcing horizon (`DISCOVERY_HORIZON_MONTHS`). Trips are booked up to 18 months before they start.
+
+- An adapter whose source can be asked for a range of dates asks for today to the horizon.
+- A page, feed or calendar is fetched whole, so the horizon is applied in extraction: an experience whose first date is beyond the horizon is left out (see [data-processing.md](data-processing.md)). It is picked up by a later run, once its date is inside the horizon.
 
 ## Listings that disappear
 
@@ -220,7 +227,8 @@ System settings are environment variables, read through the settings provider (s
 | --- | --- | --- |
 | `DISCOVERY_SCHEDULE_INTERVAL_SECONDS` | 60 | How often the schedule looks for sources that are due a fetch |
 | `DISCOVERY_FETCH_TIMEOUT_SECONDS` | 30 | How long an adapter waits for a source to answer |
-| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 24 | Fetch interval given to a new source |
+| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 168 | Fetch interval given to a new source: once a week |
+| `DISCOVERY_HORIZON_MONTHS` | 24 | How far ahead experiences are sourced |
 | `DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL` | 3 | Missed runs before removal given to a new source |
 | `DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS` | 3 | Max processing attempts given to a new source |
 | `QUICKET_API_KEY` | None | The Quicket API key. The Quicket source row names this setting |
@@ -245,6 +253,8 @@ Catalogue calls neither, so the dependencies have no cycles.
 | No copies | Services call each other's services. No table holds a copy of another domain's data |
 | One location per source | A source row carries its location and settings |
 | Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source. System settings, such as how often the schedule runs and the defaults a new source gets, are environment variables listed under Settings |
+| Schedule | Every source is fetched once a week by default, as a full update of everything it lists. The interval is set per source |
+| Horizon | Experiences are sourced from today to 24 months ahead. An experience that starts later is left out until a later run |
 | Language model | Discovery uses the language model port to find the current calendar file. PDFs are stored whole and read by the language model in processing, so no PDF text is extracted here |
 | Source kinds | Five in version 1: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |
 | Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
