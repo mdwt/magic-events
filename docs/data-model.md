@@ -187,7 +187,7 @@ System settings are environment variables, read through the settings provider (s
 | --- | --- | --- |
 | `CATALOGUE_UPKEEP_CRON` | `0 * * * *` | When Catalogue's upkeep runs, as a cron expression in UTC: every hour. The upkeep moves finished experiences to Past, closes bookings whose close time has passed, and generates the sessions of open-ended recurring experiences further ahead |
 | `CATALOGUE_SESSION_HORIZON_MONTHS` | 24 | How far ahead Catalogue generates the sessions of an open-ended recurring experience. Trips are booked up to 18 months ahead |
-| `SEARCH_DEFAULT_RADIUS_KM` | 25 | The radius used when a client's search gives none |
+| `SEARCH_DEFAULT_RADIUS_KM` | 60 | The radius used when a client's search gives none. Wide enough to reach the neighbouring towns a location's sources cover, such as Gansbaai and Pringle Bay from Hermanus |
 | `SEARCH_MAX_RADIUS_KM` | 200 | The largest radius a client may ask for |
 
 ## Data processing
