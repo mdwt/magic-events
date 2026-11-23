@@ -26,7 +26,8 @@ Needs Postgres up on port 5434 (`pnpm db:up`), `psql` on the path, and an instal
    authentication, a refusal at warn with its reason, a system error at error with the error.
 5. Calls every operation of `apps/api/openapi.json` in each documented answer it can cause, checks each answer against
    its schema, and starts extra servers for the rate limits and for a database that goes away (a TCP proxy in front of
-   Postgres, so no other database is touched).
+   Postgres, so no other database is touched). E2E-19 runs on a scratch database whose one active source is at a
+   closed local port, and C-09 restores the snapshot into another, once `packages/db/snapshot/hermanus.sql.gz` exists.
 6. Stops the servers, drops its database, removes its files, and writes the results table to `results/latest.md`.
 
 | Variable | Does |
