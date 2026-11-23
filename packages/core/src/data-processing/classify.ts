@@ -1,7 +1,8 @@
+import rrule from "rrule";
 import { z } from "zod";
 import type { AttributeValue } from "../catalogue/ports.ts";
-import { isIsoDate, overlaps } from "./dates.ts";
-import { type ExtractedExperience, sessionEnd } from "./extract.ts";
+import { isIsoDate } from "./dates.ts";
+import { type ExtractedExperience, type ExtractedRecurrence, sessionEnd } from "./extract.ts";
 import { CLASSIFICATION_INSTRUCTIONS_INTRODUCTION } from "./instructions.ts";
 import type { AttributeDefinition, Season, TagDefinition } from "./ports.ts";
 
@@ -162,22 +163,42 @@ export function checkClassification(answer: ClassificationAnswer, definitions: D
   return { attributes, tags, profile: profile === "" ? undefined : profile, undefinedValues, misfits };
 }
 
-// The seasons of the location that the experience's dates fall inside, as their slugs. A season applies when any
-// of its periods overlaps any session or, for a recurring experience, the recurrence's span up to the horizon.
+// The days a recurrence gives from its first date to `end`, both included, less the skipped ones.
+function recurrenceDays(recurrence: ExtractedRecurrence, end: string): string[] {
+  if (end < recurrence.start) return [];
+  const rule = rrule.rrulestr(`RRULE:${recurrence.rule}`, { dtstart: new Date(`${recurrence.start}T00:00:00Z`) });
+  const skipped = new Set(recurrence.skipped ?? []);
+  const days = rule
+    .between(new Date(`${recurrence.start}T00:00:00Z`), new Date(`${end}T23:59:59.999Z`), true)
+    .map((date) => date.toISOString().slice(0, 10));
+  return [...new Set(days)].filter((day) => !skipped.has(day));
+}
+
+// The seasons of the location that all of the experience's dates fall inside, as their slugs. Each session must be
+// inside one of the season's periods, the whole month or year for month or year precision, and so must every day
+// its recurrence gives up to its last date, and no further than the horizon. An open-ended one has no last date, so
+// its days are counted up to the horizon or the end of the season's last period, whichever is earlier, since a
+// season's later years are not rows yet. So a market every Saturday of the year is in no season, and whale watching
+// every day from June to November is in whale season.
 export function seasonsOf(experience: ExtractedExperience, seasons: Season[], horizonEnd: string): string[] {
   const spans = experience.sessions.map((session) => ({ start: session.start, end: sessionEnd(session) }));
   const recurrence = experience.recurrence;
-  if (recurrence) {
-    const end = recurrence.end === undefined || recurrence.end > horizonEnd ? horizonEnd : recurrence.end;
-    if (end >= recurrence.start) spans.push({ start: recurrence.start, end });
-  }
   return seasons
-    .filter((season) =>
-      season.periods.some((period) =>
-        spans.some((span) => overlaps(span, { start: period.startDate, end: period.endDate })),
-      ),
-    )
+    .filter((season) => {
+      const inside = (span: { start: string; end: string }) =>
+        season.periods.some((period) => period.startDate <= span.start && span.end <= period.endDate);
+      const lastPeriodEnd = season.periods.reduce((last, period) => (period.endDate > last ? period.endDate : last), "");
+      const days = recurrence
+        ? recurrenceDays(recurrence, earlier(recurrence.end ?? lastPeriodEnd, horizonEnd))
+        : [];
+      if (spans.length === 0 && days.length === 0) return false;
+      return spans.every(inside) && days.every((day) => inside({ start: day, end: day }));
+    })
     .map((season) => season.slug);
+}
+
+function earlier(a: string, b: string): string {
+  return b < a ? b : a;
 }
 
 // The season an extracted experience is, when it is one: its dates are only months or years and are exactly one

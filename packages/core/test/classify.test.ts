@@ -128,26 +128,63 @@ describe("What the classifier is given", () => {
 });
 
 describe("Seasons", () => {
-  test("a season applies when one of its periods overlaps a session", () => {
-    assert.deepEqual(seasonsOf(experience({ sessions: [{ start: "2027-06-12", end: "2027-06-21", precision: "day" }] }), SEASONS, "2028-11-23"), [
-      "whale-season",
-    ]);
-    assert.deepEqual(seasonsOf(experience({ sessions: [{ start: "2027-03-13", precision: "day" }] }), SEASONS, "2028-11-23"), []);
+  const horizon = "2028-11-23";
+  const seasonsOfSessions = (sessions: ExtractedExperience["sessions"]) => seasonsOf(experience({ sessions }), SEASONS, horizon);
+
+  test("a season applies only when every session is inside one of its periods", () => {
+    assert.deepEqual(seasonsOfSessions([{ start: "2027-06-12", end: "2027-06-21", precision: "day" }]), ["whale-season"]);
+    assert.deepEqual(seasonsOfSessions([{ start: "2027-03-13", precision: "day" }]), []);
+    // A run with one date in whale season and one after it.
     assert.deepEqual(
-      seasonsOf(experience({ sessions: [{ start: "2026-11-01", precision: "month" }] }), SEASONS, "2028-11-23"),
-      ["whale-season"],
+      seasonsOfSessions([
+        { start: "2027-11-20", precision: "day" },
+        { start: "2027-12-04", precision: "day" },
+      ]),
+      [],
     );
+    // Days that run from the end of whale season into summer are inside neither.
+    assert.deepEqual(seasonsOfSessions([{ start: "2026-11-25", end: "2026-12-05", precision: "day" }]), []);
   });
 
-  test("a recurring experience is in every season its recurrence spans up to the horizon", () => {
+  test("a month or a year is inside only when the whole of it is", () => {
+    assert.deepEqual(seasonsOfSessions([{ start: "2026-11-01", precision: "month" }]), ["whale-season"]);
+    assert.deepEqual(seasonsOfSessions([{ start: "2026-12-01", precision: "month" }]), ["summer"]);
+    assert.deepEqual(seasonsOfSessions([{ start: "2027-01-01", precision: "year" }]), []);
+  });
+
+  test("a recurring experience is in a season only when every day its recurrence gives is", () => {
     const market = experience({
       type: "recurring",
       sessions: [],
       recurrence: { rule: "FREQ=WEEKLY;BYDAY=SA", start: "2026-11-28" },
     });
-    assert.deepEqual(seasonsOf(market, SEASONS, "2028-11-23").sort(), ["summer", "whale-season"]);
-    assert.deepEqual(seasonsOf({ ...market, recurrence: { rule: "FREQ=WEEKLY", start: "2026-12-05", end: "2027-01-30" } }, SEASONS, "2028-11-23"), [
-      "summer",
-    ]);
+    // A market every Saturday of the year is in no season.
+    assert.deepEqual(seasonsOf(market, SEASONS, horizon), []);
+    const bounded = { ...market, recurrence: { rule: "FREQ=WEEKLY", start: "2026-12-05", end: "2027-01-30" } };
+    assert.deepEqual(seasonsOf(bounded, SEASONS, horizon), ["summer"]);
+    // An extra date outside the season, listed beside the rule, takes it out.
+    assert.deepEqual(seasonsOf({ ...bounded, sessions: [{ start: "2027-03-06", precision: "day" }] }, SEASONS, horizon), []);
+    // A skipped date outside the season does not.
+    const intoDecember = { rule: "FREQ=WEEKLY;BYDAY=SA", start: "2027-11-20", end: "2027-12-04" };
+    assert.deepEqual(seasonsOf({ ...market, recurrence: intoDecember }, SEASONS, horizon), []);
+    assert.deepEqual(
+      seasonsOf({ ...market, recurrence: { ...intoDecember, skipped: ["2027-12-04"] } }, SEASONS, horizon),
+      ["whale-season"],
+    );
+  });
+
+  test("an open-ended recurrence on only the season's months is in it, as far as the season's periods go", () => {
+    const whaleWatching = experience({
+      type: "recurring",
+      sessions: [],
+      recurrence: { rule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11", start: "2026-11-23" },
+    });
+    assert.deepEqual(seasonsOf(whaleWatching, SEASONS, horizon), ["whale-season"]);
+    const nightMarkets = experience({
+      type: "recurring",
+      sessions: [],
+      recurrence: { rule: "FREQ=WEEKLY;BYDAY=WE;BYMONTH=12,1", start: "2026-12-02" },
+    });
+    assert.deepEqual(seasonsOf(nightMarkets, SEASONS, horizon), ["summer"]);
   });
 });
