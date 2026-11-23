@@ -235,22 +235,37 @@ export function allowedBooking(status: ExperienceStatus, booking: Booking): Book
 
 // ---- Meeting the stored values ----
 
-function fill<T>(stored: T | null, incoming: T | null): T | null {
-  return stored ?? incoming;
+// The first value, or the second when the first is empty.
+function fill<T>(first: T | null, second: T | null): T | null {
+  return first ?? second;
 }
 
-// The values the experience will have. "lead" takes the incoming values whole, so a field the input leaves out
-// becomes empty. "fill" only fills what is empty, and takes the dates only when the experience has none.
-// Status and booking are worked out by the caller.
-export function meet(stored: StoredExperience, incoming: Draft, precedence: "lead" | "fill"): Draft {
+// The values the experience will have, so that processing any of its listings again, with unchanged content, in
+// any order, changes nothing.
+// "lead" sets every value the input states, and the dates whole. A field, attribute key or tag the input leaves out
+// is kept when the experience has other listings, which may have given it, and is cleared when this is its only one.
+// Seasons are worked out from the dates, so they are always the ones the leading listing's dates give.
+// "fill" only fills what is empty, adds the tags it gives, and takes the dates, with their seasons, only when the
+// experience has none.
+// Status and booking are worked out by the caller. `seasonSlugs` names the seasons among the tags.
+export function meet(
+  stored: StoredExperience,
+  incoming: Draft,
+  precedence: "lead" | "fill",
+  seasonSlugs: string[] = [],
+): Draft {
   const generated = stored.sessions.filter((session) => session.origin === "generated");
   const storedListed = stored.sessions.filter((session) => session.origin === "listed");
   const listingIds = stored.listingIds.includes(incoming.listingIds[0] ?? "")
     ? stored.listingIds
     : [...stored.listingIds, ...incoming.listingIds];
+  const isSeason = (tag: string) => seasonSlugs.includes(tag);
+  const storedTags = stored.tags.filter((tag) => !isSeason(tag));
+  const incomingTags = incoming.tags.filter((tag) => !isSeason(tag));
+  const incomingSeasons = incoming.tags.filter(isSeason);
 
   if (precedence === "lead") {
-    return {
+    const led: Draft = {
       ...incoming,
       id: stored.id,
       version: stored.version,
@@ -261,6 +276,31 @@ export function meet(stored: StoredExperience, incoming: Draft, precedence: "lea
       booking: stored.booking,
       sessions: generated,
       listingIds,
+    };
+    if (listingIds.length === 1) return led;
+    const priceStated = incoming.price.min !== null || incoming.price.max !== null || incoming.price.currency !== null;
+    return {
+      ...led,
+      summary: fill(incoming.summary, stored.summary),
+      description: fill(incoming.description, stored.description),
+      profile: fill(incoming.profile, stored.profile),
+      openingHours: fill(incoming.openingHours, stored.openingHours),
+      venue: {
+        name: fill(incoming.venue.name, stored.venue.name),
+        address: fill(incoming.venue.address, stored.venue.address),
+        city: fill(incoming.venue.city, stored.venue.city),
+        position: fill(incoming.venue.position, stored.venue.position),
+      },
+      price: priceStated ? incoming.price : stored.price,
+      onSaleAt: fill(incoming.onSaleAt, stored.onSaleAt),
+      bookingClosesAt: fill(incoming.bookingClosesAt, stored.bookingClosesAt),
+      bookingUrl: fill(incoming.bookingUrl, stored.bookingUrl),
+      imageUrl: fill(incoming.imageUrl, stored.imageUrl),
+      pageUrl: fill(incoming.pageUrl, stored.pageUrl),
+      // The keys it gives replace those keys; the others are kept.
+      attributes: sortedAttributes({ ...stored.attributes, ...incoming.attributes }),
+      // Its tags and the stored ones, and the seasons its dates give, with no stored season kept.
+      tags: [...new Set([...incomingTags, ...storedTags, ...incomingSeasons])].sort(),
     };
   }
 
@@ -294,7 +334,10 @@ export function meet(stored: StoredExperience, incoming: Draft, precedence: "lea
       ...stored.attributes,
       ...Object.fromEntries(missingKeys.map((key) => [key, incoming.attributes[key] ?? []])),
     }),
-    tags: stored.tags.length === 0 ? incoming.tags : stored.tags,
+    // Its tags are added to the stored ones, as its attribute keys are; seasons go with the dates.
+    tags: [
+      ...new Set([...storedTags, ...incomingTags, ...(takeDates ? incomingSeasons : stored.tags.filter(isSeason))]),
+    ].sort(),
     listingIds,
   };
 }

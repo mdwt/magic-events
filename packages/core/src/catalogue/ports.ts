@@ -431,10 +431,16 @@ export interface SaveExperienceInput {
   attributes: Record<string, AttributeValue[]>;
   // Tag slugs and season slugs.
   tags: string[];
+  // Every season slug of the location, whether its dates give it or not, so the save can tell the seasons among the
+  // tags: they are worked out from the dates, so they follow the listing whose dates the experience has. Left out,
+  // no tag is taken for a season.
+  seasonSlugs?: string[];
   // The listing this was built from. The experience gets a source link to it.
   source: { listingId: string; rawListingId: string };
   // How this listing's values meet the ones already stored, decided by Data processing from the source priorities.
-  // "lead": this listing is the experience's highest-priority one, so its values replace the stored ones.
+  // "lead": this listing is the experience's highest-priority one, so every value it states replaces the stored
+  // one, and its dates replace the stored dates whole. What it leaves empty is cleared when it is the experience's
+  // only listing, and kept when there are others, since another source may have given it.
   // "fill": a higher-priority listing leads, so this one only fills fields that are empty, and never the dates
   // of an experience that already has some.
   precedence: "lead" | "fill";

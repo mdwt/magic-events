@@ -115,6 +115,8 @@ function saveInput(input: {
   precedence: "lead" | "fill";
   attributes: SaveExperienceInput["attributes"];
   tags: string[];
+  // Every season slug of the location, so Catalogue can tell the seasons among the tags.
+  seasonSlugs: string[];
   profile: string | undefined;
 }): SaveExperienceInput {
   const { experience } = input;
@@ -149,6 +151,7 @@ function saveInput(input: {
     recurrence: experience.recurrence,
     attributes: input.attributes,
     tags: input.tags,
+    seasonSlugs: input.seasonSlugs,
     source: { listingId: input.raw.listingId, rawListingId: input.raw.id },
     precedence: input.precedence,
   };
@@ -353,6 +356,7 @@ export class DataProcessingService implements DataProcessing {
           precedence,
           attributes: classification.attributes,
           tags,
+          seasonSlugs: seasons.map((season) => season.slug),
           profile: classification.profile,
         }),
       );

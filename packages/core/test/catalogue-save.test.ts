@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import type { ExperienceStatus, SavableStatus, SaveExperienceInput } from "../src/catalogue/ports.ts";
 import { AppError } from "../src/shared/errors.ts";
+import { precedenceOf } from "../src/data-processing/match.ts";
 import { fakeCatalogue, input, LISTING_A, LISTING_B, RAW_A, RAW_B } from "../src/testing/catalogue-fake.ts";
 
 // The save rules with no database: an in-memory repository and a fixed clock, 23 November 2026.
@@ -322,6 +323,205 @@ describe("an update with precedence lead", () => {
   });
 });
 
+describe("an experience with several listings", () => {
+  const LISTING_C = "00000000-0000-4000-8000-00000000000c";
+  const SEASONS = ["whale-season", "winter"];
+  // A listing that states nothing beyond its title, dates, status and booking, with the overrides.
+  const bare = (listingId: string, overrides: Partial<SaveExperienceInput> = {}): SaveExperienceInput => ({
+    ...input({
+      summary: undefined,
+      description: undefined,
+      profile: undefined,
+      openingHours: undefined,
+      venue: undefined,
+      price: undefined,
+      onSaleAt: undefined,
+      bookingClosesAt: undefined,
+      bookingUrl: undefined,
+      imageUrl: undefined,
+      pageUrl: undefined,
+      attributes: {},
+      tags: [],
+      seasonSlugs: SEASONS,
+      ...overrides,
+    }),
+    source: { listingId, rawListingId: crypto.randomUUID() },
+  });
+  // Three listings, each stating something the others do not. A leads; B and C have the same, lower priority.
+  const listings: Record<string, { priority: number; input: SaveExperienceInput }> = {
+    A: {
+      priority: 10,
+      input: bare(LISTING_A, {
+        venue: { name: "Hermanus Golf Club" },
+        price: { min: 200, max: 400, currency: "ZAR" },
+        bookingUrl: "https://tickets.example.com/rumours",
+        sessions: [{ startDate: "2027-06-12", precision: "day", startTime: "19:00" }],
+        attributes: { category: ["music"] },
+        tags: ["rock-and-pop", "whale-season", "winter"],
+      }),
+    },
+    B: {
+      priority: 5,
+      input: bare(LISTING_B, {
+        summary: "A Fleetwood Mac tribute.",
+        venue: { position: { lat: -34.41, lng: 19.24 } },
+        sessions: [{ startDate: "2027-06-13", precision: "day" }],
+        attributes: { setting: ["indoor"] },
+        tags: ["tribute", "winter"],
+      }),
+    },
+    C: {
+      priority: 5,
+      input: bare(LISTING_C, {
+        description: "The hits of Rumours, live.",
+        imageUrl: "https://whatson.example.com/rumours.jpg",
+        sessions: [{ startDate: "2027-07-01", precision: "day" }],
+        attributes: { audience: ["all_ages"], category: ["performing_arts"] },
+        tags: ["classic-rock"],
+      }),
+    },
+  };
+
+  // Processes a listing as Data processing does: the first creates the experience, and each later one leads or
+  // fills by the priorities of the listings linked to it.
+  async function process(catalogue: ReturnType<typeof fakeCatalogue>, name: string): Promise<void> {
+    const listing = listings[name];
+    assert.ok(listing);
+    const [stored] = [...catalogue.experiences.values()];
+    if (stored === undefined) {
+      await catalogue.service.saveExperience({ ...listing.input, precedence: "lead" });
+      return;
+    }
+    const priorityOf = (listingId: string) =>
+      Object.values(listings).find((one) => one.input.source.listingId === listingId)?.priority ?? 0;
+    const linked = stored.listingIds.map((listingId) => ({ listingId, priority: priorityOf(listingId) }));
+    const own = { listingId: listing.input.source.listingId, priority: listing.priority };
+    await catalogue.service.saveExperience({
+      ...listing.input,
+      experienceId: stored.id,
+      source: { ...listing.input.source, rawListingId: crypto.randomUUID() },
+      precedence: precedenceOf(own, linked),
+    });
+  }
+
+  const orders = [
+    ["A", "B", "C"],
+    ["A", "C", "B"],
+    ["B", "A", "C"],
+    ["B", "C", "A"],
+    ["C", "A", "B"],
+    ["C", "B", "A"],
+  ];
+
+  for (const order of orders) {
+    test(`processed first as ${order.join(", ")}, then again in any order, writes no new version`, async () => {
+      const catalogue = fakeCatalogue();
+      for (const name of order) await process(catalogue, name);
+      const [first] = [...catalogue.experiences.values()];
+      assert.ok(first);
+      const published = catalogue.published.length;
+      const changes = catalogue.writes.filter((write) => write.change !== null).length;
+
+      for (const name of ["A", "B", "C", "C", "B", "A", "B", "A", "C"]) await process(catalogue, name);
+      const [again] = [...catalogue.experiences.values()];
+      assert.equal(again?.version, first.version);
+      assert.equal(catalogue.writes.filter((write) => write.change !== null).length, changes);
+      assert.equal(catalogue.published.length, published);
+
+      // The leader's values where it states them, the others' where it does not, whatever the order.
+      assert.deepEqual(again.venue, {
+        name: "Hermanus Golf Club",
+        address: null,
+        city: null,
+        position: { lat: -34.41, lng: 19.24 },
+      });
+      assert.deepEqual(again.price, { min: 200, max: 400, currency: "ZAR" });
+      assert.equal(again.summary, "A Fleetwood Mac tribute.");
+      assert.equal(again.description, "The hits of Rumours, live.");
+      assert.equal(again.imageUrl, "https://whatson.example.com/rumours.jpg");
+      assert.deepEqual(again.attributes, { audience: ["all_ages"], category: ["music"], setting: ["indoor"] });
+      // The seasons are the ones the leader's dates give; the other tags are everyone's.
+      assert.deepEqual(again.tags, ["classic-rock", "rock-and-pop", "tribute", "whale-season", "winter"]);
+      assert.deepEqual(
+        again.sessions.map((session) => session.startDate),
+        ["2027-06-12"],
+      );
+    });
+  }
+
+  test("a leader that changes a value it states changes the experience", async () => {
+    const catalogue = fakeCatalogue();
+    for (const name of ["A", "B", "C"]) await process(catalogue, name);
+    const A = listings.A;
+    assert.ok(A);
+    const before = A.input;
+    A.input = { ...before, price: { min: 250, max: 450, currency: "ZAR" } };
+    try {
+      await process(catalogue, "A");
+    } finally {
+      A.input = before;
+    }
+    const [saved] = [...catalogue.experiences.values()];
+    assert.deepEqual(saved?.price, { min: 250, max: 450, currency: "ZAR" });
+    assert.equal(saved.version, 4);
+    // What the others gave is kept.
+    assert.deepEqual(saved.attributes.setting, ["indoor"]);
+  });
+
+  test("a filler changes the experience only where nothing is stored", async () => {
+    const catalogue = fakeCatalogue();
+    for (const name of ["A", "B", "C"]) await process(catalogue, name);
+    const B = listings.B;
+    assert.ok(B);
+    const before = B.input;
+    // A different price, which the leader states, and opening hours, which nobody states.
+    B.input = { ...before, price: { min: 1, currency: "ZAR" }, openingHours: "From 18:00" };
+    try {
+      await process(catalogue, "B");
+    } finally {
+      B.input = before;
+    }
+    const [saved] = [...catalogue.experiences.values()];
+    assert.deepEqual(saved?.price, { min: 200, max: 400, currency: "ZAR" });
+    assert.equal(saved.openingHours, "From 18:00");
+  });
+
+  test("a leader whose dates leave a season takes the season off, and keeps the other tags", async () => {
+    const catalogue = fakeCatalogue();
+    for (const name of ["A", "B"]) await process(catalogue, name);
+    const A = listings.A;
+    assert.ok(A);
+    const before = A.input;
+    // Moved to December: no longer in whale season or winter.
+    A.input = { ...before, sessions: [{ startDate: "2027-12-04", precision: "day" }], tags: ["rock-and-pop"] };
+    try {
+      await process(catalogue, "A");
+    } finally {
+      A.input = before;
+    }
+    const [saved] = [...catalogue.experiences.values()];
+    assert.deepEqual(saved?.tags, ["rock-and-pop", "tribute"]);
+  });
+
+  test("the leader as the only listing clears what it leaves empty", async () => {
+    const catalogue = fakeCatalogue();
+    await process(catalogue, "A");
+    const A = listings.A;
+    assert.ok(A);
+    const before = A.input;
+    A.input = { ...before, bookingUrl: undefined, attributes: {}, tags: [] };
+    try {
+      await process(catalogue, "A");
+    } finally {
+      A.input = before;
+    }
+    const [saved] = [...catalogue.experiences.values()];
+    assert.equal(saved?.bookingUrl, null);
+    assert.deepEqual(saved.attributes, {});
+    assert.deepEqual(saved.tags, []);
+  });
+});
+
 describe("an update with precedence fill", () => {
   test("fills only the fields that are empty and leaves status and booking", async () => {
     const catalogue = fakeCatalogue();
@@ -383,7 +583,8 @@ describe("an update with precedence fill", () => {
       ["2027-03-13"],
     );
     assert.deepEqual(saved.attributes, { audience: ["family"], category: ["music"] });
-    assert.deepEqual(saved.tags, ["jazz"]);
+    // Its tags are added, as its attribute keys are.
+    assert.deepEqual(saved.tags, ["festival", "jazz"]);
     assert.deepEqual(saved.listingIds, [LISTING_A, LISTING_B]);
     assert.equal(result.change, "changed");
     assert.equal(saved.version, 2);

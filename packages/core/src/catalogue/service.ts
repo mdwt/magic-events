@@ -544,7 +544,7 @@ export class CatalogueService implements Catalogue {
 
   // The experience as this save leaves it. A final experience changes nothing but its links.
   #nextOf(stored: StoredExperience, incoming: Draft, input: SaveExperienceInput, at: Date): StoredExperience {
-    const merged = meet(stored, incoming, input.precedence);
+    const merged = meet(stored, incoming, input.precedence, input.seasonSlugs);
     if (FINAL_STATUSES.includes(stored.status)) return { ...stored, listingIds: merged.listingIds };
 
     if (input.precedence === "lead") {
