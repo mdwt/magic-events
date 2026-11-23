@@ -16,7 +16,8 @@ if (!/magic_events_perf/.test(settings.database.url)) {
   throw new Error("serve.mjs runs only on a magic_events_perf database.");
 }
 const logger = createLogger(settings.api);
-const database = createDb(settings.database.url);
+// PERF_POOL tries another pool size than createDb's default.
+const database = createDb(settings.database.url, process.env.PERF_POOL === undefined ? {} : { max: Number(process.env.PERF_POOL) });
 const { app } = await buildApp({ settings, db: database.db, logger });
 
 const stop = async () => {

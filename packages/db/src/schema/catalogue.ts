@@ -137,6 +137,9 @@ export const experience = pgTable(
   },
   (t) => [
     uniqueIndex("experience_slug_idx").on(t.slug),
+    // The slugs taken that start with a new one's base, found by prefix: the database's collation is not C, so the
+    // unique index cannot serve a LIKE.
+    index("experience_slug_prefix_idx").on(t.slug.op("text_pattern_ops")),
     index("experience_location_idx").on(t.locationId),
     // The venue's position, for the bounds a search by place narrows to before the exact distance.
     index("experience_position_idx").on(t.latitude, t.longitude),

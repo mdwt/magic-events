@@ -43,6 +43,13 @@
       "when": 1795449075375,
       "tag": "0005_search_indexes",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795449710733,
+      "tag": "0006_experience_slug_prefix",
+      "breakpoints": true
     }
   ]
 }
