@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import type pino from "pino";
 import { createAuth } from "./adapters/auth/better-auth.ts";
+import { createDomainEvents } from "./adapters/events/node-events.ts";
 import { createLanguageModel } from "./adapters/language-model/anthropic.ts";
 import { createSourceFetchers } from "./adapters/sources/index.ts";
 import { createCatalogueRepository } from "./adapters/storage/catalogue-repository.ts";
@@ -21,6 +22,7 @@ import { IdentityService } from "./core/identity/service.ts";
 import type { Organizations } from "./core/organizations/ports.ts";
 import { OrganizationsService } from "./core/organizations/service.ts";
 import type { Clock } from "./core/shared/clock.ts";
+import type { DomainEventPublisher, DomainEvents } from "./core/shared/domain-events.ts";
 import type { LanguageModel } from "./core/shared/language-model.ts";
 import type { Logger } from "./core/shared/logger.ts";
 import type { Settings } from "./core/shared/settings.ts";
@@ -41,12 +43,23 @@ export interface Overrides {
   languageModel?: LanguageModel;
   fetchers?: SourceFetcher[];
   clock?: Clock;
+  // A test hands in its own, so it can subscribe and see what was published.
+  domainEvents?: DomainEvents;
 }
 
 export function createServices(deps: { settings: Settings; db: Db; logger: Logger; overrides?: Overrides }): Services {
   const { settings, logger, overrides = {} } = deps;
   // Every repository is built with the same handle, so work inside transactions.run is saved together.
-  const { db, transactions } = createTransactionalDb(deps.db);
+  const { db, transactions, afterCommit } = createTransactionalDb(deps.db);
+  // A domain event goes out once the change it records is saved: when the transaction it was published in commits.
+  const domainEvents = overrides.domainEvents ?? createDomainEvents(logger);
+  const events: DomainEventPublisher = {
+    publish(event) {
+      afterCommit(() => {
+        domainEvents.publish(event);
+      });
+    },
+  };
   const clock: Clock = overrides.clock ?? (() => new Date());
   const languageModel = overrides.languageModel ?? createLanguageModel(settings.languageModel, logger);
   const fetchers =
@@ -54,6 +67,7 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
 
   const catalogue = new CatalogueService({
     repository: createCatalogueRepository(db),
+    events,
     settings: settings.catalogue,
     logger,
     clock,
@@ -67,6 +81,7 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
   });
   const discovery = new DiscoveryService({
     repository: createDiscoveryRepository(db),
+    events,
     catalogue,
     fetchers,
     settings: settings.discovery,
