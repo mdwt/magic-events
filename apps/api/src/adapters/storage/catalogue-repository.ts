@@ -1,21 +1,46 @@
 import {
+  events,
   experience,
   experienceAttributeValue,
+  experienceChange,
   experienceSession,
+  experienceSourceLink,
   experienceTag,
   location,
   type Db,
+  type Tx,
 } from "@magic-events/db";
-import { and, asc, count, eq, exists, gte, inArray, isNotNull, lte, min, sql, type SQL } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  exists,
+  gte,
+  inArray,
+  isNotNull,
+  like,
+  lte,
+  min,
+  or,
+  sql,
+  type SQL,
+} from "drizzle-orm";
 import {
   SEARCHABLE_STATUSES,
   type AttributeFilter,
   type CatalogueRepository,
   type ExperienceRecord,
   type ExperienceSearchQuery,
+  type ExperienceWrite,
   type Location,
   type SearchableStatus,
+  type StoredExperience,
 } from "../../core/catalogue/ports.ts";
+
+// Rows per insert, well inside Postgres's limit on the parameters of one statement.
+const INSERT_CHUNK = 1000;
 
 // The mean radius of the Earth, in kilometres.
 const EARTH_RADIUS_KM = 6371.0088;
@@ -178,7 +203,336 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
         .limit(1);
       return found === undefined ? null : toLocation(found);
     },
+
+    async loadExperiences(by) {
+      if ("ids" in by && by.ids.length === 0) return [];
+      const which =
+        "ids" in by
+          ? inArray(experience.id, by.ids)
+          : inArray(
+              experience.id,
+              db
+                .select({ id: experienceSourceLink.experienceId })
+                .from(experienceSourceLink)
+                .where(eq(experienceSourceLink.listingId, by.listingId)),
+            );
+      const rows = await db
+        .select(storedColumns)
+        .from(experience)
+        .where(which)
+        .orderBy(asc(experience.createdAt), asc(experience.id));
+      if (rows.length === 0) return [];
+
+      const ids = rows.map((row) => row.id);
+      const [sessions, attributeValues, tags, links] = await Promise.all([
+        db
+          .select()
+          .from(experienceSession)
+          .where(inArray(experienceSession.experienceId, ids))
+          .orderBy(
+            asc(experienceSession.startDate),
+            sql`${experienceSession.startTime} asc nulls first`,
+            asc(experienceSession.endDate),
+            asc(experienceSession.id),
+          ),
+        db
+          .select()
+          .from(experienceAttributeValue)
+          .where(inArray(experienceAttributeValue.experienceId, ids))
+          .orderBy(asc(experienceAttributeValue.attributeKey), asc(experienceAttributeValue.value)),
+        db.select().from(experienceTag).where(inArray(experienceTag.experienceId, ids)).orderBy(asc(experienceTag.tag)),
+        db
+          .select()
+          .from(experienceSourceLink)
+          .where(inArray(experienceSourceLink.experienceId, ids))
+          .orderBy(asc(experienceSourceLink.createdAt), asc(experienceSourceLink.listingId)),
+      ]);
+
+      const sessionsOf = groupBy(sessions, (row) => row.experienceId);
+      const attributesOf = groupBy(attributeValues, (row) => row.experienceId);
+      const tagsOf = groupBy(tags, (row) => row.experienceId);
+      const linksOf = groupBy(links, (row) => row.experienceId);
+
+      return rows.map((row): StoredExperience => {
+        const attributes: StoredExperience["attributes"] = {};
+        for (const { attributeKey, value } of attributesOf.get(row.id) ?? []) {
+          (attributes[attributeKey] ??= []).push(value);
+        }
+        return {
+          id: row.id,
+          version: row.version,
+          locationId: row.locationId,
+          title: row.title,
+          slug: row.slug,
+          summary: row.summary,
+          description: row.description,
+          profile: row.profile,
+          type: row.type,
+          status: row.status,
+          booking: row.booking,
+          timezone: row.timezone,
+          openingHours: row.openingHours,
+          venue: {
+            name: row.venueName,
+            address: row.venueAddress,
+            city: row.city,
+            position: row.latitude !== null && row.longitude !== null ? { lat: row.latitude, lng: row.longitude } : null,
+          },
+          price: { min: row.priceMin, max: row.priceMax, currency: row.currency },
+          onSaleAt: row.onSaleAt?.toISOString() ?? null,
+          bookingClosesAt: row.bookingClosesAt?.toISOString() ?? null,
+          bookingUrl: row.bookingUrl,
+          imageUrl: row.imageUrl,
+          recurrence:
+            row.recurrenceRule === null || row.recurrenceStart === null
+              ? null
+              : {
+                  rule: row.recurrenceRule,
+                  start: row.recurrenceStart,
+                  end: row.recurrenceEnd,
+                  startTime: row.recurrenceStartTime,
+                  endTime: row.recurrenceEndTime,
+                  skipped: row.recurrenceSkipped ?? [],
+                },
+          sessions: (sessionsOf.get(row.id) ?? []).map((session) => ({
+            startDate: session.startDate,
+            endDate: session.endDate,
+            precision: session.precision,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            label: session.label,
+            soldOut: session.soldOut,
+            status: session.status,
+            origin: session.origin,
+          })),
+          attributes,
+          tags: (tagsOf.get(row.id) ?? []).map((tag) => tag.tag),
+          listingIds: (linksOf.get(row.id) ?? []).map((link) => link.listingId),
+        };
+      });
+    },
+
+    async findMatchCandidateIds(query) {
+      // The title's significant words: Postgres's English parser drops stop words and stems the rest, so
+      // "The Whale Festival" and "Whale Festivals" share "whale" and "festiv".
+      const theirs = sql`tsvector_to_array(to_tsvector('english', ${experience.title}))`;
+      const ours = sql`tsvector_to_array(to_tsvector('english', ${query.title}::text))`;
+      const shared = sql<number>`cardinality(array(select unnest(${theirs}) intersect select unnest(${ours})))`;
+      const rows = await db
+        .select({ id: experience.id })
+        .from(experience)
+        .where(
+          and(
+            eq(experience.locationId, query.locationId),
+            inArray(experience.status, [...SEARCHABLE_STATUSES]),
+            sql`${theirs} && ${ours}`,
+            exists(
+              db
+                .select({ one: sql`1` })
+                .from(experienceSession)
+                .where(
+                  and(
+                    eq(experienceSession.experienceId, experience.id),
+                    lte(experienceSession.startDate, query.to),
+                    gte(experienceSession.endDate, query.from),
+                  ),
+                ),
+            ),
+          ),
+        )
+        .orderBy(desc(shared), asc(experience.title), asc(experience.id))
+        .limit(query.limit);
+      return rows.map((row) => row.id);
+    },
+
+    async findTakenSlugs(base) {
+      // A slug is lowercase letters, digits and hyphens, so the base holds no LIKE wildcard.
+      const rows = await db
+        .select({ slug: experience.slug })
+        .from(experience)
+        .where(or(eq(experience.slug, base), like(experience.slug, `${base}-%`)));
+      return rows.map((row) => row.slug);
+    },
+
+    async saveExperiences(writes) {
+      if (writes.length === 0) return;
+      await db.transaction(async (tx) => {
+        for (const write of writes) await saveRow(tx, write);
+
+        const ids = (part: keyof ExperienceWrite["replace"]) =>
+          writes.filter((write) => write.replace[part]).map((write) => write.experience.id);
+        const removed = writes.filter((write) => write.links.remove.length > 0);
+        await Promise.all([
+          ids("sessions").length === 0
+            ? undefined
+            : tx.delete(experienceSession).where(inArray(experienceSession.experienceId, ids("sessions"))),
+          ids("attributes").length === 0
+            ? undefined
+            : tx
+                .delete(experienceAttributeValue)
+                .where(inArray(experienceAttributeValue.experienceId, ids("attributes"))),
+          ids("tags").length === 0
+            ? undefined
+            : tx.delete(experienceTag).where(inArray(experienceTag.experienceId, ids("tags"))),
+          removed.length === 0
+            ? undefined
+            : tx
+                .delete(experienceSourceLink)
+                .where(
+                  or(
+                    ...removed.map((write) =>
+                      and(
+                        eq(experienceSourceLink.experienceId, write.experience.id),
+                        inArray(experienceSourceLink.listingId, write.links.remove),
+                      ),
+                    ),
+                  ),
+                ),
+        ]);
+
+        const replaced = (part: keyof ExperienceWrite["replace"]) => writes.filter((write) => write.replace[part]);
+        const sessionRows = replaced("sessions").flatMap(({ experience: saved }) =>
+          saved.sessions.map((session) => ({ experienceId: saved.id, ...session })),
+        );
+        const attributeRows = replaced("attributes").flatMap(({ experience: saved }) =>
+          Object.entries(saved.attributes).flatMap(([attributeKey, values]) =>
+            values.map((value) => ({ experienceId: saved.id, attributeKey, value })),
+          ),
+        );
+        const tagRows = replaced("tags").flatMap(({ experience: saved }) =>
+          saved.tags.map((tag) => ({ experienceId: saved.id, tag })),
+        );
+        const linkRows = writes.flatMap((write) =>
+          write.links.add.map((listingId) => ({ experienceId: write.experience.id, listingId, createdAt: write.at })),
+        );
+        const changeRows = writes.flatMap((write) =>
+          write.change === null
+            ? []
+            : [
+                {
+                  experienceId: write.experience.id,
+                  version: write.experience.version,
+                  kind: write.change.kind,
+                  previous: write.change.previous,
+                  changedAt: write.at,
+                },
+              ],
+        );
+        const eventRows = writes.flatMap((write) =>
+          write.event === null
+            ? []
+            : [{ type: write.event.type, resourceId: write.experience.id, data: write.event.data, recordedAt: write.at }],
+        );
+
+        await Promise.all([
+          ...chunks(sessionRows).map((rows) => tx.insert(experienceSession).values(rows)),
+          ...chunks(attributeRows).map((rows) => tx.insert(experienceAttributeValue).values(rows)),
+          ...chunks(tagRows).map((rows) => tx.insert(experienceTag).values(rows)),
+          ...chunks(linkRows).map((rows) => tx.insert(experienceSourceLink).values(rows).onConflictDoNothing()),
+          ...chunks(changeRows).map((rows) => tx.insert(experienceChange).values(rows)),
+          ...chunks(eventRows).map((rows) => tx.insert(events).values(rows)),
+        ]);
+      });
+    },
   };
+}
+
+// Every column a stored experience is read from. The embedding and the search text are left out: they are
+// large, and the save rules never read them.
+const storedColumns = {
+  id: experience.id,
+  version: experience.version,
+  locationId: experience.locationId,
+  title: experience.title,
+  slug: experience.slug,
+  summary: experience.summary,
+  description: experience.description,
+  profile: experience.profile,
+  type: experience.type,
+  status: experience.status,
+  booking: experience.booking,
+  timezone: experience.timezone,
+  openingHours: experience.openingHours,
+  venueName: experience.venueName,
+  venueAddress: experience.venueAddress,
+  city: experience.city,
+  latitude: experience.latitude,
+  longitude: experience.longitude,
+  priceMin: experience.priceMin,
+  priceMax: experience.priceMax,
+  currency: experience.currency,
+  onSaleAt: experience.onSaleAt,
+  bookingClosesAt: experience.bookingClosesAt,
+  bookingUrl: experience.bookingUrl,
+  imageUrl: experience.imageUrl,
+  recurrenceRule: experience.recurrenceRule,
+  recurrenceStart: experience.recurrenceStart,
+  recurrenceEnd: experience.recurrenceEnd,
+  recurrenceStartTime: experience.recurrenceStartTime,
+  recurrenceEndTime: experience.recurrenceEndTime,
+  recurrenceSkipped: experience.recurrenceSkipped,
+};
+
+// Inserts a new experience's row, or updates a stored one if it is still at the version the save was worked
+// out from. A save made at the same time fails this one, and the caller's transaction rolls back.
+async function saveRow(tx: Tx, write: ExperienceWrite): Promise<void> {
+  const saved = write.experience;
+  const values = {
+    locationId: saved.locationId,
+    title: saved.title,
+    slug: saved.slug,
+    summary: saved.summary,
+    description: saved.description,
+    profile: saved.profile,
+    type: saved.type,
+    status: saved.status,
+    booking: saved.booking,
+    timezone: saved.timezone,
+    openingHours: saved.openingHours,
+    venueName: saved.venue.name,
+    venueAddress: saved.venue.address,
+    city: saved.venue.city,
+    latitude: saved.venue.position?.lat ?? null,
+    longitude: saved.venue.position?.lng ?? null,
+    priceMin: saved.price.min,
+    priceMax: saved.price.max,
+    currency: saved.price.currency,
+    onSaleAt: saved.onSaleAt === null ? null : new Date(saved.onSaleAt),
+    bookingClosesAt: saved.bookingClosesAt === null ? null : new Date(saved.bookingClosesAt),
+    bookingUrl: saved.bookingUrl,
+    imageUrl: saved.imageUrl,
+    recurrenceRule: saved.recurrence?.rule ?? null,
+    recurrenceStart: saved.recurrence?.start ?? null,
+    recurrenceEnd: saved.recurrence?.end ?? null,
+    recurrenceStartTime: saved.recurrence?.startTime ?? null,
+    recurrenceEndTime: saved.recurrence?.endTime ?? null,
+    recurrenceSkipped: saved.recurrence?.skipped ?? null,
+    version: saved.version,
+  };
+
+  if (write.previousVersion === null) {
+    await tx.insert(experience).values({ id: saved.id, ...values, createdAt: write.at, updatedAt: write.at });
+    return;
+  }
+  const updated = await tx
+    .update(experience)
+    .set({
+      ...values,
+      // Only a new version is an update a client can see.
+      ...(write.change === null ? {} : { updatedAt: write.at }),
+      ...(write.clearEmbedding ? { embedding: null, embeddingModel: null } : {}),
+    })
+    .where(and(eq(experience.id, saved.id), eq(experience.version, write.previousVersion)))
+    .returning({ id: experience.id });
+  if (updated.length === 0) {
+    throw new Error(`Experience ${saved.id} is no longer at version ${write.previousVersion}`);
+  }
+}
+
+function chunks<T>(rows: T[]): T[][] {
+  const result: T[][] = [];
+  for (let start = 0; start < rows.length; start += INSERT_CHUNK) result.push(rows.slice(start, start + INSERT_CHUNK));
+  return result;
 }
 
 // A session that is on during the dates asked for. Cancelled sessions never match.

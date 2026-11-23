@@ -354,9 +354,40 @@ export interface Catalogue {
   removeSourceLink(input: { listingId: string; experienceId?: string; rawListingId: string }): Promise<string[]>;
 }
 
+// One experience's save as the service decided it. The repository stores it as it is handed.
+export interface ExperienceWrite {
+  // The experience as it is to be stored.
+  experience: StoredExperience;
+  // The version stored before this save, so a save made at the same time is caught. Null when it creates.
+  previousVersion: number | null;
+  // Which of its parts are stored again, whole, from `experience`.
+  replace: { sessions: boolean; attributes: boolean; tags: boolean };
+  links: { add: string[]; remove: string[] };
+  // True when the title or the profile changed, so the embedding no longer fits.
+  clearEmbedding: boolean;
+  // The change row of a new version, whose number is `experience.version`.
+  change: { kind: ChangeKind; previous: Record<string, unknown> | null } | null;
+  event: { type: "experience.published" | "experience.changed"; data: Record<string, unknown> } | null;
+  at: Date;
+}
+
 // Outbound port: what Catalogue needs.
 export interface CatalogueRepository {
   searchExperiences(query: ExperienceSearchQuery): Promise<{ items: ExperienceRecord[]; total: number }>;
   upsertLocation(input: SaveLocationInput): Promise<Location>;
   findLocation(by: { id: string } | { slug: string }): Promise<Location | null>;
+  // Experiences whole, by ID or by a listing they are linked to.
+  loadExperiences(by: { ids: string[] } | { listingId: string }): Promise<StoredExperience[]>;
+  // The IDs of the match candidates, best match first.
+  findMatchCandidateIds(query: {
+    locationId: string;
+    title: string;
+    from: string;
+    to: string;
+    limit: number;
+  }): Promise<string[]>;
+  // The slugs that are the base or start with it and a hyphen.
+  findTakenSlugs(base: string): Promise<string[]>;
+  // Stores the saves in one transaction.
+  saveExperiences(writes: ExperienceWrite[]): Promise<void>;
 }

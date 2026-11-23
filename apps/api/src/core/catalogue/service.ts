@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import type { Clock } from "../shared/clock.ts";
 import { AppError, type ErrorDetail } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { CatalogueSettings } from "../shared/settings.ts";
@@ -5,22 +7,52 @@ import {
   SEARCHABLE_STATUSES,
   type Catalogue,
   type CatalogueRepository,
+  type ExperienceMatch,
   type ExperienceSearchQuery,
+  type ExperienceStatus,
+  type ExperienceWrite,
   type Location,
+  type SaveExperienceInput,
+  type SaveExperienceResult,
   type SaveLocationInput,
   type SearchExperiencesInput,
   type SearchExperiencesResult,
+  type StoredExperience,
 } from "./ports.ts";
+import { addMonths, dayIn } from "./recurrence.ts";
+import {
+  FINAL_STATUSES,
+  allowedBooking,
+  canMove,
+  changeKind,
+  changedFields,
+  generateSessions,
+  meet,
+  previousValues,
+  readInput,
+  sameSessions,
+  slugify,
+  sortSessions,
+  uniqueSlug,
+  type Draft,
+} from "./save.ts";
+
+// The most match candidates Data processing is shown.
+const MAX_CANDIDATES = 10;
+// The most sessions a match carries.
+const MATCH_SESSIONS = 50;
 
 export class CatalogueService implements Catalogue {
   readonly #repository: CatalogueRepository;
   readonly #settings: CatalogueSettings;
   readonly #logger: Logger;
+  readonly #clock: Clock;
 
-  constructor(deps: { repository: CatalogueRepository; settings: CatalogueSettings; logger: Logger }) {
+  constructor(deps: { repository: CatalogueRepository; settings: CatalogueSettings; logger: Logger; clock?: Clock }) {
     this.#repository = deps.repository;
     this.#settings = deps.settings;
     this.#logger = deps.logger;
+    this.#clock = deps.clock ?? (() => new Date());
   }
 
   async searchExperiences(input: SearchExperiencesInput): Promise<SearchExperiencesResult> {
@@ -48,6 +80,228 @@ export class CatalogueService implements Catalogue {
 
   getLocation(by: { id: string } | { slug: string }): Promise<Location | null> {
     return this.#repository.findLocation(by);
+  }
+
+  async findExperiencesByListing(listingId: string): Promise<ExperienceMatch[]> {
+    const experiences = await this.#repository.loadExperiences({ listingId });
+    return experiences.map(toMatch);
+  }
+
+  async findMatchCandidates(input: {
+    locationId: string;
+    title: string;
+    from: string;
+    to: string;
+  }): Promise<ExperienceMatch[]> {
+    const ids = await this.#repository.findMatchCandidateIds({ ...input, limit: MAX_CANDIDATES });
+    if (ids.length === 0) return [];
+    const byId = new Map((await this.#repository.loadExperiences({ ids })).map((one) => [one.id, one]));
+    const candidates = ids.map((id) => byId.get(id)).filter((one) => one !== undefined);
+    this.#logger.debug({ title: input.title, count: candidates.length }, "Found match candidates");
+    return candidates.map(toMatch);
+  }
+
+  async saveExperience(input: SaveExperienceInput): Promise<SaveExperienceResult> {
+    const incoming = readInput(input);
+    const at = this.#clock();
+    if (input.experienceId === undefined) return this.#create(input, incoming, at);
+
+    const [stored] = await this.#repository.loadExperiences({ ids: [input.experienceId] });
+    if (stored === undefined) {
+      throw new AppError("not_found", "No experience has this ID.", [
+        { path: "experienceId", message: "No such experience." },
+      ]);
+    }
+    const next = this.#nextOf(stored, incoming, input, at);
+    const fields = changedFields(stored, next);
+    const profileChanged = stored.profile !== next.profile;
+    const generatedChanged = !sameSessions(stored.sessions, next.sessions);
+    const log = { experienceId: stored.id, listingId: input.source.listingId, rawListingId: input.source.rawListingId };
+
+    if (fields.length === 0 && !profileChanged && !generatedChanged) {
+      this.#logger.debug(log, "Saved experience unchanged");
+      return { experience: stored, created: false, changed: false, change: null };
+    }
+
+    // A change to the profile alone, or sessions generated further ahead, is saved without a new version.
+    const kind = fields.length > 0 ? changeKind(stored, next) : null;
+    const experience: StoredExperience = { ...next, version: kind === null ? stored.version : stored.version + 1 };
+    await this.#repository.saveExperiences([
+      {
+        experience,
+        previousVersion: stored.version,
+        replace: {
+          sessions: fields.includes("sessions") || generatedChanged,
+          attributes: fields.includes("attributes"),
+          tags: fields.includes("tags"),
+        },
+        links: { add: experience.listingIds.filter((id) => !stored.listingIds.includes(id)), remove: [] },
+        clearEmbedding: profileChanged || stored.title !== experience.title,
+        change: kind === null ? null : { kind, previous: previousValues(stored, fields) },
+        event:
+          kind === null
+            ? null
+            : {
+                type: "experience.changed",
+                data: { version: experience.version, change: kind, raw_listing_id: input.source.rawListingId },
+              },
+        at,
+      },
+    ]);
+
+    if (kind === null) {
+      this.#logger.debug({ ...log, profileChanged, generatedChanged }, "Saved experience without a new version");
+    } else {
+      this.#logger.info({ ...log, version: experience.version, change: kind, fields }, "Experience changed");
+    }
+    return { experience, created: false, changed: kind !== null, change: kind };
+  }
+
+  async removeSourceLink(input: { listingId: string; experienceId?: string; rawListingId: string }): Promise<string[]> {
+    const linked = await this.#repository.loadExperiences({ listingId: input.listingId });
+    const targets = input.experienceId === undefined ? linked : linked.filter((one) => one.id === input.experienceId);
+    if (targets.length === 0) return [];
+    const at = this.#clock();
+
+    const writes = targets.map((stored): ExperienceWrite => {
+      const listingIds = stored.listingIds.filter((id) => id !== input.listingId);
+      const common = {
+        previousVersion: stored.version,
+        replace: { sessions: false, attributes: false, tags: false },
+        links: { add: [], remove: [input.listingId] },
+        clearEmbedding: false,
+        at,
+      };
+      // A final experience left with no links keeps its status, and losing the link makes no new version.
+      if (listingIds.length === 0 && FINAL_STATUSES.includes(stored.status)) {
+        return { ...common, experience: { ...stored, listingIds }, change: null, event: null };
+      }
+      const next: StoredExperience = { ...stored, listingIds, version: stored.version + 1 };
+      if (listingIds.length === 0) {
+        next.status = "removed";
+        next.booking = allowedBooking("removed", stored.booking);
+      }
+      const kind = changeKind(stored, next);
+      return {
+        ...common,
+        experience: next,
+        change: { kind, previous: previousValues(stored, changedFields(stored, next)) },
+        event: {
+          type: "experience.changed",
+          data: { version: next.version, change: kind, raw_listing_id: input.rawListingId },
+        },
+      };
+    });
+    await this.#repository.saveExperiences(writes);
+
+    for (const write of writes) {
+      this.#logger.info(
+        {
+          experienceId: write.experience.id,
+          listingId: input.listingId,
+          version: write.experience.version,
+          change: write.change?.kind ?? null,
+        },
+        "Source link removed",
+      );
+    }
+    return targets.map((one) => one.id);
+  }
+
+  async #create(input: SaveExperienceInput, incoming: Draft, at: Date): Promise<SaveExperienceResult> {
+    const location = await this.#repository.findLocation({ id: input.locationId });
+    if (location === null) {
+      throw new AppError("invalid_input", "No location has this ID.", [
+        { path: "locationId", message: "No such location." },
+      ]);
+    }
+    const today = dayIn(location.timezone, at);
+    const { listed, ...fields } = incoming;
+    const sessions = sortSessions([
+      ...listed,
+      ...generateSessions({ recurrence: fields.recurrence, listed, generated: [], today, horizon: this.#horizon(today) }),
+    ]);
+
+    const base = slugify(fields.title);
+    const firstDate = sessions[0]?.startDate ?? fields.recurrence?.start ?? null;
+    const taken = new Set(await this.#repository.findTakenSlugs(base));
+    const experience: StoredExperience = {
+      ...fields,
+      id: randomUUID(),
+      version: 1,
+      slug: uniqueSlug(base, firstDate?.slice(0, 4) ?? null, taken),
+      timezone: location.timezone,
+      booking: this.#booking(fields.status, fields.booking, null),
+      sessions,
+    };
+    await this.#repository.saveExperiences([
+      {
+        experience,
+        previousVersion: null,
+        replace: { sessions: true, attributes: true, tags: true },
+        links: { add: experience.listingIds, remove: [] },
+        clearEmbedding: false,
+        change: { kind: "new", previous: null },
+        event: { type: "experience.published", data: { version: 1, raw_listing_id: input.source.rawListingId } },
+        at,
+      },
+    ]);
+    this.#logger.info(
+      {
+        experienceId: experience.id,
+        slug: experience.slug,
+        listingId: input.source.listingId,
+        rawListingId: input.source.rawListingId,
+      },
+      "Experience published",
+    );
+    return { experience, created: true, changed: true, change: "new" };
+  }
+
+  // The experience as this save leaves it. A final experience changes nothing but its links.
+  #nextOf(stored: StoredExperience, incoming: Draft, input: SaveExperienceInput, at: Date): StoredExperience {
+    const merged = meet(stored, incoming, input.precedence);
+    if (FINAL_STATUSES.includes(stored.status)) return { ...stored, listingIds: merged.listingIds };
+
+    if (input.precedence === "lead") {
+      if (canMove(stored.status, input.status)) {
+        merged.status = input.status;
+      } else {
+        this.#logger.warn(
+          { experienceId: stored.id, from: stored.status, to: input.status },
+          "Status move not allowed; status kept",
+        );
+      }
+      merged.booking = this.#booking(merged.status, input.booking, stored.id);
+    }
+
+    const today = dayIn(stored.timezone, at);
+    const { listed, ...next } = merged;
+    const generated = generateSessions({
+      recurrence: next.recurrence,
+      listed,
+      generated: next.sessions,
+      today,
+      horizon: this.#horizon(today),
+    });
+    return { ...next, sessions: sortSessions([...listed, ...generated]) };
+  }
+
+  // The booking the status allows. A booking it does not allow is replaced, with a warning.
+  #booking(
+    status: ExperienceStatus,
+    booking: StoredExperience["booking"],
+    experienceId: string | null,
+  ): StoredExperience["booking"] {
+    const allowed = allowedBooking(status, booking);
+    if (allowed !== booking) {
+      this.#logger.warn({ experienceId, status, booking, saved: allowed }, "Booking not allowed for the status");
+    }
+    return allowed;
+  }
+
+  #horizon(today: string): string {
+    return addMonths(today, this.#settings.sessionHorizonMonths);
   }
 
   // Applies the defaults and checks the rules, so the repository runs a query that is already sound.
@@ -90,4 +344,26 @@ export class CatalogueService implements Catalogue {
       offset: input.offset,
     };
   }
+}
+
+// What Data processing is shown to decide whether an extracted experience is this one.
+function toMatch(experience: StoredExperience): ExperienceMatch {
+  const { sessions } = experience;
+  const lastDate = sessions.reduce<string | null>(
+    (last, session) => (last === null || session.endDate > last ? session.endDate : last),
+    null,
+  );
+  return {
+    id: experience.id,
+    title: experience.title,
+    type: experience.type,
+    status: experience.status,
+    venueName: experience.venue.name,
+    city: experience.venue.city,
+    firstDate: sessions[0]?.startDate ?? null,
+    lastDate,
+    sessions: sessions.slice(0, MATCH_SESSIONS).map(({ startDate, endDate }) => ({ startDate, endDate })),
+    recurrenceRule: experience.recurrence?.rule ?? null,
+    listingIds: experience.listingIds,
+  };
 }

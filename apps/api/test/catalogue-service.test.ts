@@ -66,6 +66,11 @@ function fakeRepository(items: ExperienceRecord[] = []) {
       const found = [...locations.values()].find((one) => ("id" in by ? one.id === by.id : one.slug === by.slug));
       return Promise.resolve(found ?? null);
     },
+    // Search never saves; the save side has its own tests.
+    loadExperiences: () => Promise.resolve([]),
+    findMatchCandidateIds: () => Promise.resolve([]),
+    findTakenSlugs: () => Promise.resolve([]),
+    saveExperiences: () => Promise.resolve(),
   };
   return { repository, queries };
 }
@@ -73,7 +78,7 @@ function fakeRepository(items: ExperienceRecord[] = []) {
 function service(repository: CatalogueRepository) {
   return new CatalogueService({
     repository,
-    settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200 },
+    settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24 },
     logger: silent,
   });
 }
