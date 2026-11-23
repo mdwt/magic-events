@@ -138,6 +138,8 @@ export const experience = pgTable(
   (t) => [
     uniqueIndex("experience_slug_idx").on(t.slug),
     index("experience_location_idx").on(t.locationId),
+    // The venue's position, for the bounds a search by place narrows to before the exact distance.
+    index("experience_position_idx").on(t.latitude, t.longitude),
     index("experience_status_idx").on(t.status),
     index("experience_search_text_idx").using("gin", t.searchText),
   ],
@@ -162,8 +164,12 @@ export const experienceSession = pgTable(
     origin: sessionOrigin("origin").notNull().default("listed"),
   },
   (t) => [
-    index("experience_session_experience_idx").on(t.experienceId),
-    index("experience_session_dates_idx").on(t.startDate, t.endDate),
+    // One experience's sessions in the dates, read from the index alone: whether it has one, and its first. Leading
+    // with the start date, so the first is the index's first, and min() never walks the whole table by date.
+    index("experience_session_experience_dates_idx").on(t.experienceId, t.startDate, t.endDate, t.status),
+    // Every session in the dates, with its experience, read from the index alone. Leading with the end date, so a
+    // search ahead skips the sessions that are over, which grow with every year.
+    index("experience_session_dates_experience_idx").on(t.endDate, t.startDate, t.status, t.experienceId),
     check("experience_session_dates_check", sql`${t.endDate} >= ${t.startDate}`),
   ],
 );
