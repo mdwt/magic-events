@@ -10,7 +10,7 @@ import {
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import type { Catalogue } from "../core/catalogue/ports.ts";
-import { CredentialRateLimitedError, type Identity } from "../core/identity/ports.ts";
+import type { Identity } from "../core/identity/ports.ts";
 import type { Organizations } from "../core/organizations/ports.ts";
 import { AppError } from "../core/shared/errors.ts";
 import type { ApiSettings } from "../core/shared/settings.ts";
@@ -30,14 +30,24 @@ export interface ServerDeps {
   services: { identity: Identity; catalogue: Catalogue; organizations: Organizations };
   // A trivial query, for the health check.
   checkDatabase: () => Promise<void>;
+  // Whether a system error means the database cannot be reached. Such a failure is answered 503, not 500.
+  isUnavailable: (error: unknown) => boolean;
 }
 
 // Sends the one error format, and logs the failure: a refused call at warn with the reason, a system error at error
-// in full. A system error's own message never reaches the caller.
-function sendError(error: unknown, request: FastifyRequest, reply: FastifyReply): FastifyReply {
-  const answer = toErrorReply(error);
+// in full, with its cause. A system error's own message never reaches the caller.
+function sendError(
+  error: unknown,
+  request: FastifyRequest,
+  reply: FastifyReply,
+  isUnavailable: (error: unknown) => boolean,
+): FastifyReply {
+  const answer = toErrorReply(error, isUnavailable);
   if (answer.system) {
-    request.log.error({ requestId: request.id, err: error }, "Request failed");
+    request.log.error(
+      { requestId: request.id, statusCode: answer.status, code: answer.code, err: error },
+      answer.code === "unavailable" ? "Request failed: the database cannot be reached" : "Request failed",
+    );
   } else {
     request.log.warn(
       { requestId: request.id, statusCode: answer.status, code: answer.code, reason: answer.message, details: answer.details },
@@ -45,9 +55,7 @@ function sendError(error: unknown, request: FastifyRequest, reply: FastifyReply)
     );
   }
   if (answer.status === 401) reply.header("www-authenticate", 'Bearer realm="magic-events"');
-  if (error instanceof CredentialRateLimitedError && error.retryAfterSeconds !== undefined) {
-    reply.header("retry-after", String(error.retryAfterSeconds));
-  }
+  if (answer.retryAfterSeconds !== undefined) reply.header("retry-after", String(answer.retryAfterSeconds));
   return reply.code(answer.status).type("application/json").send(errorBody(answer, request.id));
 }
 
@@ -70,7 +78,7 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
     // Addresses Fastify cannot route, such as a malformed percent-encoding, get the same error format.
     frameworkErrors: (error, request, reply) => {
       reply.header("x-request-id", request.id).header("cache-control", "no-store");
-      sendError(error, request, reply);
+      sendError(error, request, reply, deps.isUnavailable);
     },
   }).withTypeProvider<ZodTypeProvider>();
 
@@ -123,8 +131,10 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
     transform: jsonSchemaTransform,
   });
 
-  app.setErrorHandler((error, request, reply) => sendError(error, request, reply));
-  app.setNotFoundHandler((request, reply) => sendError(new AppError("not_found", MESSAGES.notFound), request, reply));
+  app.setErrorHandler((error, request, reply) => sendError(error, request, reply, deps.isUnavailable));
+  app.setNotFoundHandler((request, reply) =>
+    sendError(new AppError("not_found", MESSAGES.notFound), request, reply, deps.isUnavailable),
+  );
 
   await app.register(platformRoutes, { checkDatabase: deps.checkDatabase });
   await app.register(mcpRoutes, {

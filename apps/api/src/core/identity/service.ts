@@ -1,7 +1,7 @@
 import type { apiKey } from "@better-auth/api-key";
 import type { Auth as BetterAuth, DBAdapter } from "better-auth";
 import type { Organizations, Role } from "../organizations/ports.ts";
-import { AppError } from "../shared/errors.ts";
+import { AppError, unavailable } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { IdentitySettings } from "../shared/settings.ts";
 import {
@@ -20,7 +20,7 @@ import {
 // ports; the instance is built with its API key plugin by the composition root.
 export interface IdentityAuth {
   api: Pick<BetterAuth<{ plugins: [ReturnType<typeof apiKey>] }>["api"], "createApiKey" | "verifyApiKey" | "updateApiKey">;
-  $context: Promise<{ adapter: Pick<DBAdapter, "findMany"> }>;
+  $context: Promise<{ adapter: Pick<DBAdapter, "findMany" | "findOne"> }>;
 }
 
 // Who may do what. Every action is listed, so a new action cannot be added without deciding who may do it.
@@ -64,6 +64,7 @@ export class IdentityService implements Identity {
           retryAfterSeconds,
         );
       }
+      if (code === undefined || code === "INVALID_API_KEY") await this.#confirmRefusal(result.error);
       return this.#refuse(code ?? "invalid");
     }
 
@@ -153,6 +154,23 @@ export class IdentityService implements Identity {
   async #requireUser(userId: string): Promise<void> {
     const membership = await this.#organizations.getMembership(userId);
     if (membership === null) throw new AppError("not_found", "There is no user with this ID.");
+  }
+
+  // The plugin's key check catches every error inside it and answers INVALID_API_KEY, the verdict it also gives a key
+  // it does not hold. With its logger off it says nothing else. So that verdict is trusted only once the key store
+  // answers: if it does not, the check could not be made, and the caller is told to try again, not that their key is
+  // wrong. The catch-all also gives its message as an object where a real verdict gives text, so a failure inside the
+  // check while the store answers is a system error too.
+  async #confirmRefusal(error: { message?: unknown } | null | undefined): Promise<void> {
+    const { adapter } = await this.#auth.$context;
+    try {
+      await adapter.findOne({ model: "apikey", where: [{ field: "id", value: "" }] });
+    } catch (cause) {
+      throw unavailable(cause);
+    }
+    if (typeof error?.message !== "string") {
+      throw new Error("The API key check failed inside Better Auth, which did not say why.");
+    }
   }
 
   #refuse(reason: string, credentialId?: string): never {

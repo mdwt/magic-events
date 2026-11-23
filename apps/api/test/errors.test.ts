@@ -4,7 +4,8 @@ import Fastify from "fastify";
 import { validatorCompiler, type ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { CredentialRateLimitedError } from "../src/core/identity/ports.ts";
-import { AppError } from "../src/core/shared/errors.ts";
+import { isDatabaseUnavailable } from "../src/adapters/storage/unavailable.ts";
+import { AppError, UNAVAILABLE_RETRY_AFTER_SECONDS, unavailable } from "../src/core/shared/errors.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
 import { TOOL_FAILED_MESSAGE, toolError } from "../src/mcp/tool.ts";
 import { MESSAGES, toErrorReply } from "../src/rest/errors.ts";
@@ -18,6 +19,7 @@ test("each AppError code maps to its status, with its message and details", () =
     ["forbidden", 403],
     ["not_found", 404],
     ["rate_limited", 429],
+    ["unavailable", 503],
   ] as const;
   for (const [code, status] of cases) {
     const details = [{ path: "near.lat", message: "Too big." }];
@@ -26,10 +28,32 @@ test("each AppError code maps to its status, with its message and details", () =
       code,
       message: "Told to the caller.",
       details,
-      system: false,
+      retryAfterSeconds: undefined,
+      system: code === "unavailable",
     });
   }
-  assert.equal(toErrorReply(new CredentialRateLimitedError("Slow down.", 30)).status, 429);
+  const limited = toErrorReply(new CredentialRateLimitedError("Slow down.", 30));
+  assert.equal(limited.status, 429);
+  assert.equal(limited.retryAfterSeconds, 30);
+});
+
+test("a database that cannot be reached is unavailable with Retry-After, and anything else stays internal_error", () => {
+  const outage = Object.assign(new Error("Failed query: select 1"), {
+    cause: Object.assign(new Error("connect ECONNREFUSED 127.0.0.1:5432"), { code: "ECONNREFUSED" }),
+  });
+  const reply = toErrorReply(outage, isDatabaseUnavailable);
+  assert.equal(reply.status, 503);
+  assert.equal(reply.code, "unavailable");
+  assert.equal(reply.retryAfterSeconds, UNAVAILABLE_RETRY_AFTER_SECONDS);
+  assert.equal(reply.system, true);
+  assert.doesNotMatch(reply.message, /ECONNREFUSED|5432|query/);
+
+  for (const code of ["CONNECTION_ENDED", "57P01", "08006"]) {
+    assert.equal(toErrorReply(Object.assign(new Error("x"), { code }), isDatabaseUnavailable).status, 503, code);
+  }
+  const missingTable = Object.assign(new Error("Failed query"), { cause: Object.assign(new Error("x"), { code: "42P01" }) });
+  assert.equal(toErrorReply(missingTable, isDatabaseUnavailable).status, 500);
+  assert.equal(toErrorReply(unavailable(new Error("down"))).status, 503);
 });
 
 test("a Zod validation failure is invalid_input with one readable detail per problem", async () => {
@@ -71,6 +95,7 @@ test("anything else is a system error with a general message", () => {
       code: "internal_error",
       message: MESSAGES.internal,
       details: [],
+      retryAfterSeconds: undefined,
       system: true,
     });
   }

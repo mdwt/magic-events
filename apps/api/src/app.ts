@@ -12,6 +12,7 @@ import { createDataProcessingRepository } from "./adapters/storage/data-processi
 import { createDiscoveryRepository } from "./adapters/storage/discovery-repository.ts";
 import { createOrganizationsRepository } from "./adapters/storage/organizations-repository.ts";
 import { createTransactionalDb } from "./adapters/storage/transactions.ts";
+import { isDatabaseUnavailable } from "./adapters/storage/unavailable.ts";
 import type { Catalogue, EmbeddingModel } from "./core/catalogue/ports.ts";
 import { CatalogueService } from "./core/catalogue/service.ts";
 import type { DataProcessing } from "./core/data-processing/ports.ts";
@@ -124,6 +125,7 @@ export async function buildApp(deps: {
     checkDatabase: async () => {
       await deps.db.execute(sql`select 1`);
     },
+    isUnavailable: isDatabaseUnavailable,
   });
   return { app, services };
 }

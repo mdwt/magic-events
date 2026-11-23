@@ -81,21 +81,19 @@ export const credentialSummarySchema = z.object({
 export const credentialListSchema = z.object({ items: z.array(credentialSummarySchema) });
 
 // What authenticate fails with when a credential has made too many requests: rate_limited, with when to try again.
+// retryAfterSeconds is undefined when it is not known.
 export class CredentialRateLimitedError extends AppError {
-  // Undefined when it is not known.
-  readonly retryAfterSeconds: number | undefined;
-
   constructor(message: string, retryAfterSeconds: number | undefined) {
-    super("rate_limited", message);
+    super("rate_limited", message, undefined, { retryAfterSeconds });
     this.name = "CredentialRateLimitedError";
-    this.retryAfterSeconds = retryAfterSeconds;
   }
 }
 
 // Inbound port: what Identity offers.
 export interface Identity {
-  // Fails with unauthenticated when the credential is missing, unknown, disabled or expired,
-  // and with rate_limited when the credential has made too many requests.
+  // Fails with unauthenticated when the credential is missing, unknown, disabled or expired, with rate_limited when
+  // the credential has made too many requests, and with unavailable when the credentials cannot be read, such as
+  // while the database is down. A good key is never refused as unauthenticated because the check could not be made.
   authenticate(credential: string | undefined): Promise<Caller>;
   // Fails with forbidden when the caller's role does not allow the action or their tenant is not active.
   authorise(caller: Caller, action: Action): void;

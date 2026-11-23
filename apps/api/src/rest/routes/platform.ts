@@ -1,5 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
+import { unavailable } from "../../core/shared/errors.ts";
 import { errorResponses } from "../errors.ts";
 
 // The platform's own endpoints. The health check needs no API key; the OpenAPI document does, like every other
@@ -12,7 +13,9 @@ export const platformRoutes: FastifyPluginAsyncZod<{ checkDatabase: () => Promis
       schema: {
         operationId: "getHealth",
         summary: "Health",
-        description: "Whether the service is up and can reach its database. Needs no API key.",
+        description:
+          "Whether the service is up and can reach its database. Needs no API key. Answers 503 with Retry-After while " +
+          "the database cannot be reached.",
         tags: ["Platform"],
         security: [],
         querystring: z.strictObject({}),
@@ -21,11 +24,17 @@ export const platformRoutes: FastifyPluginAsyncZod<{ checkDatabase: () => Promis
           400: errorResponses[400],
           429: errorResponses[429],
           500: errorResponses[500],
+          503: errorResponses[503],
         },
       },
     },
     async () => {
-      await checkDatabase();
+      // Whatever stops the check, the service cannot serve: the same answer as any request while the database is down.
+      try {
+        await checkDatabase();
+      } catch (error) {
+        throw unavailable(error);
+      }
       return { status: "ok" as const };
     },
   );

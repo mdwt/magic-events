@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
-import { apikey } from "@magic-events/db";
+import { apikey, createDb } from "@magic-events/db";
 import { eq } from "drizzle-orm";
 import type { FastifyInstance, LightMyRequestResponse } from "fastify";
 import { createLogger } from "../src/adapters/logging/pino.ts";
@@ -214,6 +214,52 @@ describe("the error format", () => {
   });
 });
 
+describe("while the database is down", () => {
+  // The same app on a database that refuses every connection.
+  const down = createDb("postgres://nobody@127.0.0.1:1/none", { max: 1 });
+  let app: FastifyInstance;
+
+  before(async () => {
+    const settings = testSettings(process.env.TEST_DATABASE_URL ?? "");
+    ({ app } = await buildApp({ settings, db: down.db, logger: createLogger(settings.api) }));
+    await app.ready();
+  });
+
+  after(async () => {
+    await app.close();
+    await down.close();
+  });
+
+  function assertUnavailable(response: LightMyRequestResponse, what: string): void {
+    assert.equal(response.statusCode, 503, what);
+    assert.equal(errorOf(response).code, "unavailable", what);
+    assert.ok(Number(response.headers["retry-after"]) > 0, what);
+    assert.equal(response.headers["www-authenticate"], undefined, what);
+    assert.doesNotMatch(response.body, /ECONNREFUSED|postgres|127\.0\.0\.1|query/i, what);
+  }
+
+  test("the health check answers 503 with Retry-After", async () => {
+    assertUnavailable(await app.inject({ method: "GET", url: "/health" }), "GET /health");
+  });
+
+  test("a caller with a good key is answered 503, never 401, over REST and MCP", async () => {
+    // The key is real: it was issued on the working database, which this app cannot reach.
+    for (const route of [
+      { method: "POST", url: "/v1/experiences/search", payload: SEARCH },
+      { method: "GET", url: "/openapi.json" },
+      { method: "POST", url: "/mcp", payload: { jsonrpc: "2.0", id: 1, method: "tools/list" } },
+    ] as const) {
+      const response = await app.inject({ ...route, headers: { ...MCP_HEADERS, ...bearer(key) } });
+      assertUnavailable(response, `${route.method} ${route.url}`);
+    }
+  });
+
+  test("a caller without a key is still answered 401, as the check needs no database", async () => {
+    const response = await app.inject({ method: "GET", url: "/openapi.json" });
+    assert.equal(response.statusCode, 401);
+  });
+});
+
 describe("request IDs and headers", () => {
   test("an incoming plain x-request-id is used, and anything else is replaced", async () => {
     const kept = await harness.app.inject({ method: "GET", url: "/health", headers: { ...bearer(key), "x-request-id": "trip-42" } });
@@ -282,7 +328,7 @@ describe("the OpenAPI document", () => {
         assert.ok(operation, `${method} ${path} is missing`);
         assert.ok(operation.operationId, `${method} ${path} has no operationId`);
         // The health check is public, so it never answers 401 or 403.
-        for (const status of path === "/health" ? ["429", "500"] : ["401", "403", "429", "500"]) {
+        for (const status of path === "/health" ? ["429", "500", "503"] : ["401", "403", "429", "500", "503"]) {
           assert.ok(operation.responses[status], `${method} ${path} does not document ${status}`);
         }
       }

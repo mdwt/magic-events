@@ -53,10 +53,15 @@ const findMany: DBAdapter["findMany"] = ({ where }) => {
   return Promise.resolve(KEYS.filter((key) => key.referenceId === userId) as never[]);
 };
 
+// Whether the key store answers the check Identity makes before it trusts an "invalid key" verdict.
+let storeAnswers = true;
+const findOne: DBAdapter["findOne"] = () =>
+  storeAnswers ? Promise.resolve(null) : Promise.reject(new Error("connect ECONNREFUSED 127.0.0.1:1"));
+
 const settings = testSettings(url).identity;
 const { api } = createAuth(database.db, settings);
 const identity = new IdentityService({
-  auth: { api, $context: Promise.resolve({ adapter: { findMany } }) },
+  auth: { api, $context: Promise.resolve({ adapter: { findMany, findOne } }) },
   organizations,
   settings,
   logger: silent,
@@ -88,4 +93,28 @@ test("a credential's name must be 1 to 32 characters once trimmed", async () => 
   for (const name of ["", "   ", "x".repeat(33)]) {
     await assert.rejects(identity.issueCredential({ userId: ANN, kind: "person", name }), failsWith("invalid_input"));
   }
+});
+
+// Better Auth's key check runs against a database that refuses connections, so its every lookup fails. The plugin
+// catches that and answers that the key is invalid, which must not reach a caller as 401.
+test("a key check that cannot reach the database is unavailable, never unauthenticated", async () => {
+  storeAnswers = false;
+  try {
+    await assert.rejects(identity.authenticate("mev_a-good-key"), (error: unknown) => {
+      assert.ok(error instanceof AppError);
+      assert.equal(error.code, "unavailable");
+      assert.ok(error.retryAfterSeconds !== undefined && error.retryAfterSeconds > 0);
+      assert.match((error.cause as Error).message, /ECONNREFUSED/);
+      return true;
+    });
+  } finally {
+    storeAnswers = true;
+  }
+});
+
+test("a key check that failed inside Better Auth is a system error, even when the key store answers", async () => {
+  await assert.rejects(
+    identity.authenticate("mev_a-good-key"),
+    (error: unknown) => error instanceof Error && !(error instanceof AppError),
+  );
 });

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { hasZodFastifySchemaValidationErrors } from "fastify-type-provider-zod";
-import { AppError, type ErrorCode, type ErrorDetail } from "../core/shared/errors.ts";
+import { AppError, unavailable, type ErrorCode, type ErrorDetail } from "../core/shared/errors.ts";
 
 // The one error format of the REST API:
 //   { "error": { "code": "...", "message": "...", "details": [{ "path": "...", "message": "..." }], "requestId": "..." } }
@@ -14,6 +14,7 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
   not_found: 404,
   rate_limited: 429,
   internal_error: 500,
+  unavailable: 503,
 };
 
 export const MESSAGES = {
@@ -49,6 +50,7 @@ export const errorResponses = {
   403: errorSchema("forbidden", "The caller may not do this, or their tenant is suspended."),
   429: errorSchema("rate_limited", "Too many requests. Retry-After says how many seconds to wait."),
   500: errorSchema("internal_error", "Something went wrong on the server. Quote the request ID if you report it."),
+  503: errorSchema("unavailable", "The service cannot answer for now, such as while its database is down. Retry-After says how many seconds to wait."),
 };
 
 // For a route that names something in its address, which may not exist.
@@ -65,7 +67,10 @@ export interface ErrorReply {
   code: ResponseErrorCode;
   message: string;
   details: ErrorDetail[];
-  // True for a system error: it is logged in full, and the caller gets only the general message.
+  // Sent as Retry-After, when it is known.
+  retryAfterSeconds: number | undefined;
+  // True for a failure on our side, which is logged in full. Of these, only unavailable tells the caller more than
+  // the general message.
   system: boolean;
 }
 
@@ -81,15 +86,18 @@ const UNREADABLE_REQUEST: Record<string, string> = {
   FST_ERR_MAX_PARAM_LENGTH: "The address is too long.",
 };
 
-// Turns anything thrown while answering a request into the status and body the caller gets.
-export function toErrorReply(error: unknown): ErrorReply {
+// Turns anything thrown while answering a request into the status and body the caller gets. isUnavailable says
+// whether a system error means the database cannot be reached, which is answered with unavailable.
+export function toErrorReply(error: unknown, isUnavailable: (error: unknown) => boolean = () => false): ErrorReply {
+  if (!(error instanceof AppError) && isUnavailable(error)) return toErrorReply(unavailable(error));
   if (error instanceof AppError) {
     return {
       status: STATUS_BY_CODE[error.code],
       code: error.code,
       message: error.message,
       details: error.details ?? [],
-      system: false,
+      retryAfterSeconds: error.retryAfterSeconds,
+      system: error.code === "unavailable",
     };
   }
 
@@ -99,19 +107,27 @@ export function toErrorReply(error: unknown): ErrorReply {
       code: "invalid_input",
       message: MESSAGES.invalidInput,
       details: error.validation.flatMap(validationDetails),
+      retryAfterSeconds: undefined,
       system: false,
     };
   }
 
   const unreadable = UNREADABLE_REQUEST[fastifyCode(error)];
   if (unreadable !== undefined) {
-    return { status: 400, code: "invalid_input", message: unreadable, details: [], system: false };
+    return { status: 400, code: "invalid_input", message: unreadable, details: [], retryAfterSeconds: undefined, system: false };
   }
 
-  return { status: 500, code: "internal_error", message: MESSAGES.internal, details: [], system: true };
+  return {
+    status: 500,
+    code: "internal_error",
+    message: MESSAGES.internal,
+    details: [],
+    retryAfterSeconds: undefined,
+    system: true,
+  };
 }
 
-export function errorBody(reply: Omit<ErrorReply, "status" | "system">, requestId: string): ErrorBody {
+export function errorBody(reply: Pick<ErrorReply, "code" | "message" | "details">, requestId: string): ErrorBody {
   return { error: { code: reply.code, message: reply.message, details: reply.details, requestId } };
 }
 
