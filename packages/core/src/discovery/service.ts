@@ -5,7 +5,7 @@ import { AppError } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { DiscoverySettings } from "../shared/settings.ts";
 import { isDue, staleBefore } from "./due.ts";
-import { errorMessage, fingerprint, sourcingWindow } from "./fetching.ts";
+import { errorMessage, fingerprint, sourcingWindow, storableListing } from "./fetching.ts";
 import type {
   ClaimedRawListing,
   Discovery,
@@ -161,16 +161,38 @@ export class DiscoveryService implements Discovery {
       error = errorMessage(caught);
     }
 
-    const status = error === null ? "succeeded" : "failed";
-    await this.#repository.finishRun(runId, {
-      status,
-      complete,
-      listingsFound: counts.found,
-      listingsNewOrChanged: counts.newOrChanged,
-      listingsUnchanged: counts.unchanged,
-      error,
-      finishedAt: this.#clock(),
-    });
+    let status: "succeeded" | "failed" = error === null ? "succeeded" : "failed";
+    try {
+      await this.#repository.finishRun(runId, {
+        status,
+        complete,
+        listingsFound: counts.found,
+        listingsNewOrChanged: counts.newOrChanged,
+        listingsUnchanged: counts.unchanged,
+        error,
+        finishedAt: this.#clock(),
+      });
+    } catch (caught) {
+      // A run is never left running: recording it failed, so it is recorded again as failed with a fixed error.
+      logger.error({ error: errorMessage(caught), runError: error }, "The run's outcome could not be recorded");
+      status = "failed";
+      complete = false;
+      error = "The run's outcome could not be recorded.";
+      try {
+        await this.#repository.finishRun(runId, {
+          status,
+          complete,
+          listingsFound: counts.found,
+          listingsNewOrChanged: counts.newOrChanged,
+          listingsUnchanged: counts.unchanged,
+          error,
+          finishedAt: this.#clock(),
+        });
+      } catch (again) {
+        // The run timeout closes it later.
+        logger.error({ error: errorMessage(again) }, "The run could not be recorded as failed either");
+      }
+    }
     if (error !== null) logger.warn({ error }, "The run failed");
 
     // Only a successful, complete run says what the source no longer lists. A feed or an incremental fetch does not.
@@ -364,7 +386,9 @@ export class DiscoveryService implements Discovery {
     const seen = new Set<string>();
     const unchanged: string[] = [];
     try {
-      for (const listing of listings) {
+      for (const fetched of listings) {
+        // Text a Postgres text column cannot hold is taken out first, so the fingerprint is of what is saved.
+        const listing = storableListing(fetched);
         // A feed's pages can overlap when new posts push old ones down, so one listing can come back twice.
         if (seen.has(listing.sourceListingId)) continue;
         seen.add(listing.sourceListingId);

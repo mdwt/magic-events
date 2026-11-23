@@ -13,12 +13,14 @@ import type {
   SaveSourceInput,
   SourceFetcher,
 } from "../src/discovery/ports.ts";
+import { errorMessage } from "../src/discovery/fetching.ts";
 import { DiscoveryService } from "../src/discovery/service.ts";
 import { AppError } from "../src/shared/errors.ts";
 import type { DomainEvent, DomainEventPublisher } from "../src/shared/domain-events.ts";
 import type { Logger } from "../src/shared/logger.ts";
 import type { Transactions } from "../src/shared/transactions.ts";
 import { createHarness, testSettings, type Harness } from "../src/testing/harness.ts";
+import { fixture } from "./fixtures/sources/server.ts";
 
 // Discovery against the database: sources, runs, listings and raw listings, the hand-off to Data processing,
 // and the domain events. The adapters are fakes and the clock is the test's.
@@ -262,6 +264,42 @@ describe("Discovery: a run against the database", () => {
     assert.equal(runRow?.status, "failed");
     assert.equal(runRow.error, "GET https://example.com answered 503 Service Unavailable");
     assert.ok(runRow.finishedAt);
+  });
+
+  test("a page with NUL bytes is saved without them, and is unchanged when fetched again", async () => {
+    const saved = await harness.services.discovery.saveSource(pages);
+    // A Webtickets event page, cut down. Its description ends in a NUL byte.
+    const html = fixture("webtickets-nul.html").toString("utf8");
+    assert.ok(html.includes("\u0000"));
+    returns("web_page", [page("webtickets", html)]);
+
+    const first = await harness.services.discovery.runSource(saved.id);
+    later(24);
+    const second = await harness.services.discovery.runSource(saved.id);
+
+    assert.equal(first.status, "succeeded");
+    const [raw] = await rawListingsOf("webtickets");
+    assert.equal(raw?.content, html.replaceAll("\u0000", ""));
+    assert.equal(second.listingsUnchanged, 1);
+  });
+
+  test("the error of a query the database refuses is its short reason, not the query", async () => {
+    const repository = createDiscoveryRepository(harness.db);
+    const saved = await harness.services.discovery.saveSource(pages);
+    const runId = await repository.startRun(saved.id, now);
+    const content = `<p>${"page ".repeat(1000)}\u0000</p>`;
+
+    const version = { runId, url: null, contentType: "text/html", content, fingerprint: "f", fetchedAt: now };
+    const caught: unknown = await repository.saveNewListing({ sourceId: saved.id, sourceListingId: "a", ...version }).then(
+      () => undefined,
+      (error: unknown) => error,
+    );
+
+    assert.ok(caught instanceof Error);
+    assert.match(caught.message, /^Failed query:/);
+    const message = errorMessage(caught);
+    assert.match(message, /^The database refused a query: invalid byte sequence for encoding "UTF8": 0x00/);
+    assert.doesNotMatch(message, /page|insert/);
   });
 
   test("a source of a kind with no adapter is a failed run, not an error", async () => {

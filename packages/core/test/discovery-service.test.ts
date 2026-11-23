@@ -120,6 +120,9 @@ function memoryRepository() {
   // Every domain event the repository appended, in order.
   const appended: DomainEvent[] = [];
   let failSaveAfter = Infinity;
+  let saveError = new Error("The database went away");
+  // How many of the next calls to finishRun fail.
+  let failingFinishes = 0;
 
   function append<E extends DomainEvent>(event: E): E {
     appended.push(event);
@@ -189,13 +192,17 @@ function memoryRepository() {
       return Promise.resolve(id);
     },
     finishRun(runId, outcome) {
+      if (failingFinishes > 0) {
+        failingFinishes -= 1;
+        return Promise.reject(new Error("Failed query: update \"run\" set \"error\" = $1\nparams: <the page>"));
+      }
       const found = runs.find((one) => one.id === runId);
       if (found) Object.assign(found, outcome);
       return Promise.resolve();
     },
     findListings: (sourceId) => Promise.resolve(listings.filter((one) => one.sourceId === sourceId)),
     saveNewListing(input) {
-      if (rawListings.length >= failSaveAfter) return Promise.reject(new Error("The database went away"));
+      if (rawListings.length >= failSaveAfter) return Promise.reject(saveError);
       const id = randomUUID();
       listings.push({
         id,
@@ -342,8 +349,12 @@ function memoryRepository() {
     rawListings,
     syncStates,
     appended,
-    failSavesAfter(count: number) {
+    failSavesAfter(count: number, error?: Error) {
       failSaveAfter = count;
+      if (error) saveError = error;
+    },
+    failFinishes(count: number) {
+      failingFinishes = count;
     },
   };
 }
@@ -550,6 +561,20 @@ describe("DiscoveryService.runSource: listings", () => {
     assert.equal(second.listingsNewOrChanged, 0);
   });
 
+  test("takes out what Postgres cannot store, and fingerprints what is saved", async () => {
+    const { service, memory, adapter, nextDay, source } = setup();
+    const saved = await source();
+
+    adapter.returns([page("a", "Gates open at 12:00\u0000 \ud83c", "Gates open\u0000")]);
+    await service.runSource(saved.id);
+    nextDay();
+    adapter.returns([page("a", "Gates open at 12:00 �", "Gates open")]);
+    const second = await service.runSource(saved.id);
+
+    assert.equal(memory.rawListings[0]?.content, "Gates open at 12:00 �");
+    assert.equal(second.listingsUnchanged, 1);
+  });
+
   test("counts a listing the adapter returns twice once", async () => {
     const { service, memory, adapter, source } = setup();
     const saved = await source();
@@ -637,6 +662,60 @@ describe("DiscoveryService.runSource: failures are failed runs", () => {
     assert.equal(summary.listingsNewOrChanged, 1);
     assert.equal(memory.rawListings.length, 1);
     assert.equal(published.length, 1);
+  });
+
+  test("a failed query's error is the database's short reason, never the query or the page", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source();
+    const refused = new Error('invalid byte sequence for encoding "UTF8": 0x00');
+    const query = new Error(`Failed query: insert into "raw_listing" values ($1)\nparams: ${"<p>page</p>".repeat(500)}`, {
+      cause: refused,
+    });
+    memory.failSavesAfter(0, query);
+    adapter.returns([page("a", "A")]);
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.error, 'The database refused a query: invalid byte sequence for encoding "UTF8": 0x00');
+    assert.equal(memory.runs[0]?.error, summary.error);
+  });
+
+  test("a run's error is one line of at most 500 characters", async () => {
+    const { service, adapter, source } = setup();
+    const saved = await source();
+    adapter.fails(`GET https://example.com failed:\n${"x".repeat(2000)}`);
+
+    const summary = await service.runSource(saved.id);
+
+    assert.ok(summary.error !== null);
+    assert.equal(summary.error.length, 500);
+    assert.doesNotMatch(summary.error, /\n/);
+  });
+
+  test("a run whose outcome cannot be recorded is recorded as failed with a fixed error", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source();
+    memory.failFinishes(1);
+    adapter.returns([page("a", "A")]);
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.error, "The run's outcome could not be recorded.");
+    assert.equal(memory.runs[0]?.status, "failed");
+    assert.equal(memory.runs[0].error, summary.error);
+  });
+
+  test("a run that cannot be recorded at all gives a failed result, not a crash", async () => {
+    const { service, memory, adapter, source } = setup();
+    const saved = await source();
+    memory.failFinishes(2);
+    adapter.fails("GET https://example.com answered 500");
+
+    const summary = await service.runSource(saved.id);
+
+    assert.equal(summary.status, "failed");
+    assert.equal(summary.listingsRemoved, 0);
   });
 
   test("an unknown source is not_found", async () => {

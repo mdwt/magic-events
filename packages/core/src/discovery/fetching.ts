@@ -32,8 +32,34 @@ export function fingerprint(listing: FetchedListing): string {
     .digest("hex");
 }
 
-// Why something failed, in one line for the run's error.
+// Text as a Postgres text column can hold it. Postgres refuses the NUL character, which some pages carry, and
+// stores a lone half of a surrogate pair as U+FFFD, so that is replaced here, before the fingerprint is taken from
+// it. Bytes that are not valid in the page's character set are already U+FFFD once the body is decoded.
+export function storableText(text: string): string {
+  return text.replaceAll("\u0000", "").toWellFormed();
+}
+
+// A listing as fetched, with every text in it storable. Discovery saves and fingerprints only this.
+export function storableListing(listing: FetchedListing): FetchedListing {
+  return {
+    sourceListingId: storableText(listing.sourceListingId),
+    ...(listing.url === undefined ? {} : { url: storableText(listing.url) }),
+    contentType: storableText(listing.contentType),
+    content: storableText(listing.content),
+    ...(listing.fingerprintOf === undefined ? {} : { fingerprintOf: storableText(listing.fingerprintOf) }),
+  };
+}
+
+// The longest error a run records.
+const MAX_ERROR_LENGTH = 500;
+
+// Why something failed, short, for the run's error. A failed query's error carries the query and its parameters,
+// which can hold a whole page, so the database's own reason is given instead.
 export function errorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return String(error);
+  let message = error instanceof Error ? error.message : String(error);
+  if (error instanceof Error && message.startsWith("Failed query:")) {
+    message = error.cause instanceof Error ? `The database refused a query: ${error.cause.message}` : "A query failed.";
+  }
+  const line = storableText(message).replace(/\s+/g, " ").trim();
+  return line.length > MAX_ERROR_LENGTH ? `${line.slice(0, MAX_ERROR_LENGTH - 1)}…` : line;
 }
