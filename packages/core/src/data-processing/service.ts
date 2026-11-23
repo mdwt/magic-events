@@ -294,6 +294,7 @@ export class DataProcessingService implements DataProcessing {
       fetchedAt,
       now,
       location,
+      ownPages: raw.source.ownPages,
     });
     const { horizonEnd } = sourcingWindow({
       fetchedAt,

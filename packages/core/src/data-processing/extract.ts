@@ -77,6 +77,9 @@ export interface ExtractInput {
   now: Date;
   // The source's location, from the Catalogue service.
   location: Location;
+  // True when the source's pages are the organiser's own, about its own offerings: the item is then the page of
+  // every experience it gives that has no more specific page of its own.
+  ownPages?: boolean;
 }
 
 export interface Extractor {
@@ -835,9 +838,13 @@ class LanguageModelExtractor implements Extractor {
       }
       kept.push(settled.experience);
     }
-    // An item that lists several experiences is the own page of none of them.
+    // An organiser's own page is the page of each of its offerings that has none more specific. Any other item
+    // that lists several experiences, such as a listing site's page of other organisers' events, is the own page
+    // of none of them.
     const itemUrl = settleUrl(input.url, undefined);
-    if (kept.length > 1 && itemUrl !== undefined) {
+    if (itemUrl !== undefined && input.ownPages === true) {
+      for (const experience of kept) experience.url ??= itemUrl;
+    } else if (kept.length > 1 && itemUrl !== undefined) {
       for (const experience of kept) if (experience.url === itemUrl) delete experience.url;
     }
     this.#logger.debug({ kind: this.kind, answered: answer.experiences.length, kept: kept.length }, "Extracted");

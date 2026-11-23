@@ -212,6 +212,26 @@ describe("Extractors", () => {
     assert.deepEqual((await extractor.extract(input())).map((experience) => experience.title), ["Hermanus FynArts"]);
   });
 
+  test("an organiser's own page is the page of each of its offerings that has no more specific one", async () => {
+    // Hermanus Whale Cruises' trip page describes its own two trips, and only one has a page of its own.
+    const page = "https://www.hermanus-whale-cruises.co.za/trip.php";
+    const trips = () =>
+      extraction(
+        answered({ title: "Boat-based whale watching", url: "" }),
+        answered({ title: "Eco Marine cruise", url: page }),
+        answered({ title: "Private charter", url: "https://www.hermanus-whale-cruises.co.za/charter.php" }),
+      );
+    const urls = async (ownPages: boolean | undefined) => {
+      const { extractor } = extractorFor("web_page", trips());
+      const experiences = await extractor.extract(input({ url: page, ...(ownPages === undefined ? {} : { ownPages }) }));
+      return experiences.map((experience) => experience.url);
+    };
+    assert.deepEqual(await urls(true), [page, page, "https://www.hermanus-whale-cruises.co.za/charter.php"]);
+    // A source whose pages list other organisers' events, the default.
+    assert.deepEqual(await urls(false), [undefined, undefined, "https://www.hermanus-whale-cruises.co.za/charter.php"]);
+    assert.deepEqual(await urls(undefined), [undefined, undefined, "https://www.hermanus-whale-cruises.co.za/charter.php"]);
+  });
+
   test("an item is the own page of the one experience it describes, and of none when it lists several", async () => {
     const own = extractorFor("web_page", extraction(answered({ url: "https://fynarts.example.com/" })));
     assert.equal((await own.extractor.extract(input()))[0]?.url, "https://fynarts.example.com/");
