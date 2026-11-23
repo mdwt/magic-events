@@ -27,8 +27,8 @@ MCP.
 
 - **Next.js with the Vercel AI SDK and AI Elements (picked).** `useChat` in the browser, one route handler on the
   server that runs the model with the MCP server's tools. It was named in the request, it is the shortest path from
-  Next.js to a streaming chat with tool calls, and AI Elements installs into the project as shadcn components, so the
-  chat and the dashboard share one component system.
+  Next.js to a streaming chat with tool calls, and AI Elements are compositions of shadcn components, so the chat and
+  the dashboard share one component system.
 - **A hand-built chat on `@anthropic-ai/sdk` and `@modelcontextprotocol/sdk`.** The same packages the API uses, with no
   new ones. It means writing the streaming protocol, the tool loop and the message components by hand, which is the
   work the AI SDK and AI Elements already do.
@@ -43,7 +43,9 @@ In `apps/web`, already on Next.js 16.4.6, React 19.3 and Tailwind 4.3.5:
 
 - shadcn/ui, initialised for Tailwind 4 and the `src/` directory, with the `@/*` alias that `tsconfig.json` already has.
 - The AI SDK: `ai`, `@ai-sdk/react`, the AI SDK's MCP client, and `@ai-sdk/anthropic`.
-- AI Elements, added through the shadcn CLI into `src/components/ai-elements`.
+- AI Elements from shadcn/ui: the chat, message, tool and prompt input patterns, built from shadcn components added
+  through the shadcn CLI. The separate `ai-elements` package is deprecated at the end of November 2026 in favour of
+  these, so it is not used.
 
 ### Layout
 
@@ -59,8 +61,8 @@ area. The navigation has one entry, the chat. The create-next-app page and its i
 2. Reads the MCP server's tools and hands them to `streamText`, with Claude as the model.
 3. Streams the result to the browser as a UI message stream, and closes the MCP client when the stream ends.
 
-If the MCP server cannot be reached or rejects the key, the route answers with an error the chat can show. It does not
-fall back to a chat without tools.
+If a setting is missing, or the MCP server cannot be reached, rejects the key or offers no tools, the route answers
+with an error the chat can show. It does not fall back to a chat without tools.
 
 ### Chat
 
@@ -80,12 +82,12 @@ They are added to the root `.env.example`. The web app reads the root `.env`, as
 
 ## Decisions made by the builder
 
-- Claude is the chat's model, through `@ai-sdk/anthropic`, because the project already has `ANTHROPIC_API_KEY`.
+- Claude is the chat's model, through `@ai-sdk/anthropic`, because the project already has `ANTHROPIC_API_KEY`. The
+  model id is `claude-sonnet-5-5`.
+- The web app's tests run on `node:test`, as the API's do, with no test dependency added.
 - The setting names above.
 - The MCP path `/mcp` is a default only. The API decides its own path, and the setting follows it.
 
 ## Left to the builder
 
-- The exact package versions, the shadcn style and base colour, and which AI Elements components the chat needs.
-- The model id, kept in one place.
-- How the web app loads the root `.env`.
+- The exact package versions, and the shadcn style and base colour.
