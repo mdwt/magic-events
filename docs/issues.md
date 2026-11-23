@@ -6,8 +6,9 @@ the system works, it is also in the document that owns the subject.
 
 2026-11-23 · Meiring
 
-**Status:** `In progress` being built now · `Open` needs something from outside the code · `Phase 2` noted, and not
-part of version 1 · `Closed` decided, and built where it needed building.
+**Status:** `In progress` being built now · `To do` decided, and starts once the core has moved to `packages/core` ·
+`Open` needs something from outside the code · `Phase 2` noted, and not part of version 1 · `Closed` decided, and
+built where it needed building.
 
 ## Being worked on
 
@@ -20,6 +21,10 @@ part of version 1 · `Closed` decided, and built where it needed building.
 | 41 | A failed raw listing can be claimed again before its attempt is counted | Data processing | In progress | With more than one processing worker, another could claim it between the rollback and the mark. Being closed, with a test of two workers racing |
 | 44 | Nothing runs lint, type checks and tests automatically | Tooling | In progress | A GitHub Actions workflow that runs lint, the type checks and the tests on every push and pull request is being added |
 | 45 | A venue whose listing states no coordinates has no position | Data processing | Open | Such an experience is searched from its location's centre. Geocoding its address, through Google behind a port, needs a Google API key in the environment |
+| 46 | A text the embedding model always refuses stays due for ever | Catalogue | To do | The embedding job fails on it every 15 minutes. An experience whose text keeps failing is to be set aside after a few tries, so the job stops failing on it |
+| 47 | Changed-since misses an experience whose sessions moved out of the client's dates | Catalogue | To do | It matches an experience on its sessions as stored now, so one rescheduled out of the dates searched is never reported, which is the change a planner most needs. It is to match on the sessions it had inside the dates before the change as well |
+| 48 | Extraction took a season for an experience, and stored titles that name nothing | Data processing | To do | The real run saved "Southern Right Whales in Walker Bay" as an experience, and titles such as "Hermanus 2026" and "Time". The extraction instructions and the checks on what comes back are to leave out seasons and refuse a title that does not name an experience |
+| 49 | A Wix page's fingerprint changes between fetches | Discovery | To do | The FynArts page's fingerprint changed between two fetches three minutes apart, so issue 23's answer does not hold for every site and the page is processed again on every run. What changes in its visible text or structured data is to be found and left out of the fingerprint |
 
 ## Phase 2
 
@@ -30,6 +35,7 @@ part of version 1 · `Closed` decided, and built where it needed building.
 | 37 | The next source does not take over when the leading listing goes | Data processing | A lower-priority listing only fills empty fields. When the leading link is removed, the experience keeps the values it has. The next source taking over is for phase 2 |
 | 40 | A server stopped part way through a fetch uses up that fetch's retries | Jobs | The run stays marked as running until its timeout, and each retry in that time is refused and counted. With the defaults the fetch still happens. Fixing it belongs with the move to more durable jobs in version 2 |
 | 42 | Jobs that are given up are only in pg-boss's own table | Jobs | A job whose retries are used up is logged as an error and stays in pg-boss's table. A dead letter queue belongs with the move to more durable jobs in version 2 |
+| 50 | A search with a query text waits for the query's embedding | Catalogue | Bedrock takes about 1.3 to 2.0 seconds to embed the query text. After 5 seconds the search ranks by keyword alone. Keeping the embeddings of repeated query texts is for phase 2 |
 
 ## Closed
 
@@ -68,3 +74,6 @@ part of version 1 · `Closed` decided, and built where it needed building.
 | 38 | Postponed to Confirmed without new dates is allowed | Catalogue | Not an issue. A postponed experience cannot be booked, and a source that confirms it again is taken at its word |
 | 39 | Two fetches of one source at the same instant can both start a run | Discovery | Left as it is. The job queue keeps one fetch job per source waiting at a time |
 | 43 | Moving experiences to Past and extending recurring sessions is not built | Catalogue | Built: the upkeep job sets finished experiences to Past, closes bookings whose close time has passed, and generates recurring sessions further ahead |
+| 51 | Changed-since does not report an experience that changed and then became Past | Catalogue | As designed. An experience that is over is never reported |
+| 52 | Changed-since reports cancelled and removed experiences whatever `status` and `bookable` say | Catalogue | As designed. They are what a planner checking back must not miss |
+| 53 | A system admin can issue API keys for another system admin | Identity | Left as it is. System admins operate the platform |
