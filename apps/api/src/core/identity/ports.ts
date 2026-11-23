@@ -8,7 +8,14 @@ import { AppError } from "../shared/errors.ts";
 export type CallerKind = "person" | "agent";
 
 // Everything a caller can do through the API. Every REST route and every MCP tool names one.
-export type Action = "experiences.search" | "mcp.use" | "health.read" | "openapi.read";
+export type Action =
+  | "experiences.search"
+  | "experiences.changes"
+  // Onboarding: creating tenants, adding their users and issuing their credentials. A system admin's alone.
+  | "tenants.manage"
+  | "mcp.use"
+  | "health.read"
+  | "openapi.read";
 
 // Who is calling, as established by Identity for one request.
 export interface Caller {

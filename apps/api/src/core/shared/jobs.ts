@@ -11,6 +11,11 @@ export interface Jobs {
   "discovery.fetch-source": { sourceId: string };
   // Processes the raw listings that are pending, until none is left.
   "processing.process-pending": Record<string, never>;
+  // Embeds the experiences that have no embedding, or one from another model, until none is left.
+  "catalogue.embed-experiences": Record<string, never>;
+  // Catalogue's upkeep: sets finished experiences to Past, closes bookings whose close time has passed, and
+  // generates the sessions of open-ended recurring experiences further ahead.
+  "catalogue.keep-up": Record<string, never>;
 }
 
 export type JobName = keyof Jobs;

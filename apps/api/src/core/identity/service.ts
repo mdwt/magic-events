@@ -25,6 +25,8 @@ export interface IdentityAuth {
 // On top of this table, a client may act only while their tenant is active.
 const ALLOWED: Record<Action, Record<Role, boolean>> = {
   "experiences.search": { client: true, system_admin: true },
+  "experiences.changes": { client: true, system_admin: true },
+  "tenants.manage": { client: false, system_admin: true },
   "mcp.use": { client: true, system_admin: true },
   "health.read": { client: true, system_admin: true },
   "openapi.read": { client: true, system_admin: true },
