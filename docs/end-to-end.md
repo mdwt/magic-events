@@ -335,7 +335,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Goal:** "Has anything changed since I last looked?", when nothing has.
 - **Who and how:** Agency Planner, REST.
 - **Steps:** after E2E-21 and before E2E-22, ask for changes with the December stay and `"since"` T1.
-- **Passes when:** the answer is 200 with no items and `total` 0.
+- **Passes when:** the answer is 200 with no items and `total` 0, so there is no change to describe.
 
 #### E2E-27 · What changed is reported, with what kind of change
 
@@ -345,9 +345,10 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Passes when:**
   - The items are exactly the five experiences of E2E-22 and "Swallow Series Wine Tasting Lunches", which E2E-23 removed, and no other.
   - Each `change.kind` is the one in E2E-22's table: cancelled, postponed, rescheduled, changed and confirmed, and removed for the Swallow Series.
+  - Each change says what it changed and what it was before: `fields` names exactly the fields that differ from the experience as it was before E2E-22, in the order the result gives its fields, and `previous` holds their earlier values. The cancelled show and the postponed concert name `status` and `booking`, confirmed and open before. The 80s show names `sessions`, with its two shows inside the dates before, 12 December 2026 and 27 February 2027. The dinner names `price`, with the price it had. The triathlon names `status`, `booking` and `bookingUrl`, announced, not yet and none before. The Swallow Series names `status`, confirmed before.
   - Each item's `changes` lists every change since T1, newest first, and the items come most recent change first.
   - The postponed concert is still returned by search for 9 January 2027 as postponed, booking closed and not bookable. The confirmed triathlon is bookable.
-  - Asked for changes since a time before E2E-20's load, with the December stay, the experiences that load created are reported as new.
+  - Asked for changes since a time before E2E-20's load, with the December stay, the experiences that load created are reported as new, each new entry with no `fields` and `previous` null.
 
 #### E2E-28 · Cancelled and removed are reported though search drops them
 
@@ -356,7 +357,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Steps:** search 30 January 2027. Ask for changes since T1 with 1 December 2026 to 30 September 2027. Ask again with `"bookable": true` and with `"status": ["confirmed"]`.
 - **Passes when:**
   - Search does not return "Dancing Queen: The Ultimate ABBA Experience".
-  - Each changes answer reports it as cancelled, with status cancelled, and reports "Swallow Series Wine Tasting Lunches" as removed, with status removed, whatever `bookable` and `status` say.
+  - Each changes answer reports it as cancelled, with status cancelled, and reports "Swallow Series Wine Tasting Lunches" as removed, with status removed, whatever `bookable` and `status` say. Each change names `status` and says it was confirmed before.
   - No experience that is over is reported.
 
 #### E2E-29 · Moved out of the dates searched
@@ -367,13 +368,14 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Passes when:**
   - Both answers report "That ’80s Show" as rescheduled.
   - The first, from dates it is no longer on, has `movedOut` true and the sessions it has now. The second has `movedOut` false.
+  - Each change names `sessions` only, and `previous.sessions` is what it was on inside the dates asked for: the 27 February 2027 show at 19:30 in the first, and nothing in the second.
 
 #### E2E-30 · Checking back through MCP
 
 - **Goal:** the AI agent asks what changed and gets the planner's answer.
 - **Who and how:** Agency Planner, agent key, MCP.
 - **Steps:** `get_experience_changes` with E2E-27's arguments. Then with `"since"` an hour from now.
-- **Passes when:** the first `structuredContent` equals E2E-27's REST answer, and the second is a tool error `invalid_input` whose details name `since`.
+- **Passes when:** the first `structuredContent` equals E2E-27's REST answer, `fields` and `previous` of every change included, so the dinner's change names `price` over MCP too. The second is a tool error `invalid_input` whose details name `since`.
 
 ### Onboarding (UC4)
 
@@ -573,7 +575,7 @@ These hold before the scenarios are run and again after any fix made during the 
 | C-06 | The server starts and stops cleanly | It logs that it is listening, "Server started" with the settings that are safe to show and no secret, and that the jobs started, `/health` is 200, and on SIGTERM it logs "Stopping" then "Stopped" and exits with code 0, finishing the request or job in hand |
 | C-07 | The background jobs run | Within an hour of starting, `pgboss.job` shows a completed job for each of `discovery.find-due-sources`, `processing.process-pending`, `catalogue.embed-experiences` and `catalogue.keep-up`, and no job given up |
 | C-08 | Upkeep keeps the feed current | After the upkeep has run, no experience that search can return has its last session before today, and open-ended recurring experiences have sessions up to 24 months from today |
-| C-09 | A new checkout starts with a full feed | On a server with no `magic_events` database, `pnpm quickstart` restores the snapshot and seeds, printing the new keys. The suite does the same into a database of its own, with `DATABASE_URL` pointed at it: `pnpm db:restore`, then `pnpm db:seed`. On the restored feed, changes with `{ "location": "hermanus", "from": "2026-12-01", "to": "2027-09-30", "since": "2026-11-23T17:10:00Z" }` are exactly the nine made for demonstration in [packages/db/snapshot/README.md](../packages/db/snapshot/README.md): one cancelled, one postponed, one rescheduled, one confirmed, one removed and four changed. A search of 20 to 30 September 2027 has "Private whale watching charter with Southern Right Charters" first. A search with one of them then returns the experiences of the snapshot, every one with an embedding, and `pnpm db:restore` run again changes nothing and says the database already has tables |
+| C-09 | A new checkout starts with a full feed | On a server with no `magic_events` database, `pnpm quickstart` restores the snapshot and seeds, printing the new keys. The suite does the same into a database of its own, with `DATABASE_URL` pointed at it: `pnpm db:restore`, then `pnpm db:seed`. On the restored feed, changes with `{ "location": "hermanus", "from": "2026-12-01", "to": "2027-09-30", "since": "2026-11-23T17:10:00Z" }` are exactly the nine made for demonstration in [packages/db/snapshot/README.md](../packages/db/snapshot/README.md): one cancelled, one postponed, one rescheduled, one confirmed, one removed and four changed. Each names what it changed and what it was before, as the notes give it: the cancelled, postponed and removed ones `status` and `booking`, confirmed and open; the rescheduled one `sessions`, 14 December 2026 at 19:00; Ballyhoo `status` and `booking`, announced and not yet; the Elton John tribute `booking`, open; the Latin Guitar `price`, R200; the Stanford Festive Market `sessions`, its three days; the ISA Miniature Convention `onSaleAt`, none. A search of 20 to 30 September 2027 has "Private whale watching charter with Southern Right Charters" first. A search with one of them then returns the experiences of the snapshot, every one with an embedding, and `pnpm db:restore` run again changes nothing and says the database already has tables |
 
 ## Results
 

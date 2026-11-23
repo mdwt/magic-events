@@ -43,11 +43,46 @@ export interface SearchResult {
   offset: number;
 }
 
+// One change: its kind, when, the fields it changed, and what they were before. A new entry has no fields and no
+// previous.
+export interface Change {
+  kind: string;
+  at: string;
+  fields: string[];
+  previous: Record<string, unknown> | null;
+}
+
 export interface ChangeItem {
   experience: Experience;
   movedOut: boolean;
-  change: { kind: string; at: string };
-  changes: { kind: string; at: string }[];
+  change: Change;
+  changes: Change[];
+}
+
+// The order a change names its fields in.
+export const FIELD_ORDER = [
+  "title",
+  "status",
+  "booking",
+  "type",
+  "sessions",
+  "price",
+  "venue",
+  "openingHours",
+  "onSaleAt",
+  "bookingClosesAt",
+  "bookingUrl",
+  "pageUrl",
+  "imageUrl",
+  "summary",
+  "description",
+  "attributes",
+];
+
+// A session as a change's previous gives it, for comparing: its days and its start time.
+export function sessionKeys(sessions: unknown): string[] {
+  if (!Array.isArray(sessions)) return [];
+  return (sessions as Session[]).map((s) => `${s.startDate}..${s.endDate}${s.startTime ? ` ${s.startTime.slice(0, 5)}` : ""}`);
 }
 
 export interface ChangesResult {

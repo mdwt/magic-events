@@ -4,7 +4,7 @@ import { send, type Call } from "../harness/api.ts";
 import { keysPrinted } from "../harness/cli.ts";
 import { show } from "../harness/checks.ts";
 import { databaseUrl, dropDatabase, one, query } from "../harness/db.ts";
-import { addMonths, today, WINTER } from "../harness/feed.ts";
+import { addMonths, sessionKeys, today, WINTER, type ChangeItem } from "../harness/feed.ts";
 import { lastLines, ROOT, runCommand, runNode, type CommandResult } from "../harness/process.ts";
 import { byHand, scenario, skipped } from "../harness/scenario.ts";
 import { until } from "../harness/server.ts";
@@ -224,7 +224,7 @@ function newCheckout(): void {
       } finally {
         await server.stop();
       }
-      const items = (changed.json as { items?: { experience: { title: string }; change: { kind: string } }[] } | undefined)?.items ?? [];
+      const items = (changed.json as { items?: ChangeItem[] } | undefined)?.items ?? [];
       c.equal(changed.status, 200, "the changes call on the snapshot");
       c.sameSet(
         items.map((item) => item.experience.title),
@@ -248,6 +248,28 @@ function newCheckout(): void {
         "the kinds of the cancelled, postponed, rescheduled, confirmed and removed ones",
       );
       c.equal(items.filter((item) => item.change.kind === "changed").length, 4, "changes of kind changed");
+      // What each of the nine changed and what it was before, as the snapshot's notes give it.
+      const detail: [string, string, string[], Record<string, unknown>][] = [
+        ["Neil Diamond Tribute - Johan Liebenberg", "cancelled", ["status", "booking"], { status: "confirmed", booking: "open" }],
+        ["Crimson House", "postponed", ["status", "booking"], { status: "confirmed", booking: "open" }],
+        ["Riaan Benadé Live", "rescheduled", ["sessions"], { sessions: ["2026-12-14..2026-12-14 19:00"] }],
+        ["A Tribute to Elton John", "changed", ["booking"], { booking: "open" }],
+        ["The Latin Guitar with James Grace", "changed", ["price"], { price: { min: 200, max: 200, currency: "ZAR" } }],
+        ["Ballyhoo: The 50 Year Celebration", "confirmed", ["status", "booking"], { status: "announced", booking: "not_yet" }],
+        ["Studio 54 New Years Eve Party", "removed", ["status", "booking"], { status: "confirmed", booking: "open" }],
+        ["ISA Miniature Convention", "changed", ["onSaleAt"], { onSaleAt: null }],
+      ];
+      for (const [title, kind, fields, previous] of detail) {
+        const item = items.find((one) => one.experience.title === title);
+        c.equal(item?.change.kind, kind, `"${title}": kind`);
+        c.equal(item?.change.fields, fields, `"${title}": fields`);
+        const was: Record<string, unknown> = { ...(item?.change.previous ?? {}) };
+        if ("sessions" in was) was.sessions = sessionKeys(was.sessions);
+        c.equal(was, previous, `"${title}": previous`);
+      }
+      const market = items.find((one) => one.experience.title === "Stanford Festive Market");
+      c.equal(market?.change.fields, ["sessions"], `"Stanford Festive Market": fields`);
+      c.equal(sessionKeys(market?.change.previous?.sessions).length, 3, `"Stanford Festive Market": the three days it was on before`);
       const first = (september.json as { items?: { title: string }[] } | undefined)?.items?.[0]?.title;
       c.equal(first, "Private whale watching charter with Southern Right Charters", "the first of 20 to 30 September 2027 on the snapshot");
       const total = (answer.json as { total?: number } | undefined)?.total ?? 0;
@@ -262,7 +284,8 @@ function newCheckout(): void {
       c.ok(again.code !== 0 && /already has tables/.test(again.output), `restore run again changes nothing and says so: ${lastLines(again.output, 2)}`);
       c.saw(
         `restore and seed: a search with the new key: ${answer.status}, total ${total}; ${searchable.n} searchable, ${unembedded.n} without an embedding; ` +
-          `changes since 17:10: ${items.length} (${items.map((item) => `${item.experience.title}: ${item.change.kind}`).join(", ")}); 20 to 30 Sep 2027 first "${String(first)}"; restore again: exit ${String(again.code)}, "already has tables"`,
+          `changes since 17:10: ${items.length} (${items.map((item) => `${item.experience.title}: ${item.change.kind} ${item.change.fields.join("+")} was ${show(item.change.previous, 80)}`).join("; ")}); ` +
+          `20 to 30 Sep 2027 first "${String(first)}"; restore again: exit ${String(again.code)}, "already has tables"`,
       );
     } finally {
       await dropDatabase(name);

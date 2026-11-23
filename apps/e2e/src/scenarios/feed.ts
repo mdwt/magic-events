@@ -158,6 +158,7 @@ export function registerFeed(): void {
 export function registerFeedChanges(): void {
   scenario("E2E-22", "A changed listing updates its experience", async ({ c, logs }) => {
     const startedAt = new Date().toISOString();
+    remember("before E2E-22", await searchAll({ location: "hermanus", from: "2026-12-01", to: "2027-09-30" }));
     const before = await versions();
     edit(
       "benguela-cove",
