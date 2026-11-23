@@ -150,6 +150,12 @@ const answerExperienceSchema = z.object({
   imageUrl: z.string(),
   url: z.string(),
   hints: z.array(z.string()),
+  nextEdition: z
+    .boolean()
+    .describe(
+      "True for the next edition of a yearly event whose latest edition the item gives is over: its dates are not " +
+        "announced, so it has one session with month or year precision.",
+    ),
 });
 
 export const extractionAnswerSchema = z.object({ experiences: z.array(answerExperienceSchema) });
@@ -261,6 +267,40 @@ function settleBooking(
     return { status: "confirmed", booking };
   }
   return { status, booking };
+}
+
+// The next edition of a yearly event whose latest edition is over: Expected, in the same month of the next year it
+// falls in after the fetch month, or the year when no month is given. Nothing of the last edition that may differ
+// in the next one is kept: no day, price, booking link, on-sale or booking close time. Booking is None.
+export function nextEdition(
+  experience: ExtractedExperience,
+  fetchDay: string,
+): { experience: ExtractedExperience } | { problem: string } {
+  if (experience.recurrence !== undefined) return { problem: "a recurring experience has no yearly next edition" };
+  const [first] = [...experience.sessions].sort((a, b) => a.start.localeCompare(b.start));
+  if (first === undefined) return { problem: "a next edition has no session to take its month from" };
+  const fetchYear = Number(fetchDay.slice(0, 4));
+  const fetchMonth = Number(fetchDay.slice(5, 7));
+  let session: ExtractedSession;
+  if (first.precision === "year") {
+    session = { start: `${String(Math.max(Number(first.start.slice(0, 4)), fetchYear))}-01-01`, precision: "year" };
+  } else {
+    const month = Number(first.start.slice(5, 7));
+    const year = month > fetchMonth ? fetchYear : fetchYear + 1;
+    session = { start: `${String(year)}-${String(month).padStart(2, "0")}-01`, precision: "month" };
+  }
+  const next: ExtractedExperience = {
+    ...experience,
+    type: "single",
+    status: "expected",
+    booking: "none",
+    sessions: [session],
+  };
+  delete next.price;
+  delete next.bookingUrl;
+  delete next.onSaleAt;
+  delete next.bookingClosesAt;
+  return { experience: next };
 }
 
 // Expected is for an edition with only a month or a year: an experience with a day, or with a pattern it repeats
@@ -808,6 +848,14 @@ class LanguageModelExtractor implements Extractor {
           );
           settled.experience = cut;
         }
+      }
+      if (answered.nextEdition) {
+        const next = nextEdition(settled.experience, bounds.fetchDay);
+        if ("problem" in next) {
+          this.#logger.warn({ title: answered.title, problem: next.problem }, "Extracted experience dropped");
+          continue;
+        }
+        settled.experience = next.experience;
       }
       const span = experienceSpan(settled.experience);
       if (span.last !== null && span.last < bounds.overBefore) {

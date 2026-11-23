@@ -391,6 +391,119 @@ describe("A title that names no experience", () => {
   });
 });
 
+describe("The next edition of a yearly event", () => {
+  const fixture = (name: string) => readFileSync(new URL(`./fixtures/sources/${name}`, import.meta.url), "utf8");
+  // A month of the last edition, as a model following the instructions gives a next edition.
+  const lastHeld = (start: string, overrides: Parameters<typeof answered>[0] = {}) =>
+    answered({
+      status: "expected",
+      booking: "none",
+      sessions: [session({ start, end: "", precision: "month" })],
+      nextEdition: true,
+      ...overrides,
+    });
+
+  test("is Expected in the same month of the next year it falls in, from the annual calendar", async () => {
+    const { extractor } = extractorFor(
+      "pdf_calendar",
+      extraction(
+        lastHeld("2026-02-01", { title: "Stiek Yt Motorbike Rally", city: "Kleinmond" }),
+        // The model gave last year's day, price and link: none of them is kept.
+        lastHeld("2026-06-01", {
+          title: "Penguin Plunge",
+          city: "Stanford",
+          status: "confirmed",
+          booking: "open",
+          sessions: [session({ start: "2026-06-20", end: "", startTime: "10:00" })],
+          priceMin: 50,
+          priceMax: 50,
+          currency: "ZAR",
+          bookingUrl: "https://penguinplunge.example.com/tickets",
+        }),
+        lastHeld("2026-09-01", { title: "Fernkloof Flower Show" }),
+        lastHeld("2026-10-01", { title: "Pam Golding Hangklip Marathon", city: "Kleinmond" }),
+        // Still to come this year: its dates as given.
+        answered({
+          title: "Trans Agulhas Boat Race",
+          city: "Gansbaai",
+          status: "confirmed",
+          booking: "none",
+          sessions: [session({ start: "2026-12-31", end: "" })],
+        }),
+      ),
+    );
+    const content = Buffer.from(fixture("whalecoast-annual-events.txt")).toString("base64");
+    const experiences = await extractor.extract(input({ content, contentType: "application/pdf" }));
+    assert.deepEqual(
+      experiences.map((one) => [one.title, one.status, one.booking, one.sessions, one.price, one.bookingUrl]),
+      [
+        ["Stiek Yt Motorbike Rally", "expected", "none", [{ start: "2027-02-01", precision: "month" }], undefined, undefined],
+        ["Penguin Plunge", "expected", "none", [{ start: "2027-06-01", precision: "month" }], undefined, undefined],
+        ["Fernkloof Flower Show", "expected", "none", [{ start: "2027-09-01", precision: "month" }], undefined, undefined],
+        [
+          "Pam Golding Hangklip Marathon",
+          "expected",
+          "none",
+          [{ start: "2027-10-01", precision: "month" }],
+          undefined,
+          undefined,
+        ],
+        ["Trans Agulhas Boat Race", "confirmed", "none", [{ start: "2026-12-31", precision: "day" }], undefined, undefined],
+      ],
+    );
+  });
+
+  test("comes from an organiser's page that shows only its edition of this year", async () => {
+    const { extractor } = extractorFor(
+      "web_page",
+      extraction(
+        lastHeld("2026-09-01", {
+          title: "Hermanus Botanical Society Flower Show",
+          summary: "The Hermanus Botanical Society's annual flower show. Last held 24 to 27 September 2026.",
+          sessions: [session({ start: "2026-09-24", end: "2026-09-27" })],
+        }),
+      ),
+    );
+    const [show] = await extractor.extract(
+      input({ content: fixture("fernkloof-annual-flower-show.txt"), contentType: "text/plain" }),
+    );
+    assert.equal(show?.status, "expected");
+    assert.deepEqual(show.sessions, [{ start: "2027-09-01", precision: "month" }]);
+    assert.match(show.summary ?? "", /Last held 24 to 27 September 2026/);
+  });
+
+  test("named with no month has year precision, and a recurring one is dropped", async () => {
+    const { extractor } = extractorFor(
+      "web_page",
+      extraction(
+        // Xplorio names the Hermanus Wine and Food Fair with no month.
+        lastHeld("2027-01-01", {
+          title: "Hermanus Wine and Food Fair",
+          sessions: [session({ start: "2027-01-01", end: "", precision: "year" })],
+        }),
+        lastHeld("2026-09-01", {
+          title: "Weekly market",
+          type: "recurring",
+          sessions: [],
+          recurrence: {
+            rule: "FREQ=WEEKLY;BYDAY=SA",
+            start: "2026-01-03",
+            end: "",
+            startTime: "",
+            endTime: "",
+            skipped: [],
+          },
+        }),
+      ),
+    );
+    const experiences = await extractor.extract(input());
+    assert.deepEqual(
+      experiences.map((one) => [one.title, one.sessions]),
+      [["Hermanus Wine and Food Fair", [{ start: "2027-01-01", precision: "year" }]]],
+    );
+  });
+});
+
 describe("Expected", () => {
   test("is kept for an annual event whose coming edition has only a month", async () => {
     // Xplorio's events page: "It is held at the Fernkloof Nature Reserve in September every year".

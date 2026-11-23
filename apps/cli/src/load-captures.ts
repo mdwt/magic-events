@@ -82,6 +82,7 @@ const capturedExperienceSchema = z.object({
   bookingUrl: text,
   imageUrl: text,
   hints: z.array(z.string()).nullish(),
+  nextEdition: z.boolean().nullish(),
   attributes: z.object({ tier: tier.optional() }).catchall(attributeValue).nullish(),
   tags: z.array(z.string()).nullish(),
   profile: text,
@@ -237,6 +238,7 @@ function extractionAnswer(experience: CapturedExperience): AnswerExperience {
     imageUrl: experience.imageUrl ?? "",
     url: experience.url ?? "",
     hints: experience.hints ?? [],
+    nextEdition: experience.nextEdition ?? false,
   };
 }
 

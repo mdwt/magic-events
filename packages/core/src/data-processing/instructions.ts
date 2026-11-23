@@ -31,8 +31,11 @@ Return the dates the item gives and no others.
 - Resolve relative dates ("this Saturday", "next weekend", "tomorrow") from the fetch time in the request. A date given without a year is the next one on or after the fetch date, unless the item makes clear it is another.
 - If the item gives a date you cannot place with confidence, leave that experience out rather than guess.
 
+Yearly events
+An event held every year whose latest edition the item gives is over, such as a festival a calendar lists for September when the fetch date is in November, is returned as its next edition, with nextEdition true. Give it one session with precision month, in the month of the last edition (the code moves it to the next year that month falls in), status expected, booking none, no price, no booking link and no on-sale or booking close time, and say in the summary when it was last held, such as "Last held 25 to 27 September 2026." Never give the next edition a day: its dates are not announced. When the item names the event with only a year, or with no month at all, give one session with precision year. An edition the item announces with its dates is not a next edition: give its dates, and nextEdition is false. Everything else has nextEdition false.
+
 What to leave out
-- What is already over: an experience whose last date is before the fetch date. A post about last weekend produces nothing.
+- What is already over: an experience whose last date is before the fetch date. A post about last weekend produces nothing. A yearly event whose latest edition is over is returned as its next edition instead (see Yearly events).
 - What starts after the sourcing horizon given in the request. An open-ended recurring experience that has already started, or starts before the horizon, is kept.
 
 Status and booking
