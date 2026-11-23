@@ -28,6 +28,7 @@ purpose: don't overcook it.
 | [docs/domain-events.md](docs/domain-events.md) | The domain event log |
 | [docs/sources.md](docs/sources.md) | The sources the system holds for Hermanus |
 | [docs/hermanus-sources.md](docs/hermanus-sources.md) | Which Hermanus sites answer a plain fetch, checked one by one |
+| [docs/end-to-end.md](docs/end-to-end.md) | What version 1 must do, as scenarios a tester runs from the outside |
 | [docs/v1-decisions.md](docs/v1-decisions.md) | What version 1 leaves out and why, for review |
 | [docs/issues.md](docs/issues.md) | The issues and open questions being worked on |
 

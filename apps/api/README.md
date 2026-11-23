@@ -110,11 +110,22 @@ Every REST failure has one format:
 }
 ```
 
-The codes are `invalid_input` (400), `unauthenticated` (401), `forbidden` (403), `not_found` (404),
-`method_not_allowed` (405), `conflict` (409), `content_too_large` (413), `unsupported_media_type` (415), `rate_limited`
-(429), `internal_error` (500) and `unavailable` (503). A 429 or 503 comes with `Retry-After`. Every answer carries an
-`x-request-id` header, and every log line of the request carries the same ID. Over MCP, a tool that fails answers
-`isError: true` with the same code, message and details as text.
+| Status | Code | When |
+| --- | --- | --- |
+| 400 | `invalid_input` | The body, query or address does not fit the schema. The details say which fields and why |
+| 401 | `unauthenticated` | The key is missing, unknown, disabled or expired. Comes with `WWW-Authenticate: Bearer` |
+| 403 | `forbidden` | The caller may not do this, or their tenant is suspended |
+| 404 | `not_found` | Nothing is there |
+| 405 | `method_not_allowed` | The address does not answer this method. `Allow` names the ones it does |
+| 409 | `conflict` | A tenant slug or an email address is taken. The details name the field |
+| 413 | `content_too_large` | The body is larger than `API_BODY_LIMIT_BYTES` |
+| 415 | `unsupported_media_type` | The body is not sent as `application/json` |
+| 429 | `rate_limited` | Too many requests. `Retry-After` says how many seconds to wait |
+| 500 | `internal_error` | Something went wrong on the server. The details are in the logs under the request ID |
+| 503 | `unavailable` | The database cannot be reached, the health check included. `Retry-After` says when to try again |
+
+Every error body carries `requestId`, every answer the `x-request-id` header, and every log line of the request the
+same ID. Over MCP, a tool that fails answers `isError: true` with the same code, message and details as text.
 
 ## Background jobs
 
