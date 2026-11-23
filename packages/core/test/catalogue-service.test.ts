@@ -105,11 +105,14 @@ const DEFINITIONS: AttributeDefinition[] = [
   { ...attribute("internal_note", "text"), filterable: false },
 ];
 
-function service(repository: CatalogueRepository, embeddings = new FakeEmbeddingModel()) {
+// The slugs of the tags and seasons, as Data processing lists them.
+const TAG_SLUGS = ["festival", "jazz", "whale-season", "whales", "winter"];
+
+function service(repository: CatalogueRepository, embeddings = new FakeEmbeddingModel(), tagSlugs = TAG_SLUGS) {
   return new CatalogueService({
     repository,
     events: { publish: () => {} },
-    dataProcessing: { listAttributes: () => Promise.resolve(DEFINITIONS) },
+    dataProcessing: { listAttributes: () => Promise.resolve(DEFINITIONS), listTagSlugs: () => Promise.resolve(tagSlugs) },
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     embeddings,
     embeddingSettings: EMBEDDING_SETTINGS,
@@ -385,6 +388,47 @@ describe("CatalogueService.searchExperiences", () => {
       [true, false, false, false, true, false],
     );
     assert.equal(result.total, 6);
+  });
+});
+
+describe("CatalogueService tag filters", () => {
+  test("a tag or season slug Data processing knows is passed through", async () => {
+    const { repository, queries } = fakeRepository();
+    await service(repository).searchExperiences({ ...base, tags: ["whales", "whale-season"] });
+    assert.deepEqual(queries[0]?.tags, ["whales", "whale-season"]);
+  });
+
+  test("an unknown slug is refused, naming it, how many there are and the closest ones", async () => {
+    const { repository, queries } = fakeRepository();
+    const error = await refusal(service(repository).searchExperiences({ ...base, tags: ["jazz", "whale"] }));
+    assert.equal(error.code, "invalid_input");
+    assert.deepEqual(error.details, [
+      {
+        path: "tags.1",
+        message:
+          "There is no tag whale. There are 5 tags and seasons; the closest are: whales, whale-season, jazz, winter, festival.",
+      },
+    ]);
+    assert.equal(queries.length, 0);
+  });
+
+  test("with hundreds of tags, the message names only the closest few", async () => {
+    const many = Array.from({ length: 300 }, (_, index) => `tag-${String(index).padStart(3, "0")}`);
+    const { repository } = fakeRepository();
+    const searching = service(repository, new FakeEmbeddingModel(), many).searchExperiences({ ...base, tags: ["tag-10"] });
+    const error = await refusal(searching);
+    assert.deepEqual(
+      error.details?.map((detail) => detail.message),
+      ["There is no tag tag-10. There are 300 tags and seasons; the closest are: tag-100, tag-101, tag-102, tag-103, tag-104."],
+    );
+  });
+
+  test("with no tags defined, any slug is refused", async () => {
+    const { repository } = fakeRepository();
+    const error = await refusal(service(repository, new FakeEmbeddingModel(), []).searchExperiences({ ...base, tags: ["jazz"] }));
+    assert.deepEqual(error.details?.map((detail) => detail.message), [
+      "There is no tag jazz. There are no tags to filter on yet.",
+    ]);
   });
 });
 

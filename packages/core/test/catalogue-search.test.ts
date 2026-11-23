@@ -39,6 +39,10 @@ before(async () => {
   catalogue = harness.services.catalogue;
   // The default attribute definitions, which a search's filters are checked against.
   for (const definition of attributes) await harness.services.dataProcessing.saveAttribute(definition);
+  // The tags the experiences below carry, which a search's tag filter is checked against.
+  for (const slug of ["whales", "festival", "theatre", "painting", "sharks", "jazz", "sailing", "craft", "wine"]) {
+    await harness.services.dataProcessing.saveTag({ slug, name: slug, description: `The ${slug} tag.` });
+  }
   const hermanus = await catalogue.saveLocation({
     name: "Hermanus",
     slug: "hermanus",
@@ -384,7 +388,18 @@ describe("search by attributes and tags", () => {
       "Hermanus Whale Festival",
       "Gansbaai Shark Cage Diving",
     ]);
-    assert.deepEqual(await found({ tags: ["nothing-like-this"] }), []);
+  });
+
+  test("a tag that is not defined is refused, naming the closest ones", async () => {
+    const error = await search({ tags: ["whales", "whale"] }).catch((caught: unknown) => caught);
+    assert.ok(error instanceof AppError);
+    assert.equal(error.code, "invalid_input");
+    assert.deepEqual(error.details, [
+      {
+        path: "tags.1",
+        message: "There is no tag whale. There are 9 tags and seasons; the closest are: whales, wine, craft, jazz, sharks.",
+      },
+    ]);
   });
 
   test("returns attributes grouped by key and tags in a stable order", async () => {

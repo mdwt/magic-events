@@ -100,6 +100,13 @@ describe("the time of the last search", () => {
     assert.deepEqual(result, { items: [], total: 0, limit: 20, offset: 0 });
   });
 
+  test("an unknown tag is refused as in a search", async () => {
+    const catalogue = fakeCatalogue();
+    const error = await refusal(catalogue.service.getChangesSince(changesInput({ tags: ["jaz"] })));
+    assert.deepEqual(error.details?.map((detail) => detail.path), ["tags.0"]);
+    assert.match(error.message, /no tag jaz.*closest are: jazz/);
+  });
+
   test("the search parameters follow the search's own rules", async () => {
     const catalogue = fakeCatalogue();
     const error = await refusal(catalogue.service.getChangesSince(changesInput({ radiusKm: 500, to: "2027-06-01" })));

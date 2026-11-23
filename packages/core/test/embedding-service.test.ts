@@ -80,7 +80,7 @@ function service(
   return new CatalogueService({
     repository,
     events: { publish: () => {} },
-    dataProcessing: { listAttributes: () => Promise.resolve([]) },
+    dataProcessing: { listAttributes: () => Promise.resolve([]), listTagSlugs: () => Promise.resolve([]) },
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     embeddings,
     embeddingSettings: { ...EMBEDDING_SETTINGS, ...options.settings },

@@ -71,7 +71,10 @@ export function createServices(deps: { settings: Settings; db: Db; logger: Logge
   const catalogue: Catalogue = new CatalogueService({
     repository: createCatalogueRepository(db),
     events,
-    dataProcessing: { listAttributes: () => dataProcessing.listAttributes() },
+    dataProcessing: {
+      listAttributes: () => dataProcessing.listAttributes(),
+      listTagSlugs: () => dataProcessing.listTagSlugs(),
+    },
     settings: settings.catalogue,
     embeddings,
     embeddingSettings: settings.embedding,

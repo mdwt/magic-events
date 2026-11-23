@@ -123,7 +123,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
   const service = new CatalogueService({
     repository,
     events,
-    dataProcessing: { listAttributes: () => Promise.resolve([]) },
+    dataProcessing: { listAttributes: () => Promise.resolve([]), listTagSlugs: () => Promise.resolve(["jazz"]) },
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     embeddings: new FakeEmbeddingModel(),
     embeddingSettings: EMBEDDING_SETTINGS,

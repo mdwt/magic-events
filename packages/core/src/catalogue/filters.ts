@@ -52,3 +52,44 @@ export function checkAttributeFilters(
   }
   return details;
 }
+
+// How many known slugs a refusal names: the closest to the one given, so the message stays short when there are
+// hundreds of tags.
+const SUGGESTIONS = 5;
+
+// How many single-letter edits turn one text into the other.
+function editDistance(a: string, b: string): number {
+  let previous = Array.from({ length: b.length + 1 }, (_, index) => index);
+  for (let i = 1; i <= a.length; i += 1) {
+    const current = [i];
+    for (let j = 1; j <= b.length; j += 1) {
+      const substitution = (previous[j - 1] ?? 0) + (a[i - 1] === b[j - 1] ? 0 : 1);
+      current.push(Math.min((previous[j] ?? 0) + 1, (current[j - 1] ?? 0) + 1, substitution));
+    }
+    previous = current;
+  }
+  return previous[b.length] ?? 0;
+}
+
+// A search's tag filter, checked against the slugs of every tag and season, which Data processing owns. A slug that
+// is none of them could never match, so it is refused, with how many there are and the closest few.
+export function checkTagFilters(tags: string[], known: string[]): ErrorDetail[] {
+  const knownSet = new Set(known);
+  return tags.flatMap((slug, index): ErrorDetail[] => {
+    if (knownSet.has(slug)) return [];
+    // Slugs that hold the one given come first, such as whales and whale-season for whale, then by edit distance.
+    const rank = (candidate: string) => [candidate.includes(slug) ? 0 : 1, editDistance(slug, candidate)] as const;
+    const closest = [...known]
+      .sort((a, b) => {
+        const [aHolds, aDistance] = rank(a);
+        const [bHolds, bDistance] = rank(b);
+        return aHolds - bHolds || aDistance - bDistance || a.localeCompare(b);
+      })
+      .slice(0, SUGGESTIONS);
+    const message =
+      known.length === 0
+        ? `There is no tag ${slug}. There are no tags to filter on yet.`
+        : `There is no tag ${slug}. There are ${String(known.length)} tags and seasons; the closest are: ${list(closest)}.`;
+    return [{ path: `tags.${String(index)}`, message }];
+  });
+}

@@ -44,7 +44,7 @@ import {
   type Draft,
 } from "./save.ts";
 import { reportedChange } from "./changes.ts";
-import { checkAttributeFilters } from "./filters.ts";
+import { checkAttributeFilters, checkTagFilters } from "./filters.ts";
 import type {
   ExperienceChange,
   ExperienceChangesInput,
@@ -71,13 +71,14 @@ export class CatalogueService implements Catalogue {
   readonly #events: DomainEventPublisher;
   readonly #embeddings: EmbeddingModel;
   readonly #embeddingSettings: EmbeddingSettings;
-  readonly #dataProcessing: Pick<DataProcessing, "listAttributes">;
+  readonly #dataProcessing: Pick<DataProcessing, "listAttributes" | "listTagSlugs">;
 
   constructor(deps: {
     repository: CatalogueRepository;
     events: DomainEventPublisher;
-    // Data processing's service, for the attribute definitions a search's filters are checked against.
-    dataProcessing: Pick<DataProcessing, "listAttributes">;
+    // Data processing's service, for the attribute definitions and the tag slugs a search's filters are checked
+    // against.
+    dataProcessing: Pick<DataProcessing, "listAttributes" | "listTagSlugs">;
     settings: CatalogueSettings;
     embeddings: EmbeddingModel;
     embeddingSettings: EmbeddingSettings;
@@ -633,6 +634,9 @@ export class CatalogueService implements Catalogue {
     if (Object.keys(attributes).length > 0) {
       details.push(...checkAttributeFilters(attributes, await this.#dataProcessing.listAttributes()));
     }
+    // So are the tags and seasons. An unknown slug would match nothing, with no error.
+    const tags = input.tags ?? [];
+    if (tags.length > 0) details.push(...checkTagFilters(tags, await this.#dataProcessing.listTagSlugs()));
     if (details.length > 0 || near === null) {
       this.#logger.warn({ details }, "Search refused");
       throw new AppError("invalid_input", details.map((detail) => detail.message).join(" "), details);
@@ -649,7 +653,7 @@ export class CatalogueService implements Catalogue {
       statuses: input.bookable === true ? statuses.filter((status) => status === "confirmed") : statuses,
       ...(input.bookable === true ? { bookable: true as const } : {}),
       attributes,
-      tags: input.tags ?? [],
+      tags,
       ...(input.query === undefined ? {} : { query: input.query }),
       limit: input.limit,
       offset: input.offset,
