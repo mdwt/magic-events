@@ -128,15 +128,20 @@ export function pickedCandidate(answer: MatchAnswer, candidates: ExperienceMatch
   return id === "" ? undefined : candidates.find((candidate) => candidate.id === id);
 }
 
-// How this listing's values meet the stored ones: it leads when its source's priority is the highest among the
-// listings the experience is linked to, ties included, and otherwise only fills what is empty.
+// How this listing's values meet the stored ones: it leads when its source's priority is higher than every other
+// linked listing's, or when it shares the highest and was linked before the others that do. A listing not linked
+// yet comes after every linked one, so a new source of the same priority only fills, and two sources of the same
+// priority do not take the lead from each other each time one is processed. Otherwise it only fills what is
+// empty. `linked` is the experience's listings in the order they were linked, the oldest first.
 export function precedenceOf(
-  ownPriority: number,
-  ownListingId: string,
-  priorities: Record<string, number>,
+  own: { listingId: string; priority: number },
+  linked: { listingId: string; priority: number }[],
 ): "lead" | "fill" {
-  const others = Object.entries(priorities)
-    .filter(([listingId]) => listingId !== ownListingId)
-    .map(([, priority]) => priority);
-  return others.every((priority) => ownPriority >= priority) ? "lead" : "fill";
+  const others = linked.filter((one) => one.listingId !== own.listingId);
+  if (others.some((one) => one.priority > own.priority)) return "fill";
+  const ownPlace = linked.findIndex((one) => one.listingId === own.listingId);
+  const tiedBefore = others.some(
+    (one) => one.priority === own.priority && (ownPlace === -1 || linked.indexOf(one) < ownPlace),
+  );
+  return tiedBefore ? "fill" : "lead";
 }

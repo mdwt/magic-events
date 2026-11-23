@@ -339,9 +339,7 @@ export class DataProcessingService implements DataProcessing {
       const span = spanOf(experience, horizonEnd);
       const match = await this.#match({ experience, span, extracted, linked, taken, location });
       if (match) taken.add(match.id);
-      const precedence = match
-        ? precedenceOf(raw.source.priority, raw.listingId, await this.#discovery.getListingPriorities(match.listingIds))
-        : "lead";
+      const precedence = match ? await this.#precedence(raw, match) : "lead";
 
       const tags = [...classification.tags];
       for (const slug of seasonsOf(experience, seasons, horizonEnd)) if (!tags.includes(slug)) tags.push(slug);
@@ -463,6 +461,18 @@ export class DataProcessingService implements DataProcessing {
       schema: matchAnswerSchema,
     });
     return pickedCandidate(answer, candidates);
+  }
+
+  // Whether this listing leads the matched experience or only fills it. Its listings come in the order they were
+  // linked, which breaks a tie in priority.
+  async #precedence(raw: ClaimedRawListing, match: ExperienceMatch): Promise<"lead" | "fill"> {
+    const priorities = await this.#discovery.getListingPriorities(match.listingIds);
+    // A listing whose priority Discovery does not give is left out of the comparison.
+    const linked = match.listingIds.flatMap((listingId) => {
+      const priority = listingId === raw.listingId ? raw.source.priority : priorities[listingId];
+      return priority === undefined ? [] : [{ listingId, priority }];
+    });
+    return precedenceOf({ listingId: raw.listingId, priority: raw.source.priority }, linked);
   }
 
   // In the claim's transaction, after the work has rolled back: nothing from the raw listing is saved.

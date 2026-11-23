@@ -389,22 +389,22 @@ describe("Matching", () => {
     assert.equal(state.saves[0]?.experienceId, undefined);
   });
 
-  test("a matched experience is led by this listing when its source's priority is highest, ties included", async () => {
-    const candidate = stored({ id: "e-other", listingIds: [OTHER_LISTING] });
-    const lower = setup({
-      model: fakeLanguageModel({ extract: [extraction(answered())] }),
-      experiences: [candidate],
-      priorities: { [OTHER_LISTING]: 20 },
-    });
-    await lower.service.processNext();
-    assert.equal(lower.state.saves[0]?.precedence, "fill");
-
-    const tie = setup({
-      model: fakeLanguageModel({ extract: [extraction(answered())] }),
-      experiences: [candidate],
-      priorities: { [OTHER_LISTING]: 10 },
-    });
-    await tie.service.processNext();
-    assert.equal(tie.state.saves[0]?.precedence, "lead");
+  test("a matched experience is led by this listing when its priority is highest, or tied and linked first", async () => {
+    const precedence = async (listingIds: string[], otherPriority: number) => {
+      const { service, state } = setup({
+        model: fakeLanguageModel({ extract: [extraction(answered())] }),
+        experiences: [stored({ id: "e-other", listingIds })],
+        priorities: { [OTHER_LISTING]: otherPriority },
+      });
+      await service.processNext();
+      return state.saves[0]?.precedence;
+    };
+    // This listing's source has priority 10.
+    assert.equal(await precedence([OTHER_LISTING], 20), "fill");
+    assert.equal(await precedence([OTHER_LISTING], 5), "lead");
+    // A tie: a listing not linked yet only fills, and of two linked ones the first keeps the lead.
+    assert.equal(await precedence([OTHER_LISTING], 10), "fill");
+    assert.equal(await precedence([LISTING, OTHER_LISTING], 10), "lead");
+    assert.equal(await precedence([OTHER_LISTING, LISTING], 10), "fill");
   });
 });

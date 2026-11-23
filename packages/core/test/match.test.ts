@@ -109,10 +109,21 @@ describe("The model's pick", () => {
 });
 
 describe("Precedence", () => {
-  test("leads when this listing's source has the highest priority, ties included, and fills otherwise", () => {
-    assert.equal(precedenceOf(20, LISTING, { [LISTING]: 20, [OTHER_LISTING]: 10 }), "lead");
-    assert.equal(precedenceOf(10, LISTING, { [LISTING]: 10, [OTHER_LISTING]: 10 }), "lead");
-    assert.equal(precedenceOf(10, LISTING, { [LISTING]: 10, [OTHER_LISTING]: 20 }), "fill");
-    assert.equal(precedenceOf(10, LISTING, {}), "lead");
+  const own = (priority: number) => ({ listingId: LISTING, priority });
+  const other = (priority: number) => ({ listingId: OTHER_LISTING, priority });
+
+  test("leads when this listing's source has a higher priority than every other linked listing's, and fills when lower", () => {
+    assert.equal(precedenceOf(own(20), [other(10), own(20)]), "lead");
+    assert.equal(precedenceOf(own(20), [other(10)]), "lead");
+    assert.equal(precedenceOf(own(10), [own(10), other(20)]), "fill");
+    assert.equal(precedenceOf(own(10), []), "lead");
+  });
+
+  test("on a tie in priority, the listing linked first keeps the lead, and one not linked yet only fills", () => {
+    assert.equal(precedenceOf(own(10), [own(10), other(10)]), "lead");
+    assert.equal(precedenceOf(own(10), [other(10), own(10)]), "fill");
+    assert.equal(precedenceOf(own(10), [other(10)]), "fill");
+    // A tie below the highest priority does not matter: the highest leads.
+    assert.equal(precedenceOf(own(10), [{ listingId: "third", priority: 30 }, own(10), other(10)]), "fill");
   });
 });
