@@ -5,9 +5,9 @@
     "url": "https://allevents.in/gansbaai/albert-frost-and-dan-patlansky-live/200030983395203",
     "rawFile": "raw/allevents/albert-frost-and-dan-patlansky-live-200030983395203.txt",
     "fetchedAt": "2026-11-23T13:38:42Z",
-    "title": "Albert Frost and Dan Patlansky Live",
+    "title": "Albert Frost & Dan Patlansky Live",
     "summary": "Albert Frost & Dan Patlansky, Live Sunday, 20 December 2026 | Stanford Hills, Stanford Two of South Africa’s most celebrated guitarists share one stage for a single afternoon and evening in the Overberg.",
-    "description": "Albert Frost & Dan Patlansky, Live\nSunday, 20 December 2026 | Stanford Hills, Stanford\nTwo of South Africa’s most celebrated guitarists share one stage for a single afternoon and evening in the Overberg.\nAlbert Frost and Dan Patlansky are known for fearless, soulful playing, blending blues, rock and",
+    "description": "Albert Frost & Dan Patlansky, Live\nSunday, 20 December 2026 | Stanford Hills, Stanford\nTwo of South Africa’s most celebrated guitarists share one stage for a single afternoon and evening in the Overberg.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -34,7 +34,7 @@
       "Kids"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -45,7 +45,12 @@
     "tags": [
       "rock-and-pop"
     ],
-    "profile": "A live afternoon-and-evening show at Stanford Hills with guitarists Albert Frost and Dan Patlansky, known for blues and rock playing. Visitors watch the two share one stage in the Overberg. It suits fans of live guitar music."
+    "profile": "A live afternoon-and-evening show at Stanford Hills with guitarists Albert Frost and Dan Patlansky, known for blues and rock playing. Visitors watch the two share one stage in the Overberg. It suits fans of live guitar music.",
+    "price": {
+      "min": 200,
+      "max": 300,
+      "currency": "ZAR"
+    }
   },
   {
     "source": "AllEvents",
@@ -55,7 +60,7 @@
     "fetchedAt": "2026-11-23T13:40:15Z",
     "title": "André Rieu: Let It Snow Concert Film!",
     "summary": "This holiday season, celebrate the most wonderful time of the year on the big screen with André Rieu's 2026 Christmas Concert – Let It Snow.",
-    "description": "This holiday season, celebrate the most wonderful time of the year on the big screen with André Rieu's 2026 Christmas Concert – Let It Snow. \n\nThis heartwarming festive spectacular, filled with beloved Christmas classics, enchanting waltzes, and magical surprises, will leave you smiling long after t",
+    "description": "This holiday season, celebrate the most wonderful time of the year on the big screen with André Rieu's 2026 Christmas Concert – Let It Snow.",
     "type": "run",
     "status": "confirmed",
     "booking": "open",
@@ -72,7 +77,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -116,9 +121,9 @@
     "url": "https://allevents.in/strand/arno-carstens-live-at-sandbaai-saal-hermanus/200031077380518",
     "rawFile": "raw/allevents/arno-carstens-live-at-sandbaai-saal-hermanus-200031077380518.txt",
     "fetchedAt": "2026-11-23T13:44:24Z",
-    "title": "Arno Carstens Live at Sandbaai Saal, Hermanus",
+    "title": "Arno Carstens Live",
     "summary": "Hermanus, the African Sunrise Summer Tour is coming to Sandbaai Saal on Wednesday 30 December 🌅 Arno Carstens live with songs from his solo albums and the Springbok Nude Girls years. A summer evening of music in the heart of the Overberg.",
-    "description": "Hermanus, the African Sunrise Summer Tour is coming to Sandbaai Saal on Wednesday 30 December 🌅\n\nArno Carstens live with songs from his solo albums and the Springbok Nude Girls years. A summer evening of music in the heart of the Overberg.\n\nThe show starts at 6pm. There's a cash bar and a food truck",
+    "description": "Hermanus, the African Sunrise Summer Tour is coming to Sandbaai Saal on Wednesday 30 December 🌅\n\nArno Carstens live with songs from his solo albums and the Springbok Nude Girls years. A summer evening of music in the heart of the Overberg.\n\nThe show starts at 6pm.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -131,7 +136,7 @@
       }
     ],
     "venue": {
-      "name": "Sandbaai Saal",
+      "name": "Sandbaai Hall",
       "address": "Overstrand",
       "city": "Sandbaai",
       "position": {
@@ -164,12 +169,12 @@
     "url": "https://allevents.in/hermanus/art-exhibition/200031024074516",
     "rawFile": "raw/allevents/art-exhibition-200031024074516.txt",
     "fetchedAt": "2026-11-23T13:40:20Z",
-    "title": "Art exhibition",
+    "title": "Hangklip Art Collective Exhibition",
     "summary": "✨ SAVE THE DATE! ✨ 27 November – 1 December 2026 The Hangklip Art Collective is coming together! A celebration of creativity, talent and artistic expression, bringing together a collection of artists from across the Hangklip area.",
-    "description": "✨ SAVE THE DATE! ✨\n\n27 November – 1 December 2026\n\nThe Hangklip Art Collective is coming together!\n\nA celebration of creativity, talent and artistic expression, bringing together a collection of artists from across the Hangklip area.\n\nJoin us at the beautiful Harold Porter National Botanical Garden",
+    "description": "✨ SAVE THE DATE! ✨\n\n27 November – 1 December 2026\n\nThe Hangklip Art Collective is coming together!\n\nA celebration of creativity, talent and artistic expression, bringing together a collection of artists from across the Hangklip area.",
     "type": "single",
     "status": "announced",
-    "booking": "none",
+    "booking": "not_yet",
     "sessions": [
       {
         "start": "2026-11-27",
@@ -205,12 +210,12 @@
     "url": "https://allevents.in/hermanus/art-hub-expo-2026/200031100782148",
     "rawFile": "raw/allevents/art-hub-expo-2026-200031100782148.txt",
     "fetchedAt": "2026-11-23T13:40:24Z",
-    "title": "Art Hub expo 2026",
+    "title": "Micky's Art Hub Garden Art Exhibition",
     "summary": "Free Art expo Mickys art hub 2026 2nd edition Saturday 28th 11am till 3pm. Supporting artists means more than you think. Some art is for sale. Art Collectors welcome. Free refreshments and snacks. Rsvp to mikpicpro@gmail.",
     "description": "Free Art expo Mickys art hub 2026 2nd edition Saturday 28th 11am till 3pm. Supporting artists means more than you think. \nSome art is for sale. Art Collectors welcome. \nFree refreshments and snacks. \nRsvp to mikpicpro@gmail.com \nOr WhatsApp 0649184611\nPlease like and share.",
     "type": "single",
     "status": "confirmed",
-    "booking": "none",
+    "booking": "open",
     "sessions": [
       {
         "start": "2026-11-28",
@@ -222,7 +227,7 @@
     "venue": {
       "name": "Micky's Art Hub",
       "address": "Protea, Western Cape",
-      "city": "Hermanus"
+      "city": "Fisherhaven"
     },
     "price": {
       "min": 0,
@@ -251,9 +256,9 @@
     "url": "https://allevents.in/hermanus/ballyhoo-the-50-year-celebration-live-in-hermanus/200030856057926",
     "rawFile": "raw/allevents/ballyhoo-the-50-year-celebration-live-in-hermanus-200030856057926.txt",
     "fetchedAt": "2026-11-23T13:40:28Z",
-    "title": "Ballyhoo: The 50 Year Celebration LIVE IN HERMANUS!",
+    "title": "Ballyhoo: The 50 Year Celebration",
     "summary": "South African music legends Ballyhoo celebrate an extraordinary five decades in the music industry with their spectacular 50 Years Celebration Tour.",
-    "description": "South African music legends Ballyhoo celebrate an extraordinary five decades in the music industry with their spectacular 50 Years Celebration Tour.\n\nThis unforgettable live show is a celebration of the music, memories, and timeless spirit of rock ’n’ roll that has connected generations of fans. Joi",
+    "description": "South African music legends Ballyhoo celebrate an extraordinary five decades in the music industry with their spectacular 50 Years Celebration Tour.\n\nThis unforgettable live show is a celebration of the music, memories, and timeless spirit of rock ’n’ roll that has connected generations of fans.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -265,7 +270,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -303,7 +308,7 @@
     "fetchedAt": "2026-11-23T13:38:46Z",
     "title": "Bodhi Cleanse Detox Retreat",
     "summary": "Begin your year with a full body, mind and soul reset at our 3 day Bodhi Cleanse Detox Retreat, guided by Integrative Medical Doctor and Gut Health Specialist, Dr Leah Murray, as well as Holistic Wellness Coach, Olivia Moon.",
-    "description": "Begin your year with a full body, mind and soul reset at our 3 day Bodhi Cleanse Detox Retreat, guided by Integrative Medical Doctor and Gut Health Specialist, Dr Leah Murray, as well as Holistic Wellness Coach, Olivia Moon. This retreat offers a full body detox through nutritional protocols, nervou",
+    "description": "Begin your year with a full body, mind and soul reset at our 3 day Bodhi Cleanse Detox Retreat, guided by Integrative Medical Doctor and Gut Health Specialist, Dr Leah Murray, as well as Holistic Wellness Coach, Olivia Moon.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -409,9 +414,9 @@
     "url": "https://allevents.in/hermanus/christmas-market/200030951582438",
     "rawFile": "raw/allevents/christmas-market-200030951582438.txt",
     "fetchedAt": "2026-11-23T13:40:33Z",
-    "title": "Christmas Market",
+    "title": "Rivergate Christmas Market",
     "summary": "Where are the weeks going!! We cannot believe it is nearly time for our wonderful outdoor Christmas market. We have lots of new stalls and will still have the popular ones bringing new fresh stock.",
-    "description": "Where are the weeks going!! We cannot believe it is nearly time for our wonderful outdoor Christmas market. \nWe have lots of new stalls and will still have the popular ones bringing new fresh stock. \nThere will be live music and the tent over the lawn to meet family and friends and enjoy a meal from",
+    "description": "Where are the weeks going!! We cannot believe it is nearly time for our wonderful outdoor Christmas market. \nWe have lots of new stalls and will still have the popular ones bringing new fresh stock.",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -461,9 +466,9 @@
     "url": "https://allevents.in/gansbaai/christmas-market-2026/200030347645936",
     "rawFile": "raw/allevents/christmas-market-2026-200030347645936.txt",
     "fetchedAt": "2026-11-23T13:38:56Z",
-    "title": "Christmas Market 2026",
+    "title": "Rivergate Christmas Market",
     "summary": "Join us at Rivergate Guest Farm for our highly anticipated annual December Christmas Market. Gather your family and friends for a beautiful summer day out in the tranquil Stanford countryside.",
-    "description": "Join us at Rivergate Guest Farm for our highly anticipated annual December Christmas Market. Gather your family and friends for a beautiful summer day out in the tranquil Stanford countryside.\n\nDiscover a curated selection of over 80 amazing local artisans and small businesses showcasing unique gift",
+    "description": "Join us at Rivergate Guest Farm for our highly anticipated annual December Christmas Market. Gather your family and friends for a beautiful summer day out in the tranquil Stanford countryside.",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -516,7 +521,7 @@
     "url": "https://allevents.in/crossroads/christof-van-der-berg-stories-en-sterre-kleinmond/200030925936222",
     "rawFile": "raw/allevents/christof-van-der-berg-stories-en-sterre-kleinmond-200030925936222.txt",
     "fetchedAt": "2026-11-23T13:44:20Z",
-    "title": "Christof van der Berg - Stories en Sterre | Kleinmond",
+    "title": "Christof van der Berg: Stories en Sterre",
     "summary": "Christof van der Berg en sy klavier in 'n betowerende aand van musiek en stories in Kleinmond. Aangebied deur die \"moving Guelph teater\" met 'n baie spesiale gasoptrede deur die mannekoor onder leiding van Thinus Ries.",
     "description": "Christof van der Berg en sy klavier in 'n betowerende aand van musiek en stories in Kleinmond. Aangebied deur die \"moving Guelph teater\" met 'n baie spesiale gasoptrede deur die mannekoor onder leiding van Thinus Ries. Die vertoning begin om 19:00",
     "type": "single",
@@ -530,7 +535,6 @@
       }
     ],
     "venue": {
-      "name": "Kleinmond",
       "city": "Kleinmond"
     },
     "bookingUrl": "https://allevents.in/go.php?event_id=200030925936222&data=aER3Ymd5MTZVVk9Qbzc2ZUZka3g1K1B1aGVqY1N5dCt0UlRFNk1lemFFQVZ2RUkzRXh5QkNXT3FzWnljNW5EOHdGRmJtK2JhRkp4OXpQVmZtM2VTYk5GdHQyTXUrMG52VmFobnB5VC9qK0txMXM5eEQwcEtOTHN2UUlocDYwYUhlYjJwYkt1d1FnRTdibDdkcS9KOGpaYmVwdS9NV1ZualVGRW5tdGtpMjVPRG9oTHNYaEtZcnlPbVp2YnpLSENXMEZIRE8zUjQva3VXZi9aWHRadVBXZz09&ref=exit-page",
@@ -562,9 +566,9 @@
     "url": "https://allevents.in/hermanus/creedence-a-clearwater-revival-at-hermanus-golf-club-on-4-december/200030663507456",
     "rawFile": "raw/allevents/creedence-a-clearwater-revival-at-hermanus-golf-club-on-4-december-200030663507456.txt",
     "fetchedAt": "2026-11-23T13:40:37Z",
-    "title": "Creedence - A Clearwater Revival at Hermanus Golf Club on 4 December",
+    "title": "Creedence - A Clearwater Revival",
     "summary": "Creedence - A Clearwater Revival is a tribute paying homage to the brilliant songwriting and success of a great American band, Creedence Clearwater Revival. “Just absolutely incredible. My husband and I are huge CCR fans.",
-    "description": "Creedence - A Clearwater Revival is a tribute paying homage to the brilliant songwriting and success of a great American band, Creedence Clearwater Revival.\n\n“Just absolutely incredible. My husband and I are huge CCR fans. If I closed my eyes, that was John Fogerty singing and playing (and we’ve see",
+    "description": "Creedence - A Clearwater Revival is a tribute paying homage to the brilliant songwriting and success of a great American band, Creedence Clearwater Revival.\n\n“Just absolutely incredible. My husband and I are huge CCR fans.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -660,7 +664,7 @@
     "url": "https://allevents.in/gansbaai/dreaming-out-loud-ft-neon-dream-and-byrne/200030983396512",
     "rawFile": "raw/allevents/dreaming-out-loud-ft-neon-dream-and-byrne-200030983396512.txt",
     "fetchedAt": "2026-11-23T13:39:05Z",
-    "title": "Dreaming out Loud ft Neon Dream & Byrne",
+    "title": "Neon Dreams & Byrne: Dreaming Out Loud Festival",
     "summary": "DREAMING OUT LOUD FESTIVAL 2026 Ft NEON DREAMS & BYRNE Get ready for an unforgettable summer as Dreaming Out Loud Festival returns to South Africa this December, bringing incredible live music, feel-good energy and unforgettable moments to the coast!",
     "description": "DREAMING OUT LOUD FESTIVAL 2026 Ft NEON DREAMS & BYRNE\nGet ready for an unforgettable summer as Dreaming Out Loud Festival returns to South Africa this December, bringing incredible live music, feel-good energy and unforgettable moments to the coast! Headlining this year's festival are Canadian favourites Neon Dreams, alongside the incredibly talented South African singer-songwriter Byrne.",
     "type": "single",
@@ -686,7 +690,7 @@
       "Performances"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -752,9 +756,9 @@
     "url": "https://allevents.in/hermanus/garden-art-exhibition-mickys-art-hub/200031004731226",
     "rawFile": "raw/allevents/garden-art-exhibition-mickys-art-hub-200031004731226.txt",
     "fetchedAt": "2026-11-23T13:40:55Z",
-    "title": "Garden Art Exhibition Mickys Art Hub",
+    "title": "Micky's Art Hub Garden Art Exhibition",
     "summary": "🎨 MICKY’S ART HUB ART STUDIO STUDENTS’ ART OF THE YEAR – GARDEN EXHIBITION 🌸 21 Artists • One Beautiful Garden Exhibition • A Celebration of Creation and Creativity Join us for a special afternoon celebrating the wonderful artistic talents of the students of",
-    "description": "🎨 MICKY’S ART HUB ART STUDIO\n STUDENTS’ ART OF THE YEAR – GARDEN EXHIBITION\n\n🌸 21 Artists • One Beautiful Garden Exhibition • A Celebration of Creation and Creativity\n\nJoin us for a special afternoon celebrating the wonderful artistic talents of the students of Micky’s Art Hub Art Studio!\n\nOur garde",
+    "description": "🎨 MICKY’S ART HUB ART STUDIO\n STUDENTS’ ART OF THE YEAR – GARDEN EXHIBITION\n\n🌸 21 Artists • One Beautiful Garden Exhibition • A Celebration of Creation and Creativity\n\nJoin us for a special afternoon celebrating the wonderful artistic talents of the students of Micky’s Art Hub Art Studio!",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -794,7 +798,12 @@
     "tags": [
       "gardens"
     ],
-    "profile": "A garden exhibition of the year's work by 21 student artists of Micky's Art Hub Art Studio in Fisherhaven. Visitors walk the garden and see the art over one afternoon. It suits art lovers and friends of local artists."
+    "profile": "A garden exhibition of the year's work by 21 student artists of Micky's Art Hub Art Studio in Fisherhaven. Visitors walk the garden and see the art over one afternoon. It suits art lovers and friends of local artists.",
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    }
   },
   {
     "source": "AllEvents",
@@ -804,7 +813,7 @@
     "fetchedAt": "2026-11-23T13:39:09Z",
     "title": "Go Within - 4 Day Silent Retreat",
     "summary": "“All is known in the sacredness of silence.” – Rumi Immerse yourself in the simplicity of silence at Bodhi Khaya’s 4 Day Silent Retreat from 9 – 13 December.",
-    "description": "“All is known in the sacredness of silence.” – Rumi \nImmerse yourself in the simplicity of silence at Bodhi Khaya’s 4 Day Silent Retreat from 9 – 13 December. This retreat offers you a precious opportunity to step away from the chaos of daily life and reconnect with your inner essence through the pr",
+    "description": "“All is known in the sacredness of silence.” – Rumi \nImmerse yourself in the simplicity of silence at Bodhi Khaya’s 4 Day Silent Retreat from 9 – 13 December.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -856,7 +865,7 @@
     "url": "https://allevents.in/hermanus/hermanus-2026/200031069576851",
     "rawFile": "raw/allevents/hermanus-2026-200031069576851.txt",
     "fetchedAt": "2026-11-23T13:40:59Z",
-    "title": "Hermanus 2026",
+    "title": "Atlantic Flying Club Slope Soaring Weekend",
     "summary": "Atlantic Flying Club annual slope soaring weekend",
     "description": "Atlantic Flying Club annual slope soaring weekend",
     "type": "single",
@@ -902,7 +911,7 @@
     "url": "https://allevents.in/hermanus/hermanus-carols-2026-by-rotary-club-of-hermanus-and-sponsored-by-hermanus-harcourts/200031090401241",
     "rawFile": "raw/allevents/hermanus-carols-2026-by-rotary-club-of-hermanus-and-sponsored-by-herma-200031090401241.txt",
     "fetchedAt": "2026-11-23T13:41:03Z",
-    "title": "Hermanus Carols 2026 by Rotary Club of Hermanus and sponsored by Hermanus Harcourts",
+    "title": "Hermanus Carols",
     "summary": "Nativity Play, Zwelihle Choir, Carols, Father Christmas, Kids' activities, Food Stalls",
     "description": "Nativity Play, Zwelihle Choir, Carols, Father Christmas, Kids' activities, Food Stalls",
     "type": "single",
@@ -916,7 +925,7 @@
       }
     ],
     "venue": {
-      "name": "Attie Bishop Stadium Hermanus",
+      "name": "Attie Bishop Stadium",
       "city": "Hermanus",
       "position": {
         "lat": -34.409119,
@@ -933,7 +942,7 @@
       "Performances"
     ],
     "attributes": {
-      "tier": "everyday",
+      "tier": "standard",
       "category": [
         "holidays_and_celebrations",
         "music",
@@ -1007,7 +1016,7 @@
     "url": "https://allevents.in/hermanus/hermanus-pride-party/200031004736654",
     "rawFile": "raw/allevents/hermanus-pride-party-200031004736654.txt",
     "fetchedAt": "2026-11-23T13:41:11Z",
-    "title": "HERMANUS PRIDE PARTY",
+    "title": "Hermanus Pride Party",
     "summary": "Join us for our annual HERMANUS PRIDE PARTY at the most iconic spot in Hermanus with great vibe, music, food and drinks.",
     "description": "Join us for our annual HERMANUS PRIDE PARTY at the most iconic spot in Hermanus with great vibe, music, food and drinks. 🏳️‍🌈",
     "type": "single",
@@ -1022,7 +1031,7 @@
       }
     ],
     "venue": {
-      "name": "Ficks",
+      "name": "Fick's Pool Restaurant",
       "address": "8 Marine Drive, Westcliff, Hermanus",
       "city": "Hermanus",
       "position": {
@@ -1072,7 +1081,7 @@
       }
     ],
     "venue": {
-      "name": "Ficks Pool",
+      "name": "Fick's Pool Restaurant",
       "address": "1 Plein St, Hermanus",
       "city": "Hermanus",
       "position": {
@@ -1106,9 +1115,9 @@
     "url": "https://allevents.in/hermanus/hermanus-season-opener-secret-sunrise-cape-town/200031004732630",
     "rawFile": "raw/allevents/hermanus-season-opener-secret-sunrise-cape-town-200031004732630.txt",
     "fetchedAt": "2026-11-23T13:41:48Z",
-    "title": "Hermanus | Season Opener | Secret Sunrise Cape Town",
+    "title": "Summer Opener Secret Sunrise",
     "summary": "Hermanus we are BACK As we move and groove to music of all genres, our objectibve is to releive stress, connect with each other, and have a bit of fun to the sunrise. A celebration of movement, music, and the people who make this town what it is.",
-    "description": "Hermanus we are BACK\n\nAs we move and groove to music of all genres, our objectibve is to releive stress, connect with each other, and have a bit of fun to the sunrise.\nA celebration of movement, music, and the people who make this town what it is.\n Different backgrounds, same rhythm. Come dressed to",
+    "description": "Hermanus we are BACK\n\nAs we move and groove to music of all genres, our objectibve is to releive stress, connect with each other, and have a bit of fun to the sunrise.\nA celebration of movement, music, and the people who make this town what it is.\n Different backgrounds, same rhythm.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -1160,9 +1169,9 @@
     "url": "https://allevents.in/hermanus/hermanus-solstice-secret-sunrise-cape-town/200031004731126",
     "rawFile": "raw/allevents/hermanus-solstice-secret-sunrise-cape-town-200031004731126.txt",
     "fetchedAt": "2026-11-23T13:41:52Z",
-    "title": "Hermanus | Solstice | Secret Sunrise Cape Town",
+    "title": "Solstice Secret Sunset",
     "summary": "The height of the sun in Hermanus Day meets night, sun meets moon. The height of summer, and we are taking a moment to celebrate it.",
-    "description": "The height of the sun in Hermanus\n\nDay meets night, sun meets moon.\nThe height of summer, and we are taking a moment to celebrate it.\n\nAs we move and groove to music of all genres, our objective is to relieve stress, connect with each other, and have a bit of fun to the sunset.\nA celebration of move",
+    "description": "The height of the sun in Hermanus\n\nDay meets night, sun meets moon.\nThe height of summer, and we are taking a moment to celebrate it.\n\nAs we move and groove to music of all genres, our objective is to relieve stress, connect with each other, and have a bit of fun to the sunset.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -1217,9 +1226,9 @@
     "url": "https://allevents.in/hermanus/high-tea-at-perron-25/200030556435921",
     "rawFile": "raw/allevents/high-tea-at-perron-25-200030556435921.txt",
     "fetchedAt": "2026-11-23T13:42:00Z",
-    "title": "High Tea at Perron 25",
+    "title": "High Tea",
     "summary": "KLEINMOND'S MOST ICONIC HIGH TEA Make sure your trip to the Overstrand is complete with the best High Tea Kleinmond has to offer. Our historic High Tea, which takes place within our tea garden, promises an indulgent feast.",
-    "description": "KLEINMOND'S MOST ICONIC HIGH TEA\n\nMake sure your trip to the Overstrand is complete with the best High Tea Kleinmond has to offer. \n\nOur historic High  Tea, which takes place within our tea garden, promises an indulgent feast. While you dine on sumptuous sweets, pastries and sandwiches stacked in ti",
+    "description": "KLEINMOND'S MOST ICONIC HIGH TEA\n\nMake sure your trip to the Overstrand is complete with the best High Tea Kleinmond has to offer. \n\nOur historic High  Tea, which takes place within our tea garden, promises an indulgent feast.",
     "type": "recurring",
     "status": "confirmed",
     "booking": "open",
@@ -1243,6 +1252,7 @@
     },
     "price": {
       "min": 120,
+      "max": 120,
       "currency": "ZAR"
     },
     "bookingUrl": "https://allevents.in/go.php?event_id=200030556435921&data=VVF5ZmVvWUoyeVlGS2E0RERWdlhSRnVOT3lTRzduNnFvSXF4bTNkV3l4MExYZ2I0aFVtczFaUE9PR3pOU0NTMEd3SFlXbkVueVY1SXkzdlEvSHJ3THVtNGVjUWpFZFc3OEpPK1B1T2hSeXdua0FGWVlhTnJpa3MzZnhLQWx2dExwYVBuLzdUZ0FCT0x2TmFMV1l0dWF0Mkx2NXArVmRGZFB2ODgrdW9IcGR3PQ==&ref=exit-page",
@@ -1271,7 +1281,7 @@
     "url": "https://allevents.in/hermanus/jambo-core-throwdown-20/200031090017407",
     "rawFile": "raw/allevents/jambo-core-throwdown-20-200031090017407.txt",
     "fetchedAt": "2026-11-23T13:42:04Z",
-    "title": "Jambo core Throwdown 2.0",
+    "title": "Jambo Core Throwdown 2.0",
     "summary": "JAMBO CORE THROWDOWN 2.0 A RACE AFTER CHRISTMAS. 📅 26 December 2026 📍 Hermanus Cricket Ground ⏰ 8AM–12PM 🎫 R450 per athlete. A hybrid race testing strength, endurance, stamina & teamwork. RACE FORMAT 7 workout stations - each separated by a 500m run.",
     "description": "JAMBO CORE THROWDOWN 2.0 \nA RACE AFTER CHRISTMAS.\n\n📅 26 December 2026\n📍 Hermanus Cricket Ground\n⏰ 8AM–12PM\n🎫 R450 per athlete.\n\nA hybrid race testing strength, endurance, stamina & teamwork.\n\nRACE FORMAT\n7 workout stations - each separated by a 500m run.\n\nCATEGORIES\n• Men’s Doubles\n• Women’s Doubles",
     "type": "single",
@@ -1325,9 +1335,9 @@
     "url": "https://allevents.in/hermanus/jeremy-loops-in-stanford/3300031095582108",
     "rawFile": "raw/allevents/jeremy-loops-in-stanford-3300031095582108.txt",
     "fetchedAt": "2026-11-23T13:42:08Z",
-    "title": "Jeremy Loops in Stanford",
+    "title": "Jeremy Loops Live",
     "summary": "🎶 The Ultimate Jeremy Loops Experience LIVE at Stanford Hills Estate—This Wednesday, December 23, 2026! 🎶 It's that time of the year where everyone wants to have a musical breath!",
-    "description": "🎶 The Ultimate Jeremy Loops Experience LIVE at Stanford Hills Estate—This Wednesday, December 23, 2026! 🎶\nIt's that time of the year where everyone wants to have a musical breath! Your favorite, Jeremy Loops is hitting Stanford Hills Estate on Wednesday, December 23, 2026, and with a setlist that",
+    "description": "🎶 The Ultimate Jeremy Loops Experience LIVE at Stanford Hills Estate—This Wednesday, December 23, 2026! 🎶\nIt's that time of the year where everyone wants to have a musical breath!",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -1352,7 +1362,7 @@
       "Christmas"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1369,9 +1379,9 @@
     "url": "https://allevents.in/gansbaai/jeremy-loops-live-at-stanford-hills-sunset-sessions/200030983396009",
     "rawFile": "raw/allevents/jeremy-loops-live-at-stanford-hills-sunset-sessions-200030983396009.txt",
     "fetchedAt": "2026-11-23T13:39:15Z",
-    "title": "Jeremy Loops Live at Stanford Hills Sunset Sessions",
+    "title": "Jeremy Loops Live",
     "summary": "Catch South African live music sensation Jeremy Loops at Stanford Hills Estate on 23 December 2026! Set among the rolling hills of Stanford, this highly anticipated annual show has become a highlight of Jeremy’s summer tour calendar.",
-    "description": "Catch South African live music sensation Jeremy Loops at Stanford Hills Estate on 23 December 2026!\n\nSet among the rolling hills of Stanford, this highly anticipated annual show has become a highlight of Jeremy’s summer tour calendar. Described by Jeremy as “one of the most beautiful live shows” he’",
+    "description": "Catch South African live music sensation Jeremy Loops at Stanford Hills Estate on 23 December 2026!\n\nSet among the rolling hills of Stanford, this highly anticipated annual show has become a highlight of Jeremy’s summer tour calendar.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -1398,7 +1408,7 @@
       "Festivals"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1416,7 +1426,7 @@
     "url": "https://allevents.in/gansbaai/jesse-clegg-and-ross-learmonth-live-at-stanford-hills-sunset-sessions/200030992179613",
     "rawFile": "raw/allevents/jesse-clegg-and-ross-learmonth-live-at-stanford-hills-sunset-sessions-200030992179613.txt",
     "fetchedAt": "2026-11-23T13:39:20Z",
-    "title": "Jesse Clegg and Ross Learmonth Live at Stanford Hills Sunset Sessions",
+    "title": "Jesse Clegg & Ross Learmonth Live",
     "summary": "Join Jesse Clegg and Ross Learmonth for a Sunset Concert at Stanford Hills Estate this December.",
     "description": "Join Jesse Clegg and Ross Learmonth for a Sunset Concert at Stanford Hills Estate this December.\n\nDoors Open: 15:00\nShow starts at 17:30\n\nDo Bring: picnic blanket or fold out chairs\n\nDon’t Bring: food or drinks, plenty will be available for purchase",
     "type": "single",
@@ -1442,7 +1452,7 @@
       "Live Music"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1459,7 +1469,7 @@
     "url": "https://allevents.in/hermanus/jingle-bell-rock-with-the-family-band-at-hermanus-golf-club/200030659721020",
     "rawFile": "raw/allevents/jingle-bell-rock-with-the-family-band-at-hermanus-golf-club-200030659721020.txt",
     "fetchedAt": "2026-11-23T13:42:12Z",
-    "title": "JINGLE BELL ROCK with The Family Band at Hermanus Golf Club",
+    "title": "Jingle Bell Rock with The Family Band",
     "summary": "This festive season, get ready for an unforgettable night of music, nostalgia, laughter, and holiday magic with The Family Band presents Jingle Bell Rock Jingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and",
     "description": "This festive season, get ready for an unforgettable night of music, nostalgia, laughter, and holiday magic with The Family Band presents Jingle Bell Rock\n \nJingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.",
     "type": "single",
@@ -1533,9 +1543,9 @@
       }
     ],
     "venue": {
-      "name": "Coffee at The Well",
+      "name": "Coffee at the Well",
       "address": "Shop 31, The Yard, Harbour Road",
-      "city": "Hermanus",
+      "city": "Kleinmond",
       "position": {
         "lat": -34.34381,
         "lng": 19.01313
@@ -1574,9 +1584,9 @@
     "url": "https://allevents.in/hermanus/live-in-hermanus-alan-committie-av-a-laugh-ta/200030856058751",
     "rawFile": "raw/allevents/live-in-hermanus-alan-committie-av-a-laugh-ta-200030856058751.txt",
     "fetchedAt": "2026-11-23T13:42:21Z",
-    "title": "LIVE IN HERMANUS: Alan Committie - AV-A-LAUGH-TA",
+    "title": "Alan Committie: AV-A-LAUGH-TA",
     "summary": "Alan Committie is blasting into the festive season with A-VA-LAUGH-TA.",
-    "description": "Alan Committie is blasting into the festive season with A-VA-LAUGH-TA. \n\nTrue to form, audiences can expect a high-energy stand-up special designed to banish the blues with interstellar wordplay, physical comedy, and Committie’s trademark take-downs of the crowd, as this award-winning comic tries to",
+    "description": "Alan Committie is blasting into the festive season with A-VA-LAUGH-TA.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -1588,7 +1598,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -1623,9 +1633,9 @@
     "url": "https://allevents.in/gansbaai/matthew-mole-at-stanford-hills-sunset-sessions/200030983395002",
     "rawFile": "raw/allevents/matthew-mole-at-stanford-hills-sunset-sessions-200030983395002.txt",
     "fetchedAt": "2026-11-23T13:39:25Z",
-    "title": "Matthew Mole at Stanford Hills Sunset Sessions",
+    "title": "Matthew Mole with Tree 63 and Anica",
     "summary": "Our Sunset Sessions are all about connection — families relaxing on the lawn, kids dancing barefoot, and friends sharing laughter as the sun dips behind the hills.",
-    "description": "Our Sunset Sessions are all about connection — families relaxing on the lawn, kids dancing barefoot, and friends sharing laughter as the sun dips behind the hills. Over the years, we’ve welcomed some of South Africa’s most loved artists to our stage, always in the spirit of warmth, community, and ce",
+    "description": "Our Sunset Sessions are all about connection — families relaxing on the lawn, kids dancing barefoot, and friends sharing laughter as the sun dips behind the hills.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -1651,7 +1661,7 @@
       "Kids"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1671,10 +1681,10 @@
     "fetchedAt": "2026-11-23T13:42:25Z",
     "title": "Onrus Open",
     "summary": "� THE ONRUS OPEN IS HERE! � Grab your teammate and join us for the Onrus Open 2-a-Side Beach Volleyball Tournament at Onrus Beach! � Saturday, 19 December 2026 � Registration: 08:30 � First whistle: 09:00 � FREE ENTRY � Amazing prizes up for grabs!",
-    "description": "� THE ONRUS OPEN IS HERE! �\n\nGrab your teammate and join us for the Onrus Open 2-a-Side Beach Volleyball Tournament at Onrus Beach!\n\n� Saturday, 19 December 2026\n� Registration: 08:30\n� First whistle: 09:00\n� FREE ENTRY\n� Amazing prizes up for grabs!\n\nMen’s, women’s and mixed teams will all compete",
+    "description": "� THE ONRUS OPEN IS HERE! �\n\nGrab your teammate and join us for the Onrus Open 2-a-Side Beach Volleyball Tournament at Onrus Beach!\n\n� Saturday, 19 December 2026\n� Registration: 08:30\n� First whistle: 09:00\n� FREE ENTRY\n� Amazing prizes up for grabs!",
     "type": "single",
     "status": "confirmed",
-    "booking": "none",
+    "booking": "open",
     "sessions": [
       {
         "start": "2026-12-19",
@@ -1721,7 +1731,7 @@
     "fetchedAt": "2026-11-23T13:39:29Z",
     "title": "Overberg Toy Run",
     "summary": "Toys taken for a ride on the wild side.... About 400 motorcyclists took part in the annual Overberg Toy Run 2025, collecting more than three bakkie‑loads of toys for underprivileged children.",
-    "description": "Toys taken for a ride on the wild side....\nAbout 400 motorcyclists took part in the annual Overberg Toy Run 2025, collecting more than three bakkie‑loads of toys for underprivileged children. Over 100 riders left Hermanus and another group from Gansbaai, meeting in Caledon before finishing at Birken",
+    "description": "Toys taken for a ride on the wild side....\nAbout 400 motorcyclists took part in the annual Overberg Toy Run 2025, collecting more than three bakkie‑loads of toys for underprivileged children.",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1769,9 +1779,9 @@
     "url": "https://allevents.in/hermanus/paddakoor-akademie-presents-christmas-carnival/200030983395605",
     "rawFile": "raw/allevents/paddakoor-akademie-presents-christmas-carnival-200030983395605.txt",
     "fetchedAt": "2026-11-23T13:42:31Z",
-    "title": "Paddakoor Akademie Presents - CHRISTMAS CARNIVAL",
+    "title": "Paddakoor Akademie Christmas Carnival",
     "summary": "Get ready for a magical afternoon filled with Christmas cheer, family fun and festive excitement! 🎅🎁 Join us for a wonderful day of carnival games, delicious food, sweet treats, face painting, jumping castles and so much more!",
-    "description": "Get ready for a magical afternoon filled with Christmas cheer, family fun and festive excitement! 🎅🎁\n\nJoin us for a wonderful day of carnival games, delicious food, sweet treats, face painting, jumping castles and so much more! There will be prizes to win, fun for the whole family, and a special vis",
+    "description": "Get ready for a magical afternoon filled with Christmas cheer, family fun and festive excitement! 🎅🎁\n\nJoin us for a wonderful day of carnival games, delicious food, sweet treats, face painting, jumping castles and so much more!",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1821,7 +1831,7 @@
     "url": "https://allevents.in/hermanus/pride-fun-walk/200031004734239",
     "rawFile": "raw/allevents/pride-fun-walk-200031004734239.txt",
     "fetchedAt": "2026-11-23T13:42:35Z",
-    "title": "PRIDE FUN WALK",
+    "title": "Pride Fun Walk",
     "summary": "Join us for our PRIDE FUN WALK from Only Specials Lifestyle Hub through town to FICKS, where our party will start.",
     "description": "Join us for our PRIDE FUN WALK from Only Specials Lifestyle Hub through town to FICKS, where our party will start.",
     "type": "single",
@@ -1836,7 +1846,7 @@
       }
     ],
     "venue": {
-      "name": "Only Specials Café",
+      "name": "Only Specials Lifestyle Hub",
       "address": "14 Aberdeen Street, Hermanus",
       "city": "Hermanus",
       "position": {
@@ -1867,12 +1877,12 @@
     "url": "https://allevents.in/gansbaai/prosound-and-effortless-events-present-summer-picnic/200031049301757",
     "rawFile": "raw/allevents/prosound-and-effortless-events-present-summer-picnic-200031049301757.txt",
     "fetchedAt": "2026-11-23T13:39:34Z",
-    "title": "Prosound and Effortless Events present Summer Picnic",
+    "title": "Prosound and Effortless Events Summer Picnic",
     "summary": "This December, we're bringing the community together for an unforgettable SUMMER PICNIC at Die Bron Primary School! Entertainment: Featuring our very own LOCAL DJs bringing you the best music, good vibes, and non-stop entertainment!",
-    "description": "This December, we're bringing the community together for an unforgettable SUMMER PICNIC at Die Bron Primary School! \nEntertainment: Featuring our very own LOCAL DJs bringing you the best music, good vibes, and non-stop entertainment! Expect great music, summer vibes, good company, and an amazing a",
+    "description": "This December, we're bringing the community together for an unforgettable SUMMER PICNIC at Die Bron Primary School! \nEntertainment: Featuring our very own LOCAL DJs bringing you the best music, good vibes, and non-stop entertainment!",
     "type": "single",
     "status": "confirmed",
-    "booking": "none",
+    "booking": "open",
     "sessions": [
       {
         "start": "2026-12-19",
@@ -1918,7 +1928,7 @@
     "url": "https://allevents.in/hermanus/rosoberry-harvest-fest-2026/200030996203547",
     "rawFile": "raw/allevents/rosoberry-harvest-fest-2026-200030996203547.txt",
     "fetchedAt": "2026-11-23T13:42:43Z",
-    "title": "Rosoberry Harvest Fest 2026",
+    "title": "Rosoberry Harvest Fest",
     "summary": "A berry good day at the farm: berry picking, good food, live music and a whole farm to explore.",
     "description": "A berry good day at the farm 🍓\nBerry picking, good food, live music and a whole farm to explore! 🌿\nJoin us for the second Rosoberry Harvest Fest at Hermanus River Farm — a relaxed, family-friendly celebration of berry season, local food and summer in the Overstrand.\n🍓 Your ticket includes berry picking! You’ll receive one full punnet and one empty punnet on arrival, so you can enjoy picking and eating berries throughout the day. Want to take more home? Additional punnets will be available to purchase.\n🍨 Come hungry! Enjoy a taste of the Overberg with:\n* Hermanus River Farm's grass-fed beef in brisket bowls and espetadas by Agteros Heritage Table and boerie rolls\n* Poke bowls by Poke Oukie\n* Ice cream by You Scream Ice Cream\n* Belgian-style ales from Honingklip Brewery\n* Local wine from Gabrielskloof\n🎶 Browse fresh farm produce and berry plants from Rosoberry Nursery, relax under the trees to live music by some fantastic artists including Craig Vee, Takura Terry, CJ Bergh, Emma Minke, and Mike Fabricius, and explore our beautiful 2.5 km waterfall walking trail.\nIncluded in your ticket there’s plenty for the kids too, with tractor rides, face painting and lawn games! 🚜\n📅 Saturday, 28 November 2026\n⏰ 10am–5pm\n📍 Hermanus River Farm, on the R44 near Kleinmond\n🎟️ Adults R200 | Children under 12 R70\nBring a picnic blanket and camping chair, settle in and make a day of it - and if you want to make a weekend of it, our campsite will be open with limited sites available. Enquire directly to book a site.",
     "type": "single",
@@ -1978,9 +1988,9 @@
     "url": "https://allevents.in/hermanus/rumours-of-fleetwood-mac-tribute-at-hermanus-golf-club-11-dec-2026/200030690976145",
     "rawFile": "raw/allevents/rumours-of-fleetwood-mac-tribute-at-hermanus-golf-club-11-dec-2026-200030690976145.txt",
     "fetchedAt": "2026-11-23T13:42:47Z",
-    "title": "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026",
+    "title": "Rumours of Fleetwood Mac",
     "summary": "Rumours of Fleetwood Mac back by popular demand at Hermanus Golf Club with Two Chefs! Join us for an incredible experience at this great venue.",
-    "description": "Rumours of Fleetwood Mac back by popular demand at Hermanus Golf Club with Two Chefs!\n\nJoin us for an incredible experience at this great venue.\n\nRave reviews from audiences across the Western Cape (since 2021) after many sold out shows and multiple performances at venues including Simon’s at Groot",
+    "description": "Rumours of Fleetwood Mac back by popular demand at Hermanus Golf Club with Two Chefs!\n\nJoin us for an incredible experience at this great venue.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2034,7 +2044,7 @@
     "fetchedAt": "2026-11-23T13:42:56Z",
     "title": "Sandbaai Market",
     "summary": "The Sandbaai Market brings the community together for an afternoon of local shopping, good food and family fun.",
-    "description": "The Sandbaai Market brings the community together for an afternoon of local shopping, good food and family fun. With more than 40 unique vendors, there is plenty to discover, whether you are looking for something tasty to eat, a special gift or a relaxed way to spend time with friends and family.Bro",
+    "description": "The Sandbaai Market brings the community together for an afternoon of local shopping, good food and family fun.",
     "type": "recurring",
     "status": "confirmed",
     "booking": "open",
@@ -2086,9 +2096,9 @@
     "url": "https://allevents.in/hermanus/sisters-shop-up-wildekrans-wine-estate/200031019652438",
     "rawFile": "raw/allevents/sisters-shop-up-wildekrans-wine-estate-200031019652438.txt",
     "fetchedAt": "2026-11-23T13:43:00Z",
-    "title": "sisters. SHOP-UP @ Wildekrans Wine Estate",
+    "title": "Sisters Shop-Up",
     "summary": "🌸✨ 𝙨𝙞𝙨𝙩𝙚𝙧𝙨. 𝙎𝙃𝙊𝙋-𝙐𝙋 𝙞𝙨 𝙩𝙖𝙠𝙞𝙣𝙜 𝙤𝙣 𝙩𝙝𝙚 𝙒𝙚𝙨𝙩𝙚𝙧𝙣 𝘾𝙖𝙥𝙚! ✨🌸 After a successful first time at Wildekrans Wine Estate last year December, sisters. SHOP-UP will be back for not one, but TWO days.",
-    "description": "🌸✨ 𝙨𝙞𝙨𝙩𝙚𝙧𝙨. 𝙎𝙃𝙊𝙋-𝙐𝙋 𝙞𝙨 𝙩𝙖𝙠𝙞𝙣𝙜 𝙤𝙣 𝙩𝙝𝙚 𝙒𝙚𝙨𝙩𝙚𝙧𝙣 𝘾𝙖𝙥𝙚! ✨🌸\n\nAfter a successful first time at Wildekrans Wine Estate last year December, sisters. SHOP-UP will be back for not one, but TWO days. \n\nJoin us for a 𝗙𝗲𝘀𝘁𝗶𝘃𝗲 𝗦𝘂𝗺𝗺𝗲𝗿 𝗦𝗶𝗽-&-𝗦𝗵𝗼𝗽 filled with fashion, accessories, décor, gifting, delicious eats, and",
+    "description": "🌸✨ 𝙨𝙞𝙨𝙩𝙚𝙧𝙨. 𝙎𝙃𝙊𝙋-𝙐𝙋 𝙞𝙨 𝙩𝙖𝙠𝙞𝙣𝙜 𝙤𝙣 𝙩𝙝𝙚 𝙒𝙚𝙨𝙩𝙚𝙧𝙣 𝘾𝙖𝙥𝙚! ✨🌸\n\nAfter a successful first time at Wildekrans Wine Estate last year December, sisters. SHOP-UP will be back for not one, but TWO days.",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -2103,7 +2113,7 @@
     ],
     "venue": {
       "name": "Wildekrans Wine Estate",
-      "city": "Hermanus",
+      "city": "Bot River",
       "position": {
         "lat": -34.245000200104,
         "lng": 19.195513103041
@@ -2138,7 +2148,7 @@
     "url": "https://allevents.in/hermanus/somos/200031090399221",
     "rawFile": "raw/allevents/somos-200031090399221.txt",
     "fetchedAt": "2026-11-23T13:43:04Z",
-    "title": "Somos",
+    "title": "Somos Sunset House & Dining",
     "summary": "Somos presents sunset house &dining🔥 Sunday 20th dec @ Bossa Nova Hermanus 📍 3pm-10pm⏰ Afternoon into night of good food,music and summer scenes☀️ Tickets are available on quicket(link in bio)🎟️ Table bookings(dm us)🍾 join us for our debut event🙌🏻",
     "description": "Somos presents sunset house &dining🔥\nSunday 20th dec \n@ Bossa Nova Hermanus 📍\n3pm-10pm⏰\nAfternoon into night of good food,music and summer scenes☀️\nTickets are available on quicket(link in bio)🎟️\nTable bookings(dm us)🍾\njoin us for our debut event🙌🏻",
     "type": "single",
@@ -2189,7 +2199,7 @@
     "url": "https://allevents.in/gansbaai/spoegwolf-en-deon-meiring-by-stanford-hills/200031033728559",
     "rawFile": "raw/allevents/spoegwolf-en-deon-meiring-by-stanford-hills-200031033728559.txt",
     "fetchedAt": "2026-11-23T13:39:39Z",
-    "title": "Spoegwolf en Deon Meiring by Stanford Hills",
+    "title": "Spoegwolf en Deon Meiring",
     "summary": "Spoegwolf kom een keer 'n jaar na die mooi Suid-Afrikaanse kus. Daar sit ons liggies en kersfeesbome solank op - en begin die sing en drink op 'n enorme skaal. Meer klank, meer musiek, meer gees - meer vibes vir die wêreld se mooiste Somerkersfees.",
     "description": "Spoegwolf kom een keer 'n jaar na die mooi Suid-Afrikaanse kus. Daar sit ons liggies en kersfeesbome solank op - en begin die sing en drink op 'n enorme skaal. Meer klank, meer musiek, meer gees - meer vibes vir die wêreld se mooiste Somerkersfees.\n\nStanford Hills is ons gunstelling manier om die to",
     "type": "single",
@@ -2218,7 +2228,7 @@
       "Christmas"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -2240,7 +2250,7 @@
     "fetchedAt": "2026-11-23T13:39:44Z",
     "title": "Stanford Festive Market",
     "summary": "Our Stanford Festive Market will start on Friday evening, 11 December, the evening of the official switching on of the Stanford Christmas lights, with the whole town celebrating.",
-    "description": "Our Stanford Festive Market will start on Friday evening, 11 December, the evening of the official switching on of the Stanford Christmas lights, with the whole town celebrating.\nEnquiries 083 530 4968",
+    "description": "Our Stanford Festive Market will start on Friday evening, 11 December, the evening of the official switching on of the Stanford Christmas lights, with the whole town celebrating.",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -2283,9 +2293,9 @@
     "url": "https://allevents.in/gansbaai/stanford-stumble/200030996202841",
     "rawFile": "raw/allevents/stanford-stumble-200030996202841.txt",
     "fetchedAt": "2026-11-23T13:39:48Z",
-    "title": "Stanford Stumble",
+    "title": "The Stanford Stumble",
     "summary": "STANFORD STUMBLE Walk • Run • Stumble • Laugh • Celebrate 28 November 2026 | Stanford Hills | 12:00–18:00 COME AS YOU ARE. STUMBLE AS YOU LIKE. The Stanford Stumble is back — but this year, we’re doing things a little differently. This isn’t a race.",
-    "description": "STANFORD STUMBLE\n\nWalk • Run • Stumble • Laugh • Celebrate\n\n28 November 2026 | Stanford Hills | 12:00–18:00\n\nCOME AS YOU ARE. STUMBLE AS YOU LIKE.\n\nThe Stanford Stumble is back — but this year, we’re doing things a little differently.\n\nThis isn’t a race.\nEveryone is a winner.\nThere are no finish tim",
+    "description": "STANFORD STUMBLE\n\nWalk • Run • Stumble • Laugh • Celebrate\n\n28 November 2026 | Stanford Hills | 12:00–18:00\n\nCOME AS YOU ARE. STUMBLE AS YOU LIKE.\n\nThe Stanford Stumble is back — but this year, we’re doing things a little differently.\n\nThis isn’t a race.\nEveryone is a winner.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2331,9 +2341,9 @@
     "url": "https://allevents.in/gansbaai/stanford-stumble/200031033727951",
     "rawFile": "raw/allevents/stanford-stumble-200031033727951.txt",
     "fetchedAt": "2026-11-23T13:39:53Z",
-    "title": "Stanford Stumble",
+    "title": "The Stanford Stumble",
     "summary": "Dress Up. Butterfly Centre charity event. Live Music. Food. Wine. Kids activities. Prizes. WHERE: Stanford Hills Estate Walk starts at 13:00. Regsitration from12:00.",
-    "description": "Dress Up. Butterfly Centre charity event. Live Music. Food. Wine. Kids activities. Prizes.\nWHERE: Stanford Hills Estate\nWalk starts at 13:00. Regsitration from12:00.\nEnquiries: 066 250 3388",
+    "description": "Dress Up. Butterfly Centre charity event. Live Music. Food. Wine. Kids activities. Prizes.\nWHERE: Stanford Hills Estate\nWalk starts at 13:00. Regsitration from12:00.",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -2382,9 +2392,9 @@
     "url": "https://allevents.in/hermanus/the-4th-annual-most-influential-icons-gala-dinner/200030840009123",
     "rawFile": "raw/allevents/the-4th-annual-most-influential-icons-gala-dinner-200030840009123.txt",
     "fetchedAt": "2026-11-23T13:43:08Z",
-    "title": "The 4th Annual Most Influential Icons Gala Dinner",
+    "title": "Most Influential Icons Gala Dinner",
     "summary": "Valid Dreamers Foundation NPC in partnership with Creation Wines & the Overstrand Municipality Socio-Economic Services Unit to host the 4th Annual Most Influential Icons Gala Dinner 2026 ✨ An unforgettable evening of elegance, inspiration, and celebration awai",
-    "description": "Valid Dreamers Foundation NPC in partnership with Creation Wines & the Overstrand Municipality Socio-Economic Services Unit to host the 4th Annual Most Influential Icons Gala Dinner 2026 ✨\n\nAn unforgettable evening of elegance, inspiration, and celebration awaits.\nJoin us for the 4th Annual Most Inf",
+    "description": "Valid Dreamers Foundation NPC in partnership with Creation Wines & the Overstrand Municipality Socio-Economic Services Unit to host the 4th Annual Most Influential Icons Gala Dinner 2026 ✨\n\nAn unforgettable evening of elegance, inspiration, and celebration awaits.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2397,7 +2407,7 @@
       }
     ],
     "venue": {
-      "name": "Hermanus Auditorium",
+      "name": "Hermanus Municipal Auditorium",
       "city": "Hermanus",
       "position": {
         "lat": -34.418173042678,
@@ -2484,9 +2494,9 @@
     "url": "https://allevents.in/hermanus/the-met-opera/200030920466015",
     "rawFile": "raw/allevents/the-met-opera-200030920466015.txt",
     "fetchedAt": "2026-11-23T13:43:50Z",
-    "title": "The Met Opera:",
+    "title": "The Met Opera: La Fanciulla del West",
     "summary": "Puccini’s exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company’s first new production of La Fanciulla del West in more than 30 years.",
-    "description": "Puccini’s exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company’s first new production of La Fanciulla del West in more than 30 years. \n\nSoprano Vida Miknevičiūtė makes her Met company debut singing the role of Minnie, the tough tavern owner with a heart",
+    "description": "Puccini’s exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company’s first new production of La Fanciulla del West in more than 30 years.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2498,7 +2508,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2532,7 +2542,7 @@
     "fetchedAt": "2026-11-23T13:43:12Z",
     "title": "The Met Opera: Carmen (Bizet) Encore",
     "summary": "Don’t miss this revival of Sir Richard Eyre’s dynamic production.",
-    "description": "Don’t miss this revival of Sir Richard Eyre’s dynamic production. Mezzo-soprano Clémentine Margaine plays opera’s ultimate seductress, while Roberto Alagna returns to the role of Don José, the good-hearted soldier in whom she unleashes an uncontrollable passion. Don José breaks the law, goes to pris",
+    "description": "Don’t miss this revival of Sir Richard Eyre’s dynamic production. Mezzo-soprano Clémentine Margaine plays opera’s ultimate seductress, while Roberto Alagna returns to the role of Don José, the good-hearted soldier in whom she unleashes an uncontrollable passion.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2544,7 +2554,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2576,9 +2586,9 @@
     "url": "https://allevents.in/hermanus/the-met-opera-la-fanciulla-del-west/200030920466517",
     "rawFile": "raw/allevents/the-met-opera-la-fanciulla-del-west-200030920466517.txt",
     "fetchedAt": "2026-11-23T13:43:16Z",
-    "title": "The Met Opera:  La Fanciulla del West",
+    "title": "The Met Opera: La Fanciulla del West",
     "summary": "Puccini’s exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company’s first new production of La Fanciulla del West in more than 30 years.",
-    "description": "Puccini’s exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company’s first new production of La Fanciulla del West in more than 30 years. \n\nSoprano Vida Miknevičiūtė makes her Met company debut singing the role of Minnie, the tough tavern owner with a heart",
+    "description": "Puccini’s exhilarating drama of the Wild West returns in a new staging by Richard Jones, marking the company’s first new production of La Fanciulla del West in more than 30 years.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2591,7 +2601,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2642,7 +2652,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2676,7 +2686,7 @@
     "fetchedAt": "2026-11-23T13:43:25Z",
     "title": "The Met Opera: Otello",
     "summary": "One of today’s leading dramatic tenors, Brian Jagde, takes on the tour-de-force title role of what many consider the ultimate Italian opera, live to cinemas worldwide.",
-    "description": "One of today’s leading dramatic tenors, Brian Jagde, takes on the tour-de-force title role of what many consider the ultimate Italian opera, live to cinemas worldwide. \n\nVerdi’s monumental Shakespearean tragedy also features soprano Ailyn Pérez in her company role debut as the long-suffering Desdemo",
+    "description": "One of today’s leading dramatic tenors, Brian Jagde, takes on the tour-de-force title role of what many consider the ultimate Italian opera, live to cinemas worldwide.",
     "type": "run",
     "status": "confirmed",
     "booking": "open",
@@ -2693,7 +2703,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2741,7 +2751,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2778,7 +2788,7 @@
     "fetchedAt": "2026-11-23T13:43:33Z",
     "title": "The Met Opera: Samson et Dalila",
     "summary": "Saint-Saëns’s spectacular take on the biblical hero of legendary strength and the seductive Philistine whose beauty overpowers him returns in the Met’s larger-than-life production.",
-    "description": "Saint-Saëns’s spectacular take on the biblical hero of legendary strength and the seductive Philistine whose beauty overpowers him returns in the Met’s larger-than-life production. \n\nFeaturing a massive orchestra and chorus and some of opera’s most spellbinding tunes, this masterpiece is a feast for",
+    "description": "Saint-Saëns’s spectacular take on the biblical hero of legendary strength and the seductive Philistine whose beauty overpowers him returns in the Met’s larger-than-life production.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2790,7 +2800,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2827,7 +2837,7 @@
     "fetchedAt": "2026-11-23T13:43:37Z",
     "title": "The Met Opera: Silent Night",
     "summary": "Following his smash-hit company debut with The Hours, composer Kevin Puts returns to the Met with his Pulitzer Prize–winning opera, inspired by the true events of the 1914 Christmas truce.",
-    "description": "Following his smash-hit company debut with The Hours, composer Kevin Puts returns to the Met with his Pulitzer Prize–winning opera, inspired by the true events of the 1914 Christmas truce. \n\nA poignant depiction of shared humanity in the most inhumane circumstances, Puts’s grand, cinematic opera—wit",
+    "description": "Following his smash-hit company debut with The Hours, composer Kevin Puts returns to the Met with his Pulitzer Prize–winning opera, inspired by the true events of the 1914 Christmas truce.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2839,7 +2849,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2873,7 +2883,7 @@
     "fetchedAt": "2026-11-23T13:43:41Z",
     "title": "The Met Opera: The Magic Flute",
     "summary": "Mozart’s fantastical opera glitters in David McVicar’s enchanting production.",
-    "description": "Mozart’s fantastical opera glitters in David McVicar’s enchanting production. A star cast including Julia Bullock as Pamina, Amitai Pati as Tamino, Huw Montague Rendall as Papageno, Kathryn Lewek as the Queen of the Night, and Soloman Howard as Sarastro, led by French conductor Marie Jacquot in her",
+    "description": "Mozart’s fantastical opera glitters in David McVicar’s enchanting production.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -2885,7 +2895,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2919,7 +2929,7 @@
     "fetchedAt": "2026-11-23T13:43:45Z",
     "title": "The Met Opera: Tosca (Puccini) Encore",
     "summary": "Extraordinary Norwegian soprano Lise Davidsen stars as the passionate diva in David McVicar’s thrilling production, broadcast live from the Metropolitan Opera stage to cinemas on November 23.",
-    "description": "Extraordinary Norwegian soprano Lise Davidsen stars as the passionate diva in David McVicar’s thrilling production, broadcast live from the Metropolitan Opera stage to cinemas on November 23. \n\nBritish-Italian tenor Freddie De Tommaso makes his eagerly anticipated company debut as Tosca’s revolution",
+    "description": "Extraordinary Norwegian soprano Lise Davidsen stars as the passionate diva in David McVicar’s thrilling production, broadcast live from the Metropolitan Opera stage to cinemas on November 23.",
     "type": "run",
     "status": "confirmed",
     "booking": "open",
@@ -2936,7 +2946,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -2968,9 +2978,9 @@
     "url": "https://allevents.in/hermanus/time/200031056968945",
     "rawFile": "raw/allevents/time-200031056968945.txt",
     "fetchedAt": "2026-11-23T13:43:54Z",
-    "title": "Time",
+    "title": "Time: a faith gathering on life lessons",
     "summary": "Get ready for the 5th December all Genders welcome come and learn life lessons ⏳✝️🙏🏼✨ ‭‭*Ecclesiastes‬ ‭3‬:‭11‬* *He has made everything beautiful in its time.",
-    "description": "Get ready for the 5th December all Genders welcome come and learn life lessons ⏳✝️🙏🏼✨\n\n‭‭*Ecclesiastes‬ ‭3‬:‭11‬*\n\n*He has made everything beautiful in its time. He has also set eternity in the human heart; yet no one can fathom what God has done from beginning to end.* \n\nFor more info all details a",
+    "description": "Get ready for the 5th December all Genders welcome come and learn life lessons ⏳✝️🙏🏼✨\n\n‭‭*Ecclesiastes‬ ‭3‬:‭11‬*\n\n*He has made everything beautiful in its time. He has also set eternity in the human heart; yet no one can fathom what God has done from beginning to end.*",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -2982,7 +2992,6 @@
       }
     ],
     "venue": {
-      "name": "Hawston",
       "city": "Hawston",
       "position": {
         "lat": -34.38702,
@@ -3014,9 +3023,9 @@
     "url": "https://allevents.in/hermanus/two-cookies-make-one-give-one/200031077380820",
     "rawFile": "raw/allevents/two-cookies-make-one-give-one-200031077380820.txt",
     "fetchedAt": "2026-11-23T13:43:58Z",
-    "title": "TWO COOKIES™️ | MAKE ONE. GIVE ONE.",
+    "title": "Two Cookies: Make One. Give One.",
     "summary": "TWO COOKIES™ — MAKE ONE. GIVE ONE. Small hands. Big kindness. A whole lot of heart! Tonight, we're opening the doors to something very special.",
-    "description": "TWO COOKIES™ — MAKE ONE. GIVE ONE.\nSmall hands. Big kindness. A whole lot of heart!\n\nTonight, we're opening the doors to something very special.\n\nImagine little hands covered in flour, laughter around a baking table, and a child proudly making two Christmas cookies.\n\nOne for themselves.\n\nAnd one for",
+    "description": "TWO COOKIES™ — MAKE ONE. GIVE ONE.\nSmall hands. Big kindness. A whole lot of heart!\n\nTonight, we're opening the doors to something very special.\n\nImagine little hands covered in flour, laughter around a baking table, and a child proudly making two Christmas cookies.\n\nOne for themselves.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3029,7 +3038,7 @@
       }
     ],
     "venue": {
-      "name": "Wonderland Lifestyle Nursery",
+      "name": "Wonderland Lifestyle Nursery & Play Park",
       "address": "Sand Baai, 7200",
       "city": "Sandbaai",
       "position": {
@@ -3070,7 +3079,7 @@
     "url": "https://allevents.in/hermanus/ubumnandi-festival-seventh-annual-summer-picnic/200030666866932",
     "rawFile": "raw/allevents/ubumnandi-festival-seventh-annual-summer-picnic-200030666866932.txt",
     "fetchedAt": "2026-11-23T13:44:03Z",
-    "title": "Ubumnandi Festival Seventh Annual Summer Picnic",
+    "title": "Ubumnandi Festival Summer Picnic",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -3107,9 +3116,9 @@
     "url": "https://allevents.in/gansbaai/watershed-beating-hearts-tour-live/200030983395505",
     "rawFile": "raw/allevents/watershed-beating-hearts-tour-live-200030983395505.txt",
     "fetchedAt": "2026-11-23T13:39:58Z",
-    "title": "Watershed Beating Hearts Tour Live",
+    "title": "Watershed: Beating Hearts Tour",
     "summary": "The Beating Hearts Tour - Live in This Town. Watershed is one of the country’s best loved live bands and Stanford Hills, one of South Africa’s favourite live music venues… what better way to spend the day.",
-    "description": "The Beating Hearts Tour - Live in This Town. Watershed is one of the country’s best loved live bands and Stanford Hills, one of South Africa’s favourite live music venues… what better way to spend the day. Just a stone’s throw from Hermanus, rolling green lawns with a beautiful view of the mountains",
+    "description": "The Beating Hearts Tour - Live in This Town. Watershed is one of the country’s best loved live bands and Stanford Hills, one of South Africa’s favourite live music venues… what better way to spend the day.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3133,7 +3142,7 @@
       "Performances"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3150,9 +3159,9 @@
     "url": "https://allevents.in/gansbaai/watershed-live-at-stanford-hills/200031006403009",
     "rawFile": "raw/allevents/watershed-live-at-stanford-hills-200031006403009.txt",
     "fetchedAt": "2026-11-23T13:40:02Z",
-    "title": "Watershed LIVE at Stanford Hills",
+    "title": "Watershed Live",
     "summary": "Just a stone’s throw from Hermanus, Stanford Hills is one of South Africa’s favourite live music venues, set among green lawns with a beautiful view of the mountains.",
-    "description": "Just a stone’s throw from Hermanus, Stanford Hills is one of South Africa’s favourite live music venues, set among green lawns with a beautiful view of the mountains.\n\nJoin Watershed for an afternoon of big tunes, a big stage and the kind of sunset that makes you want to stay a little longer. We’d l",
+    "description": "Just a stone’s throw from Hermanus, Stanford Hills is one of South Africa’s favourite live music venues, set among green lawns with a beautiful view of the mountains.\n\nJoin Watershed for an afternoon of big tunes, a big stage and the kind of sunset that makes you want to stay a little longer.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3180,7 +3189,7 @@
       "Performances"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3189,7 +3198,12 @@
       "scale": "regional"
     },
     "tags": [],
-    "profile": "Watershed play an afternoon show at Stanford Hills, with a big stage and a sunset over the mountains. Visitors spend the afternoon on the lawns at an outdoor concert. It suits fans of live music."
+    "profile": "Watershed play an afternoon show at Stanford Hills, with a big stage and a sunset over the mountains. Visitors spend the afternoon on the lawns at an outdoor concert. It suits fans of live music.",
+    "price": {
+      "min": 0,
+      "max": 360,
+      "currency": "ZAR"
+    }
   },
   {
     "source": "AllEvents",
@@ -3197,9 +3211,9 @@
     "url": "https://allevents.in/hermanus/whale-coast-mall-final-2026-ladies-night-the-debut/200030934720553",
     "rawFile": "raw/allevents/whale-coast-mall-final-2026-ladies-night-the-debut-200030934720553.txt",
     "fetchedAt": "2026-11-23T13:44:11Z",
-    "title": "Whale Coast Mall: Final 2026 Ladies Night! The Debut.",
+    "title": "Ladies Night: The Debut",
     "summary": "THE FINAL LADIES' NIGHT OF 2026! 🥂 Indulge in a well-deserved evening of laughter, pre-movie mingling, refreshing drinks, and popcorn, all capped off with an unforgettable big-screen cinematic experience in pure comfort.",
-    "description": "THE FINAL LADIES' NIGHT OF 2026! 🥂\n\nIndulge in a well-deserved evening of laughter, pre-movie mingling, refreshing drinks, and popcorn, all capped off with an unforgettable big-screen cinematic experience in pure comfort.\n\nDate: Thursday, 10 December 2026\n\nTime: 19:45 (Arrive early for pre-show trea",
+    "description": "THE FINAL LADIES' NIGHT OF 2026! 🥂\n\nIndulge in a well-deserved evening of laughter, pre-movie mingling, refreshing drinks, and popcorn, all capped off with an unforgettable big-screen cinematic experience in pure comfort.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3211,7 +3225,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -3244,9 +3258,9 @@
     "url": "https://allevents.in/hermanus/whale-coast-mall-ladies-night-focker-in-law/200030855829224",
     "rawFile": "raw/allevents/whale-coast-mall-ladies-night-focker-in-law-200030855829224.txt",
     "fetchedAt": "2026-11-23T13:44:16Z",
-    "title": "Whale Coast Mall: Ladies Night! Focker In-Law",
+    "title": "Focker In-Law Premiere Night",
     "summary": "Thursday, 26 November is officially our next Ladies Night out at Whale Coast Mall and The Neelsie!",
-    "description": "Thursday, 26 November is officially our next Ladies Night out at Whale Coast Mall and The Neelsie! 🍷✨\n\nWe’ll be screening the hilarious Focker-In-Law ahead of its global release, so get ready for a night packed with pure laughter, welcome drinks, pre-show pampering, and awesome local prizes.\n\nGather",
+    "description": "Thursday, 26 November is officially our next Ladies Night out at Whale Coast Mall and The Neelsie! 🍷✨\n\nWe’ll be screening the hilarious Focker-In-Law ahead of its global release, so get ready for a night packed with pure laughter, welcome drinks, pre-show pampering, and awesome local prizes.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3258,7 +3272,7 @@
       }
     ],
     "venue": {
-      "name": "Whale Coast Mall (Shop G57)",
+      "name": "Road House Cinema",
       "address": "Whale Coast Mall, R43, Main Road, 39 Main Rd, Hermanus, 7200",
       "city": "Hermanus",
       "position": {
@@ -3297,7 +3311,7 @@
     "fetchedAt": "2026-11-23T13:40:06Z",
     "title": "Whale Coast Symphony Orchestra",
     "summary": "Join us for an enchanting open-air evening as the Whale Coast Symphony Orchestra from neighbouring Hermanus takes us on an amble through the greatest compositions of the classical repertoire.",
-    "description": "Join us for an enchanting open-air evening as the Whale Coast Symphony Orchestra from neighbouring Hermanus takes us on an amble through the greatest compositions of the classical repertoire. Settle into your spot with blankets, cushions or camping chairs and enjoy timeless melodies under the Walker",
+    "description": "Join us for an enchanting open-air evening as the Whale Coast Symphony Orchestra from neighbouring Hermanus takes us on an amble through the greatest compositions of the classical repertoire.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3309,7 +3323,7 @@
       }
     ],
     "venue": {
-      "name": "Landskein Wines - The Parlour",
+      "name": "Landskein",
       "address": "Stanford Hills Rd, Overstrand",
       "city": "Stanford",
       "position": {
@@ -3327,7 +3341,7 @@
       "Food Drinks"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3347,9 +3361,9 @@
     "url": "https://allevents.in/gansbaai/will-linley-live-at-stanford-hills-sunset-sessions/200030996202942",
     "rawFile": "raw/allevents/will-linley-live-at-stanford-hills-sunset-sessions-200030996202942.txt",
     "fetchedAt": "2026-11-23T13:40:11Z",
-    "title": "Will Linley Live at Stanford Hills Sunset Sessions",
+    "title": "Will Linley Live",
     "summary": "Get ready for an unforgettable summer afternoon as Will Linley takes the stage at the beautiful Stanford Hills Estate this December!",
-    "description": "Get ready for an unforgettable summer afternoon as Will Linley takes the stage at the beautiful Stanford Hills Estate this December!\n\nJoin us for a magical, family-friendly outdoor concert in the heart of the Overberg, where incredible live music, breathtaking scenery and those feel-good summer vibe",
+    "description": "Get ready for an unforgettable summer afternoon as Will Linley takes the stage at the beautiful Stanford Hills Estate this December!",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3374,7 +3388,7 @@
       "Live Music"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3392,9 +3406,9 @@
     "url": "https://allevents.in/strand/zolani-mahola-the-feminine-force-featuring-karen-zoid-live-at-stanford-hills-sunset-sessions/200031061826913",
     "rawFile": "raw/allevents/zolani-mahola-the-feminine-force-featuring-karen-zoid-live-at-stanford-200031061826913.txt",
     "fetchedAt": "2026-11-23T13:49:11Z",
-    "title": "Zolani Mahola + The Feminine Force (featuring Karen Zoid) live at Stanford Hills Sunset Sessions",
+    "title": "Zolani Mahola & The Feminine Force featuring Karen Zoid",
     "summary": "Zolani Mahola + The Feminine Force (featuring Karen Zoid) | Stanford Hills Sunset Sessions Join us at Stanford Hills on Tues/15/Dec for the perfect way to start the holidays, as Zolani Mahola and her band \"The Feminine Force\" welcome a very special guest - Kar",
-    "description": "Zolani Mahola + The Feminine Force (featuring Karen Zoid) | Stanford Hills Sunset Sessions\n\nJoin us at Stanford Hills on Tues/15/Dec for the perfect way to start the holidays, as Zolani Mahola and her band \"The Feminine Force\" welcome a very special guest - Karen Zoid - to the stage.\n\nThis special e",
+    "description": "Zolani Mahola + The Feminine Force (featuring Karen Zoid) | Stanford Hills Sunset Sessions\n\nJoin us at Stanford Hills on Tues/15/Dec for the perfect way to start the holidays, as Zolani Mahola and her band \"The Feminine Force\" welcome a very special guest - Karen Zoid - to the stage.",
     "type": "single",
     "status": "confirmed",
     "booking": "open",
@@ -3419,7 +3433,7 @@
       "Holiday"
     ],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3428,6 +3442,11 @@
       "scale": "regional"
     },
     "tags": [],
-    "profile": "Zolani Mahola and her band The Feminine Force, with special guest Karen Zoid, play a Stanford Hills Sunset Session at the start of the holidays. Visitors spend the afternoon at an outdoor concert. It suits fans of South African music."
+    "profile": "Zolani Mahola and her band The Feminine Force, with special guest Karen Zoid, play a Stanford Hills Sunset Session at the start of the holidays. Visitors spend the afternoon at an outdoor concert. It suits fans of South African music.",
+    "price": {
+      "min": 0,
+      "max": 350,
+      "currency": "ZAR"
+    }
   }
 ]
