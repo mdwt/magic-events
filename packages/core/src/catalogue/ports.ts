@@ -159,6 +159,12 @@ export const searchExperiencesInputSchema = z.strictObject({
     ),
   limit: limitSchema.default(20).describe("How many experiences to return."),
   offset: offsetSchema.default(0).describe("How many experiences to skip, for paging."),
+}, {
+  // For a body that is not an object. A field it does not take is named in its own detail.
+  error: (issue) =>
+    issue.code === "invalid_type"
+      ? 'Send the search as a JSON object, such as { "location": "hermanus", "from": "2027-06-20", "to": "2027-06-27" }.'
+      : undefined,
 });
 export type SearchExperiencesInput = z.infer<typeof searchExperiencesInputSchema>;
 
