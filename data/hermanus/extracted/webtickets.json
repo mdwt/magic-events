@@ -37,6 +37,7 @@
       "Tourism & Attractions"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "nature_and_wildlife",
         "outdoor_and_adventure"
@@ -90,6 +91,7 @@
       "Tourism & Attractions"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "nature_and_wildlife",
         "outdoor_and_adventure"
@@ -142,6 +144,7 @@
       "Tourism & Attractions"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "nature_and_wildlife"
       ],
@@ -196,6 +199,7 @@
       "Movies & Film"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -246,6 +250,7 @@
       "Business & Professional"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "business_and_professional",
         "community_and_causes"
@@ -296,6 +301,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -347,6 +353,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -401,6 +408,7 @@
       "Special Days"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "music",
@@ -455,6 +463,7 @@
     "imageUrl": "https://content.webtickets.co.za/haroldporter/panel_be2119ed5b584a2fab1d9abbceb6936e.png",
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "music"
@@ -508,6 +517,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -559,6 +569,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "holidays_and_celebrations",
         "music"
@@ -612,6 +623,7 @@
       "Movies & Film"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "holidays_and_celebrations"
@@ -665,6 +677,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -717,6 +730,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -767,6 +781,7 @@
       "Special Days"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "holidays_and_celebrations",
         "food_and_drink"
@@ -820,6 +835,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "holidays_and_celebrations",
         "music"

@@ -40,6 +40,7 @@
       "R175.00"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -86,6 +87,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "nature_and_wildlife"
@@ -129,6 +131,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport"
       ],
@@ -169,6 +172,7 @@
       "R20 donation"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "outdoor_and_adventure",
         "community_and_causes"
@@ -215,6 +219,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -259,6 +264,7 @@
       "R450"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "hobbies_and_lifestyle"
@@ -304,6 +310,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -351,6 +358,7 @@
       "R120.00"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -397,6 +405,7 @@
       "R35"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "food_and_drink"
@@ -444,6 +453,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -487,6 +497,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -528,6 +539,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -572,6 +584,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -616,6 +629,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -662,6 +676,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "outdoor_and_adventure"
@@ -709,6 +724,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "community_and_causes"
@@ -758,6 +774,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle",
         "food_and_drink"
@@ -806,6 +823,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -851,6 +869,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -898,6 +917,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "music"
@@ -947,6 +967,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -993,6 +1014,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "hobbies_and_lifestyle"
@@ -1044,6 +1066,7 @@
       "R200 adults · R70 children u/12"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music",
@@ -1099,6 +1122,7 @@
       "3D Adults - R129.00 · 3D Kids (under 10) -R109.00 · 3D Seniors - R109.00"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -1142,6 +1166,7 @@
       "R490"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "nature_and_wildlife"
       ],
@@ -1189,6 +1214,7 @@
       "R180.00"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts"
       ],
@@ -1236,6 +1262,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -1285,6 +1312,7 @@
       "R350"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -1333,6 +1361,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -1383,6 +1412,7 @@
       "R370"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes"
       ],
@@ -1429,6 +1459,7 @@
       "R350 for the show, dinner from a la carte menu"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1479,6 +1510,7 @@
       "R500 for two people, kiddies under 12 are free"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music"
@@ -1526,6 +1558,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -1576,6 +1609,7 @@
       "R230 per ticket, children under 10 is a R100 per ticket"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "community_and_causes"
@@ -1624,6 +1658,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -1675,6 +1710,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport"
       ],
@@ -1721,6 +1757,7 @@
       "R430 for show, dinner from an a la carte menu"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1766,6 +1803,7 @@
       "Free"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport",
         "nature_and_wildlife",
