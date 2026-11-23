@@ -140,7 +140,7 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
         version: "1.0.0",
         description:
           "What is on in a place while a traveller is there: festivals, concerts, matches, markets, shows, " +
-          "exhibitions and seasons. Every endpoint needs an API key.",
+          "exhibitions and seasons. Every endpoint but /health needs an API key.",
       },
       components: {
         securitySchemes: {

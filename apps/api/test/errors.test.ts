@@ -75,11 +75,14 @@ test("a Zod validation failure is invalid_input with one readable detail per pro
   const reply = toErrorReply(caught);
   assert.equal(reply.status, 400);
   assert.equal(reply.code, "invalid_input");
-  assert.equal(reply.message, MESSAGES.invalidInput);
   assert.deepEqual(
     reply.details.map((detail) => detail.path).sort(),
     ["colour", "near.lat", "size"],
   );
+  // The message says what the details say, so it alone tells the caller what to change.
+  assert.equal(reply.message, [...new Set(reply.details.map((detail) => detail.message))].join(" "));
+  assert.match(reply.message, /colour is not a field this takes\. Check its spelling\./);
+  assert.notEqual(reply.message, MESSAGES.invalidInput);
 });
 
 test("Fastify's errors about an unreadable request get their own status, in our words", () => {

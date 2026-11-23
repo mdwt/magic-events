@@ -198,7 +198,7 @@ describe("the error format", () => {
     assert.equal(response.statusCode, 400);
     const error = errorOf(response);
     assert.equal(error.code, "invalid_input");
-    assert.equal(error.message, "The request body is not valid JSON.");
+    assert.equal(error.message, "The request body is not valid JSON. Check it for a missing quote, comma or bracket.");
   });
 
   test("an unknown property and a wrong value are invalid_input with one detail each", async () => {
@@ -213,7 +213,7 @@ describe("the error format", () => {
     assert.equal(error.code, "invalid_input");
     const paths = error.details.map((detail) => detail.path).sort();
     assert.deepEqual(paths, ["colour", "near.lat"]);
-    assert.equal(error.details.find((detail) => detail.path === "colour")?.message, "Unknown field.");
+    assert.equal(error.details.find((detail) => detail.path === "colour")?.message, "colour is not a field this takes. Check its spelling.");
   });
 
   test("a wrong content type is 415, a body that is too large 413, and an empty body invalid_input", async () => {
@@ -243,7 +243,7 @@ describe("the error format", () => {
   test("an unknown query parameter is invalid_input", async () => {
     const response = await harness.app.inject({ method: "GET", url: "/health?verbose=1", headers: bearer(key) });
     assert.equal(response.statusCode, 400);
-    assert.deepEqual(errorOf(response).details, [{ path: "verbose", message: "Unknown field." }]);
+    assert.deepEqual(errorOf(response).details, [{ path: "verbose", message: "verbose is not a field this takes. Check its spelling." }]);
   });
 
   describe("a system error", () => {

@@ -24,10 +24,22 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
 
 export const MESSAGES = {
   internal: "Something went wrong on our side. Quote the request ID if you report it.",
-  invalidInput: "The request is not valid.",
-  invalidArguments: "The arguments do not fit the tool's input schema. The details say which fields are wrong and why.",
-  notFound: "There is nothing at this address.",
+  invalidInput: "Some of the request needs changing. Each detail names a field and says what to give.",
+  invalidArguments: "Some of the arguments need changing. Each detail names one and says what to give.",
+  notFound: "There is nothing at this address. The OpenAPI document, at /openapi.json, lists the addresses there are.",
 } as const;
+
+// What a detail says about a field the input does not take, such as a misspelt one.
+export function unknownFieldMessage(path: string): string {
+  return `${path} is not a field this takes. Check its spelling.`;
+}
+
+// The message of an invalid_input refusal: what its details say, one after another, so the message alone says what
+// to change. The general message when there are no details.
+export function invalidInputMessage(details: ErrorDetail[], general: string = MESSAGES.invalidInput): string {
+  const messages = [...new Set(details.map((detail) => detail.message))];
+  return messages.length === 0 ? general : messages.join(" ");
+}
 
 function errorSchema<C extends ResponseErrorCode>(code: C, description: string) {
   return z
@@ -51,9 +63,9 @@ function errorSchema<C extends ResponseErrorCode>(code: C, description: string) 
 
 // The error answers every route can give, to spread into a route's `response`.
 export const errorResponses = {
-  400: errorSchema("invalid_input", "The request is not valid. The details say which fields are wrong and why."),
-  401: errorSchema("unauthenticated", "The API key is missing, unknown, disabled or expired."),
-  403: errorSchema("forbidden", "The caller may not do this, or their tenant is suspended."),
+  400: errorSchema("invalid_input", "Some of the request needs changing. Each detail names a field and says what to give."),
+  401: errorSchema("unauthenticated", "The API key is missing, unknown, revoked or expired."),
+  403: errorSchema("forbidden", "The API key's organisation is suspended, so its access is turned off."),
   429: errorSchema("rate_limited", "Too many requests. Retry-After says how many seconds to wait."),
   500: errorSchema("internal_error", "Something went wrong on the server. Quote the request ID if you report it."),
   503: errorSchema("unavailable", "The service cannot answer for now, such as while its database is down. Retry-After says how many seconds to wait."),
@@ -100,7 +112,10 @@ const UNREADABLE_REQUEST: Record<string, { code: ErrorCode; message: string }> =
   },
   FST_ERR_CTP_BODY_TOO_LARGE: { code: "content_too_large", message: "The request body is too large. Send a smaller one." },
   FST_ERR_CTP_EMPTY_JSON_BODY: { code: "invalid_input", message: "The request body is empty. Send a JSON object." },
-  FST_ERR_CTP_INVALID_JSON_BODY: { code: "invalid_input", message: "The request body is not valid JSON." },
+  FST_ERR_CTP_INVALID_JSON_BODY: {
+    code: "invalid_input",
+    message: "The request body is not valid JSON. Check it for a missing quote, comma or bracket.",
+  },
   FST_ERR_CTP_INVALID_CONTENT_LENGTH: {
     code: "invalid_input",
     message: "The Content-Length header does not match the body.",
@@ -125,11 +140,12 @@ export function toErrorReply(error: unknown, isUnavailable: (error: unknown) => 
   }
 
   if (hasZodFastifySchemaValidationErrors(error)) {
+    const details = error.validation.flatMap(validationDetails);
     return {
       status: 400,
       code: "invalid_input",
-      message: MESSAGES.invalidInput,
-      details: error.validation.flatMap(validationDetails),
+      message: invalidInputMessage(details),
+      details,
       retryAfterSeconds: undefined,
       system: false,
     };
@@ -171,13 +187,19 @@ function validationDetails(issue: {
   const path = issue.instancePath.split("/").filter(Boolean).join(".");
   const keys = issue.params.keys;
   if (issue.keyword === "unrecognized_keys" && Array.isArray(keys)) {
-    return keys.map((key) => ({ path: path ? `${path}.${String(key)}` : String(key), message: "Unknown field." }));
+    return keys.map((key) => {
+      const field = path ? `${path}.${String(key)}` : String(key);
+      return { path: field, message: unknownFieldMessage(field) };
+    });
   }
   return [{ path, message: issue.message ?? "Not valid." }];
 }
 
 // Any other error of Fastify's that it raises with a 4xx status: something about the request it could not read.
-const UNREADABLE = { code: "invalid_input", message: "The request could not be read." } as const;
+const UNREADABLE = {
+  code: "invalid_input",
+  message: "The request could not be read. Send the body as JSON, with Content-Type: application/json.",
+} as const;
 
 function isClientError(error: unknown): boolean {
   if (typeof error !== "object" || error === null || !("statusCode" in error)) return false;
