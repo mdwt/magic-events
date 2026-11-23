@@ -1,3 +1,6 @@
+# A fixed name, so the main checkout and every worktree share the one database container and volume.
+name: magic-events
+
 services:
   postgres:
     # Postgres 18 with the pgvector extension, which holds the experience embeddings.
@@ -8,7 +11,7 @@ services:
       POSTGRES_PASSWORD: magic
       POSTGRES_DB: magic_events
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - pgdata:/var/lib/postgresql
 

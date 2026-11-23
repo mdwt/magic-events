@@ -1,5 +1,6 @@
 // Discovery: finds experiences and captures the raw data as received.
-// It calls Catalogue, for the location of each source.
+// Every source belongs to one location, and locations are Catalogue's. Discovery gets a source's location by
+// asking the Catalogue service, and never reads the location table itself. Catalogue is the only domain it calls.
 
 export interface Source {
   id: string;
