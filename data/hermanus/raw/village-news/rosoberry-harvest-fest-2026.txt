@@ -1,0 +1,237 @@
+URL: https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1216
+Fetched: 2026-11-23T14:16:48Z
+(This listing has no detail page of its own: its link on What's On points to https://www.thevillagenews.co.za/whats-on/. Below is the site's own event record, fetched in the page with the site's events API.)
+{
+ "id": 1216,
+ "global_id": "www.thevillagenews.co.za?id=1216",
+ "global_id_lineage": [
+  "www.thevillagenews.co.za?id=1216"
+ ],
+ "author": "0",
+ "status": "publish",
+ "date": "2026-10-16 12:14:46",
+ "date_utc": "0000-00-00 00:00:00",
+ "modified": "2026-10-16 12:14:46",
+ "modified_utc": "0000-00-00 00:00:00",
+ "url": "https://www.thevillagenews.co.za/whats-on/",
+ "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1216",
+ "title": "Rosoberry Harvest Fest 2026",
+ "description": "<p>Celebrate berry season at Rosoberry Harvest Fest with pick-your-own berries, live music, delicious local food, wine, craft beer, coffee, ice cream and family fun. Hosted by Rosoberry Nursery on Hermanus River Farm, this relaxed summer festival celebrates peak berry season, with strawberries, blackberries, youngberries, blueberries, raspberries and pepinos to enjoy straight from the bushes. Your ticket includes a punnet to take home, plus an empty punnet for picking and tasting berries throughout the day. Discover local vendors serving grass-fed beef boeries, brisket bowls, poke bowls, Belgian ales and local wines. Enjoy tractor rides, face painting, lawn games, nursery plants and fresh farm produce, or take a scenic 2.5km walk to the waterfall. Bring a picnic blanket and enjoy a summer day on the farm!</p>",
+ "excerpt": "",
+ "slug": "",
+ "image": {
+  "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216.png",
+  "id": 1217,
+  "extension": "png",
+  "width": 2048,
+  "height": 1365,
+  "filesize": 7589146,
+  "sizes": {
+   "medium": {
+    "width": 300,
+    "height": 200,
+    "mime-type": "image/png",
+    "filesize": 133805,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-300x200.png"
+   },
+   "large": {
+    "width": 1024,
+    "height": 683,
+    "mime-type": "image/png",
+    "filesize": 1342753,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-1024x683.png"
+   },
+   "thumbnail": {
+    "width": 150,
+    "height": 150,
+    "mime-type": "image/png",
+    "filesize": 52327,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-150x150.png"
+   },
+   "medium_large": {
+    "width": 768,
+    "height": 512,
+    "mime-type": "image/png",
+    "filesize": 790285,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-768x512.png"
+   },
+   "1536x1536": {
+    "width": 1536,
+    "height": 1024,
+    "mime-type": "image/png",
+    "filesize": 2833645,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-1536x1024.png"
+   },
+   "td_0x420": {
+    "width": 630,
+    "height": 420,
+    "mime-type": "image/png",
+    "filesize": 545234,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-630x420.png"
+   },
+   "td_80x60": {
+    "width": 80,
+    "height": 60,
+    "mime-type": "image/png",
+    "filesize": 11887,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-80x60.png"
+   },
+   "td_150x0": {
+    "width": 150,
+    "height": 100,
+    "mime-type": "image/png",
+    "filesize": 35423,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-150x100.png"
+   },
+   "td_218x150": {
+    "width": 218,
+    "height": 150,
+    "mime-type": "image/png",
+    "filesize": 74878,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-218x150.png"
+   },
+   "td_300x0": {
+    "width": 300,
+    "height": 200,
+    "mime-type": "image/png",
+    "filesize": 133805,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-300x200.png"
+   },
+   "td_324x400": {
+    "width": 324,
+    "height": 400,
+    "mime-type": "image/png",
+    "filesize": 281149,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-324x400.png"
+   },
+   "td_485x360": {
+    "width": 485,
+    "height": 360,
+    "mime-type": "image/png",
+    "filesize": 368509,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-485x360.png"
+   },
+   "td_696x0": {
+    "width": 696,
+    "height": 464,
+    "mime-type": "image/png",
+    "filesize": 657840,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-696x464.png"
+   },
+   "td_1068x0": {
+    "width": 1068,
+    "height": 712,
+    "mime-type": "image/png",
+    "filesize": 1457692,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-1068x712.png"
+   },
+   "td_1920x0": {
+    "width": 1920,
+    "height": 1280,
+    "mime-type": "image/png",
+    "filesize": 4248065,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216-1920x1280.png"
+   }
+  }
+ },
+ "all_day": false,
+ "start_date": "2026-11-28 10:00:00",
+ "start_date_details": {
+  "year": "2026",
+  "month": "11",
+  "day": "28",
+  "hour": "10",
+  "minutes": "00",
+  "seconds": "00"
+ },
+ "end_date": "2026-11-28 17:00:00",
+ "end_date_details": {
+  "year": "2026",
+  "month": "11",
+  "day": "28",
+  "hour": "17",
+  "minutes": "00",
+  "seconds": "00"
+ },
+ "utc_start_date": "2026-11-28 08:00:00",
+ "utc_start_date_details": {
+  "year": "2026",
+  "month": "11",
+  "day": "28",
+  "hour": "08",
+  "minutes": "00",
+  "seconds": "00"
+ },
+ "utc_end_date": "2026-11-28 15:00:00",
+ "utc_end_date_details": {
+  "year": "2026",
+  "month": "11",
+  "day": "28",
+  "hour": "15",
+  "minutes": "00",
+  "seconds": "00"
+ },
+ "timezone": "Africa/Johannesburg",
+ "timezone_abbr": "SAST",
+ "cost": "R200 adults · R70 children u/12",
+ "cost_details": {
+  "currency_symbol": "",
+  "currency_code": "",
+  "currency_position": "",
+  "values": [
+   "12",
+   "70",
+   "200"
+  ]
+ },
+ "website": "https://www.thevillagenews.co.za/whats-on/",
+ "show_map": true,
+ "show_map_link": true,
+ "hide_from_listings": false,
+ "sticky": false,
+ "featured": false,
+ "categories": [
+  {
+   "name": "Markets",
+   "slug": "markets",
+   "term_group": 0,
+   "term_taxonomy_id": 28,
+   "taxonomy": "tribe_events_cat",
+   "description": "",
+   "parent": 0,
+   "count": 8,
+   "filter": "raw",
+   "id": 28,
+   "urls": {
+    "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/28",
+    "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+   }
+  }
+ ],
+ "tags": [],
+ "venue": [],
+ "organizer": [],
+ "custom_fields": [],
+ "json_ld": {
+  "@context": "http://schema.org",
+  "@type": "Event",
+  "name": "Rosoberry Harvest Fest 2026",
+  "description": "&lt;p&gt;Celebrate berry season at Rosoberry Harvest Fest with pick-your-own berries, live music, delicious local food, wine, craft beer, coffee, ice cream and family fun. Hosted by Rosoberry Nursery on Hermanus [&hellip;]&lt;/p&gt;\\n",
+  "image": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216.png",
+  "url": "https://www.thevillagenews.co.za/whats-on/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "startDate": "2026-11-28T10:00:00+02:00",
+  "endDate": "2026-11-28T17:00:00+02:00",
+  "offers": {
+   "@type": "Offer",
+   "price": "R200 adults · R70 children u/12",
+   "priceCurrency": "ZAR",
+   "url": "https://www.thevillagenews.co.za/whats-on/",
+   "category": "primary",
+   "availability": "inStock",
+   "validFrom": "2026-10-16T00:00:00+00:00"
+  },
+  "performer": "Organization"
+ }
+}

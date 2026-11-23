@@ -1,0 +1,469 @@
+URL: https://www.thevillagenews.co.za/whats-on/jingle-bell-rock-at-hermanus-golf-club/
+Fetched: 2026-11-23T14:15:54Z
+TodayMon 23 NovHigh tide02:36Low tide20:28WindS 22 km/hSea17°CSunset19:34Whale seasonIn season nowOn today 1 of 212:30 The Metropolitan Opera: Carmen (Bizet) Encore at Road House Cinema Whale Coast14:00 Hermanus Hacking Group
+
+Search ⚲Advertiser login
+
+Advertiser sign in
+
+- Home
+
+- News
+
+- Environment
+
+- Sport
+
+- Community
+
+- What’s on
+
+- Classifieds
+
+- Overstrand Jobs
+
+- Publications
+
+- Puzzles
+
+- Contact us
+
+- Send us news
+
+- Advertise with us
+
+Sign in
+
+Welcome!Log into your account
+
+your username
+
+your password
+
+Forgot your password?
+
+Password recovery
+
+Recover your password
+
+your email
+
+Search
+
+The Village News
+
+Whale Coast
+
+Free every ThursdayDistributed across the Whale CoastDistribution points
+
+- Home
+
+- News
+
+- Environment
+
+- Sport
+
+- Community
+
+- What’s on
+
+- Classifieds
+
+- Overstrand Jobs
+
+- Publications
+
+- Puzzles
+
+- Contact us
+
+- Send us news
+
+- Advertise with us
+
+November 202691 listings · tap a date to see that day
+
+Pick a date
+
+←→
+
+Dates with something on are marked.
+
+Wed11Thu12Fri13Sat14Sun15Mon16Tue17Wed18Thu19Fri20Sat21Sun22Mon23Tue24Wed25Thu26Fri27Sat28Sun29Mon30Tue1Wed2Thu3Fri4Sat5Sun6Mon7Tue8Wed9Thu10
+
+Narrow it down
+
+EverythingWeekends 45Free 66Every week 222Every month 17Markets 8Music 8Talks 7Family 5Workshops 4Wine & Food 4Sport 4Arts 3Clubs 2Meetings 2
+
+Advertisement
+
+« All Events
+
+# Jingle Bell Rock at Hermanus Golf Club
+
+3 December.18:00 -22:00
+
+R350
+
+- « Hermanus Chess Club
+
+- Bhuki Café »
+
+𝐅𝐞𝐬𝐭𝐢𝐯𝐞 𝐅𝐮𝐧 𝐟𝐨𝐫 𝐭𝐡𝐞 𝐰𝐡𝐨𝐥𝐞 𝐟𝐚𝐦𝐢𝐥𝐲
+
+Catch Jingle Bell Rock with The Family Band on 3 December at Hermanus Golf Club
+
+Jingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.
+
+Featuring a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists
+
+WhereHermanus Golf Club
+
+CostR350
+
+ContactMonique
+
+Phone0823453835
+
+WhatsApp0823453835
+
+Bookingsqkt.io
+
+Add to calendar
+
+-
+
+Google Calendar
+
+-
+
+iCalendar
+
+-
+
+Outlook 365
+
+-
+
+Outlook Live
+
+Share
+
+WhatsAppFacebookCopy link
+
+## Details
+
+-
+Date:
+
+3 December
+
+-
+Time:
+
+18:00 -22:00
+
+-
+Cost:
+R350
+
+- Event Category: Music
+
+- « Hermanus Chess Club
+
+- Bhuki Café »
+
+Advertisement
+
+© 2026 The Village News. All rights reserved.
+
+The Village News
+
+A free weekly newspaper for the Whale Coast, printed every Thursday
+and distributed across the Whale Coast.
+
+#### Sections
+
+- News
+
+- Environment
+
+- What's on
+
+- Sport
+
+- Community
+
+#### Areas
+
+- Hangklip–KleinmondKleinmond · Betty’s Bay · Palmiet · Proteadorp
+
+- Greater HermanusHermanus · Onrus · Hawston · Zwelihle · Hemel-en-Aarde Valley
+
+- StanfordThembelihle
+
+- Greater GansbaaiGansbaai · De Kelders · Kleinbaai · Franskraal
+
+#### About the paper
+
+- About us
+
+- Our ethics and standards
+
+- Editorial and complaints policy
+
+- Corrections and takedown policy
+
+- Disclaimer
+
+- Advertising terms
+
+- Community group on Facebook
+
+#### Talk to us
+
+- Contact us and meet the team
+
+- Send us your news
+
+- admin@thevillagenews.co.za
+
+- 079 408 7722 · office and WhatsApp
+
+- Available Monday to Friday
+
+- Bookings close Monday 17:00
+
+- Privacy policy · Terms of use
+
+Advertise with usTeam desk login
+
+Designed and developed by onlinehub.co.za
+
+✕
+×
+
+Close ×
+
+Distribution · free every Thursday
+
+## Free every Thursday, all over the Whale Coast.
+
+Not a mailing list and not an algorithm. Real shelves, in real shops, from Grabouw to Kleinbaai — picked up by people
+who live here, and still lying on the table on Sunday.
+
+Freeevery Thursday
+
+Whale Coastand Overstrand
+
+Know a spot we are missing?
+Tell us →
+
+### Every shop that stocks it
+
+All 214 · tap any name to find it on Google
+
+Every one of these takes a bundle each Thursday. 214 shops, cafés, filling stations and offices across the Overstrand. Tap any name to find it on Google.
+
+----- The site's own event records for this listing (all occurrences in the window), from /wp-json/tribe/events/v1/events -----
+[
+ {
+  "id": 1999,
+  "global_id": "www.thevillagenews.co.za?id=1999",
+  "global_id_lineage": [
+   "www.thevillagenews.co.za?id=1999"
+  ],
+  "author": "2",
+  "status": "publish",
+  "date": "2026-11-22 16:23:18",
+  "date_utc": "2026-11-22 14:23:18",
+  "modified": "2026-11-22 16:23:18",
+  "modified_utc": "2026-11-22 14:23:18",
+  "url": "https://www.thevillagenews.co.za/whats-on/jingle-bell-rock-at-hermanus-golf-club/",
+  "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1999",
+  "title": "Jingle Bell Rock at Hermanus Golf Club",
+  "description": "<p>🎄🔴𝐅𝐞𝐬𝐭𝐢𝐯𝐞 𝐅𝐮𝐧 𝐟𝐨𝐫 𝐭𝐡𝐞 𝐰𝐡𝐨𝐥𝐞 𝐟𝐚𝐦𝐢𝐥𝐲‼️🎄🎄🎄</p>\n<p>🎄Catch Jingle Bell Rock with The Family Band on 3 December at Hermanus Golf Club</p>\n<p>Jingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.</p>\n<p>Featuring a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists 🎤🎹🎸🥁🎼🎸🎺🎷</p>",
+  "excerpt": "",
+  "slug": "jingle-bell-rock-at-hermanus-golf-club",
+  "image": {
+   "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999.jpg",
+   "id": 2000,
+   "extension": "jpg",
+   "width": 1280,
+   "height": 960,
+   "filesize": 378062,
+   "sizes": {
+    "medium": {
+     "width": 300,
+     "height": 225,
+     "mime-type": "image/jpeg",
+     "filesize": 18729,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-300x225.jpg"
+    },
+    "large": {
+     "width": 1024,
+     "height": 768,
+     "mime-type": "image/jpeg",
+     "filesize": 146891,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-1024x768.jpg"
+    },
+    "thumbnail": {
+     "width": 150,
+     "height": 150,
+     "mime-type": "image/jpeg",
+     "filesize": 7741,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-150x150.jpg"
+    },
+    "medium_large": {
+     "width": 768,
+     "height": 576,
+     "mime-type": "image/jpeg",
+     "filesize": 92269,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-768x576.jpg"
+    },
+    "td_0x420": {
+     "width": 560,
+     "height": 420,
+     "mime-type": "image/jpeg",
+     "filesize": 53853,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-560x420.jpg"
+    },
+    "td_80x60": {
+     "width": 80,
+     "height": 60,
+     "mime-type": "image/jpeg",
+     "filesize": 2179,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-80x60.jpg"
+    },
+    "td_150x0": {
+     "width": 150,
+     "height": 113,
+     "mime-type": "image/jpeg",
+     "filesize": 5962,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-150x113.jpg"
+    },
+    "td_218x150": {
+     "width": 218,
+     "height": 150,
+     "mime-type": "image/jpeg",
+     "filesize": 10225,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-218x150.jpg"
+    },
+    "td_300x0": {
+     "width": 300,
+     "height": 225,
+     "mime-type": "image/jpeg",
+     "filesize": 18729,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-300x225.jpg"
+    },
+    "td_324x400": {
+     "width": 324,
+     "height": 400,
+     "mime-type": "image/jpeg",
+     "filesize": 32461,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-324x400.jpg"
+    },
+    "td_485x360": {
+     "width": 485,
+     "height": 360,
+     "mime-type": "image/jpeg",
+     "filesize": 41761,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-485x360.jpg"
+    },
+    "td_696x0": {
+     "width": 696,
+     "height": 522,
+     "mime-type": "image/jpeg",
+     "filesize": 78311,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-696x522.jpg"
+    },
+    "td_1068x0": {
+     "width": 1068,
+     "height": 801,
+     "mime-type": "image/jpeg",
+     "filesize": 159127,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999-1068x801.jpg"
+    }
+   }
+  },
+  "all_day": false,
+  "start_date": "2026-12-03 18:00:00",
+  "start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "03",
+   "hour": "18",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "end_date": "2026-12-03 22:00:00",
+  "end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "03",
+   "hour": "22",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_start_date": "2026-12-03 16:00:00",
+  "utc_start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "03",
+   "hour": "16",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_end_date": "2026-12-03 20:00:00",
+  "utc_end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "03",
+   "hour": "20",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "timezone": "Africa/Johannesburg",
+  "timezone_abbr": "SAST",
+  "cost": "R350",
+  "cost_details": {
+   "currency_symbol": "R",
+   "currency_code": "ZAR",
+   "currency_position": "prefix",
+   "values": [
+    "350"
+   ]
+  },
+  "website": "",
+  "show_map": true,
+  "show_map_link": true,
+  "hide_from_listings": false,
+  "sticky": false,
+  "featured": false,
+  "categories": [
+   {
+    "name": "Music",
+    "slug": "music",
+    "term_group": 0,
+    "term_taxonomy_id": 29,
+    "taxonomy": "tribe_events_cat",
+    "description": "",
+    "parent": 0,
+    "count": 8,
+    "filter": "raw",
+    "id": 29,
+    "urls": {
+     "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/29",
+     "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+    }
+   }
+  ],
+  "tags": [],
+  "venue": [],
+  "organizer": [],
+  "custom_fields": []
+ }
+]
+----- "Bookings" link on the page -----
+https://qkt.io/NYyjL7
