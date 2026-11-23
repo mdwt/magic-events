@@ -1,6 +1,7 @@
 services:
   postgres:
-    image: postgres:18
+    # Postgres 18 with the pgvector extension, which holds the experience embeddings.
+    image: pgvector/pgvector:pg18
     restart: unless-stopped
     environment:
       POSTGRES_USER: magic

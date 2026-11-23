@@ -8,6 +8,20 @@
       "when": 1795420131611,
       "tag": "0000_married_centennial",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795438266446,
+      "tag": "0001_data_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795438274791,
+      "tag": "0002_events_resource_id",
+      "breakpoints": true
     }
   ]
 }

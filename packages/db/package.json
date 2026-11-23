@@ -5,12 +5,15 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schema": "./src/schema.ts"
+    "./schema": "./src/schema/index.ts",
+    "./migrate": "./src/migrate.ts"
   },
   "scripts": {
     "typecheck": "tsc",
+    "lint": "eslint .",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate",
+    "migrate": "node --env-file-if-exists=../../.env src/cli/migrate.ts DATABASE_URL",
+    "migrate:test": "node --env-file-if-exists=../../.env src/cli/migrate.ts TEST_DATABASE_URL",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
@@ -18,8 +21,11 @@
     "postgres": "^4.1.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.6",
     "drizzle-kit": "^0.31.11",
-    "typescript": "^7.0.2"
+    "eslint": "^10.15.0",
+    "typescript": "^7.0.2",
+    "typescript-eslint": "^8.73.0"
   }
 }
