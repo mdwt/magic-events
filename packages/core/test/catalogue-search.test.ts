@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
+import { experience } from "@magic-events/db";
+import { eq } from "drizzle-orm";
 import type { Catalogue, SearchExperiencesInput, SearchExperiencesResult } from "../src/catalogue/ports.ts";
 import { AppError } from "../src/shared/errors.ts";
 import { attributes } from "../src/data-processing/default-attributes.ts";
@@ -61,6 +63,7 @@ before(async () => {
       title: "Hermanus Whale Festival",
       status: "confirmed",
       booking: "open",
+      bookingUrl: "https://tickets.example.com/whale-festival",
       venue: { name: "Waterfront", lat: -34.421, lng: 19.244 },
       profile: "Three-day festival on the waterfront in whale season, with whale watching and live music.",
       sessions: [{ startDate: "2027-06-08", endDate: "2027-06-10" }],
@@ -285,19 +288,35 @@ describe("search by status and booking", () => {
     assert.deepEqual(await found({ status: ["expected", "announced"] }), ["FynArts", "Thursday Theatre"]);
   });
 
-  test("bookable returns only Confirmed with booking Open", async () => {
+  test("bookable returns only Confirmed with booking Open and a link to book through", async () => {
     assert.deepEqual(await found({ bookable: true }), ["Hermanus Whale Festival"]);
-    assert.deepEqual(await found({ bookable: true, radiusKm: 100 }), [
-      "Hermanus Whale Festival",
-      "Cape Town Jazz Night",
-    ]);
+    // The jazz night is Confirmed with booking Open, but has no booking link and no page of its own.
+    assert.deepEqual(await found({ bookable: true, radiusKm: 100 }), ["Hermanus Whale Festival"]);
     assert.deepEqual(await found({ bookable: true, status: ["announced"] }), []);
   });
 
-  test("marks each result bookable or not", async () => {
-    const result = await search();
+  test("its own page is a link to book through when it has no booking link", async () => {
+    await harness.db
+      .update(experience)
+      .set({ pageUrl: "https://whatson.example.com/jazz-night" })
+      .where(eq(experience.title, "Cape Town Jazz Night"));
+    try {
+      assert.deepEqual(await found({ bookable: true, radiusKm: 100 }), [
+        "Hermanus Whale Festival",
+        "Cape Town Jazz Night",
+      ]);
+      const result = await search({ radiusKm: 100 });
+      assert.equal(result.items.find((item) => item.title === "Cape Town Jazz Night")?.bookable, true);
+    } finally {
+      await harness.db.update(experience).set({ pageUrl: null }).where(eq(experience.title, "Cape Town Jazz Night"));
+    }
+  });
+
+  test("marks each result bookable or not, as the bookable filter selects", async () => {
+    const result = await search({ radiusKm: 100 });
     const bookable = Object.fromEntries(result.items.map((item) => [item.title, item.bookable]));
     assert.equal(bookable["Hermanus Whale Festival"], true);
+    assert.equal(bookable["Cape Town Jazz Night"], false);
     assert.equal(bookable["Gansbaai Shark Cage Diving"], false);
     assert.equal(bookable["Thursday Theatre"], false);
   });

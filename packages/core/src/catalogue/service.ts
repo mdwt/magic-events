@@ -12,6 +12,7 @@ import {
   type EmbedExperiencesResult,
   type EmbeddingModel,
   type ExperienceMatch,
+  type ExperienceRecord,
   type ExperienceSearchQuery,
   type ExperienceStatus,
   type ExperienceToEmbed,
@@ -113,7 +114,7 @@ export class CatalogueService implements Catalogue {
     );
 
     return {
-      items: items.map((item) => ({ ...item, bookable: item.status === "confirmed" && item.booking === "open" })),
+      items: items.map((item) => ({ ...item, bookable: isBookable(item) })),
       total,
       limit: query.limit,
       offset: query.offset,
@@ -277,7 +278,7 @@ export class CatalogueService implements Catalogue {
       from: search.from,
       to: search.to,
       statuses: search.statuses,
-      ...(search.bookings === undefined ? {} : { bookings: search.bookings }),
+      ...(search.bookable === undefined ? {} : { bookable: search.bookable }),
       attributes: search.attributes,
       tags: search.tags,
       limit: search.limit,
@@ -292,7 +293,7 @@ export class CatalogueService implements Catalogue {
       if (change === null) return [];
       return [
         {
-          experience: { ...experience, bookable: experience.status === "confirmed" && experience.booking === "open" },
+          experience: { ...experience, bookable: isBookable(experience) },
           movedOut,
           change,
           changes,
@@ -637,7 +638,8 @@ export class CatalogueService implements Catalogue {
       throw new AppError("invalid_input", details.map((detail) => detail.message).join(" "), details);
     }
 
-    // Bookable means Confirmed with booking Open. Status values that leave out Confirmed then match nothing.
+    // Bookable means Confirmed with booking Open and a link to book through. Status values that leave out Confirmed
+    // then match nothing.
     const statuses = input.status ?? [...SEARCHABLE_STATUSES];
     return {
       near,
@@ -645,7 +647,7 @@ export class CatalogueService implements Catalogue {
       from: input.from,
       to: input.to,
       statuses: input.bookable === true ? statuses.filter((status) => status === "confirmed") : statuses,
-      ...(input.bookable === true ? { bookings: ["open" as const] } : {}),
+      ...(input.bookable === true ? { bookable: true as const } : {}),
       attributes,
       tags: input.tags ?? [],
       ...(input.query === undefined ? {} : { query: input.query }),
@@ -653,6 +655,18 @@ export class CatalogueService implements Catalogue {
       offset: input.offset,
     };
   }
+}
+
+// Whether it can be booked now: Confirmed, booking Open, and a link to book through, its booking link or, failing
+// that, its own page. The repository's filter for bookable applies the same rule.
+function isBookable(
+  experience: Pick<ExperienceRecord, "booking" | "bookingUrl" | "pageUrl"> & { status: ExperienceStatus },
+): boolean {
+  return (
+    experience.status === "confirmed" &&
+    experience.booking === "open" &&
+    (experience.bookingUrl !== null || experience.pageUrl !== null)
+  );
 }
 
 // What Data processing is shown to decide whether an extracted experience is this one.

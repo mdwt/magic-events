@@ -48,7 +48,7 @@ function record(
       price: { min: null, max: null, currency: null },
       onSaleAt: null,
       bookingClosesAt: null,
-      bookingUrl: null,
+      bookingUrl: `https://tickets.example.com/${id}`,
       imageUrl: null,
       pageUrl: null,
       attributes: {},
@@ -134,11 +134,27 @@ describe("the query the repository is handed", () => {
     ]);
   });
 
-  test("bookable asks for confirmed experiences with booking open", async () => {
+  test("bookable asks for confirmed experiences that can be booked now", async () => {
     const catalogue = fakeCatalogue();
     await catalogue.service.getChangesSince(changesInput({ bookable: true }));
     const [query] = catalogue.changes.queries;
-    assert.deepEqual([query?.statuses, query?.bookings], [["confirmed"], ["open"]]);
+    assert.deepEqual([query?.statuses, query?.bookable], [["confirmed"], true]);
+  });
+
+  test("an entry is bookable only with a link to book through, its booking link or its own page", async () => {
+    const catalogue = fakeCatalogue();
+    const withLink = record("a", "confirmed", [change("changed", "11-20")]);
+    const withPage = record("b", "confirmed", [change("changed", "11-19")]);
+    withPage.experience.bookingUrl = null;
+    withPage.experience.pageUrl = "https://whatson.example.com/b";
+    const without = record("c", "confirmed", [change("changed", "11-18")]);
+    without.experience.bookingUrl = null;
+    catalogue.changes.answer = { items: [withLink, withPage, without], total: 3 };
+    const result = await catalogue.service.getChangesSince(changesInput());
+    assert.deepEqual(
+      result.items.map((item) => item.experience.bookable),
+      [true, true, false],
+    );
   });
 });
 

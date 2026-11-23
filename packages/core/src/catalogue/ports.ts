@@ -84,7 +84,10 @@ export const searchExperiencesInputSchema = z.strictObject({
   bookable: z
     .boolean()
     .optional()
-    .describe("True returns only experiences that can be booked now: confirmed, with booking open."),
+    .describe(
+      "True returns only experiences that can be booked now: confirmed, with booking open, and with a booking link " +
+        "or, failing that, their own page to book through.",
+    ),
   attributes: z
     .record(z.string().min(1).max(64), attributeFilterSchema)
     .optional()
@@ -171,7 +174,12 @@ export type ExperienceRecord = z.infer<typeof experienceRecordSchema>;
 
 // An experience as a search returns it.
 export const experienceResultSchema = experienceRecordSchema.extend({
-  bookable: z.boolean().describe("True when it can be booked now. Everything else is information only."),
+  bookable: z
+    .boolean()
+    .describe(
+      "True when it can be booked now: confirmed, booking open, and a link to book through, its bookingUrl or, " +
+        "failing that, its pageUrl. Everything else is information only.",
+    ),
 });
 export type ExperienceResult = z.infer<typeof experienceResultSchema>;
 
@@ -191,8 +199,9 @@ export interface ExperienceSearchQuery {
   from: string;
   to: string;
   statuses: SearchableStatus[];
-  // Set when only some booking values may be returned.
-  bookings?: (typeof BOOKING_STATUSES)[number][];
+  // Set when only experiences that can be booked now may be returned: booking open and a booking link or page
+  // address to book through. The statuses then hold Confirmed alone, or nothing.
+  bookable?: true;
   attributes: Record<string, AttributeFilter>;
   tags: string[];
   // The query text, which orders the results by keyword and by meaning. It never adds or removes one.

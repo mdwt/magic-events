@@ -807,14 +807,21 @@ function searchConditions(db: Db, query: ExperienceSearchQuery): SQL | undefined
   return and(searchableNow(db, query), ...placeAndClassification(db, query));
 }
 
-// What search returns: the statuses and bookings asked for, with a session on during the dates.
+// What search returns: the statuses asked for, bookable if asked, with a session on during the dates.
 function searchableNow(db: Db, query: ExperienceSearchQuery): SQL | undefined {
   const matchingSession = and(eq(experienceSession.experienceId, experience.id), sessionInRange(query));
   return and(
     inArray(experience.status, query.statuses),
-    query.bookings === undefined ? undefined : inArray(experience.booking, query.bookings),
+    bookableNow(query),
     exists(db.select({ one: sql`1` }).from(experienceSession).where(matchingSession)),
   );
+}
+
+// Can be booked now, when only such experiences are asked for: booking open, and a booking link or the experience's
+// own page to book through. The service's isBookable says the same for each result.
+function bookableNow(query: ExperienceSearchQuery): SQL | undefined {
+  if (query.bookable !== true) return undefined;
+  return and(eq(experience.booking, "open"), or(isNotNull(experience.bookingUrl), isNotNull(experience.pageUrl)));
 }
 
 // A Cancelled or Removed experience that changed-since reports though search does not: matched on its sessions in
@@ -850,7 +857,7 @@ function movedOut(db: Db, query: ExperienceChangesQuery): SQL | undefined {
     or(
       and(
         inArray(experience.status, query.statuses),
-        query.bookings === undefined ? undefined : inArray(experience.booking, query.bookings),
+        bookableNow(query),
       ),
       inArray(experience.status, ["cancelled", "removed"]),
     ),

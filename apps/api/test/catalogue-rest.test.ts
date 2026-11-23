@@ -49,6 +49,7 @@ before(async () => {
     locationId: hermanus.id,
     title: "Hermanus Whale Festival",
     booking: "open",
+    bookingUrl: "https://tickets.example.com/whale-festival",
     sessions: [{ startDate: "2027-06-08", endDate: "2027-06-10" }],
     attributes: { category: ["nature_and_wildlife"] },
     tags: ["whales"],

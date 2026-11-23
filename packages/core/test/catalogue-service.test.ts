@@ -338,12 +338,12 @@ describe("CatalogueService.searchExperiences", () => {
     assert.deepEqual(queries[0]?.attributes, attributes);
   });
 
-  test("bookable asks for Confirmed with booking Open", async () => {
+  test("bookable asks for Confirmed and for bookable, which the repository reads as booking Open with a link", async () => {
     const { repository, queries } = fakeRepository();
     await service(repository).searchExperiences({ ...base, bookable: true });
 
     assert.deepEqual(queries[0]?.statuses, ["confirmed"]);
-    assert.deepEqual(queries[0].bookings, ["open"]);
+    assert.equal(queries[0].bookable, true);
   });
 
   test("bookable with statuses that leave out Confirmed asks for nothing", async () => {
@@ -351,7 +351,7 @@ describe("CatalogueService.searchExperiences", () => {
     await service(repository).searchExperiences({ ...base, bookable: true, status: ["expected", "announced"] });
 
     assert.deepEqual(queries[0]?.statuses, []);
-    assert.deepEqual(queries[0].bookings, ["open"]);
+    assert.equal(queries[0].bookable, true);
   });
 
   test("bookable false puts no limit on booking", async () => {
@@ -359,23 +359,32 @@ describe("CatalogueService.searchExperiences", () => {
     await service(repository).searchExperiences({ ...base, bookable: false });
 
     assert.deepEqual(queries[0]?.statuses, ["expected", "announced", "confirmed", "postponed"]);
-    assert.equal(queries[0].bookings, undefined);
+    assert.equal(queries[0].bookable, undefined);
   });
 
-  test("marks an experience bookable only when it is Confirmed with booking Open", async () => {
+  test("marks an experience bookable only when it is Confirmed with booking Open and a link to book through", async () => {
+    const link = { bookingUrl: "https://tickets.example.com/market" };
     const { repository } = fakeRepository([
-      record({ id: "00000000-0000-4000-8000-000000000001", status: "confirmed", booking: "open" }),
-      record({ id: "00000000-0000-4000-8000-000000000002", status: "confirmed", booking: "sold_out" }),
-      record({ id: "00000000-0000-4000-8000-000000000003", status: "announced", booking: "open" }),
-      record({ id: "00000000-0000-4000-8000-000000000004", status: "confirmed", booking: "none" }),
+      record({ id: "00000000-0000-4000-8000-000000000001", status: "confirmed", booking: "open", ...link }),
+      record({ id: "00000000-0000-4000-8000-000000000002", status: "confirmed", booking: "sold_out", ...link }),
+      record({ id: "00000000-0000-4000-8000-000000000003", status: "announced", booking: "open", ...link }),
+      record({ id: "00000000-0000-4000-8000-000000000004", status: "confirmed", booking: "none", ...link }),
+      // No booking link: its own page will do, and with neither there is nothing to book through.
+      record({
+        id: "00000000-0000-4000-8000-000000000005",
+        status: "confirmed",
+        booking: "open",
+        pageUrl: "https://whatson.example.com/market",
+      }),
+      record({ id: "00000000-0000-4000-8000-000000000006", status: "confirmed", booking: "open" }),
     ]);
     const result = await service(repository).searchExperiences(base);
 
     assert.deepEqual(
       result.items.map((item) => item.bookable),
-      [true, false, false, false],
+      [true, false, false, false, true, false],
     );
-    assert.equal(result.total, 4);
+    assert.equal(result.total, 6);
   });
 });
 
