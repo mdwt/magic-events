@@ -31,7 +31,7 @@ A site or feed that publishes experiences for one location.
 | --- | --- |
 | Name, kind | Kind picks the adapter that fetches it and the extractor that reads it (see Source kinds) |
 | Location | One location per source. A site that covers two places is entered twice, once per location |
-| Settings | JSON the adapter reads: page addresses, organiser ID, calendar name. Each kind defines its own |
+| Settings | JSON the adapter reads: page addresses, organiser ID, calendar name. Each kind defines its own. A web page source can also say `ownPages`: true when its pages are an organiser's, operator's or venue's own pages about its own offerings, false when left out. Data processing reads it from the claimed raw listing to give each experience on such a page the page as its address. A listing site, a feed or a file is never one |
 | Credentials | The name of the setting that holds the API key, such as `QUICKET_API_KEY`. Discovery gets the key from the settings provider. Keys are never stored in the table |
 | Sync state | JSON the adapter keeps between runs, such as Quicket's last-modified time for incremental fetches |
 | Fetch interval | How often this source is fetched |

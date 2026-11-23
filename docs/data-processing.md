@@ -122,7 +122,7 @@ interface ExtractedSession {
 }
 ```
 
-The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those. A listing that describes several experiences is the own page of none of them, so the extractor drops a `url` that is the listing's own address when it returns more than one.
+The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those. The page address follows whose page the listing is. When the source's pages are the organiser's own, about its own offerings (its `ownPages` setting, see [discovery.md](discovery.md)), such as Hermanus Whale Cruises' page of its two trips, the listing's address is the page address of every experience it gives that has no more specific page of its own, however many there are. Otherwise, the default, a listing that describes several experiences, such as a listing site's page of other organisers' events, is the own page of none of them, and the extractor drops a `url` that is the listing's own address when it returns more than one. A `url` that is a different, more specific page is kept either way.
 
 ### Venue position
 
