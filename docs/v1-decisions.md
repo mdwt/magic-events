@@ -66,7 +66,7 @@ UC1 as written, a search within a radius around Hermanus, works. It is less exac
 
 **What building it needs.** When the leading link is removed, send the experience's remaining listings back for processing. Sending a listing back is built, and the automatic step can call the same code. Until then a system admin can do the same by hand, with `pipeline reprocess --experience`.
 
-**To decide.** Whether to add the automatic step in version 1.
+**Decided.** Not in version 1. The automatic step is for phase 2.
 
 ## 4. MCP sign-in with OAuth
 

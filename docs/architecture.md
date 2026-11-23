@@ -37,7 +37,7 @@ A client can call through the REST API, or through MCP using an AI agent acting 
 
 There are five domains: Discovery, Data processing, Catalogue, Identity and Organizations. Catalogue owns the processed experiences that clients search and track changes on. Each domain owns its own data, and no other domain changes that data directly. A domain that needs another domain's data calls its service; nothing is copied. How listings are fetched is in [discovery.md](discovery.md), and how they become experiences is in [data-processing.md](data-processing.md).
 
-Version 1 is a tracer bullet through Discovery, Data processing and Catalogue: five kinds of source, fetched, processed and published end to end.
+Version 1 is a tracer bullet through Discovery, Data processing and Catalogue: sources fetched, processed and published end to end. It defines five kinds of source and builds the three that need no API access (see [discovery.md](discovery.md)).
 
 ### Discovery
 

@@ -231,6 +231,7 @@ Data processing never reads Discovery's tables. It uses three calls on the Disco
 | Pending | Saved by a run, waiting for processing | Processed, Failed |
 | Processed | Its experiences are extracted and saved | Pending, when it is sent back |
 | Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts, or when it is sent back |
+| Superseded | An older version of a listing that was still pending or failed when a newer version was claimed. It is never processed | Nothing |
 
 Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded, and publishes it (see [domain-events.md](domain-events.md)). Nothing depends on them; the hand-off is the status.
 
