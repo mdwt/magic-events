@@ -4,6 +4,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import type { Catalogue } from "../core/catalogue/ports.ts";
 import type { Identity } from "../core/identity/ports.ts";
+import type { Organizations } from "../core/organizations/ports.ts";
 import { errorResponses } from "../rest/errors.ts";
 import { createMcpServer } from "./server.ts";
 
@@ -69,9 +70,10 @@ function toWebRequest(request: FastifyRequest): Request {
 export const mcpRoutes: FastifyPluginAsyncZod<{
   identity: Identity;
   catalogue: Catalogue;
+  organizations: Organizations;
   allowedHosts: string[];
   allowedOrigin: string;
-}> = (app, { identity, catalogue, allowedHosts, allowedOrigin }) => {
+}> = (app, { identity, catalogue, organizations, allowedHosts, allowedOrigin }) => {
   const guard = guardHostAndOrigin(allowedHosts, allowedOrigin);
 
   app.post(
@@ -84,7 +86,7 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
         summary: "MCP endpoint",
         description:
           "The Model Context Protocol endpoint, over Streamable HTTP without sessions. Connect an MCP client to it " +
-          "with the API key in the Authorization header. It offers the same search as the REST API.",
+          "with the API key in the Authorization header. It offers the same search and onboarding as the REST API.",
         tags: TAGS,
         body: z.union([jsonRpcMessage, z.array(jsonRpcMessage).min(1)]).describe("A JSON-RPC message, or a batch."),
         response: {
@@ -101,7 +103,7 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
       },
     },
     async (request, reply) => {
-      const server = createMcpServer({ caller: request.caller, identity, logger: request.log }, { catalogue });
+      const server = createMcpServer({ caller: request.caller, identity, logger: request.log }, { catalogue, organizations });
       const transport = new WebStandardStreamableHTTPServerTransport({
         sessionIdGenerator: undefined,
         enableJsonResponse: true,

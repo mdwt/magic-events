@@ -15,9 +15,9 @@ export interface ToolDeps {
 export const TOOL_FAILED_MESSAGE =
   "Something went wrong on our side. Try again, and quote the x-request-id response header if you report it.";
 
-// Registers a read-only tool. When it is called, the caller's right to the tool's action is checked first, then the
-// handler runs, and the answer is returned as structured content with the same JSON as text. Every failure becomes a
-// tool error: an AppError keeps its message and details, and anything else is logged and gets a general message.
+// Registers a tool. When it is called, the caller's right to the tool's action is checked first, then the handler
+// runs, and the answer is returned as structured content with the same JSON as text. Every failure becomes a tool
+// error: an AppError keeps its message and details, and anything else is logged and gets a general message.
 export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
   server: McpServer,
   deps: ToolDeps,
@@ -26,6 +26,8 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
     action: Action;
     title: string;
     description: string;
+    // False for a tool that changes something. A client may then ask before calling it. True when left out.
+    readOnly?: boolean;
     inputSchema: I;
     outputSchema: O;
     handler: (input: z.infer<I>) => Promise<z.infer<O>>;
@@ -34,6 +36,7 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
   // Widened, because the SDK's callback type cannot be worked out for a generic schema.
   const inputSchema: z.ZodObject = tool.inputSchema;
   const outputSchema: z.ZodObject = tool.outputSchema;
+  const readOnly = tool.readOnly ?? true;
   server.registerTool(
     tool.name,
     {
@@ -43,9 +46,10 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
       outputSchema,
       annotations: {
         title: tool.title,
-        readOnlyHint: true,
-        destructiveHint: false,
-        idempotentHint: true,
+        readOnlyHint: readOnly,
+        // A tool that writes is taken to be destructive and not idempotent, the protocol's own defaults for it.
+        destructiveHint: !readOnly,
+        idempotentHint: readOnly,
         openWorldHint: false,
       },
     },

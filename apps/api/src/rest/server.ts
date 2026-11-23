@@ -11,6 +11,7 @@ import {
 } from "fastify-type-provider-zod";
 import type { Catalogue } from "../core/catalogue/ports.ts";
 import { CredentialRateLimitedError, type Identity } from "../core/identity/ports.ts";
+import type { Organizations } from "../core/organizations/ports.ts";
 import { AppError } from "../core/shared/errors.ts";
 import type { ApiSettings } from "../core/shared/settings.ts";
 import { mcpRoutes } from "../mcp/routes.ts";
@@ -19,12 +20,14 @@ import { errorBody, MESSAGES, toErrorReply } from "./errors.ts";
 import "./fastify-types.ts";
 import { addLogContextHooks, RequestLogController, requestId } from "./logging.ts";
 import { catalogueRoutes } from "./routes/catalogue.ts";
+import { identityRoutes } from "./routes/identity.ts";
+import { organizationsRoutes } from "./routes/organizations.ts";
 import { platformRoutes } from "./routes/platform.ts";
 
 export interface ServerDeps {
   settings: ApiSettings;
   logger: FastifyBaseLogger;
-  services: { identity: Identity; catalogue: Catalogue };
+  services: { identity: Identity; catalogue: Catalogue; organizations: Organizations };
   // A trivial query, for the health check.
   checkDatabase: () => Promise<void>;
 }
@@ -127,10 +130,13 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
   await app.register(mcpRoutes, {
     identity: deps.services.identity,
     catalogue: deps.services.catalogue,
+    organizations: deps.services.organizations,
     allowedHosts: settings.allowedHosts,
     allowedOrigin: settings.corsOrigin,
   });
   await app.register(catalogueRoutes, { prefix: "/v1", catalogue: deps.services.catalogue });
+  await app.register(organizationsRoutes, { prefix: "/v1", organizations: deps.services.organizations });
+  await app.register(identityRoutes, { prefix: "/v1", identity: deps.services.identity });
 
   return app;
 }

@@ -51,6 +51,11 @@ export const errorResponses = {
   500: errorSchema("internal_error", "Something went wrong on the server. Quote the request ID if you report it."),
 };
 
+// For a route that names something in its address, which may not exist.
+export const notFoundResponse = {
+  404: errorSchema("not_found", "There is nothing with this ID or slug."),
+};
+
 export interface ErrorBody {
   error: { code: ResponseErrorCode; message: string; details: ErrorDetail[]; requestId: string };
 }
