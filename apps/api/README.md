@@ -85,6 +85,11 @@ issued: by the seed (`pnpm db:seed` prints them), or by a system admin through t
 Send the key as `Authorization: Bearer <key>`, or as `x-api-key: <key>`. Every path checks it except `/health`, and a
 path that does not exist answers 401 to a caller without a valid key.
 
+A key that is missing, unknown, disabled or expired is 401 with one message, so a caller cannot tell which. A key that
+cannot be checked, because the database cannot be reached, is never 401: the answer is 503 `unavailable` with
+`Retry-After`, as `/health` gives while the database is down. Better Auth's key check reports any failure inside it as
+an invalid key, so Identity trusts that verdict only once the key store answers.
+
 ```sh
 curl http://localhost:4000/health
 curl -H "Authorization: Bearer <key>" -H "Content-Type: application/json" \
@@ -112,20 +117,27 @@ Every REST failure has one format:
 
 | Status | Code | When |
 | --- | --- | --- |
-| 400 | `invalid_input` | The body, query or address does not fit the schema. The details say which fields and why |
-| 401 | `unauthenticated` | The key is missing, unknown, disabled or expired. Comes with `WWW-Authenticate: Bearer` |
-| 403 | `forbidden` | The caller may not do this, or their tenant is suspended |
-| 404 | `not_found` | Nothing is there |
+| 400 | `invalid_input` | The body, query, address or tool arguments do not fit the schema, the body is not valid JSON, or a value is refused, such as an unknown location. The details say which fields and why |
+| 401 | `unauthenticated` | The key is missing, unknown, disabled or expired. Comes with `WWW-Authenticate: Bearer realm="magic-events"` |
+| 403 | `forbidden` | The caller may not do this, their tenant is suspended, or `/mcp` was called from a host or origin that is not allowed |
+| 404 | `not_found` | Nothing is at this address, or no tenant, user or credential has this slug or ID |
 | 405 | `method_not_allowed` | The address does not answer this method. `Allow` names the ones it does |
+| 406 | `not_acceptable` | A POST to `/mcp` whose `Accept` does not name both `application/json` and `text/event-stream` |
 | 409 | `conflict` | A tenant slug or an email address is taken. The details name the field |
 | 413 | `content_too_large` | The body is larger than `API_BODY_LIMIT_BYTES` |
 | 415 | `unsupported_media_type` | The body is not sent as `application/json` |
-| 429 | `rate_limited` | Too many requests. `Retry-After` says how many seconds to wait |
-| 500 | `internal_error` | Something went wrong on the server. The details are in the logs under the request ID |
-| 503 | `unavailable` | The database cannot be reached, the health check included. `Retry-After` says when to try again |
+| 429 | `rate_limited` | Too many requests from this key or this address. `Retry-After` and the message say how many seconds to wait |
+| 500 | `internal_error` | Something went wrong on the server. The message is general; the error is logged in full under the request ID |
+| 503 | `unavailable` | The database cannot be reached, from any endpoint and from the health check. `Retry-After` says when to try again |
 
-Every error body carries `requestId`, every answer the `x-request-id` header, and every log line of the request the
-same ID. Over MCP, a tool that fails answers `isError: true` with the same code, message and details as text.
+Every error body carries `requestId`, every answer the `x-request-id` header and `Cache-Control: no-store`, and every
+log line of the request the same ID. A refused call is logged at warn with its reason, a system error at error in full,
+with its cause.
+
+Over MCP, a JSON-RPC answer comes with 200. A tool that fails answers `isError: true` with, as text, the body REST would
+answer, request ID included. Arguments that do not fit a tool are `invalid_input` with one detail per field, so an agent
+can correct its call, and the caller's right to the tool is checked before them. A tool that does not exist is a
+JSON-RPC invalid params error. A refusal at the HTTP level, such as 401, 403, 405 or 406, is in the format above.
 
 ## Background jobs
 
