@@ -106,7 +106,7 @@ describe("seedDefaults", () => {
   });
 
   test("every default attribute in the docs is there, with its type, multiplicity and default", async () => {
-    assert.equal(documentedAttributes.length, 8);
+    assert.equal(documentedAttributes.length, 9);
     const rows = await harness.db.select().from(attribute);
     assert.equal(rows.length, documentedAttributes.length);
     for (const documented of documentedAttributes) {
