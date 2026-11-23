@@ -108,11 +108,16 @@ const DEFINITIONS: AttributeDefinition[] = [
 // The slugs of the tags and seasons, as Data processing lists them.
 const TAG_SLUGS = ["festival", "jazz", "whale-season", "whales", "winter"];
 
-function service(repository: CatalogueRepository, embeddings = new FakeEmbeddingModel(), tagSlugs = TAG_SLUGS) {
+function service(
+  repository: CatalogueRepository,
+  embeddings = new FakeEmbeddingModel(),
+  tagSlugs = TAG_SLUGS,
+  definitions = DEFINITIONS,
+) {
   return new CatalogueService({
     repository,
     events: { publish: () => {} },
-    dataProcessing: { listAttributes: () => Promise.resolve(DEFINITIONS), listTagSlugs: () => Promise.resolve(tagSlugs) },
+    dataProcessing: { listAttributes: () => Promise.resolve(definitions), listTagSlugs: () => Promise.resolve(tagSlugs) },
     settings: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200, sessionHorizonMonths: 24, upkeepCron: "0 * * * *" },
     embeddings,
     embeddingSettings: EMBEDDING_SETTINGS,
@@ -270,7 +275,13 @@ describe("CatalogueService.searchExperiences", () => {
   test("refuses a location that does not exist, a search with no place, and one with both", async () => {
     const { repository, queries } = fakeRepository();
     const unknown = await refusal(service(repository).searchExperiences({ ...placeless, location: "atlantis" }));
-    assert.deepEqual(unknown.details, [{ path: "location", message: "There is no location atlantis." }]);
+    assert.deepEqual(unknown.details, [
+      {
+        path: "location",
+        message:
+          "The feed does not cover a place called atlantis. Give a place it covers, such as hermanus, or a point with near.",
+      },
+    ]);
 
     const neither = await refusal(service(repository).searchExperiences(placeless));
     assert.deepEqual(
@@ -294,10 +305,10 @@ describe("CatalogueService.searchExperiences", () => {
 
     const filterable = "category, minimum_age, wheelchair_accessible, dress_code";
     assert.deepEqual(error.details, [
-      { path: "attributes.colour", message: `There is no attribute colour. The attributes to filter on are: ${filterable}.` },
+      { path: "attributes.colour", message: `There is no attribute called colour. You can filter on: ${filterable}.` },
       {
         path: "attributes.internal_note",
-        message: `internal_note cannot be filtered on. The attributes to filter on are: ${filterable}.`,
+        message: `internal_note cannot be used as a filter. You can filter on: ${filterable}.`,
       },
     ]);
     assert.equal(queries.length, 0);
@@ -320,11 +331,11 @@ describe("CatalogueService.searchExperiences", () => {
     assert.deepEqual(error.details, [
       {
         path: "attributes.category",
-        message: "category has no option sport. Its options are: visual_arts, nature_and_wildlife, music.",
+        message: "category has no option sport. Use one of: visual_arts, nature_and_wildlife, music.",
       },
-      { path: "attributes.minimum_age", message: "minimum_age is a number: give a number or a range, { min, max }." },
-      { path: "attributes.wheelchair_accessible", message: "wheelchair_accessible is true or false." },
-      { path: "attributes.dress_code", message: "dress_code is not a number, so it takes no range." },
+      { path: "attributes.minimum_age", message: 'minimum_age takes a number, such as 12, or a range, such as { "max": 12 }.' },
+      { path: "attributes.wheelchair_accessible", message: "wheelchair_accessible takes true or false." },
+      { path: "attributes.dress_code", message: "dress_code takes no range. Give a value, or a list of values." },
     ]);
     assert.equal(queries.length, 0);
   });
@@ -391,6 +402,36 @@ describe("CatalogueService.searchExperiences", () => {
   });
 });
 
+describe("CatalogueService order by tier", () => {
+  const tier: AttributeDefinition = {
+    ...attribute("tier", "option", ["luxury", "premium", "standard", "everyday"]),
+    defaultValue: "standard",
+  };
+
+  test("a search hands the repository the tier's options in order, and its default for no value", async () => {
+    const { repository, queries } = fakeRepository();
+    await service(repository, new FakeEmbeddingModel(), TAG_SLUGS, [...DEFINITIONS, tier]).searchExperiences(base);
+    assert.deepEqual(queries[0]?.rankBy, {
+      attribute: "tier",
+      options: ["luxury", "premium", "standard", "everyday"],
+      fallback: "standard",
+    });
+  });
+
+  test("a tier with no default puts an experience with no value last", async () => {
+    const { repository, queries } = fakeRepository();
+    const noDefault = { ...tier, defaultValue: null };
+    await service(repository, new FakeEmbeddingModel(), TAG_SLUGS, [noDefault]).searchExperiences(base);
+    assert.equal(queries[0]?.rankBy?.fallback, null);
+  });
+
+  test("with no tier attribute defined, the search is not ranked by one", async () => {
+    const { repository, queries } = fakeRepository();
+    await service(repository).searchExperiences(base);
+    assert.equal(queries[0]?.rankBy, undefined);
+  });
+});
+
 describe("CatalogueService tag filters", () => {
   test("a tag or season slug Data processing knows is passed through", async () => {
     const { repository, queries } = fakeRepository();
@@ -398,15 +439,14 @@ describe("CatalogueService tag filters", () => {
     assert.deepEqual(queries[0]?.tags, ["whales", "whale-season"]);
   });
 
-  test("an unknown slug is refused, naming it, how many there are and the closest ones", async () => {
+  test("an unknown slug is refused, naming it and the closest ones", async () => {
     const { repository, queries } = fakeRepository();
     const error = await refusal(service(repository).searchExperiences({ ...base, tags: ["jazz", "whale"] }));
     assert.equal(error.code, "invalid_input");
     assert.deepEqual(error.details, [
       {
         path: "tags.1",
-        message:
-          "There is no tag whale. There are 5 tags and seasons; the closest are: whales, whale-season, jazz, winter, festival.",
+        message: "There is no tag whale. The closest tags are: whales, whale-season, jazz, winter, festival.",
       },
     ]);
     assert.equal(queries.length, 0);
@@ -419,7 +459,7 @@ describe("CatalogueService tag filters", () => {
     const error = await refusal(searching);
     assert.deepEqual(
       error.details?.map((detail) => detail.message),
-      ["There is no tag tag-10. There are 300 tags and seasons; the closest are: tag-100, tag-101, tag-102, tag-103, tag-104."],
+      ["There is no tag tag-10. The closest tags are: tag-100, tag-101, tag-102, tag-103, tag-104."],
     );
   });
 
@@ -427,7 +467,7 @@ describe("CatalogueService tag filters", () => {
     const { repository } = fakeRepository();
     const error = await refusal(service(repository, new FakeEmbeddingModel(), []).searchExperiences({ ...base, tags: ["jazz"] }));
     assert.deepEqual(error.details?.map((detail) => detail.message), [
-      "There is no tag jazz. There are no tags to filter on yet.",
+      "There is no tag jazz, and there are no tags to filter on yet.",
     ]);
   });
 });
