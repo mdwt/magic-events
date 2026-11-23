@@ -133,8 +133,9 @@ Models from outside providers sit behind ports like everything else. The domains
 | Language model | Data processing, to extract and classify experiences. Discovery, to find the current calendar file | Claude, through the Anthropic API |
 | Embedding model | Catalogue, to embed experience profiles and search query texts | Amazon Titan Text Embeddings V2, through Amazon Bedrock |
 | Job queue | The scheduler, to run background work on a schedule and to try failed work again | pg-boss, on queues in the same Postgres database |
+| Domain events | Discovery and Catalogue, to publish each domain event once its change is saved | Node's event emitter, which reaches subscribers in the same process only |
 
-The model ports and their adapters are defined in [data-processing.md](data-processing.md). The job queue is described under Background jobs, below.
+The model ports and their adapters are defined in [data-processing.md](data-processing.md). The job queue is described under Background jobs, below, and publishing domain events in [domain-events.md](domain-events.md).
 
 REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler is the third inbound side. It starts discovery, processing, Catalogue's embedding worker, and Catalogue's move of finished experiences to Past and its generating of recurring sessions further ahead, without passing through Identity, because no client is involved.
 
@@ -170,7 +171,7 @@ Static analysis checks these, so they hold by tooling and not by convention.
 - Everything outside the system is reached through an outbound port: sources, the language model, the embedding model, storage, the data warehouse and the job queue. An adapter implements the port and is the only code that imports its technology.
 - An adapter imports the port it implements and the ports it is built with. Only the code that wires the system together at startup imports an adapter.
 - A domain calls another domain only through that domain's inbound port, and only along the arrows in How domains talk.
-- The settings provider, the language model port and the job queue port are shared and belong to no domain, so using them makes no domain depend on another.
+- The settings provider, the language model port, the job queue port and the domain event port are shared and belong to no domain, so using them makes no domain depend on another.
 - REST, MCP and the scheduler call the core through its inbound ports. They import no adapter, no database client and no queue library.
 - One exception: Better Auth. Identity and Organizations use it and its tables directly, with no port over it.
 
@@ -264,7 +265,8 @@ Because every run fetches the same listings again, a change at the source months
 | How does an experience stay up to date? | Discovery keeps a record of every listing and fetches it again on every run. A changed listing is processed again and updates its experiences |
 | What is a raw listing? | One version of a listing's content, whole as fetched. Data processing extracts zero or more experiences from it |
 | Are categories and tags fixed? | No. They are configurable definitions with a default set. Classification improves by adding definitions and descriptions, with no code change |
-| Which domain events are defined? | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). They are a record of what happened, and nothing reads them |
+| Which domain events are defined? | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). Each is stored in the log and published. Nothing subscribes yet |
+| How are domain events published? | Through the domain event port, by the service that makes the change, once the change is saved. Version 1's adapter is Node's event emitter, which works inside one process. It can be replaced by Postgres `LISTEN`/`NOTIFY`, NATS or anything else by writing one adapter |
 | Where is the system configured? | System settings are environment variables read through one settings provider, and each domain's document lists its own. Per-source settings are on the source row. Categories and tags are definition rows |
 | How are model providers kept swappable? | Each model is reached through a port, and the domains name no provider. Version 1's adapters are Claude through the Anthropic API for the language model, and Amazon Titan through Amazon Bedrock for the embedding model |
 | How does background work run? | As jobs on a job queue, behind a port. Version 1's adapter is pg-boss, with its queues in the same Postgres database. The job handlers and the domains do not depend on it, so the queue can be replaced by writing one adapter |

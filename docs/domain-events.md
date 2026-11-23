@@ -8,7 +8,7 @@ Source of truth for what a domain event is, how one is named and stored, and whi
 
 A domain event is a stored record that something happened in the system: a raw listing was captured, an experience was published. It is not an experience. "Event" on its own always means domain event.
 
-In version 1 the domain events are a record of what happened. They answer, in one place, what happened to a raw listing or an experience, and when. Nothing reads them to do work: domains call each other's services, and the hand-off from fetching to processing is the raw listing's status (see [discovery.md](discovery.md)).
+Every domain event is stored and published. It is appended to the log, which answers in one place what happened to a raw listing or an experience, and when. It is also published, so that other parts of the system can react to it. In version 1 nothing subscribes yet, and no hand-off depends on a domain event: domains call each other's services, and the hand-off from fetching to processing is the raw listing's status (see [discovery.md](discovery.md)).
 
 ## Naming
 
@@ -46,6 +46,20 @@ An example:
 }
 ```
 
+## Publishing
+
+A domain event is published as soon as the change it records is saved.
+
+- **The service publishes.** The domain's repository appends the event to the log in the same transaction as the change. The domain's service then publishes that same event. Every domain event is published, with no exception.
+- **After the change is saved.** An event published inside a transaction goes out when the transaction commits, and is dropped when it rolls back. No subscriber hears of a change that was never saved. One raw listing is processed in one transaction, so its events go out together at the end.
+- **What is published** is the event exactly as its row in the log: its ID, type, resource ID, data and the time it was recorded.
+- **Publishing is a port.** The domains publish through the domain event port and name no technology. The port also lets other code subscribe to one type of event or to all of them.
+- **The first adapter is Node's event emitter.** It needs no broker and nothing to run. Its limit is that it reaches subscribers in the same process only: a second server, or a separate worker, hears nothing.
+- **Changing it is writing one adapter.** Because publishing is behind a port, the event emitter can be replaced by something that crosses processes, such as Postgres `LISTEN`/`NOTIFY` or NATS, with no change to the domains or to the subscribers.
+- **A subscriber that fails** is logged. It does not stop the publisher, the change or the other subscribers.
+
+The log stays the record. A subscriber that was not running when an event was published does not get it later from the event emitter; the event is still in the log.
+
 ## Domain events in version 1
 
 Version 1 defines six domain events, all for sourcing and processing experiences. Locations, tenants and users raise none.
@@ -68,10 +82,12 @@ Version 1 defines six domain events, all for sourcing and processing experiences
 
 | Decision | |
 | --- | --- |
-| Purpose | A record of what happened. Nothing reads the log to do work, and no hand-off depends on it |
+| Purpose | A record of what happened, and a way for other parts of the system to react. Nothing subscribes yet, and no hand-off depends on a domain event |
 | Names | `resource.verb`, lowercase, verb in the past tense |
 | The log | One append-only `events` table with five columns: `id`, `type`, `resource_id`, `data`, `recorded_at`. It keeps no positions and no per-resource version numbers, because nothing reads it in order |
 | Writing | In the same transaction as the change, by the repository of the domain that makes the change |
+| Publishing | Every domain event is published by the service of the domain that makes the change, through the domain event port, once the change is saved |
+| First adapter | Node's event emitter, which reaches subscribers in the same process only. It can be replaced by Postgres `LISTEN`/`NOTIFY`, NATS or anything else by writing one adapter, because publishing is behind a port |
 | Payload | IDs and what happened. No copy of the resource |
 | Domain events defined | Six: `raw_listing.captured`, `raw_listing.processed`, `raw_listing.failed`, `raw_listing.superseded`, `experience.published`, `experience.changed` |
 | Raw listing domain events | Raised by Discovery, one for each status a raw listing is given |

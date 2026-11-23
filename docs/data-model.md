@@ -222,7 +222,7 @@ Better Auth's tables hold users, sessions and accounts. Identity also records wh
 
 The `events` table is an append-only record of what happened to raw listings and experiences. Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded. Catalogue appends one with every version of an experience. Each is written in the same transaction as the change it records.
 
-The table belongs to no domain: a domain's repository appends its own domain events, and nothing reads the table. Domains call each other's services and no hand-off depends on a domain event. The names, the columns and the six domain events are in [domain-events.md](domain-events.md).
+The table belongs to no domain: a domain's repository appends its own domain events, and nothing reads the table. The domain's service also publishes each one through the domain event port, once the change is saved. Domains call each other's services and no hand-off depends on a domain event. The names, the columns and the six domain events are in [domain-events.md](domain-events.md).
 
 ## Decisions
 
@@ -231,7 +231,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Terms | "Experience" is the thing a traveller goes to; "event" means domain event only |
 | Domain event names | `resource.verb`, lowercase, verb in the past tense |
 | Domain events defined | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). Locations, tenants and users raise none |
-| Domain event log | Appended to the `events` table as a record of what happened. Nothing reads it |
+| Domain event log | Appended to the `events` table as a record of what happened, and published through the domain event port. Nothing reads the table, and nothing subscribes yet |
 | Listings | Discovery keeps one lasting record per listing and fetches it again on every run. Raw listings are the versions of its content |
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |

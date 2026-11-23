@@ -219,7 +219,7 @@ Data processing never reads Discovery's tables. It uses two calls on the Discove
 | Processed | Its experiences are extracted and saved | Nothing |
 | Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
 
-Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded (see [domain-events.md](domain-events.md)). They are a record only; the hand-off is the status.
+Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded, and publishes it (see [domain-events.md](domain-events.md)). Nothing depends on them; the hand-off is the status.
 
 ## Language model in Discovery
 
