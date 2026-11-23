@@ -299,7 +299,10 @@ export const searchExperiencesResultSchema = z
   .object({
     items: z
       .array(experienceResultSchema)
-      .describe("The experiences on this page: best match first when a query text is given, otherwise by date."),
+      .describe(
+        "The experiences on this page, most premium first, by tier; within a tier, best match first when a query " +
+          "text is given, then by date.",
+      ),
     total: z.number().int().describe("How many experiences match, across all pages."),
     limit: z.number().int().describe("The most this page holds, as asked for."),
     offset: z.number().int().describe("How many were skipped before this page, as asked for."),

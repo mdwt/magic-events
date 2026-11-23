@@ -63,22 +63,67 @@ The OpenAPI 3.1 document is built from the route schemas. The server serves it a
 repository root to write the file again, and commit it. `pnpm openapi:check` fails when the file is out of date, and CI
 runs it. Neither needs a running database.
 
-## MCP tools
+## MCP
 
-| Tool | Does | Who |
+The MCP server is for clients: a travel agent, or the AI agent working for one, who wants to know what is on in a
+place while a traveller is there. It offers the same two things as REST, and nothing else:
+
+| Tool | Does | Same as |
 | --- | --- | --- |
-| `search_experiences` | The same as `POST /v1/experiences/search` | Client, system admin |
-| `get_experience_changes` | The same as `POST /v1/experiences/changes` | Client, system admin |
-| `create_tenant` | Creates a tenant | System admin |
-| `list_tenants` | Lists every tenant | System admin |
-| `get_tenant` | One tenant by its slug, with its users | System admin |
-| `update_tenant` | Changes a tenant | System admin |
-| `add_tenant_user` | Adds a user to a tenant with the client role | System admin |
-| `issue_credential` | Issues an API key | System admin |
-| `list_credentials` | Lists a user's keys | System admin |
-| `revoke_credential` | Revokes a key | System admin |
+| `search_experiences` | What is on near a place between two dates, filtered by what must hold and ordered by what the traveller likes | `POST /v1/experiences/search` |
+| `get_experience_changes` | What changed since an earlier search of the same place and dates: new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed | `POST /v1/experiences/changes` |
 
-The endpoint is Streamable HTTP and stateless: every POST is answered on its own, as JSON.
+Both are read-only, and every caller sees exactly these two.
+
+It authenticates like REST: every request carries an API key, as `Authorization: Bearer <key>` or `x-api-key: <key>`.
+Use an agent's key, so the logs show that an agent is calling. A request without a valid key is 401 with
+`WWW-Authenticate`, and a key whose tenant is suspended is 403. Every tool call is logged at info with the tool, its
+arguments and the caller; the key never is.
+
+### What an agent sees
+
+An agent knows only what the server tells it, so the server explains itself:
+
+- **The instructions**, sent once at `initialize` (`src/mcp/server.ts`): what the feed is and who it is for, which tool
+  to use when, that what must hold goes in the filters while `query` only orders, how to read sessions, statuses,
+  `bookable` and price, how paging works, and what to do with a refusal.
+- **Each tool's title and description** (`src/mcp/tools/catalogue.ts`): when to use it and when not, the smallest call
+  that works, worked examples, the attribute keys with their options, the tag and season slugs, what comes back and
+  how to put it to a person, and the limits.
+- **The input and output schemas**, shared with REST and the OpenAPI document (`packages/core/src/catalogue/ports.ts`),
+  with a description on every field.
+
+Instructions and descriptions come to about 9,100 characters; with the input schemas, about 17,700.
+
+A refused call is a tool error (`isError: true`) whose text is the REST error body, with `code`, `message`, `details`
+naming each field, and `requestId`, so an agent can correct its call. A tool that does not exist is the protocol's
+unknown-tool error, JSON-RPC `-32602`.
+
+### What a planner might ask
+
+| A planner asks Claude | Claude calls |
+| --- | --- |
+| "A retired couple who love art and nature are in Hermanus from 20 to 30 June 2027. What is on for them?" | `search_experiences` with `{ "location": "hermanus", "from": "2027-06-20", "to": "2027-06-30", "query": "art, galleries, nature and wildlife" }` |
+| "What can my family, with a ten-year-old, book for 7 to 20 December?" | `search_experiences` with `{ "location": "hermanus", "from": "2026-12-07", "to": "2026-12-20", "bookable": true, "attributes": { "minimum_age": { "max": 10 } } }` |
+| "Anything changed for the June trip since I looked on 1 February?" | `get_experience_changes` with `{ "location": "hermanus", "from": "2027-06-20", "to": "2027-06-30", "since": "2027-02-01T09:00:00Z" }` |
+
+### Limits
+
+- The feed covers Hermanus and the towns near it, up to 24 months ahead. A place far from there returns nothing.
+- Search never returns cancelled or removed experiences; changes reports them.
+- Up to 100 results a page, 20 by default; `total` says how many there are across all pages.
+
+### The protocol
+
+- Streamable HTTP at `POST /mcp`, stateless: every POST is answered on its own, as JSON, with no session ID.
+  `GET` and `DELETE` answer 405, as there is no event stream to open or session to end.
+- `initialize` agrees the protocol version the client asks for when the SDK supports it (2025-11-25, 2025-06-18,
+  2025-03-26 or 2024-11-05), and the latest otherwise. A later request may leave `MCP-Protocol-Version` out; one that
+  names a version the server does not speak is 400.
+- A notification is answered 202 with no body. A batch, which the 2025-03-26 revision allows, is answered with a batch.
+- The server declares the tools capability alone, with a list that never changes.
+- `Accept` must name both `application/json` and `text/event-stream` (406 otherwise). The `Host` must be one of
+  `API_ALLOWED_HOSTS` and a browser's `Origin` must be `CORS_ORIGIN` (403 otherwise), against DNS rebinding.
 
 ## Authentication
 

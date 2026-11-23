@@ -4,7 +4,7 @@ import type { z } from "zod";
 import type { Action, Caller, Identity } from "@magic-events/core/identity/ports.ts";
 import { AppError, type ErrorDetail } from "@magic-events/core/shared/errors.ts";
 import type { Logger } from "@magic-events/core/shared/logger.ts";
-import { errorBody, MESSAGES, toErrorReply } from "../rest/errors.ts";
+import { errorBody, invalidInputMessage, MESSAGES, toErrorReply, unknownFieldMessage } from "../rest/errors.ts";
 
 // What every tool gets for the one request it answers.
 export interface ToolDeps {
@@ -48,7 +48,10 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
     try {
       deps.identity.authorise(deps.caller, tool.action);
       const parsed = inputSchema.safeParse(args ?? {});
-      if (!parsed.success) throw new AppError("invalid_input", MESSAGES.invalidArguments, zodDetails(parsed.error));
+      if (!parsed.success) {
+        const details = zodDetails(parsed.error);
+        throw new AppError("invalid_input", invalidInputMessage(details, MESSAGES.invalidArguments), details);
+      }
       // Checked here, so an answer that does not fit the schema is a system error and its details stay in the logs.
       const output: Record<string, unknown> = outputSchema.parse(await tool.handler(parsed.data as z.infer<I>));
       return { structuredContent: output, content: [{ type: "text", text: JSON.stringify(output) }] };
@@ -113,7 +116,10 @@ function zodDetails(error: z.ZodError): ErrorDetail[] {
   return error.issues.flatMap((issue) => {
     const path = issue.path.map(String).join(".");
     if (issue.code === "unrecognized_keys") {
-      return issue.keys.map((key) => ({ path: path ? `${path}.${key}` : key, message: "Unknown field." }));
+      return issue.keys.map((key) => {
+        const at = path ? `${path}.${key}` : key;
+        return { path: at, message: unknownFieldMessage(at) };
+      });
     }
     return [{ path, message: issue.message }];
   });

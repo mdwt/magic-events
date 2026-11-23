@@ -45,6 +45,7 @@ tour_or_excursion, class_or_workshop, talk, conference, dining_event, party, ret
 - language: english, afrikaans, isixhosa, other
 - setting: indoor, outdoor, both
 - scale: local, regional, major
+- tier: luxury, premium, standard, everyday
 - wheelchair_accessible: true or false
 tags matches any of its slugs, such as jazz, wine, whales, hiking or christmas. Season tags (whale-season, \
 south-african-school-holidays, high-season, summer, autumn, winter, spring) are carried only by experiences whose \
@@ -53,12 +54,16 @@ season, search its dates instead. An attribute key or option that does not exist
 what can be used. Each tag in tags must be a tag or season slug; one that is not is refused, and the error names the \
 closest slugs.
 
-What comes back: items, best match first when query is given and otherwise by date, and total, how many match across \
-all pages; page with limit (at most 100) and offset. Each item has its title and summary, its sessions inside the \
+What comes back: items, and total, how many match across all pages; page with limit (at most 100) and offset. \
+Results always come most premium first, by tier (luxury, premium, standard, everyday; an experience with no tier \
+counts as standard), and query orders them only within a tier; to keep only the premium end, filter with \
+attributes.tier: ["luxury", "premium"]. Within a tier and with no query, the soonest come first. Each item has its title and summary, its sessions inside the \
 dates, status, bookable, booking, venue, distanceKm, price, attributes, tags, bookingUrl and pageUrl. Tell the person \
 each experience's dates from its sessions; for a session of month or year precision, say the month or year and that \
 the days are not announced yet. Say an experience is expected or announced rather than confirmed when it is, and \
-give bookingUrl, or failing that pageUrl, only when bookable is true.
+give bookingUrl, or failing that pageUrl, only when bookable is true. price: a min and max of 0 mean the experience \
+is free, because the source says so in words; an empty price means the source states no price; a min of 0 below a \
+higher max means some, such as young children, get in free.
 
 Limits: the feed covers Hermanus and the towns near it, so a place far from there returns nothing, and nothing is \
 known beyond 24 months ahead. Cancelled and removed experiences are never returned here; get_experience_changes \
@@ -92,7 +97,7 @@ outside the dates, or none. When movedOut is false, its sessions are the ones in
 
 Cancelled and removed experiences come back here, though search_experiences no longer returns them: this is how you \
 learn that something planned around is off. Tell the person about those first. Experiences that are over never come \
-back. The most recent change comes first; page with limit and offset.`;
+back. The most recent change comes first, whatever the tier; page with limit and offset.`;
 
 export function registerCatalogueTools(server: McpServer, deps: ToolDeps, catalogue: Catalogue): void {
   registerTool(server, deps, {

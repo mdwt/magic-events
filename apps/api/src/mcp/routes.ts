@@ -45,8 +45,26 @@ function transportRefusal(status: number, text: string): Error {
   }
   if (status === 415) return new AppError("unsupported_media_type", "Send the body as JSON, with Content-Type: application/json.");
   if (status === 413) return new AppError("content_too_large", "The request body is too large. Send a smaller one.");
-  if (status === 400) return new AppError("invalid_input", `The MCP request is not valid: ${message || "the transport refused it"}.`);
+  if (status === 400) return new AppError("invalid_input", badRequestMessage(message));
   return new Error(`The MCP transport answered ${status}: ${message}`);
+}
+
+// The transport's 400s, in words a person can act on. One it does not word yet keeps its own text.
+function badRequestMessage(message: string): string {
+  const version = /Unsupported protocol version: (\S+) \(supported versions: ([^)]+)\)/.exec(message);
+  if (version !== null) {
+    return (
+      `This server does not speak MCP protocol version ${version[1] ?? ""}. Send MCP-Protocol-Version as one of ` +
+      `${version[2] ?? ""}, the one initialize agreed, or leave the header out.`
+    );
+  }
+  if (message.includes("Invalid JSON-RPC message")) {
+    return 'The body is not a JSON-RPC message. Send an object with "jsonrpc": "2.0", a method and, for a request, an id.';
+  }
+  if (message.includes("Invalid JSON")) return "The request body is not valid JSON.";
+  if (message.includes("Only one initialization request")) return "Send initialize on its own, not in a batch.";
+  if (message.includes("Batch must not exceed")) return "The batch holds too many messages. Send fewer at a time.";
+  return `The MCP request is not valid: ${message || "the transport refused it"}.`;
 }
 
 // The DNS rebinding protection the MCP SDK describes: the Host must be one this server answers to, and a browser's
@@ -103,7 +121,11 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
           "The Model Context Protocol endpoint, over Streamable HTTP without sessions. Connect an MCP client to it " +
           "with the API key in the Authorization header. It offers a client's two tools, search_experiences and get_experience_changes, the same as the REST API's search and changes.",
         tags: TAGS,
-        body: z.union([jsonRpcMessage, z.array(jsonRpcMessage).min(1)]).describe("A JSON-RPC message, or a batch."),
+        body: z
+          .union([jsonRpcMessage, z.array(jsonRpcMessage).min(1)], {
+            error: 'Send one JSON-RPC message, an object with "jsonrpc": "2.0" and a method, or a list of them.',
+          })
+          .describe("A JSON-RPC message, or a batch."),
         response: {
           200: jsonRpcAnswer.describe("The JSON-RPC answer."),
           202: z.undefined().describe("A notification or response was accepted. There is no body."),
