@@ -104,7 +104,7 @@ describe("the time of the last search", () => {
     const catalogue = fakeCatalogue();
     const error = await refusal(catalogue.service.getChangesSince(changesInput({ tags: ["jaz"] })));
     assert.deepEqual(error.details?.map((detail) => detail.path), ["tags.0"]);
-    assert.match(error.message, /no tag jaz.*closest are: jazz/);
+    assert.match(error.message, /no tag jaz.*closest tags are: jazz/);
   });
 
   test("the search parameters follow the search's own rules", async () => {

@@ -380,7 +380,7 @@ describe("search by attributes and tags", () => {
 
     const error = await search({ attributes: { colour: "blue" } }).catch((caught: unknown) => caught);
     assert.ok(error instanceof AppError);
-    assert.match(error.message, /There is no attribute colour\. The attributes to filter on are: .*category.*minimum_age/);
+    assert.match(error.message, /There is no attribute called colour\. You can filter on: .*category.*minimum_age/);
   });
 
   test("tags match any of the given slugs", async () => {
@@ -397,7 +397,7 @@ describe("search by attributes and tags", () => {
     assert.deepEqual(error.details, [
       {
         path: "tags.1",
-        message: "There is no tag whale. There are 9 tags and seasons; the closest are: whales, wine, craft, jazz, sharks.",
+        message: "There is no tag whale. The closest tags are: whales, wine, craft, jazz, sharks.",
       },
     ]);
   });

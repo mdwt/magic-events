@@ -16,10 +16,12 @@ function misfit(definition: AttributeDefinition, filter: AttributeFilter): strin
   const isRange = typeof filter === "object" && !Array.isArray(filter);
 
   if (type === "number") {
-    return typeof filter === "number" || isRange ? null : `${key} is a number: give a number or a range, { min, max }.`;
+    return typeof filter === "number" || isRange
+      ? null
+      : `${key} takes a number, such as 12, or a range, such as { "max": 12 }.`;
   }
-  if (isRange) return `${key} is not a number, so it takes no range.`;
-  if (type === "boolean") return typeof filter === "boolean" ? null : `${key} is true or false.`;
+  if (isRange) return `${key} takes no range. Give a value, or a list of values.`;
+  if (type === "boolean") return typeof filter === "boolean" ? null : `${key} takes true or false.`;
 
   // Option, text and date attributes hold text.
   const values = Array.isArray(filter) ? filter : [filter];
@@ -28,7 +30,7 @@ function misfit(definition: AttributeDefinition, filter: AttributeFilter): strin
   const options = definition.options.map((option) => option.key);
   const unknown = values.filter((value) => typeof value === "string" && !options.includes(value));
   if (unknown.length === 0) return null;
-  return `${key} has no option ${list(unknown.map(String))}. Its options are: ${list(options)}.`;
+  return `${key} has no option ${list(unknown.map(String))}. Use one of: ${list(options)}.`;
 }
 
 export function checkAttributeFilters(
@@ -42,9 +44,9 @@ export function checkAttributeFilters(
     const path = `attributes.${key}`;
     const definition = byKey.get(key);
     if (definition === undefined) {
-      details.push({ path, message: `There is no attribute ${key}. The attributes to filter on are: ${filterable}.` });
+      details.push({ path, message: `There is no attribute called ${key}. You can filter on: ${filterable}.` });
     } else if (!definition.filterable) {
-      details.push({ path, message: `${key} cannot be filtered on. The attributes to filter on are: ${filterable}.` });
+      details.push({ path, message: `${key} cannot be used as a filter. You can filter on: ${filterable}.` });
     } else {
       const problem = misfit(definition, filter);
       if (problem !== null) details.push({ path, message: problem });
@@ -72,7 +74,7 @@ function editDistance(a: string, b: string): number {
 }
 
 // A search's tag filter, checked against the slugs of every tag and season, which Data processing owns. A slug that
-// is none of them could never match, so it is refused, with how many there are and the closest few.
+// is none of them could never match, so it is refused, with the closest few.
 export function checkTagFilters(tags: string[], known: string[]): ErrorDetail[] {
   const knownSet = new Set(known);
   return tags.flatMap((slug, index): ErrorDetail[] => {
@@ -88,8 +90,8 @@ export function checkTagFilters(tags: string[], known: string[]): ErrorDetail[] 
       .slice(0, SUGGESTIONS);
     const message =
       known.length === 0
-        ? `There is no tag ${slug}. There are no tags to filter on yet.`
-        : `There is no tag ${slug}. There are ${String(known.length)} tags and seasons; the closest are: ${list(closest)}.`;
+        ? `There is no tag ${slug}, and there are no tags to filter on yet.`
+        : `There is no tag ${slug}. The closest tags are: ${list(closest)}.`;
     return [{ path: `tags.${String(index)}`, message }];
   });
 }
