@@ -1,3 +1,5 @@
+/* global process, console, fetch, performance, setTimeout */
+
 // Times the client's requests against a running API (see serve.mjs): each scenario once to warm up, then RUNS times
 // one after another. Prints the median and the worst, in milliseconds, with the status and the total returned.
 //
@@ -76,7 +78,7 @@ async function call(scenario) {
   });
   const text = await response.text();
   const ms = performance.now() - started;
-  let total = "";
+  let total;
   try {
     const parsed = JSON.parse(text);
     if (scenario.mcp) {
