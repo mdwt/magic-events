@@ -10,7 +10,7 @@ import {
   updateTenantInputSchema,
   userSchema,
   type Organizations,
-} from "../../core/organizations/ports.ts";
+} from "@magic-events/core/organizations/ports.ts";
 import { conflictResponse, errorResponses, notFoundResponse } from "../errors.ts";
 
 // Onboarding tenants and their users. A system admin's alone: a client is refused before anything here runs.

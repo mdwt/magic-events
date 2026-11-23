@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { unavailable } from "../../core/shared/errors.ts";
+import { unavailable } from "@magic-events/core/shared/errors.ts";
 import { errorResponses } from "../errors.ts";
 
 // The platform's own endpoints. The health check needs no API key; the OpenAPI document does, like every other

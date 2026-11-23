@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type { z } from "zod";
-import type { Action, Caller, Identity } from "../core/identity/ports.ts";
-import { AppError } from "../core/shared/errors.ts";
-import type { Logger } from "../core/shared/logger.ts";
+import type { Action, Caller, Identity } from "@magic-events/core/identity/ports.ts";
+import { AppError } from "@magic-events/core/shared/errors.ts";
+import type { Logger } from "@magic-events/core/shared/logger.ts";
 
 // What every tool gets for the one request it answers.
 export interface ToolDeps {

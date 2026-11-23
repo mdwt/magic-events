@@ -1,9 +1,9 @@
 import { createDb } from "@magic-events/db";
-import { createJobQueue } from "./adapters/jobs/pg-boss.ts";
-import { createLogger } from "./adapters/logging/pino.ts";
-import { loadSettings } from "./adapters/settings/env.ts";
+import { createJobQueue } from "@magic-events/core/adapters/jobs/pg-boss.ts";
+import { createLogger } from "@magic-events/core/adapters/logging/pino.ts";
+import { loadSettings } from "@magic-events/core/adapters/settings/env.ts";
 import { buildApp } from "./app.ts";
-import type { Settings } from "./core/shared/settings.ts";
+import type { Settings } from "@magic-events/core/shared/settings.ts";
 import { startJobs, type RunningJobs } from "./scheduler/jobs.ts";
 
 // The entry point: settings, logger and database, then the server and, once it is listening, the jobs that fetch

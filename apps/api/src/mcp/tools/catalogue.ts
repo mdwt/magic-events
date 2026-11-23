@@ -5,7 +5,7 @@ import {
   searchExperiencesInputSchema,
   searchExperiencesResultSchema,
   type Catalogue,
-} from "../../core/catalogue/ports.ts";
+} from "@magic-events/core/catalogue/ports.ts";
 import { registerTool, type ToolDeps } from "../tool.ts";
 
 const DESCRIPTION = `Find what is on near a place while a traveller is there: festivals, concerts, sports matches, \

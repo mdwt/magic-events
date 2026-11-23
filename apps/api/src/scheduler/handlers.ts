@@ -1,9 +1,9 @@
-import type { Catalogue } from "../core/catalogue/ports.ts";
-import type { DataProcessing, ProcessingOutcome } from "../core/data-processing/ports.ts";
-import type { Discovery } from "../core/discovery/ports.ts";
-import type { JobHandler, JobQueue } from "../core/shared/jobs.ts";
-import type { Logger } from "../core/shared/logger.ts";
-import type { DiscoverySettings, ProcessingSettings } from "../core/shared/settings.ts";
+import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
+import type { DataProcessing, ProcessingOutcome } from "@magic-events/core/data-processing/ports.ts";
+import type { Discovery } from "@magic-events/core/discovery/ports.ts";
+import type { JobHandler, JobQueue } from "@magic-events/core/shared/jobs.ts";
+import type { Logger } from "@magic-events/core/shared/logger.ts";
+import type { DiscoverySettings, ProcessingSettings } from "@magic-events/core/shared/settings.ts";
 
 // What each job does. Every handler is safe to run on several servers at once: Discovery refuses a second fetch
 // of a source with a run in progress, and a raw listing is claimed by one worker only.

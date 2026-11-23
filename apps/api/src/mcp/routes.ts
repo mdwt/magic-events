@@ -2,9 +2,9 @@ import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
-import type { Catalogue } from "../core/catalogue/ports.ts";
-import type { Identity } from "../core/identity/ports.ts";
-import type { Organizations } from "../core/organizations/ports.ts";
+import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
+import type { Identity } from "@magic-events/core/identity/ports.ts";
+import type { Organizations } from "@magic-events/core/organizations/ports.ts";
 import { errorResponses } from "../rest/errors.ts";
 import { createMcpServer } from "./server.ts";
 

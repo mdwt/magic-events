@@ -3,10 +3,10 @@ import { test } from "node:test";
 import Fastify from "fastify";
 import { validatorCompiler, type ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
-import { CredentialRateLimitedError } from "../src/core/identity/ports.ts";
-import { isDatabaseUnavailable } from "../src/adapters/storage/unavailable.ts";
-import { AppError, UNAVAILABLE_RETRY_AFTER_SECONDS, unavailable } from "../src/core/shared/errors.ts";
-import type { Logger } from "../src/core/shared/logger.ts";
+import { CredentialRateLimitedError } from "@magic-events/core/identity/ports.ts";
+import { isDatabaseUnavailable } from "@magic-events/core/adapters/storage/unavailable.ts";
+import { AppError, UNAVAILABLE_RETRY_AFTER_SECONDS, unavailable } from "@magic-events/core/shared/errors.ts";
+import type { Logger } from "@magic-events/core/shared/logger.ts";
 import { TOOL_FAILED_MESSAGE, toolError } from "../src/mcp/tool.ts";
 import { MESSAGES, toErrorReply } from "../src/rest/errors.ts";
 

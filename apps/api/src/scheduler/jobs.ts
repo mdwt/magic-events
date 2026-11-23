@@ -1,9 +1,9 @@
-import type { Catalogue } from "../core/catalogue/ports.ts";
-import type { DataProcessing } from "../core/data-processing/ports.ts";
-import type { Discovery } from "../core/discovery/ports.ts";
-import type { JobQueue } from "../core/shared/jobs.ts";
-import type { Logger } from "../core/shared/logger.ts";
-import type { CatalogueSettings, DiscoverySettings, ProcessingSettings } from "../core/shared/settings.ts";
+import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
+import type { DataProcessing } from "@magic-events/core/data-processing/ports.ts";
+import type { Discovery } from "@magic-events/core/discovery/ports.ts";
+import type { JobQueue } from "@magic-events/core/shared/jobs.ts";
+import type { Logger } from "@magic-events/core/shared/logger.ts";
+import type { CatalogueSettings, DiscoverySettings, ProcessingSettings } from "@magic-events/core/shared/settings.ts";
 import {
   DRAIN_KEY,
   EMBED_KEY,

@@ -6,7 +6,7 @@ import {
   issueCredentialInputSchema,
   issuedCredentialSchema,
   userIdParamsSchema,
-} from "../../core/identity/ports.ts";
+} from "@magic-events/core/identity/ports.ts";
 import { registerTool, type ToolDeps } from "../tool.ts";
 
 // Issuing, listing and revoking a user's API keys, as the REST API offers it. Listed for every caller, and only a

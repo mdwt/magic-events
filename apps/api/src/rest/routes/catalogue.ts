@@ -5,7 +5,7 @@ import {
   searchExperiencesInputSchema,
   searchExperiencesResultSchema,
   type Catalogue,
-} from "../../core/catalogue/ports.ts";
+} from "@magic-events/core/catalogue/ports.ts";
 import { errorResponses } from "../errors.ts";
 
 export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = (app, { catalogue }) => {

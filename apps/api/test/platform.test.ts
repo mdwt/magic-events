@@ -3,9 +3,10 @@ import { after, before, describe, test } from "node:test";
 import { apikey, createDb } from "@magic-events/db";
 import { eq } from "drizzle-orm";
 import type { FastifyInstance, LightMyRequestResponse } from "fastify";
-import { createLogger } from "../src/adapters/logging/pino.ts";
+import { createLogger } from "@magic-events/core/adapters/logging/pino.ts";
 import { buildApp } from "../src/app.ts";
-import { createHarness, testSettings, type Harness } from "./helpers/harness.ts";
+import { testSettings } from "@magic-events/core/testing/harness.ts";
+import { createHarness, type Harness } from "./helpers/harness.ts";
 
 // The server end to end over app.inject: authentication on every endpoint but the health check, the error format,
 // request IDs, the OpenAPI document and the MCP endpoint.

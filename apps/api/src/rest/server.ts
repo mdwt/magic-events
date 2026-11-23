@@ -9,11 +9,11 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
-import type { Catalogue } from "../core/catalogue/ports.ts";
-import type { Identity } from "../core/identity/ports.ts";
-import type { Organizations } from "../core/organizations/ports.ts";
-import { AppError } from "../core/shared/errors.ts";
-import type { ApiSettings } from "../core/shared/settings.ts";
+import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
+import type { Identity } from "@magic-events/core/identity/ports.ts";
+import type { Organizations } from "@magic-events/core/organizations/ports.ts";
+import { AppError } from "@magic-events/core/shared/errors.ts";
+import type { ApiSettings } from "@magic-events/core/shared/settings.ts";
 import { mcpRoutes } from "../mcp/routes.ts";
 import { addAuthenticationHook, requireActionOnEveryRoute } from "./auth.ts";
 import { errorBody, MESSAGES, toErrorReply } from "./errors.ts";

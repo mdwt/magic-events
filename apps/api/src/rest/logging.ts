@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import type { IncomingMessage } from "node:http";
 import { LogController, type FastifyInstance, type FastifyReply, type FastifyRequest } from "fastify";
-import type { Caller } from "../core/identity/ports.ts";
-import { logContext } from "../core/shared/log-context.ts";
+import type { Caller } from "@magic-events/core/identity/ports.ts";
+import { logContext } from "@magic-events/core/shared/log-context.ts";
 
 // Every log line of a request carries its log context: the request ID and, once authenticated, who is calling.
 // The context lives in AsyncLocalStorage, so the lines the core services write carry it too, and the logger adds it

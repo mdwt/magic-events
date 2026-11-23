@@ -11,16 +11,17 @@
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
-    "test": "pnpm -r test",
-    "pipeline": "pnpm --filter @magic-events/api pipeline",
+    "test": "pnpm -r --workspace-concurrency=1 test",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "db:generate": "pnpm --filter @magic-events/db generate",
     "db:migrate": "pnpm --filter @magic-events/db migrate",
     "db:migrate:test": "pnpm --filter @magic-events/db migrate:test",
-    "db:seed": "pnpm --filter @magic-events/api seed",
-    "db:seed:samples": "pnpm --filter @magic-events/api seed:samples",
-    "db:studio": "pnpm --filter @magic-events/db studio"
+    "db:seed": "pnpm --filter @magic-events/cli seed",
+    "db:seed:samples": "pnpm --filter @magic-events/cli seed:samples",
+    "db:studio": "pnpm --filter @magic-events/db studio",
+    "cli:pipeline": "pnpm --filter @magic-events/cli run pipeline",
+    "cli:captures": "pnpm --filter @magic-events/cli run captures"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

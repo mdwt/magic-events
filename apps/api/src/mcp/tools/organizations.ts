@@ -10,7 +10,7 @@ import {
   updateTenantInputSchema,
   userSchema,
   type Organizations,
-} from "../../core/organizations/ports.ts";
+} from "@magic-events/core/organizations/ports.ts";
 import { registerTool, type ToolDeps } from "../tool.ts";
 
 // Onboarding tenants and their users, as the REST API offers it. Every tool is listed for every caller, and only a

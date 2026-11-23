@@ -9,31 +9,20 @@
     "build": "tsc",
     "typecheck": "tsc",
     "lint": "eslint .",
-    "test": "node --env-file-if-exists=../../.env --test --test-concurrency=1 \"test/**/*.test.ts\"",
-    "pipeline": "node --env-file-if-exists=../../.env src/cli/pipeline.ts",
-    "captures": "node --env-file-if-exists=../../.env src/cli/load-captures.ts",
-    "seed": "node --env-file-if-exists=../../.env src/seed/run.ts",
-    "seed:samples": "node --env-file-if-exists=../../.env src/seed/run.ts --samples"
+    "test": "node --env-file-if-exists=../../.env --test --test-concurrency=1 \"test/**/*.test.ts\""
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^1.12.0",
-    "@aws-sdk/client-bedrock-runtime": "^3.1175.0",
-    "@better-auth/api-key": "^1.7.27",
     "@fastify/cors": "^11.4.3",
     "@fastify/helmet": "^13.2.0",
     "@fastify/rate-limit": "^11.3.0",
     "@fastify/swagger": "^9.9.5",
+    "@magic-events/core": "workspace:*",
     "@magic-events/db": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.32.2",
-    "better-auth": "^1.7.27",
-    "cheerio": "^1.2.0",
     "drizzle-orm": "^0.45.4",
-    "fast-xml-parser": "^5.12.1",
     "fastify": "^5.12.8",
     "fastify-type-provider-zod": "^7.0.0",
-    "pg-boss": "^12.39.0",
     "pino": "^10.4.0",
-    "rrule": "^2.8.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {

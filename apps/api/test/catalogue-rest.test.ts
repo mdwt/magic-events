@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
-import { experienceChangesResultSchema, searchExperiencesResultSchema } from "../src/core/catalogue/ports.ts";
-import { insertExperienceFixture } from "../src/seed/experience-fixture.ts";
-import { input as listing } from "./helpers/catalogue-fake.ts";
+import { experienceChangesResultSchema, searchExperiencesResultSchema } from "@magic-events/core/catalogue/ports.ts";
+import { insertExperienceFixture } from "@magic-events/core/testing/experience-fixture.ts";
+import { input as listing } from "@magic-events/core/testing/catalogue-fake.ts";
 import { createHarness, type Harness } from "./helpers/harness.ts";
 
 let harness: Harness;

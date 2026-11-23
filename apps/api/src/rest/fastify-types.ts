@@ -1,4 +1,4 @@
-import type { Action, Caller } from "../core/identity/ports.ts";
+import type { Action, Caller } from "@magic-events/core/identity/ports.ts";
 
 // What the server adds to Fastify's own types.
 declare module "fastify" {

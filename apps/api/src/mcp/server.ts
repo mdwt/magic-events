@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { Catalogue } from "../core/catalogue/ports.ts";
-import type { Organizations } from "../core/organizations/ports.ts";
+import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
+import type { Organizations } from "@magic-events/core/organizations/ports.ts";
 import { registerCatalogueTools } from "./tools/catalogue.ts";
 import { registerIdentityTools } from "./tools/identity.ts";
 import { registerOrganizationsTools } from "./tools/organizations.ts";

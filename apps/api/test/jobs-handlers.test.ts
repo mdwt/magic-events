@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
-import type { Catalogue, EmbedExperiencesResult } from "../src/core/catalogue/ports.ts";
-import type { DataProcessing, ProcessingOutcome } from "../src/core/data-processing/ports.ts";
-import type { Discovery, RunSummary, Source } from "../src/core/discovery/ports.ts";
-import type { Logger } from "../src/core/shared/logger.ts";
-import type { CatalogueSettings, DiscoverySettings, ProcessingSettings } from "../src/core/shared/settings.ts";
+import type { Catalogue, EmbedExperiencesResult } from "@magic-events/core/catalogue/ports.ts";
+import type { DataProcessing, ProcessingOutcome } from "@magic-events/core/data-processing/ports.ts";
+import type { Discovery, RunSummary, Source } from "@magic-events/core/discovery/ports.ts";
+import type { Logger } from "@magic-events/core/shared/logger.ts";
+import type { CatalogueSettings, DiscoverySettings, ProcessingSettings } from "@magic-events/core/shared/settings.ts";
 import { DRAIN_SAFETY_NET_CRON, EMBED_SAFETY_NET_CRON, startJobs } from "../src/scheduler/jobs.ts";
-import { FakeJobQueue } from "./helpers/fake-job-queue.ts";
+import { FakeJobQueue } from "@magic-events/core/testing/fake-job-queue.ts";
 
 // The job handlers on an in-memory queue, with fakes of Catalogue, Discovery and Data processing. No database.
 

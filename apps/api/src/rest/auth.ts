@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyRequest, RouteOptions } from "fastify";
-import type { Identity } from "../core/identity/ports.ts";
+import type { Identity } from "@magic-events/core/identity/ports.ts";
 import { addCallerToLogContext } from "./logging.ts";
 
 // Every endpoint is authenticated and names the action it authorises, unless it is marked public. The health check

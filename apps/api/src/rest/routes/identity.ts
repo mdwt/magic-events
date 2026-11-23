@@ -8,7 +8,7 @@ import {
   issuedCredentialSchema,
   userIdParamsSchema,
   type Identity,
-} from "../../core/identity/ports.ts";
+} from "@magic-events/core/identity/ports.ts";
 import { errorResponses, notFoundResponse } from "../errors.ts";
 
 // Issuing, listing and revoking a user's API keys. A system admin's alone: a client is refused before anything here

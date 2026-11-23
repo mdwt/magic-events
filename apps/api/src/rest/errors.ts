@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { hasZodFastifySchemaValidationErrors } from "fastify-type-provider-zod";
-import { AppError, unavailable, type ErrorCode, type ErrorDetail } from "../core/shared/errors.ts";
+import { AppError, unavailable, type ErrorCode, type ErrorDetail } from "@magic-events/core/shared/errors.ts";
 
 // The one error format of the REST API:
 //   { "error": { "code": "...", "message": "...", "details": [{ "path": "...", "message": "..." }], "requestId": "..." } }
