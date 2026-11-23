@@ -1,4 +1,4 @@
-import { normaliseTitle, ONLY_MONTH_OR_YEAR } from "@magic-events/core/data-processing/match.ts";
+import { ALREADY_LINKED, normaliseTitle, ONLY_MONTH_OR_YEAR } from "@magic-events/core/data-processing/match.ts";
 
 // Matching without the model, when it is plain. The captures command answers the language model's match question
 // with this before it asks the real model. Data processing asks only when no candidate has the same normalised
@@ -44,14 +44,20 @@ export interface MatchQuestion {
 }
 
 const COARSE = ONLY_MONTH_OR_YEAR.replace(/[()]/g, "\\$&");
+// The start times core shows after the dates, such as " at 18:30" or " at 12:30, 18:00". They are read past and not
+// used: the same place and time with similar words cannot tell one screening under two names from two films.
+const TIMES = " at \\d{2}:\\d{2}(?:, \\d{2}:\\d{2})*";
 
 // The question as Data processing writes it (matchText in match.ts), read back.
 export function readMatchQuestion(question: string): MatchQuestion | undefined {
   const title = /^Title: (.*)$/m.exec(question)?.[1];
   const place = /^Venue: (.*)$/m.exec(question)?.[1];
-  const dates = new RegExp(`^Dates: (\\S+) to (\\S+?)(${COARSE})?(, repeating .*)?$`, "m").exec(question);
+  const dates = new RegExp(`^Dates: (\\S+) to (\\S+?)(${COARSE})?(?:${TIMES})?(, repeating .*)?$`, "m").exec(question);
   if (title === undefined || place === undefined || !dates) return undefined;
-  const line = new RegExp(`^- ID (\\S+): (.*); venue: (.*); dates: (\\S+) to (\\S+?)(${COARSE})?(, repeating .*)?$`, "gm");
+  const line = new RegExp(
+    `^- ID (\\S+): (.*); venue: (.*); dates: (\\S+) to (\\S+?)(${COARSE})?(?:${TIMES})?(, repeating .*?)?(?:${ALREADY_LINKED})?$`,
+    "gm",
+  );
   const candidates = [...question.matchAll(line)].map((found) => ({
     id: found[1] ?? "",
     title: found[2] ?? "",

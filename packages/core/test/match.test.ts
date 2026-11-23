@@ -179,6 +179,52 @@ describe("Matching in code", () => {
     assert.match(matchText(october, { start: "2027-10-01", end: "2027-10-31" }, []), /Dates: 2027-10-01 to 2027-10-31 \(only the month or year is known\)/);
   });
 
+  test("the question shows each side's start time and marks what the listing already links to", () => {
+    // Row 95: live listings beside experiences built from captures, as the rebuilt database has them.
+    const pairs = [
+      {
+        extracted: { title: "Ladies Night: Focker In-Law", venue: "Whale Coast Mall", day: "2026-11-26" },
+        stored: { title: "Focker In-Law Premiere Night", venue: "Road House Cinema", day: "2026-11-26" },
+      },
+      {
+        extracted: { title: "Solstice Secret Sunrise", venue: "Grotto Beach", day: "2026-12-21" },
+        stored: { title: "Solstice Secret Sunset", venue: "Grotto Beach", day: "2026-12-21" },
+      },
+    ];
+    for (const { extracted, stored: known } of pairs) {
+      const listing: ExtractedExperience = {
+        ...fynArts,
+        title: extracted.title,
+        sessions: [{ start: extracted.day, precision: "day", startTime: "18:30" }],
+        venue: { name: extracted.venue, city: "Hermanus" },
+      };
+      const candidate = stored({
+        id: "known",
+        title: known.title,
+        venueName: known.venue,
+        firstDate: known.day,
+        lastDate: known.day,
+        sessions: [{ startDate: known.day, endDate: known.day, startTime: "18:30" }],
+      });
+      const days = { start: extracted.day, end: extracted.day };
+      assert.equal(matchInCode(listing, days, [candidate]), undefined);
+      const text = matchText(listing, days, [candidate], new Set(["known"]));
+      assert.match(text, new RegExp(`Dates: ${extracted.day} to ${extracted.day} at 18:30$`, "m"));
+      assert.match(
+        text,
+        new RegExp(`- ID known: ${known.title}; venue: ${known.venue}, Hermanus; dates: ${known.day} to ${known.day} at 18:30; this listing already links to it$`, "m"),
+      );
+    }
+    // No time is shown when none is known, and a few at most.
+    assert.match(matchText(fynArts, span, []), /^Dates: 2027-06-12 to 2027-06-21$/m);
+    const opera = stored({
+      sessions: ["12:30:00", "18:00:00", "18:00", "20:00", "21:00"].map((startTime) => ({ startDate: "2027-02-01", endDate: "2027-02-01", startTime })),
+    });
+    assert.match(matchText(fynArts, span, [opera]), /dates: 2027-06-12 to 2027-06-21 at 12:30, 18:00, 20:00$/m);
+    assert.match(MATCH_INSTRUCTIONS, /same place on the same day at the same start time/);
+    assert.match(MATCH_INSTRUCTIONS, /a cinema inside a mall/);
+  });
+
   test("a title naming only the kind of event is never matched in code to a particular one", () => {
     const parkrun: ExtractedExperience = {
       ...fynArts,

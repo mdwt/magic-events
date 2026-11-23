@@ -17,6 +17,8 @@ interface Side {
   rule?: string;
   // Known only to the month that starts on `start`.
   month?: true;
+  // The start time, as HH:MM.
+  time?: string;
 }
 
 function lastDay(start: string): string {
@@ -30,7 +32,15 @@ function verdict(extracted: Side, stored: Side): string {
     type: extracted.rule ? "recurring" : "single",
     status: "confirmed",
     booking: "none",
-    sessions: extracted.rule ? [] : [{ start: extracted.start, precision: extracted.month ? "month" : "day" }],
+    sessions: extracted.rule
+      ? []
+      : [
+          {
+            start: extracted.start,
+            precision: extracted.month ? "month" : "day",
+            ...(extracted.time ? { startTime: extracted.time } : {}),
+          },
+        ],
     ...(extracted.rule ? { recurrence: { rule: extracted.rule, start: extracted.start } } : {}),
     venue: { name: extracted.venue, city: extracted.city },
     hints: [],
@@ -44,14 +54,16 @@ function verdict(extracted: Side, stored: Side): string {
     city: stored.city,
     firstDate: stored.start,
     lastDate: stored.rule ? null : stored.month ? lastDay(stored.start) : stored.start,
-    sessions: [],
+    sessions: [{ startDate: stored.start, endDate: stored.start, startTime: stored.time ?? null }],
     onlyMonthOrYear: stored.month === true,
     recurrenceRule: stored.rule ?? null,
     listingIds: [],
   };
   const end = extracted.rule ? "2028-11-23" : extracted.month ? lastDay(extracted.start) : extracted.start;
   const span = { start: extracted.start, end };
-  const question = readMatchQuestion(matchText(experience, span, [candidate]));
+  // The candidate is marked as linked to the listing, so the question carries every part core can write.
+  const question = readMatchQuestion(matchText(experience, span, [candidate], new Set(["stored"])));
+  assert.equal(question?.candidates.length, 1, "the candidate could not be read back");
   assert.ok(question, "the question could not be read back");
   return matchPlainly(question).verdict;
 }
@@ -195,5 +207,59 @@ describe("Plain matching", () => {
       ),
       "sure",
     );
+  });
+
+  test("questions with start times and a linked mark are read back whole", () => {
+    const question = readMatchQuestion(
+      [
+        "The experience a source describes:",
+        "Title: Ladies Night: Focker In-Law",
+        "Summary: ",
+        "Venue: Whale Coast Mall, Hermanus",
+        "Dates: 2026-11-26 to 2026-11-26 at 18:30",
+        "",
+        "The known experiences:",
+        "- ID a: Focker In-Law Premiere Night; venue: Road House Cinema, Hermanus; dates: 2026-11-26 to 2026-11-26 at 18:30; this listing already links to it",
+        "- ID b: Sunset Sessions; venue: Stanford Hills Estate, Stanford; dates: 2026-12-01 to 2026-12-31 (only the month or year is known)",
+        "- ID c: Hermanus parkrun; venue: Forest Adventures, Hermanus; dates: 2026-11-28 to open-ended at 08:00, repeating FREQ=WEEKLY;BYDAY=SA; this listing already links to it",
+        "- ID d: The Met Opera: Manon; venue: Road House Cinema, Hermanus; dates: 2027-02-01 to 2027-02-01 at 12:30, 18:00",
+      ].join("\n"),
+    );
+    assert.ok(question);
+    assert.equal(question.start, "2026-11-26");
+    assert.deepEqual(
+      question.candidates.map(({ id, title, first, recurring, monthOrYear }) => ({ id, title, first, recurring, monthOrYear })),
+      [
+        { id: "a", title: "Focker In-Law Premiere Night", first: "2026-11-26", recurring: false, monthOrYear: false },
+        { id: "b", title: "Sunset Sessions", first: "2026-12-01", recurring: false, monthOrYear: true },
+        { id: "c", title: "Hermanus parkrun", first: "2026-11-28", recurring: true, monthOrYear: false },
+        { id: "d", title: "The Met Opera: Manon", first: "2027-02-01", recurring: false, monthOrYear: false },
+      ],
+    );
+  });
+
+  test("the same place, day and start time under another name is left to the model, never sure on the time", () => {
+    // Row 95's live listings beside experiences built from captures: each is one event, which the model decides.
+    assert.equal(
+      verdict(
+        { title: "Ladies Night: Focker In-Law", venue: "Whale Coast Mall", city: "Hermanus", start: "2026-11-26", time: "18:30" },
+        { title: "Focker In-Law Premiere Night", venue: "Road House Cinema", city: "Hermanus", start: "2026-11-26", time: "18:30" },
+      ),
+      "unsure",
+    );
+    assert.equal(
+      verdict(
+        { title: "Solstice Secret Sunrise", venue: "Grotto Beach", city: "Hermanus", start: "2026-12-21", time: "18:30" },
+        { title: "Solstice Secret Sunset", venue: "Grotto Beach", city: "Hermanus", start: "2026-12-21", time: "18:30" },
+      ),
+      "unsure",
+    );
+    // Two different films at the same cinema at the same time stay apart.
+    const cinema = { venue: "Road House Cinema, Whale Coast Mall", city: "Hermanus", start: "2026-11-26", time: "18:30" };
+    assert.notEqual(
+      verdict({ ...cinema, title: "Whale Coast Mall: Ladies Night! Focker In-Law" }, { ...cinema, title: "Whale Coast Mall: Ladies Night! The Debut" }),
+      "sure",
+    );
+    assert.equal(verdict({ ...cinema, title: "Focker In-Law" }, { ...cinema, title: "Wicked: For Good" }), "none");
   });
 });

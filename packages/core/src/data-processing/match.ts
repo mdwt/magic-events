@@ -105,15 +105,40 @@ export type MatchAnswer = z.infer<typeof matchAnswerSchema>;
 // back, can tell a series or an announced month from a dated event.
 export const ONLY_MONTH_OR_YEAR = " (only the month or year is known)";
 
-export function matchText(experience: ExtractedExperience, span: Span, candidates: ExperienceMatch[]): string {
+// Said after a known experience that the listing being processed already links to.
+export const ALREADY_LINKED = "; this listing already links to it";
+
+// How many different start times are shown for one experience.
+const TIMES_SHOWN = 3;
+
+// The start times of an experience's dates, as " at HH:MM, HH:MM", or nothing when none is known. The time of day
+// often tells two listings of one evening apart from two events, so the model is shown it.
+function startTimes(times: (string | null | undefined)[]): string {
+  const known = times.filter((time): time is string => time !== null && time !== undefined && /^\d{2}:\d{2}/.test(time));
+  const shown = [...new Set(known.map((time) => time.slice(0, 5)))].slice(0, TIMES_SHOWN);
+  return shown.length === 0 ? "" : ` at ${shown.join(", ")}`;
+}
+
+// The question the model is asked. `linked` holds the candidates the listing already links to.
+export function matchText(
+  experience: ExtractedExperience,
+  span: Span,
+  candidates: ExperienceMatch[],
+  linked: ReadonlySet<string> = new Set(),
+): string {
   const venue = [experience.venue?.name, experience.venue?.city].filter((part) => part !== undefined).join(", ");
   const coarse = onlyMonthOrYear(experience) ? ONLY_MONTH_OR_YEAR : "";
+  const times = startTimes([
+    ...experience.sessions.map((session) => session.startTime),
+    experience.recurrence?.startTime,
+  ]);
   const lines = [
     "The experience a source describes:",
     `Title: ${experience.title}`,
     `Summary: ${experience.summary ?? ""}`,
     `Venue: ${venue}`,
-    `Dates: ${span.start} to ${span.end}${coarse}${experience.recurrence ? `, repeating ${experience.recurrence.rule}` : ""}`,
+    `Dates: ${span.start} to ${span.end}${coarse}${times}` +
+      (experience.recurrence ? `, repeating ${experience.recurrence.rule}` : ""),
     "",
     "The known experiences:",
   ];
@@ -122,7 +147,9 @@ export function matchText(experience: ExtractedExperience, span: Span, candidate
     lines.push(
       `- ID ${candidate.id}: ${candidate.title}; venue: ${place}; dates: ${candidate.firstDate ?? "?"} to ` +
         `${candidate.lastDate ?? "open-ended"}${candidate.onlyMonthOrYear ? ONLY_MONTH_OR_YEAR : ""}` +
-        (candidate.recurrenceRule ? `, repeating ${candidate.recurrenceRule}` : ""),
+        startTimes(candidate.sessions.map((session) => session.startTime)) +
+        (candidate.recurrenceRule ? `, repeating ${candidate.recurrenceRule}` : "") +
+        (linked.has(candidate.id) ? ALREADY_LINKED : ""),
     );
   }
   return lines.join("\n");
