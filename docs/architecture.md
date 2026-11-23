@@ -210,7 +210,7 @@ Eight months later, the agent refines the trip and books activities. They want o
 
 1. **Identity** authenticates and authorises the caller, as in UC1.
 2. **Catalogue** takes the same search parameters and the time of the agent's last search.
-3. **Catalogue** returns what is new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed since then.
+3. **Catalogue** returns what is new, confirmed, rescheduled, postponed, cancelled, removed or otherwise changed since then, including what was on during those dates then and has moved out of them since (see [data-model.md](data-model.md)).
 
 ### UC3: The system discovers experiences in a location
 
