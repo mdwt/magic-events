@@ -131,14 +131,32 @@ An API key is the only credential, for people and for agents, over REST and MCP 
 records whether a person or an agent uses it. Keys start with `mev_`, are stored only as a hash and are shown once, when
 issued: by the seed (`pnpm db:seed` prints them), or by a system admin with `pnpm cli:admin key issue`.
 
-Send the key as `Authorization: Bearer <key>`, or as `x-api-key: <key>`. Every path checks it except `/health`, and a
-path that does not exist answers 401 to a caller without a valid key.
+Send the key on every request as `Authorization: Bearer <key>`, or as `x-api-key: <key>`. When both are sent,
+`Authorization` is the one read. A key in the address is never read, and anything in the address that starts with
+`mev_` is replaced before the address is logged. Every path checks the key except `/health` and the CORS preflight
+(`OPTIONS`, which answers with no body). A path that does not exist answers 401 to a caller without a valid key, and 404
+to one with a key, so a stranger cannot learn which paths exist. The OpenAPI document states the key on every operation
+it needs, with its 401 and 403, and `/health` states that it needs none.
 
-A key that is missing, unknown, revoked or expired gets a 401, and the message is the same for all four, so a caller
-cannot tell which. A key that
-cannot be checked, because the database cannot be reached, is never 401: the answer is 503 `unavailable` with
+The key is checked in an `onRequest` hook on every route and on the 404 handler, after the rate limit per address and
+before the body is read or checked against the schema. A request with no valid key gets nothing but the 401, so a
+stranger cannot make the server read a large body or learn the schema from its messages. The check is Better Auth's own,
+`verifyApiKey`: it hashes the key and looks the hash up, so the key itself is never compared. Nothing is cached. Every
+request reads the key, its user and the user's tenant, so a revoked key, a deleted user or a suspended tenant is refused
+on the next request. The server will not start when a route names neither the action it authorises nor that it is
+public, and a test sends every route the server registers a set of bad keys.
+
+A key that is missing, unknown, revoked or expired, or whose user no longer exists, gets a 401, and the message is the
+same for all of them, so a caller cannot tell which. The 401 comes with `WWW-Authenticate: Bearer realm="magic-events"`,
+and with `error="invalid_token"` added when a key was sent. A valid key whose organisation is suspended gets a 403. A key
+that cannot be checked, because the database cannot be reached, is never 401: the answer is 503 `unavailable` with
 `Retry-After`, as `/health` gives while the database is down. Better Auth's key check reports any failure inside it as
 an invalid key, so Identity trusts that verdict only once the key store answers.
+
+A key is 64 random letters after `mev_`. Only its SHA-256 hash and its first six characters are stored. A key does not
+expire: it works until a system admin revokes it with `pnpm cli:admin key revoke`, which turns it off at once and keeps
+it in the user's list as revoked. Better Auth's HTTP handler is not mounted, so nothing of Better Auth's is reachable
+over HTTP: no sign-up, no sign-in, no sessions and no cookies.
 
 ```sh
 curl http://localhost:4000/health
@@ -148,7 +166,9 @@ curl -H "Authorization: Bearer <key>" -H "Content-Type: application/json" \
 ```
 
 Each key is rate limited on its own, and each address before any key is checked. Both limits are set high by default,
-to stop a runaway client, not to meter use.
+to stop a runaway client, not to meter use. Answers carry the limit per address in `x-ratelimit-limit`,
+`x-ratelimit-remaining` and `x-ratelimit-reset`, and a 429 from either limit carries `Retry-After`. The address is the
+one the connection comes from: the server trusts no `X-Forwarded-For`.
 
 ## Errors
 
@@ -174,7 +194,7 @@ message makes sense on its own, so the details also let a client mark the fields
 | Status | Code | When |
 | --- | --- | --- |
 | 400 | `invalid_input` | The body, query, address or tool arguments do not fit the schema, the body is not valid JSON, or a value is refused, such as a place the feed does not cover. The details say which fields and what to give |
-| 401 | `unauthenticated` | The key is missing, unknown, revoked or expired. Comes with `WWW-Authenticate: Bearer realm="magic-events"` |
+| 401 | `unauthenticated` | The key is missing, unknown, revoked or expired. Comes with `WWW-Authenticate: Bearer realm="magic-events"`, and `error="invalid_token"` when a key was sent |
 | 403 | `forbidden` | The caller's organisation is suspended, or `/mcp` was called from a host or origin that is not allowed |
 | 404 | `not_found` | Nothing is at this address |
 | 405 | `method_not_allowed` | The address does not answer this method. `Allow` names the ones it does |
