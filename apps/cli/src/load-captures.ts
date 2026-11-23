@@ -9,10 +9,11 @@ import { loadSettings } from "@magic-events/core/adapters/settings/env.ts";
 import { createServices } from "@magic-events/core/services.ts";
 import { classificationAnswerSchema, type ClassificationAnswer } from "@magic-events/core/data-processing/classify.ts";
 import { extractionAnswerSchema, type ExtractionAnswer } from "@magic-events/core/data-processing/extract.ts";
-import { matchAnswerSchema, type MatchAnswer, normaliseTitle } from "@magic-events/core/data-processing/match.ts";
+import { matchAnswerSchema, type MatchAnswer } from "@magic-events/core/data-processing/match.ts";
 import type { ProcessingOutcome } from "@magic-events/core/data-processing/ports.ts";
 import type { FetchedListing, SaveSourceInput, SourceFetcher } from "@magic-events/core/discovery/ports.ts";
 import { type LanguageModel, LanguageModelFailed, type LanguageModelRequest } from "@magic-events/core/shared/language-model.ts";
+import { matchPlainly, readMatchQuestion } from "./plain-match.ts";
 
 // Loads pages captured by a browser scrape through the pipeline, as if the sources had just been fetched.
 //
@@ -242,85 +243,6 @@ function classificationAnswer(experience: CapturedExperience): ClassificationAns
   };
 }
 
-// ---- Matching without the model, when it is plain ----
-
-// Words that say nothing about which experience a title names.
-const WEAK_WORDS = new Set(
-  ("hermanus live at in the and of with presents present show concert by on for to a an die en se van op by n " +
-    "tribute experience event events").split(" "),
-);
-
-function strongWords(value: string): Set<string> {
-  return new Set(
-    normaliseTitle(value)
-      .split(" ")
-      .filter((word) => word.length > 1 && !WEAK_WORDS.has(word) && !/^\d+$/.test(word)),
-  );
-}
-
-function sharedCount(a: Set<string>, b: Set<string>): number {
-  let shared = 0;
-  for (const word of a) if (b.has(word)) shared += 1;
-  return shared;
-}
-
-interface MatchQuestion {
-  title: string;
-  place: string;
-  start: string;
-  recurring: boolean;
-  candidates: { id: string; title: string; place: string; first: string; recurring: boolean }[];
-}
-
-// The question as Data processing writes it (matchText in match.ts), read back.
-function readMatchQuestion(question: string): MatchQuestion | undefined {
-  const title = /^Title: (.*)$/m.exec(question)?.[1];
-  const place = /^Venue: (.*)$/m.exec(question)?.[1];
-  const dates = /^Dates: (\S+) to (\S+?)(, repeating .*)?$/m.exec(question);
-  if (title === undefined || place === undefined || !dates) return undefined;
-  const candidates = [...question.matchAll(/^- ID (\S+): (.*); venue: (.*); dates: (\S+) to (\S+?)(, repeating .*)?$/gm)].map(
-    (found) => ({
-      id: found[1] ?? "",
-      title: found[2] ?? "",
-      place: found[3] ?? "",
-      first: found[4] ?? "",
-      recurring: found[6] !== undefined,
-    }),
-  );
-  return { title, place, start: dates[1] ?? "", recurring: dates[3] !== undefined, candidates };
-}
-
-// "sure" with the candidate it is, "unsure" when a candidate might be it, "none" when no candidate comes close.
-// When it is not sure it never merges: a second copy of an experience is easier to mend than two made one.
-function matchPlainly(question: MatchQuestion): { verdict: "sure"; id: string } | { verdict: "unsure" | "none" } {
-  const words = strongWords(question.title);
-  const place = strongWords(question.place);
-  let best: { id: string; shared: number } | undefined;
-  let unsure = false;
-  for (const candidate of question.candidates) {
-    const theirs = strongWords(candidate.title);
-    const smaller = Math.min(words.size, theirs.size);
-    if (smaller === 0) continue;
-    const shared = sharedCount(words, theirs);
-    const cover = shared / smaller;
-    const theirPlace = strongWords(candidate.place);
-    const samePlace = sharedCount(place, theirPlace) > 0;
-    const placesDiffer = place.size > 0 && theirPlace.size > 0 && !samePlace;
-    const sameKind = question.recurring === candidate.recurring;
-    const sameStart = question.start === candidate.first;
-
-    const sure =
-      sameKind && !placesDiffer && ((cover >= 0.8 && shared >= 2) || (cover === 1 && sameStart && samePlace));
-    if (sure) {
-      if (!best || shared > best.shared) best = { id: candidate.id, shared };
-    } else if (shared >= 1 && cover >= 0.5 && (sameStart || (question.recurring && candidate.recurring))) {
-      unsure = true;
-    }
-  }
-  if (best) return { verdict: "sure", id: best.id };
-  return { verdict: unsure ? "unsure" : "none" };
-}
-
 // ---- The language model that answers from the captures ----
 
 class CaptureModel implements LanguageModel {
@@ -331,6 +253,8 @@ class CaptureModel implements LanguageModel {
   // False while a raw listing with no capture is processed: every question about it goes to the real model.
   #replaying = false;
   readonly counts = { matchedPlainly: 0, askedModel: 0, modelFailed: 0, leftUnmatched: 0 };
+  // Each plain match, as the extracted title and the title of the experience it was matched to.
+  readonly plainMatches: { title: string; matched: string }[] = [];
 
   constructor(real: LanguageModel | undefined) {
     this.#real = real;
@@ -373,8 +297,10 @@ class CaptureModel implements LanguageModel {
       const none: MatchAnswer = { experienceId: "" };
       const question = readMatchQuestion(request.text);
       const plain = question ? matchPlainly(question) : { verdict: "unsure" as const };
-      if (plain.verdict === "sure") {
+      if (question && plain.verdict === "sure") {
         this.counts.matchedPlainly += 1;
+        const matched = question.candidates.find((candidate) => candidate.id === plain.id)?.title ?? plain.id;
+        this.plainMatches.push({ title: question.title, matched });
         const answer: MatchAnswer = { experienceId: plain.id };
         return request.schema.parse(answer);
       }
@@ -477,6 +403,7 @@ async function main(): Promise<void> {
       `Matches: ${model.counts.matchedPlainly} plain, ${model.counts.askedModel} asked of the model ` +
         `(${model.counts.modelFailed} unanswered), ${model.counts.leftUnmatched} left unmatched with the model off.`,
     );
+    for (const { title, matched } of model.plainMatches) console.log(`  Matched plainly: "${title}" is "${matched}"`);
     for (const note of notes) console.log(`Note: ${note}`);
   } finally {
     await close();
