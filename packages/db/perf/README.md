@@ -33,3 +33,14 @@ PERF_KEY=mev_... node packages/db/perf/bench.mjs 1 x --trace search  # the state
 ```
 
 A search with a query text waits for the query's embedding from Bedrock, so it needs AWS credentials in `.env`.
+
+```sh
+# Many callers at once: 10 callers for 8 seconds. One key allows API_KEY_RATE_LIMIT_MAX requests a minute.
+PERF_BASE=http://127.0.0.1:4100 PERF_KEY=mev_... node packages/db/perf/load.mjs 10 8
+# serve.mjs with another pool size than createDb's default of 10:
+PERF_POOL=20 DATABASE_URL=$PERF_DATABASE_URL API_PORT=4102 ... node --env-file-if-exists=.env packages/db/perf/serve.mjs
+# The writes and the background work through the services: saves, match candidates, a discovery run, the upkeep,
+# the embedding job (a stand-in model), onboarding and the key check. It writes to the database, as the jobs would.
+PERF_CONTAINER=magic-events-postgres-1 PERF_KEY=mev_... DATABASE_URL=$PERF_DATABASE_URL \
+  node --env-file-if-exists=.env packages/db/perf/services.mjs [step name]
+```
