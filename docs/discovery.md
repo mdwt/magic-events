@@ -220,6 +220,18 @@ A listing that a source stops returning is checked again before anything changes
 
 Removed is not Cancelled. Cancelled means a source said the organisers cancelled it. Removed means no source lists it any more, whatever the reason. Statuses are defined in [data-model.md](data-model.md).
 
+## Nothing is lost
+
+Data is never lost because a source fails or is read badly.
+
+- **The pipeline deletes nothing.** No code deletes an experience, a listing, a raw listing, a run, a change row or a warehouse row. Saving an experience replaces its session, attribute, tag and link rows, and the values they held are kept in its change row.
+- **Removed, Cancelled and Past are statuses.** Such an experience stays stored, with every change row it has.
+- **Every version of a listing's content is kept** as a raw listing, superseded ones included, and its content is never changed after it is saved. A fetch whose fingerprint matches the stored version saves no copy, since it says the same; for a web page the fingerprint leaves out markup and the site's frame, so that markup is not kept.
+- **Every version of an experience has a change row** with the values it replaced. Every save from a listing is also appended whole to the data warehouse.
+- **A fetch that fails changes nothing.** Connection refused, a timeout or an HTTP error fails the run before any listing is saved, and a failed run counts nothing as missing (see When a fetch fails). A run that stopped part way is closed as failed and changes nothing else.
+- **A source that fails, is turned off or stops listing something leaves what it gave in the feed** until a link is removed by the rules above, or the dates pass. A listing must be missing from the source's missed runs before removal successful, complete runs; an experience must be missing from that many readings in a row of a listing that still exists (see Matching in [data-processing.md](data-processing.md)). An RSS feed's runs are never complete, so they count no miss.
+- **What is deleted, and by whom:** nothing by the system. Only a person rebuilding a database by hand deletes data. The definitions are configuration: saving an attribute or a season replaces its options or periods.
+
 ## Hand-off to Data processing
 
 Data processing never reads Discovery's tables. It uses three calls on the Discovery service:

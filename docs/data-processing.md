@@ -22,6 +22,8 @@ Data processing owns the extractors, the classifier, the matching decision, and 
 
 ## Steps
 
+What the pipeline keeps, and that it deletes nothing, is in Nothing is lost in [discovery.md](discovery.md).
+
 One raw listing is processed in one transaction, from claim to mark. The claim locks the raw listing until the transaction ends, so no other worker, in this server or another, can claim it meanwhile. The work after the claim runs in a savepoint of that transaction. If the server stops part way, the transaction rolls back and the raw listing is pending again, with no attempt counted.
 
 Processing runs as a job (see Background jobs in [architecture.md](architecture.md)). The job is added after a fetch that found something new, changed or gone, and once an hour as a safety net. It processes pending raw listings until none is left. When a raw listing fails, the job stops and the queue runs it again later, so a failing raw listing is not tried again at once.
