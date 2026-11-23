@@ -25,6 +25,7 @@ import {
   isNotNull,
   isNull,
   like,
+  lt,
   lte,
   max,
   min,
@@ -484,6 +485,8 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       return { items, total: counted?.total ?? 0 };
     },
 
+        // One the model kept failing on is set aside until its title or profile changes.
+        lt(experience.embeddingFailures, query.maxAttempts),
     async storeEmbeddings(input) {
       if (input.embeddings.length === 0) return 0;
       const rows = sql.join(
@@ -496,7 +499,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       // One statement for the round. Only the embedding and its model are set: no version, no update time.
       const stored = await db
         .update(experience)
-        .set({ embedding: sql`made.embedding`, embeddingModel: input.model })
+        .set({ embedding: sql`made.embedding`, embeddingModel: input.model, embeddingFailures: 0 })
         .from(sql`(values ${rows}) as made (id, title, profile, embedding)`)
         .where(
           and(
@@ -522,6 +525,28 @@ function domainEvent(write: ExperienceWrite, event: NonNullable<ExperienceWrite[
 
 // Every column a stored experience is read from. The embedding and the search text are left out: they are
 // large, and the save rules never read them.
+
+    async recordEmbeddingFailures(input) {
+      if (input.experiences.length === 0) return [];
+      const rows = sql.join(
+        input.experiences.map((one) => sql`(${one.id}::uuid, ${one.title}::text, ${one.profile}::text)`),
+        sql`, `,
+      );
+      // Like storing an embedding, this sets nothing else: no version, no update time.
+      const counted = await db
+        .update(experience)
+        .set({ embeddingFailures: sql`${experience.embeddingFailures} + 1` })
+        .from(sql`(values ${rows}) as failed (id, title, profile)`)
+        .where(
+          and(
+            sql`${experience.id} = failed.id`,
+            sql`${experience.title} = failed.title`,
+            sql`${experience.profile} is not distinct from failed.profile`,
+          ),
+        )
+        .returning({ id: experience.id, failures: experience.embeddingFailures });
+      return counted.filter((row) => row.failures >= input.maxAttempts).map((row) => row.id);
+    },
 const storedColumns = {
   id: experience.id,
   version: experience.version,
@@ -605,7 +630,7 @@ async function saveRow(tx: Tx, write: ExperienceWrite): Promise<void> {
       ...values,
       // Only a new version is an update a client can see.
       ...(write.change === null ? {} : { updatedAt: write.at }),
-      ...(write.clearEmbedding ? { embedding: null, embeddingModel: null } : {}),
+      ...(write.clearEmbedding ? { embedding: null, embeddingModel: null, embeddingFailures: 0 } : {}),
     })
     .where(and(eq(experience.id, saved.id), eq(experience.version, write.previousVersion)))
     .returning({ id: experience.id });

@@ -72,6 +72,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     // Embedding has its own tests.
     findExperiencesToEmbed: () => Promise.resolve({ items: [], total: 0 }),
     storeEmbeddings: () => Promise.resolve(0),
+    recordEmbeddingFailures: () => Promise.resolve([]),
     saveExperiences: (batch) => {
       const appended: DomainEvent[] = [];
       if (batch.some((write) => failing.has(write.experience.id))) return Promise.reject(new Error("the save failed"));

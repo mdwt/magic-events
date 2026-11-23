@@ -3,6 +3,7 @@ import { describe, test } from "node:test";
 import type { Catalogue, EmbedExperiencesResult } from "@magic-events/core/catalogue/ports.ts";
 import type { DataProcessing, ProcessingOutcome } from "@magic-events/core/data-processing/ports.ts";
 import type { Discovery, RunSummary, Source } from "@magic-events/core/discovery/ports.ts";
+import { AppError } from "@magic-events/core/shared/errors.ts";
 import type { Logger } from "@magic-events/core/shared/logger.ts";
 import type { CatalogueSettings, DiscoverySettings, ProcessingSettings } from "@magic-events/core/shared/settings.ts";
 import { DRAIN_SAFETY_NET_CRON, EMBED_SAFETY_NET_CRON, startJobs } from "../src/scheduler/jobs.ts";
@@ -409,7 +410,7 @@ function roundsInOrder(rounds: EmbedExperiencesResult[]): { embedExperiences: Ca
   return {
     embedExperiences: () => {
       calls += 1;
-      return Promise.resolve(rounds.shift() ?? { embedded: 0, failed: 0, remaining: 0 });
+      return Promise.resolve(rounds.shift() ?? { embedded: 0, failed: 0, setAside: 0, remaining: 0 });
     },
     calls: () => calls,
   };
@@ -429,9 +430,9 @@ describe("catalogue.embed-experiences", () => {
 
   test("embeds round after round until nothing remains, and succeeds", async () => {
     const rounds = roundsInOrder([
-      { embedded: 100, failed: 0, remaining: 150 },
-      { embedded: 99, failed: 1, remaining: 51 },
-      { embedded: 51, failed: 0, remaining: 0 },
+      { embedded: 100, failed: 0, setAside: 0, remaining: 150 },
+      { embedded: 99, failed: 1, setAside: 0, remaining: 51 },
+      { embedded: 51, failed: 0, setAside: 0, remaining: 0 },
     ]);
     const { queue } = await start({ catalogue: { embedExperiences: rounds.embedExperiences } });
     assert.equal(await queue.runScheduled("catalogue.embed-experiences"), undefined);
@@ -445,17 +446,31 @@ describe("catalogue.embed-experiences", () => {
     assert.equal(rounds.calls(), 1);
   });
 
-  test("a round in which the model failed on every text fails the job, so the queue tries again", async () => {
-    const rounds = roundsInOrder([
-      { embedded: 100, failed: 0, remaining: 3 },
-      { embedded: 0, failed: 3, remaining: 3 },
-      { embedded: 3, failed: 0, remaining: 0 },
-    ]);
-    const { queue } = await start({ catalogue: { embedExperiences: rounds.embedExperiences } });
+  test("a model that is not answering fails the job, so the queue tries again", async () => {
+    const rounds = roundsInOrder([{ embedded: 100, failed: 0, setAside: 0, remaining: 3 }]);
+    let calls = 0;
+    const embedExperiences = (): Promise<EmbedExperiencesResult> => {
+      calls += 1;
+      return calls === 1
+        ? rounds.embedExperiences()
+        : Promise.reject(new AppError("unavailable", "The embedding model failed on all 3 experiences of a round."));
+    };
+    const { queue } = await start({ catalogue: { embedExperiences } });
     const error = await queue.runScheduled("catalogue.embed-experiences");
     assert.ok(error instanceof Error);
     assert.match(error.message, /failed on all 3 experiences/);
-    // The third round is left for the retry.
+    assert.equal(calls, 2);
+  });
+
+  test("texts the model fails on while it answers are left for the next job, and the job succeeds", async () => {
+    const rounds = roundsInOrder([
+      { embedded: 100, failed: 2, setAside: 0, remaining: 3 },
+      { embedded: 0, failed: 3, setAside: 1, remaining: 2 },
+      { embedded: 2, failed: 0, setAside: 0, remaining: 0 },
+    ]);
+    const { queue } = await start({ catalogue: { embedExperiences: rounds.embedExperiences } });
+    assert.equal(await queue.runScheduled("catalogue.embed-experiences"), undefined);
+    // The third round is left for the next job.
     assert.equal(rounds.calls(), 2);
   });
 
@@ -474,7 +489,7 @@ describe("catalogue.embed-experiences", () => {
     const embedExperiences = async (): Promise<EmbedExperiencesResult> => {
       calls += 1;
       if (calls === 2) await queueHolder.queue?.stop();
-      return { embedded: 100, failed: 0, remaining: 100 };
+      return { embedded: 100, failed: 0, setAside: 0, remaining: 100 };
     };
     const { queue } = await start({ catalogue: { embedExperiences } });
     queueHolder.queue = queue;

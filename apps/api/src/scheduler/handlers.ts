@@ -142,8 +142,9 @@ export function processPending(deps: Deps): JobHandler<"processing.process-pendi
 }
 
 // Embeds, round after round, the experiences that have no embedding from the current model, until none is left.
-// A round in which the model failed on every text fails the job, so the queue tries it again after a doubling wait.
-// A text the model fails on in a round where others succeed is taken again in a later round.
+// A model that is not answering fails the round, and with it the job, so the queue tries it again after a doubling
+// wait. A text the model fails on while it answers is counted and taken again by a later job, until Catalogue sets it
+// aside; it does not fail the job.
 export function embedExperiences(deps: Deps): JobHandler<"catalogue.embed-experiences"> {
   return {
     name: "catalogue.embed-experiences",
@@ -151,23 +152,25 @@ export function embedExperiences(deps: Deps): JobHandler<"catalogue.embed-experi
     policy: { retries: 5, retryDelaySeconds: MINUTE, retryBackoff: true, timeoutSeconds: 30 * MINUTE, concurrency: 1 },
     async run(_payload, job) {
       let embedded = 0;
+      let setAside = 0;
       let rounds = 0;
-      let last = { embedded: 0, failed: 0, remaining: 0 };
+      let last = { embedded: 0, failed: 0, setAside: 0, remaining: 0 };
       while (!job.signal.aborted) {
         last = await deps.catalogue.embedExperiences();
         rounds += 1;
         embedded += last.embedded;
+        setAside += last.setAside;
+        // A round that embedded nothing because the model failed on its texts leaves them for the next job.
         if (last.remaining === 0 || (last.embedded === 0 && last.failed > 0)) break;
       }
       const { failed, remaining } = last;
       // The safety net mostly finds nothing, which is not worth an info line.
       const level = embedded + failed > 0 ? "info" : "debug";
-      deps.logger[level]({ rounds, embedded, failed, remaining }, "Embedded experiences");
+      deps.logger[level]({ rounds, embedded, failed, setAside, remaining }, "Embedded experiences");
 
-      if (last.embedded === 0 && failed > 0) {
-        throw new Error(`The embedding model failed on all ${String(failed)} experiences of a round.`);
+      if (job.signal.aborted && remaining > 0) {
+        throw new Error("The embedding stopped before every experience was embedded.");
       }
-      if (remaining > 0) throw new Error("The embedding stopped before every experience was embedded.");
     },
   };
 }

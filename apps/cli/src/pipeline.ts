@@ -122,16 +122,22 @@ async function main(): Promise<void> {
     }
 
     if (command === "embed" || command === "run") {
-      // Round after round until none is left, or until a round in which the model failed on every text.
+      // Round after round until none is left, or until a round that embedded nothing because the model failed.
       let embedded = 0;
+      let setAside = 0;
       let round = await catalogue.embedExperiences();
       embedded += round.embedded;
+      setAside += round.setAside;
       while (round.remaining > 0 && !(round.embedded === 0 && round.failed > 0)) {
         round = await catalogue.embedExperiences();
         embedded += round.embedded;
+        setAside += round.setAside;
       }
       console.log("Embedding:");
-      console.log(`  Embedded ${embedded} experiences. ${round.failed} failed in the last round, ${round.remaining} remain.`);
+      console.log(
+        `  Embedded ${embedded} experiences. ${round.failed} failed in the last round, ${setAside} set aside, ` +
+          `${round.remaining} remain.`,
+      );
     }
 
     if (command === "refetch") {

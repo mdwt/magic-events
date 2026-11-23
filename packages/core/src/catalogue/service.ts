@@ -59,6 +59,8 @@ const MATCH_SESSIONS = 50;
 // How many experiences the upkeep loads at a time.
 const UPKEEP_BATCH = 200;
 
+// What the embedding model is asked to embed, after it failed on every text of a round, to tell whether it answers.
+const TEST_TEXT = "Hermanus";
 export class CatalogueService implements Catalogue {
   readonly #repository: CatalogueRepository;
   readonly #settings: CatalogueSettings;
@@ -362,35 +364,73 @@ export class CatalogueService implements Catalogue {
       if (ids.length < UPKEEP_BATCH) break;
     }
     return result;
+    const { maxAttempts } = this.#embeddingSettings;
   }
 
   async embedExperiences(): Promise<EmbedExperiencesResult> {
+      maxAttempts,
     const model = this.#embeddings.model;
     const { items: due, total } = await this.#repository.findExperiencesToEmbed({
       model,
       limit: this.#embeddingSettings.batchSize,
     });
-    if (due.length === 0) return { embedded: 0, failed: 0, remaining: 0 };
+    if (due.length === 0) return { embedded: 0, failed: 0, setAside: 0, remaining: 0 };
 
     const started = performance.now();
     const vectors = await this.#embedDocuments(due);
+    const failed = due.filter((_, index) => (vectors[index] ?? null) === null);
+    // A model that failed on every text may be down rather than failing on the texts. Then nothing is counted against
+    // them, and the round fails so the job is tried again later.
+    if (embeddings.length === 0) await this.#checkAnswering(failed.length);
+
     const embeddings = due.flatMap((one, index) => {
       const vector = vectors[index];
       return vector === undefined || vector === null ? [] : [{ ...one, vector }];
     });
     // An experience whose title or profile changed while it was embedded is not stored, and stays due.
     const embedded = embeddings.length === 0 ? 0 : await this.#repository.storeEmbeddings({ model, embeddings });
-    const failed = due.length - embeddings.length;
-    const remaining = total - embedded;
+    // Each failure is counted. One the model has failed on too often is set aside, so it stops failing the rounds,
+    // until a new title or profile clears its count.
+    const setAside =
+      failed.length === 0 ? [] : await this.#repository.recordEmbeddingFailures({ experiences: failed, maxAttempts });
+    for (const experienceId of setAside) {
+      this.#logger.warn(
+        { experienceId, attempts: maxAttempts },
+        "The embedding model keeps failing on this experience's text; set aside until its title or profile changes, " +
+          "and ranked by keyword alone",
+      );
+    }
+    const remaining = total - embedded - setAside.length;
     this.#logger.debug(
-      { model, embedded, failed, remaining, durationMs: Math.round(performance.now() - started) },
+      {
+        model,
+        embedded,
+        failed: failed.length,
+        setAside: setAside.length,
+        remaining,
+        durationMs: Math.round(performance.now() - started),
+      },
       "Embedded a round of experiences",
     );
-    return { embedded, failed, remaining };
+    return { embedded, failed: failed.length, setAside: setAside.length, remaining };
+  }
+
+  // Asks the model for the embedding of a test text. Fails with unavailable when it fails on that too.
+  async #checkAnswering(failed: number): Promise<void> {
+    try {
+      await this.#embeddings.embed([TEST_TEXT], "document");
+    } catch (error) {
+      throw new AppError(
+        "unavailable",
+        `The embedding model failed on all ${String(failed)} experiences of a round, and on a test text.`,
+        undefined,
+        { cause: error },
+      );
+    }
   }
 
   // The experiences' embeddings as documents. When the round fails as a whole, each text is tried alone, so a text
-  // the model fails on is left for the next round and does not hold back the others. Null for a text that failed.
+  // the model fails on does not hold back the others. Null for a text that failed.
   async #embedDocuments(due: ExperienceToEmbed[]): Promise<(number[] | null)[]> {
     const texts = due.map(embeddingText);
     try {

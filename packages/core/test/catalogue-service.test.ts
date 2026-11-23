@@ -79,6 +79,7 @@ function fakeRepository(items: ExperienceRecord[] = []) {
     findUpkeepCandidates: () => Promise.resolve([]),
     findExperiencesToEmbed: () => Promise.resolve({ items: [], total: 0 }),
     storeEmbeddings: () => Promise.resolve(0),
+    recordEmbeddingFailures: () => Promise.resolve([]),
   };
   return { repository, queries };
 }

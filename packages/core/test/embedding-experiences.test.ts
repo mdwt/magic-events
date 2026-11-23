@@ -5,6 +5,7 @@ import { asc, count, eq } from "drizzle-orm";
 import { createLogger } from "../src/adapters/logging/pino.ts";
 import { createServices } from "../src/services.ts";
 import type { Catalogue, EmbeddingModel } from "../src/catalogue/ports.ts";
+import { input as listing } from "../src/testing/catalogue-fake.ts";
 import { insertExperienceFixture } from "../src/testing/experience-fixture.ts";
 import { FakeEmbeddingModel, point } from "../src/testing/fake-embedding-model.ts";
 import { createHarness, testSettings, type Harness } from "../src/testing/harness.ts";
@@ -79,7 +80,7 @@ after(async () => {
 describe("embedding experiences", () => {
   test("embeds the experiences search can return, and skips Cancelled, Removed and Past", async () => {
     const before = await counts();
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 4, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 4, failed: 0, setAside: 0, remaining: 0 });
 
     assert.deepEqual(
       [...model.documents()].sort(),
@@ -111,7 +112,7 @@ describe("embedding experiences", () => {
 
   test("a round with nothing due asks the model nothing", async () => {
     const calls = model.calls.length;
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 0, setAside: 0, remaining: 0 });
     assert.equal(model.calls.length, calls);
   });
 
@@ -135,7 +136,7 @@ describe("embedding experiences", () => {
       .set({ title: "A confirmed experience, renamed", embedding: null, embeddingModel: null })
       .where(eq(experience.title, "A confirmed experience"));
 
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, setAside: 0, remaining: 0 });
     assert.equal(model.documents().at(-1), "A confirmed experience, renamed\nWhat the confirmed one is about.");
     const [renamed] = await harness.db
       .select({ model: experience.embeddingModel })
@@ -161,34 +162,40 @@ describe("embedding experiences", () => {
         return texts.map(() => point([1]));
       },
     };
-    assert.deepEqual(await catalogueWith(racing).embedExperiences(), { embedded: 0, failed: 0, remaining: 1 });
+    assert.deepEqual(await catalogueWith(racing).embedExperiences(), { embedded: 0, failed: 0, setAside: 0, remaining: 1 });
     const [renamed] = await harness.db
       .select({ embedding: experience.embedding })
       .from(experience)
       .where(eq(experience.title, "A expected experience, renamed"));
     assert.equal(renamed?.embedding, null);
 
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, setAside: 0, remaining: 0 });
   });
 
-  test("a text the model fails on is left for the next round", async () => {
+  test("a text the model fails on is counted and left for the next round", async () => {
     await harness.db
       .update(experience)
       .set({ embedding: null, embeddingModel: null })
       .where(eq(experience.status, "announced"));
     model.failOn = (text) => text.startsWith("A announced");
     try {
-      assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 1, remaining: 1 });
+      assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 1, setAside: 0, remaining: 1 });
     } finally {
       model.failOn = () => false;
     }
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, setAside: 0, remaining: 0 });
+    // A stored embedding clears the count.
+    const [announced] = await harness.db
+      .select({ failures: experience.embeddingFailures })
+      .from(experience)
+      .where(eq(experience.status, "announced"));
+    assert.equal(announced?.failures, 0);
   });
 
   test("a change of model embeds every searchable experience again, and only search's statuses", async () => {
     const next = new FakeEmbeddingModel({ model: "titan-test-2" });
     const before = await counts();
-    assert.deepEqual(await catalogueWith(next).embedExperiences(), { embedded: 4, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogueWith(next).embedExperiences(), { embedded: 4, failed: 0, setAside: 0, remaining: 0 });
     assert.equal(next.documents().length, 4);
 
     const stored = await rows();
@@ -198,6 +205,46 @@ describe("embedding experiences", () => {
     );
     assert.deepEqual(await counts(), before);
     // For the first model, everything is due again.
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 4, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 4, failed: 0, setAside: 0, remaining: 0 });
+  });
+
+  test("a text the model keeps failing on is set aside, still searched by keyword, and due again once its title changes", async () => {
+    const recital = listing({
+      locationId,
+      title: "Refused Recital",
+      sessions: [{ startDate: "2027-06-12", precision: "day" }],
+    });
+    const saved = await catalogue.saveExperience(recital);
+    const id = saved.experience.id;
+    model.failOn = (text) => text.startsWith("Refused Recital");
+    try {
+      // The default is three attempts.
+      for (const setAside of [0, 0, 1]) {
+        assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 1, setAside, remaining: 1 - setAside });
+      }
+      assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 0, setAside: 0, remaining: 0 });
+    } finally {
+      model.failOn = () => false;
+    }
+    const [aside] = await harness.db
+      .select({ failures: experience.embeddingFailures, embedding: experience.embedding })
+      .from(experience)
+      .where(eq(experience.id, id));
+    assert.deepEqual([aside?.failures, aside?.embedding], [3, null]);
+
+    const found = await catalogue.searchExperiences({
+      near: { lat: -34.4187, lng: 19.2345 },
+      from: "2027-06-12",
+      to: "2027-06-12",
+      query: "recital",
+      limit: 20,
+      offset: 0,
+    });
+    assert.ok(found.items.some((item) => item.id === id));
+
+    // A new title clears the count with the embedding, so it is tried again.
+    await catalogue.saveExperience({ ...recital, experienceId: id, title: "Recital on the Cliffs" });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, setAside: 0, remaining: 0 });
+    assert.equal(model.documents().at(-1)?.startsWith("Recital on the Cliffs"), true);
   });
 });

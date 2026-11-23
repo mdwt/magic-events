@@ -7,6 +7,7 @@ import type {
   SearchExperiencesInput,
 } from "../src/catalogue/ports.ts";
 import { CatalogueService } from "../src/catalogue/service.ts";
+import { AppError } from "../src/shared/errors.ts";
 import type { Logger } from "../src/shared/logger.ts";
 import type { EmbeddingSettings } from "../src/shared/settings.ts";
 import { EMBEDDING_SETTINGS, FakeEmbeddingModel, point } from "../src/testing/fake-embedding-model.ts";
@@ -16,12 +17,12 @@ import { EMBEDDING_SETTINGS, FakeEmbeddingModel, point } from "../src/testing/fa
 const notUsed = () => Promise.reject(new Error("not used"));
 
 function logger() {
-  const lines: { level: string; message: string }[] = [];
+  const lines: { level: string; message: string; context: object }[] = [];
   const log: Logger = {
-    debug: (_context, message) => lines.push({ level: "debug", message }),
-    info: (_context, message) => lines.push({ level: "info", message }),
-    warn: (_context, message) => lines.push({ level: "warn", message }),
-    error: (_context, message) => lines.push({ level: "error", message }),
+    debug: (context, message) => lines.push({ level: "debug", message, context }),
+    info: (context, message) => lines.push({ level: "info", message, context }),
+    warn: (context, message) => lines.push({ level: "warn", message, context }),
+    error: (context, message) => lines.push({ level: "error", message, context }),
     child: () => log,
   };
   return { log, lines };
@@ -32,6 +33,8 @@ function fakeRepository(due: ExperienceToEmbed[] = []) {
   const queries: ExperienceSearchQuery[] = [];
   const stored: { model: string; id: string; title: string; vector: number[] }[] = [];
   const limits: number[] = [];
+  // How many times the model failed on each experience's text.
+  const failures = new Map<string, number>();
   const repository: CatalogueRepository = {
     searchExperiences(query) {
       queries.push(query);
@@ -39,8 +42,18 @@ function fakeRepository(due: ExperienceToEmbed[] = []) {
     },
     findExperiencesToEmbed(query) {
       limits.push(query.limit);
-      const left = due.filter((one) => !stored.some((done) => done.id === one.id && done.model === query.model));
+      const left = due.filter(
+        (one) =>
+          !stored.some((done) => done.id === one.id && done.model === query.model) &&
+          (failures.get(one.id) ?? 0) < query.maxAttempts,
+      );
       return Promise.resolve({ items: left.slice(0, query.limit), total: left.length });
+    },
+    recordEmbeddingFailures(input) {
+      for (const one of input.experiences) failures.set(one.id, (failures.get(one.id) ?? 0) + 1);
+      return Promise.resolve(
+        input.experiences.filter((one) => (failures.get(one.id) ?? 0) >= input.maxAttempts).map((one) => one.id),
+      );
     },
     storeEmbeddings(input) {
       for (const one of input.embeddings) stored.push({ model: input.model, id: one.id, title: one.title, vector: one.vector });
@@ -56,7 +69,7 @@ function fakeRepository(due: ExperienceToEmbed[] = []) {
     findChangesSince: notUsed,
     findUpkeepCandidates: notUsed,
   };
-  return { repository, queries, stored, limits };
+  return { repository, queries, stored, limits, failures };
 }
 
 function service(
@@ -149,7 +162,7 @@ describe("CatalogueService.embedExperiences", () => {
     const model = new FakeEmbeddingModel({ model: "titan-test" });
     const result = await service(repository, model).embedExperiences();
 
-    assert.deepEqual(result, { embedded: 3, failed: 0, remaining: 0 });
+    assert.deepEqual(result, { embedded: 3, failed: 0, setAside: 0, remaining: 0 });
     assert.deepEqual(model.calls, [
       {
         texts: [
@@ -172,8 +185,8 @@ describe("CatalogueService.embedExperiences", () => {
     const embeddings = new FakeEmbeddingModel();
     const catalogue = service(repository, embeddings, { settings: { batchSize: 2 } });
 
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 2, failed: 0, remaining: 1 });
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 2, failed: 0, setAside: 0, remaining: 1 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, setAside: 0, remaining: 0 });
     assert.deepEqual(limits, [2, 2]);
   });
 
@@ -183,7 +196,7 @@ describe("CatalogueService.embedExperiences", () => {
     model.failOn = (text) => text === "Country Market";
     const catalogue = service(repository, model);
 
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 2, failed: 1, remaining: 1 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 2, failed: 1, setAside: 0, remaining: 1 });
     assert.deepEqual(
       stored.map((one) => one.id),
       [whale.id, blank.id],
@@ -191,22 +204,57 @@ describe("CatalogueService.embedExperiences", () => {
 
     // The next round takes it again; the model answers this time.
     model.failOn = () => false;
-    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, remaining: 0 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 0, setAside: 0, remaining: 0 });
     assert.deepEqual(model.documents().filter((text) => text === "Country Market").length, 3);
   });
 
-  test("a round the model fails on as a whole stores nothing and leaves all of it", async () => {
-    const { repository, stored } = fakeRepository([whale, market]);
+  test("a model that fails on every text and on a test text is unavailable: nothing is counted and the round fails", async () => {
+    const { repository, stored, failures } = fakeRepository([whale, market]);
     const model = new FakeEmbeddingModel();
     model.fail();
-    assert.deepEqual(await service(repository, model).embedExperiences(), { embedded: 0, failed: 2, remaining: 2 });
+    await assert.rejects(service(repository, model).embedExperiences(), (error) => {
+      assert.ok(error instanceof AppError);
+      assert.equal(error.code, "unavailable");
+      assert.match(error.message, /failed on all 2 experiences/);
+      return true;
+    });
+    assert.deepEqual(model.calls.at(-1), { texts: ["Hermanus"], purpose: "document" });
     assert.equal(stored.length, 0);
+    assert.equal(failures.size, 0);
+  });
+
+  test("a text the model keeps failing on is set aside after the most attempts, logged once, and no longer due", async () => {
+    const { repository, stored, failures } = fakeRepository([whale, market]);
+    const model = new FakeEmbeddingModel();
+    model.failOn = (text) => text === "Country Market";
+    const { log, lines } = logger();
+    const catalogue = service(repository, model, { settings: { maxAttempts: 3 }, log });
+
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 1, failed: 1, setAside: 0, remaining: 1 });
+    // Alone in a round, it fails while the model answers a test text, so it is counted and the round succeeds.
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 1, setAside: 0, remaining: 1 });
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 1, setAside: 1, remaining: 0 });
+    assert.equal(failures.get(market.id), 3);
+    assert.deepEqual(
+      stored.map((one) => one.id),
+      [whale.id],
+    );
+
+    const setAside = lines.filter((line) => /set aside/.test(line.message));
+    assert.deepEqual(
+      setAside.map((line) => [line.level, line.context]),
+      [["warn", { experienceId: market.id, attempts: 3 }]],
+    );
+    // Nothing is due any more, so the model is not asked again.
+    const calls = model.calls.length;
+    assert.deepEqual(await catalogue.embedExperiences(), { embedded: 0, failed: 0, setAside: 0, remaining: 0 });
+    assert.equal(model.calls.length, calls);
   });
 
   test("nothing is embedded when nothing is due", async () => {
     const { repository } = fakeRepository([]);
     const model = new FakeEmbeddingModel();
-    assert.deepEqual(await service(repository, model).embedExperiences(), { embedded: 0, failed: 0, remaining: 0 });
+    assert.deepEqual(await service(repository, model).embedExperiences(), { embedded: 0, failed: 0, setAside: 0, remaining: 0 });
     assert.equal(model.calls.length, 0);
   });
 });

@@ -503,9 +503,12 @@ export interface ExperienceToEmbed {
 export interface EmbedExperiencesResult {
   // Experiences given an embedding this round.
   embedded: number;
-  // Experiences whose text the model failed on. They are taken again in a later round.
+  // Experiences whose text the model failed on. Each failure is counted, and they are taken again in a later round.
   failed: number;
-  // Experiences still due after this round, the failed ones included.
+  // Of the failed ones, those whose text the model has now failed on EMBEDDING_MAX_ATTEMPTS times. They are not
+  // taken again until their title or profile changes.
+  setAside: number;
+  // Experiences still due after this round, the failed ones included and the ones set aside left out.
   remaining: number;
 }
 
@@ -543,7 +546,8 @@ export interface Catalogue {
   // and generates the sessions of open-ended recurring experiences further ahead.
   keepUp(): Promise<UpkeepResult>;
   // One round of embedding: up to a batch of the experiences search can return whose embedding is empty or was
-  // made by another model. Storing an embedding makes no new version, change row or domain event.
+  // made by another model, leaving out those set aside. Storing an embedding makes no new version, change row or
+  // domain event. Fails with unavailable when the model failed on every text and on a test text too.
   embedExperiences(): Promise<EmbedExperiencesResult>;
 }
 
@@ -601,10 +605,19 @@ export interface CatalogueRepository {
     after: string | null;
     limit: number;
   }): Promise<string[]>;
-  // Up to `limit` searchable experiences with no embedding from this model, oldest first, and how many there are.
-  findExperiencesToEmbed(query: { model: string; limit: number }): Promise<{ items: ExperienceToEmbed[]; total: number }>;
+  // Up to `limit` searchable experiences with no embedding from this model and fewer than `maxAttempts` failures,
+  // oldest first, and how many there are.
+  findExperiencesToEmbed(query: {
+    model: string;
+    limit: number;
+    maxAttempts: number;
+  }): Promise<{ items: ExperienceToEmbed[]; total: number }>;
   // Stores each embedding with the model's name, on an experience whose title and profile are still the ones it was
   // made from. The version, the update time, the change rows and the domain events are left as they are. Returns
   // how many it stored.
   storeEmbeddings(input: { model: string; embeddings: (ExperienceToEmbed & { vector: number[] })[] }): Promise<number>;
 }
+  // A stored embedding clears the failure count.
+  // Counts one more failure of the model on each experience's text, if its title and profile are still the ones the
+  // text was made from. Returns the IDs of those whose count has now reached `maxAttempts`, which are set aside.
+  recordEmbeddingFailures(input: { experiences: ExperienceToEmbed[]; maxAttempts: number }): Promise<string[]>;

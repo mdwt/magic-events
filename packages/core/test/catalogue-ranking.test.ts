@@ -93,7 +93,7 @@ before(async () => {
   });
   for (const fixture of fixtures) await insertExperienceFixture(harness.db, fixture);
 
-  assert.deepEqual(await catalogue.embedExperiences(), { embedded: 7, failed: 0, remaining: 0 });
+  assert.deepEqual(await catalogue.embedExperiences(), { embedded: 7, failed: 0, setAside: 0, remaining: 0 });
   // The recital loses its embedding, and the gallery's is from another model, right on the query.
   await harness.db
     .update(experience)
