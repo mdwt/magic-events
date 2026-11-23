@@ -5,7 +5,7 @@
     "url": "https://www.sanbi.org/event/carols-by-candlelight-4/",
     "rawFile": "raw/harold-porter-nbg/carols-by-candlelight-4.txt",
     "fetchedAt": "2026-11-23T13:43:58Z",
-    "title": "Carols by Candlelight at Harold Porter National Botanical Garden",
+    "title": "Carols by Candlelight",
     "summary": "Carols by Candlelight presented by the Hermanus Rotary Club in the concert area of Harold Porter: bring a picnic basket and sing your favourite Christmas carols.",
     "description": "We are thrilled to announce that our Carols by Candlelight event will be presented by the Hermanus Rotary Club! Join us with your friends and family, bring along your picnic basket, and enjoy singing your favorite Christmas carols. Tickets can be purchased online via Webtickets or at the Harold Porter Entrance office. Gates open at 18:30, with music Background Christmas music will be played from 18:30 to 19:15. The concert will start at 19:30 with the Nativity Pageant, followed by the Christmas Carol performances and saxophonist. Adults: R160 Youth (age 6 to 18 ): R65 Children 0 to 6 years: free.",
     "type": "single",
@@ -20,7 +20,7 @@
       }
     ],
     "venue": {
-      "name": "Harold Porter National Botanical Garden, concert area",
+      "name": "Harold Porter National Botanical Garden",
       "city": "Betty's Bay"
     },
     "price": {
@@ -34,7 +34,7 @@
       "Harold Porter"
     ],
     "attributes": {
-      "tier": "everyday",
+      "tier": "standard",
       "category": [
         "holidays_and_celebrations",
         "music",

@@ -5,7 +5,7 @@
     "url": "https://hermanus-tourism.co.za/things-to-do/hermanus-first-friday/",
     "rawFile": "raw/hermanus-tourism/hermanus-first-friday.txt",
     "fetchedAt": "2026-11-23T13:36:29Z",
-    "title": "Hermanus First Friday ArtWalk",
+    "title": "Hermanus First Friday Art Walk",
     "summary": "Every first Friday of the month the art galleries of Hermanus remain open until 8pm for a unique experience to “ArtWalk our Town”.",
     "description": "Art in Hermanus is one of the jewels in the crown of our town along with wine, food, adventure and hospitality. The wealth of unique art in our 26 galleries can be experienced by visitors on any day of the year but every first Friday of the month art galleries remain open until 8pm for a unique experience to “ArtWalk our Town”. Stroll through the village, and enjoy the impressive range of fine art, sculpture, ceramics, photography and jewellery on display. Collect your ArtWalk map from any of the 26 galleries!",
     "type": "recurring",
@@ -129,5 +129,208 @@
       "road-running"
     ],
     "profile": "A free, timed 5km run or walk held every Saturday at 8am at Forest Adventures on Camphill Road in the Hemel-en-Aarde Valley, rain or shine. Participants walk, jog or run at their own pace and are timed. It is family and dog friendly and suits everyone from beginners to serious runners."
+  },
+  {
+    "source": "Hermanus Tourism",
+    "sourceListingId": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/#Hermanus FynArts Festival",
+    "url": "https://www.hermanusfynarts.co.za/",
+    "rawFile": "raw/hermanus-tourism/festivals-and-markets.txt",
+    "fetchedAt": "2026-11-23T13:36:59Z",
+    "title": "Hermanus FynArts Festival",
+    "summary": "A 10-day festival of South African arts in Hermanus, held every June. It was last held from 6 to 14 June 2026; the 2027 dates are not on this page.",
+    "description": "Experience Hermanus at its best during a 10-day celebration of South African arts, a fusion of Arts Festival and Winter School. Exhibitions of visual arts, concerts, soirees, food and wine pairings, illustrated talks, courses and workshops fill each day. Daily tours to exhibitions at award-winning wine farms; high teas at cozy coffee shops; special FynArts menus; botanical walks; marvelous films and much more.",
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-06",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Festivals & Markets"
+    ],
+    "attributes": {
+      "tier": "premium",
+      "category": [
+        "music",
+        "performing_arts",
+        "visual_arts",
+        "food_and_drink",
+        "culture_and_heritage"
+      ],
+      "format": "festival",
+      "scale": "major"
+    },
+    "tags": [
+      "books"
+    ],
+    "profile": "Hermanus FynArts is a 10-day festival of South African arts each June, combining an arts festival with a winter school: exhibitions, concerts, soirees, food and wine pairings, talks, courses and workshops, with tours to exhibitions on wine farms. It was last held from 6 to 14 June 2026 and is expected again in June 2027. It suits travellers who enjoy the arts, food and wine."
+  },
+  {
+    "source": "Hermanus Tourism",
+    "sourceListingId": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/#Kalfiefees Hermanus Kunstefees",
+    "url": "https://kalfiefees-hermanus.co.za/",
+    "rawFile": "raw/hermanus-tourism/festivals-and-markets.txt",
+    "fetchedAt": "2026-11-23T13:36:59Z",
+    "title": "Kalfiefees Hermanus Kunstefees",
+    "summary": "The mostly Afrikaans Kalfiefees arts festival in Hermanus, held around National Women's Day in August. It was last held from 5 to 10 August 2026; the 2027 dates are not on this page.",
+    "description": "The Hermanus Times Kalfiefees which borrows its name from the Whale Festival, was started to bring a cultural experience to the local communities – including Hawston. The mostly Afrikaans festival, which is held around National Women’s day in August, offers some of the best national and local theatrical productions. Festival-goers can enjoy local cuisine and view and purchase the work of local crafters.",
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-08",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Festivals & Markets"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "performing_arts",
+        "culture_and_heritage"
+      ],
+      "format": "festival",
+      "audience": "all_ages",
+      "language": [
+        "afrikaans"
+      ],
+      "scale": "regional"
+    },
+    "tags": [
+      "theatre"
+    ],
+    "profile": "Kalfiefees is a mostly Afrikaans arts festival in Hermanus around National Women's Day in August, with national and local theatre productions, local food and crafts. It was last held from 5 to 10 August 2026 and is expected again in August 2027. It suits Afrikaans-speaking theatre lovers."
+  },
+  {
+    "source": "Hermanus Tourism",
+    "sourceListingId": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/#Hermanus Whale Festival",
+    "url": "https://hermanuswhalefestival.co.za/",
+    "rawFile": "raw/hermanus-tourism/festivals-and-markets.txt",
+    "fetchedAt": "2026-11-23T13:36:59Z",
+    "title": "Hermanus Whale Festival",
+    "summary": "The annual festival celebrating the return of the southern right whales to Walker Bay. It was last held from 2 to 4 October 2026; the 2027 dates are not on this page.",
+    "description": "The annual Whale Festival is held to celebrate the arrival of the magnificent Southern Right Whales that come to Walker Bay to calve and mate. For a few days each September, Hermanus is transformed as thousands of visitors arrive to enjoy arts and the enviro-experience that is the Whale Festival. Around 30 shows – usually the most successful productions from the country’s two largest arts festivals – are staged each year and include theatrical pieces as well as classical and popular music. The Festival offers a variety of eco-environmental activities; a children’s festival; an arts ramble that takes visitors to the studios and galleries of local artists, and other live entertainment. There’s also plenty of action for the health- conscious with five sporting events, namely a triathlon, half-marathon, fun cycle ride and soccer day.",
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-10",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Festivals & Markets"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "nature_and_wildlife",
+        "performing_arts",
+        "music",
+        "community_and_causes"
+      ],
+      "format": "festival",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "major"
+    },
+    "tags": [
+      "whales"
+    ],
+    "profile": "The Hermanus Whale Festival celebrates the southern right whales' return to Walker Bay with shows, music, eco-activities, a children's festival, an arts ramble and sporting events. It was last held from 2 to 4 October 2026 and is expected again in October 2027. It suits families and anyone visiting for the whales."
+  },
+  {
+    "source": "Hermanus Tourism",
+    "sourceListingId": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/#Hermanus Food and Wine Fair",
+    "rawFile": "raw/hermanus-tourism/festivals-and-markets.txt",
+    "fetchedAt": "2026-11-23T13:36:59Z",
+    "title": "Hermanus Food and Wine Fair",
+    "summary": "A yearly wine and food fair in Hermanus with over 30 exhibitors, held with the Kalfiefees in August. It was last held with the Kalfiefees of 5 to 10 August 2026; the 2027 dates are not on this page.",
+    "description": "Since its inception in 1997 the Hermanus Food and Wine Fair, which coincides with the Kalfiefees, has become an important event in the Western Cape wine industry calendar. Visitors can chase away the winter chills by sampling mouth-watering wine and other products from over 30 exhibitors. It includes some of the Cape’s top wine estates as well as the producers of speciality foods and other delicacies.",
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-08",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Festivals & Markets"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "fair_or_expo",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "The Hermanus Food and Wine Fair, held every year since 1997 alongside the Kalfiefees in August, brings over 30 exhibitors, among them top Cape wine estates and speciality food producers, for tastings. It is expected again in August 2027. It suits wine and food lovers visiting in winter."
+  },
+  {
+    "source": "Hermanus Tourism",
+    "sourceListingId": "https://hermanus-tourism.co.za/things-to-do/festivals-and-markets/#Fernkloof Fynbos Festival",
+    "url": "https://www.fernkloof.org.za/index.php/hermanus-botanical-society/annual-wildflower-festival",
+    "rawFile": "raw/hermanus-tourism/festivals-and-markets.txt",
+    "fetchedAt": "2026-11-23T13:36:59Z",
+    "title": "Fernkloof Fynbos Festival",
+    "summary": "An annual festival in the Fernkloof Nature Reserve showcasing local fynbos, with local arts and crafts. The page gives no month or dates.",
+    "description": "An annual Fynbos Festival is hosted in the Fernkloof Nature Reserve and includes local arts and crafts, with the main purpose a colourful and spectacular showcase of local fynbos arranged in a display that will amaze every onlooker.",
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027",
+        "precision": "year"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Festivals & Markets"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "nature_and_wildlife",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "fair_or_expo",
+      "audience": "all_ages",
+      "scale": "regional"
+    },
+    "tags": [
+      "flowers",
+      "fynbos"
+    ],
+    "profile": "The annual Fynbos Festival in the Fernkloof Nature Reserve is a showcase of local fynbos, arranged in displays, with local arts and crafts. The page names no month, so it is expected some time in 2027. It suits anyone interested in the Cape's flora."
   }
 ]
