@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { FetchedListing, SourceFetcher } from "../../discovery/ports.ts";
-import { pageContent } from "../../shared/html.ts";
+import { fingerprintContent } from "../../shared/html.ts";
 import type { Logger } from "../../shared/logger.ts";
 import { HttpStatusError, MAX_PAGE_BYTES, parseSettings, textOf, type Http } from "./http.ts";
 
@@ -44,8 +44,8 @@ export function createWebPageFetcher(deps: { http: Http; logger: Logger }): Sour
           url,
           contentType: "text/html",
           content: html,
-          // Markup, tokens and adverts change on every fetch; what the page says does not.
-          fingerprintOf: pageContent(html),
+          // Markup, tokens, adverts and the site's frame change on every fetch; what the page says does not.
+          fingerprintOf: fingerprintContent(html),
         });
         logger.debug({ url, bytes: response.body.byteLength }, "Fetched a page");
       }

@@ -6,6 +6,7 @@ import type { FetchInput, FetchedListing } from "../src/discovery/ports.ts";
 import type { Logger } from "../src/shared/logger.ts";
 import { createHttp } from "../src/adapters/sources/http.ts";
 import { createWebPageFetcher } from "../src/adapters/sources/web-page.ts";
+import { pageContent } from "../src/shared/html.ts";
 import { fixture, startFixtureServer, type FixtureServer } from "./fixtures/sources/server.ts";
 
 // The web page adapter against a local server serving recorded pages.
@@ -35,6 +36,14 @@ function print(listing: FetchedListing | undefined): string {
     .digest("hex");
 }
 
+// A page whose event card carries its price in the card's own footer.
+function ticketPage(price: string): string {
+  return (
+    "<html><body><nav>Home</nav><main><article><h2>Whale Coast Jazz</h2><p>Saturday 5 December 2026</p>" +
+    `<footer>Tickets ${price}</footer></article></main><footer>© Example</footer></body></html>`
+  );
+}
+
 let server: FixtureServer;
 const fetcher = createWebPageFetcher({
   http: createHttp({ timeoutSeconds: 5, userAgent: "magic-events-test/1.0" }),
@@ -48,6 +57,15 @@ before(async () => {
   server.route("/weekend-changed", { body: fixture("page-changed.html") });
   server.route("/shell", { body: fixture("listing-shell.html") });
   server.route("/shell-changed", { body: fixture("listing-shell-changed.html") });
+  // Two fetches of AllEvents.in's Hermanus page a minute apart, cut down: its footer's lists change on every fetch.
+  server.route("/allevents", { body: fixture("allevents.html") });
+  server.route("/allevents-refetched", { body: fixture("allevents-refetched.html") });
+  server.route("/allevents-changed", { body: fixture("allevents-changed.html") });
+  // Two renders of the FynArts event list, a Wix page, cut down: its render-time script differs.
+  server.route("/wix", { body: fixture("wix-event-list.html") });
+  server.route("/wix-rerendered", { body: fixture("wix-event-list-rerendered.html") });
+  server.route("/ticket-footer", { body: ticketPage("R150") });
+  server.route("/ticket-footer-changed", { body: ticketPage("R180") });
   server.route("/old-address", { redirectTo: "/weekend" });
   server.route("/gone", { status: 410, body: "Gone" });
   server.route("/broken", { status: 500, body: "Internal error" });
@@ -90,6 +108,45 @@ describe("web_page adapter", () => {
 
     assert.match(shell?.fingerprintOf ?? "", /Whale Coast Jazz/);
     assert.notEqual(print(shell), print(changed));
+  });
+
+  test("keeps the fingerprint when only the site's frame changes, and changes it when an event's date does", async () => {
+    const result = await fetcher.fetch(
+      input({ urls: [server.url("/allevents"), server.url("/allevents-refetched"), server.url("/allevents-changed")] }),
+    );
+    const [page, refetched, changed] = result.listings;
+
+    assert.notEqual(pageContent(page?.content ?? ""), pageContent(refetched?.content ?? ""));
+    assert.equal(print(page), print(refetched));
+    assert.notEqual(print(page), print(changed));
+    assert.match(page?.fingerprintOf ?? "", /Rumours of Fleetwood Mac Tribute/);
+    assert.doesNotMatch(page?.fingerprintOf ?? "", /Trending Searches/);
+  });
+
+  test("the language model is still given the site's frame", async () => {
+    const result = await fetcher.fetch(input({ urls: [server.url("/allevents")] }));
+
+    assert.match(pageContent(result.listings[0]?.content ?? ""), /Upcoming Events in Hermanus/);
+  });
+
+  test("keeps the fingerprint of a Wix page rendered again", async () => {
+    const result = await fetcher.fetch(input({ urls: [server.url("/wix"), server.url("/wix-rerendered")] }));
+    const [page, rerendered] = result.listings;
+
+    assert.notEqual(page?.content, rerendered?.content);
+    assert.equal(print(page), print(rerendered));
+    assert.match(page?.fingerprintOf ?? "", /2027 Hermanus FynArts Festival/);
+  });
+
+  test("a footer inside the page's content is part of its fingerprint", async () => {
+    const result = await fetcher.fetch(
+      input({ urls: [server.url("/ticket-footer"), server.url("/ticket-footer-changed")] }),
+    );
+    const [page, changed] = result.listings;
+
+    assert.match(page?.fingerprintOf ?? "", /Tickets R150/);
+    assert.doesNotMatch(page?.fingerprintOf ?? "", /© Example/);
+    assert.notEqual(print(page), print(changed));
   });
 
   test("follows a redirect and keeps the address it was given", async () => {
