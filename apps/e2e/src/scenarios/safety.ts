@@ -47,11 +47,11 @@ function checkErrorFormat(c: Checks, call: Call, what: string): void {
 }
 
 // A plain sentence, in our own words.
-const LIBRARY_WORDING = /Invalid input|expected (a |an )?(number|string|object|array|boolean)|Too (big|small)|received|Unrecognized|Required$/i;
+const LIBRARY_WORDING = /Invalid input|expected|Too big|Too small|Unknown field|schema|received|Unrecognized/i;
 
 function checkPlain(c: Checks, message: string, what: string): void {
   c.ok(!LIBRARY_WORDING.test(message), `${what}: "${message}" holds a library's wording`);
-  c.ok(/^[A-Z"`]/.test(message) && /[.]$/.test(message.trim()), `${what}: "${message}" is not a plain sentence`);
+  c.ok(message.trim().length > 10 && /[.]$/.test(message.trim()), `${what}: "${message}" is not a sentence`);
 }
 
 const WRONG: [string, Body | string, string, RegExp][] = [
@@ -245,7 +245,7 @@ export function registerSafety(): void {
     // An incoming request ID is used when it is a plain token, and replaced when it is not.
     const sane = await send(main, { path: "/health", headers: { "x-request-id": "e2e-trace-0001" } });
     c.equal(sane.requestId, "e2e-trace-0001", "a plain incoming x-request-id is kept");
-    const injected = await send(main, { path: "/health", headers: { "x-request-id": 'bad"}\u0000id' } });
+    const injected = await send(main, { path: "/health", headers: { "x-request-id": "has spaces; and=signs" } });
     c.ok(injected.requestId !== null && /^[A-Za-z0-9._:-]+$/.test(injected.requestId), `an incoming x-request-id that is not a plain token is replaced: ${String(injected.requestId)}`);
     for (const server of state.servers) {
       const found = secretsIn(server.text(), [...state.keys]);

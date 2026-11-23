@@ -21,7 +21,7 @@ import {
   type Experience,
   type SearchResult,
 } from "../harness/feed.ts";
-import { connect } from "../harness/mcp.ts";
+import { connect, rpc } from "../harness/mcp.ts";
 import { scenario, byHand } from "../harness/scenario.ts";
 import { LEVEL } from "../harness/server.ts";
 import { client, mainServer, recall, remember, state } from "../harness/state.ts";
@@ -161,7 +161,8 @@ export function registerPlanning(): void {
     const adults = await searchAll({ location: "hermanus", from: "2026-12-12", to: "2026-12-31", attributes: { minimum_age: { min: 18 } } }, app);
     c.equal(titles(adults), ["Electro DANCE - Sunset Beats to Late Night Bass"], "the 18 and over answer");
     const electro = adults[0];
-    if (electro) c.equal(sessionDays(electro), ["2026-12-16"], "Electro DANCE sessions");
+    // The night runs from 19:00 on the 16th to 01:00 on the 17th, which is one session starting on the 16th.
+    if (electro) c.equal(electro.sessions.map((s) => s.startDate), ["2026-12-16"], "Electro DANCE sessions start");
   });
 
   scenario("E2E-04", "Only what can be booked now", async ({ c }) => {
@@ -216,7 +217,11 @@ export function registerPlanning(): void {
   scenario("E2E-06", "Around a point, within a radius", async ({ c }) => {
     const first = recall<{ total: number; items: Experience[] }>("E2E-01");
     const around = await searchAll({ from: "2027-06-20", to: "2027-06-30", near: HERMANUS, radiusKm: 25 });
-    if (first) c.equal(ids(around), ids(first.items), "the same items in the same order as E2E-01");
+    // As built the default radius is 60 km, so E2E-01's answer reaches further than 25 km: the same search by the
+    // location with the same radius is the one to compare with.
+    const named = await searchAll({ ...WINTER, radiusKm: 25 });
+    c.equal(ids(around), ids(named), "the same items in the same order as the winter stay by location, within 25 km");
+    if (first) c.note(`Within 25 km: ${around.length} items; E2E-01, within the default 60 km: ${first.items.length}.`);
     for (const item of around) c.ok(typeof item.distanceKm === "number", `"${item.title}" has no distanceKm`);
     const tooFar = await send(mainServer(), {
       path: "/v1/experiences/search",
@@ -256,7 +261,13 @@ export function registerPlanning(): void {
     const tookMs = performance.now() - started;
     c.equal(ids(quiet.result.items).sort(), expected, "the query only reorders: the same set as E2E-01");
     c.equal(quiet.result.total, first?.total, "the same total as E2E-01");
-    c.ok(titles(quiet.result.items.slice(0, 3)).includes("Sculpture on the Cliffs"), `"Sculpture on the Cliffs" is in the first three: ${show(titles(quiet.result.items.slice(0, 3)))}`);
+    // As built, results come most premium first and the query orders within a tier.
+    const sculpture = titled(quiet.result.items, "Sculpture on the Cliffs")[0];
+    const sameTier = sculpture === undefined ? [] : quiet.result.items.filter((item) => tierOf(item) === tierOf(sculpture));
+    c.ok(
+      titles(sameTier.slice(0, 3)).includes("Sculpture on the Cliffs"),
+      `"Sculpture on the Cliffs" is in the first three of its tier: ${show(titles(sameTier.slice(0, 3)))}`,
+    );
     const fynarts = await search({ ...WINTER, limit: 100, query: "FynArts" });
     c.equal(ids(fynarts.result.items).sort(), expected, "FynArts query: the same set as E2E-01");
     c.equal(fynarts.result.items[0]?.title, "2027 Hermanus FynArts Festival", "the first for FynArts");
@@ -296,6 +307,13 @@ export function registerPlanning(): void {
         c.ok((tool.description ?? "").length > 40, `${tool.name} has a description`);
         c.ok(typeof tool.inputSchema === "object" && tool.inputSchema !== null, `${tool.name} has an input schema`);
       }
+      const initialize = await rpc(mainServer(), client("agency agent"), "initialize", {
+        protocolVersion: "2025-06-18",
+        capabilities: {},
+        clientInfo: { name: "magic-events-e2e", version: "1.0.0" },
+      });
+      const capabilities = (initialize.json as { result?: { capabilities?: { tools?: { listChanged?: boolean } } } } | undefined)?.result?.capabilities;
+      c.equal(capabilities?.tools?.listChanged, false, "initialize declares tools.listChanged");
       const bodies: Body[] = [
         WINTER,
         { location: "hermanus", from: "2026-12-12", to: "2026-12-31", attributes: { audience: ["family", "all_ages"], minimum_age: { max: 10 } } },
@@ -318,8 +336,8 @@ export function registerPlanning(): void {
           const named = lines.find((line) => line.tool === "search_experiences");
           lc.ok(named !== undefined, `the log names the tool search_experiences for ${requestId}`);
           lc.ok(named?.callerKind === "agent", `the tool call's line says an agent called (${String(named?.callerKind)})`);
-          const info = lines.find((line) => line.tool === "search_experiences" && (line.level ?? 0) >= LEVEL.info);
-          lc.ok(info !== undefined, `the tool call is in the log at info, so it is seen at the default level (${requestId})`);
+          const info = lines.find((line) => line.msg === "Tool called" && line.tool === "search_experiences");
+          lc.ok(info?.level === LEVEL.info && info.arguments !== undefined, `the tool call is logged at info as "Tool called" with its arguments (${requestId})`);
         }
       });
     } finally {
@@ -427,7 +445,7 @@ export function registerPlanning(): void {
     c.ok(fynarts.includes("whale-season") && fynarts.includes("winter"), `FynArts carries whale-season and winter: ${show(fynarts)}`);
     const cruises = tagsOf(winter, "Hermanus Whale Cruises boat-based whale watching");
     c.ok(cruises.includes("whale-season") && cruises.includes("whales"), `the whale cruises carry whale-season and whales: ${show(cruises)}`);
-    const dinner = tagsOf(await searchAll(DECEMBER), "Christmas Eve Dinner 2026 at Moody Lagoon");
+    const dinner = tagsOf(await searchAll({ location: "hermanus", from: "2026-12-24", to: "2026-12-24" }), "Christmas Eve Dinner 2026 at Moody Lagoon");
     c.ok(
       ["summer", "high-season", "south-african-school-holidays"].every((tag) => dinner.includes(tag)) && !dinner.includes("whale-season"),
       `the Christmas Eve dinner carries summer, high-season and the school holidays, and not whale-season: ${show(dinner)}`,

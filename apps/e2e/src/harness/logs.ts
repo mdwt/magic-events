@@ -116,6 +116,7 @@ export function checkCallLogs(call: Call, c: Checks): void {
 export function secretsIn(text: string, keys: string[]): string[] {
   const found: string[] = [];
   for (const key of keys) if (text.includes(key)) found.push(`${key.slice(0, 8)}…`);
-  if (/Bearer /.test(text)) found.push("Bearer ");
+  // A key after Bearer, not the "Bearer <key>" of a message that says how to send one.
+  if (/Bearer (?!<key>)\S/.test(text)) found.push("Bearer <a key>");
   return found;
 }

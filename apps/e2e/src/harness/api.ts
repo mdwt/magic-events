@@ -141,6 +141,7 @@ export interface ErrorBody {
 export function errorOf(json: unknown): ErrorBody | undefined {
   if (typeof json !== "object" || json === null || !("error" in json)) return undefined;
   const error = json.error;
-  if (typeof error !== "object" || error === null) return undefined;
+  // A JSON-RPC error has a number for its code: it is not the API's error format.
+  if (typeof error !== "object" || error === null || !("code" in error) || typeof error.code !== "string") return undefined;
   return error as ErrorBody;
 }

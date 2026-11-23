@@ -59,6 +59,20 @@ function checkNoFailure(c: Checks, result: CommandResult, what: string): void {
   c.ok(!/FAILED/.test(result.output), `${what} reports a failure: ${(/.*FAILED.*/.exec(result.output) ?? [""])[0]}`);
 }
 
+// Every domain event recorded since a time has one info line "Domain event published" with its ID in the commands'
+// logs, and no line is for an event that was not recorded, such as one of a transaction that rolled back.
+async function checkDomainEvents(c: Checks, results: CommandResult[], since: string): Promise<void> {
+  const recorded = await query<{ id: string; type: string }>(state.dbUrl, `select id, type from events where recorded_at >= ${literal(since)}`);
+  const lines = results.flatMap(logLinesOf).filter((line) => line.msg === "Domain event published");
+  c.ok(recorded.length > 0, "the commands recorded domain events");
+  const missing = recorded.filter((event) => lines.filter((line) => line.eventId === event.id && line.type === event.type).length !== 1);
+  c.equal(missing.length, 0, `recorded events without exactly one "Domain event published" line (of ${recorded.length})`);
+  c.ok(lines.every((line) => line.level === 30 && line.component === "domain-events" && typeof line.resourceId === "string"), "each event's line is at info with its component and resource");
+  const ids = new Set(recorded.map((event) => event.id));
+  const stray = lines.filter((line) => !ids.has(String(line.eventId)));
+  c.equal(stray.length, 0, "event lines for events that were not recorded");
+}
+
 function sourceLine(result: CommandResult, name: string) {
   return capturedSources(result.stdout).find((line) => line.name === name);
 }
@@ -80,7 +94,7 @@ export function registerFeed(): void {
     "Needs a source's host made unreachable and then reachable (/etc/hosts) while a server runs its schedule with DISCOVERY_FETCH_RETRY_BACKOFF_MINUTES=1, for several minutes.",
   );
 
-  scenario("E2E-20", "Scraped sources load through the same pipeline", async ({ c }) => {
+  scenario("E2E-20", "Scraped sources load through the same pipeline", async ({ c, logs }) => {
     const loaded = recall<CommandResult>("load");
     if (loaded === undefined) {
       c.fail("The load did not run");
@@ -95,6 +109,17 @@ export function registerFeed(): void {
     const summary = /(\d+) sources, \d+ listings, \d+ experiences captured: (\d+) saved, (\d+) new, \d+ changed, (\d+) failed\./.exec(loaded.stdout);
     c.ok(summary !== null, "the summary names how many experiences were saved and how many were new");
     if (summary) c.equal(summary[4], "0", "failed in the summary");
+    logs(async (lc) => {
+      const t0 = recall<string>("T0") ?? "1970-01-01T00:00:00Z";
+      const lines = logLinesOf(loaded);
+      const finished = lines.filter((line) => line.msg === "Run finished");
+      lc.ok(finished.length === manifest.sources.length, `the load logs each run finished with its counts (${finished.length} of ${manifest.sources.length})`);
+      lc.ok(finished.every((line) => typeof line.found === "number" && typeof line.newOrChanged === "number"), "each run's line has its counts");
+      lc.ok(lines.some((line) => line.msg === "Run started"), "the load logs each run started");
+      lc.ok(lines.some((line) => line.msg === "Raw listing processed" && typeof line.experiences === "number"), "each raw listing processed is logged with its outcome");
+      lc.ok(lines.some((line) => line.msg === "Experience published"), "each experience published is logged");
+      await checkDomainEvents(lc, [loaded], t0);
+    });
     const runs = await query<{ status: string; n: number }>(state.dbUrl, "select status::text as status, count(*)::int as n from run group by 1");
     c.equal(runs.filter((run) => run.status !== "succeeded"), [], "runs that did not succeed");
     const raw = await query<{ status: string; n: number }>(state.dbUrl, "select status::text as status, count(*)::int as n from raw_listing group by 1");
@@ -128,7 +153,12 @@ export function registerFeed(): void {
     });
   });
 
-  scenario("E2E-22", "A changed listing updates its experience", async ({ c }) => {
+}
+
+// After E2E-26, which asks what changed since T1 before anything has.
+export function registerFeedChanges(): void {
+  scenario("E2E-22", "A changed listing updates its experience", async ({ c, logs }) => {
+    const startedAt = new Date().toISOString();
     const before = await versions();
     edit(
       "benguela-cove",
@@ -182,6 +212,13 @@ export function registerFeed(): void {
 
     const benguela = await captures(["--source", "benguela-cove"]);
     const race = await captures(["--source", "race2hermanus"]);
+    logs(async (lc) => {
+      const lines = [...logLinesOf(benguela), ...logLinesOf(race)];
+      const changed = lines.filter((line) => line.msg === "Experience changed");
+      lc.ok(changed.length >= 5, `each experience changed is logged with its change (${changed.length})`);
+      lc.ok(changed.every((line) => typeof line.experienceId === "string" && typeof line.change === "string"), "a change's line names the experience and the kind");
+      await checkDomainEvents(lc, [benguela, race], startedAt);
+    });
     checkNoFailure(c, benguela, "The Benguela Cove load");
     checkNoFailure(c, race, "The Race2Hermanus load");
     const cove = sourceLine(benguela, "Benguela Cove");
@@ -213,7 +250,7 @@ export function registerFeed(): void {
     c.ok(andrew?.status === "postponed" && andrew.booking === "closed", `Andrew Young shows postponed and closed: ${show(andrew?.status)}`);
     const eighties = titled(await searchAll({ location: "hermanus", from: "2026-12-01", to: "2027-03-31" }), "That ’80s Show: 80s Tribute Concert")[0];
     c.equal(eighties ? sessionDays(eighties) : [], ["2026-12-12", "2027-03-06"], "the 80s show's dates");
-    const dinner = titled(await searchAll(DECEMBER), "Christmas Eve Dinner 2026 at Moody Lagoon")[0];
+    const dinner = titled(await searchAll({ location: "hermanus", from: "2026-12-24", to: "2026-12-24" }), "Christmas Eve Dinner 2026 at Moody Lagoon")[0];
     c.equal(dinner ? [dinner.price.min, dinner.price.max, dinner.price.currency] : [], [650, 650, "ZAR"], "the Christmas Eve dinner's price");
     const r2h = titled(await searchAll({ location: "hermanus", from: "2027-05-02", to: "2027-05-02" }), "Race2Hermanus Triathlon 2027")[0];
     c.ok(r2h?.status === "confirmed" && r2h.booking === "open" && r2h.bookable, `the triathlon is confirmed, open and bookable: ${show(r2h?.status)}`);
@@ -244,12 +281,15 @@ export function registerFeed(): void {
       c.equal(titled(items, title).length, 1, `"${title}" returned`);
       const lookalikes = items.filter((item) => item.title !== title && item.title.toLowerCase().includes(text.toLowerCase()));
       c.equal(lookalikes.map((item) => item.title), [], `other items named like "${text}"`);
-      const linked = await one<{ n: number }>(
+      // The document counts the listings it was read from, on four sites for the concert.
+      const linked = await one<{ listings: number; sites: number }>(
         state.dbUrl,
-        `select count(distinct l.source_id)::int as n from experience e join experience_source_link k on k.experience_id = e.id
-           join listing l on l.id = k.listing_id where e.title = ${literal(title)}`,
+        `select count(distinct l.id)::int as listings, count(distinct l.source_id)::int as sites from experience e
+           join experience_source_link k on k.experience_id = e.id join listing l on l.id = k.listing_id
+          where e.title = ${literal(title)}`,
       );
-      c.equal(linked.n, sources, `"${title}" sources`);
+      c.equal(linked.listings, sources, `"${title}" is one experience of this many listings`);
+      c.note(`"${title}": ${linked.listings} listings on ${linked.sites} sources.`);
     }
   });
 

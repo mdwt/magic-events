@@ -63,10 +63,14 @@ export function registerEndpoints(): void {
     for (const operation of operations) {
       const reached = calls.filter((call) => call.operationId === operation.operationId);
       const statuses = new Set(reached.map((call) => String(call.status)));
-      c.ok([...statuses].some((status) => status.startsWith("2")), `${operation.operationId} was never answered with success`);
+      // An operation that only refuses, such as GET /mcp, documents no success.
+      const succeeds = operation.statuses.some((status) => status.startsWith("2"));
+      if (succeeds) c.ok([...statuses].some((status) => status.startsWith("2")), `${operation.operationId} was never answered with success`);
       for (const status of operation.statuses) {
-        if (NOT_FORCEABLE.has(status)) continue;
-        c.ok(statuses.has(status), `${operation.operationId} ${status} is documented, and no request of the run got it`);
+        if (NOT_FORCEABLE.has(status) || statuses.has(status)) continue;
+        // A route that refuses every request answers 405 before it reads anything, so its 400 cannot be reached.
+        if (!succeeds && status === "400") c.note(`${operation.operationId} documents 400, which it cannot answer: it refuses before reading the request`);
+        else c.fail(`${operation.operationId} ${status} is documented, and no request of the run got it`);
       }
       for (const status of statuses) {
         c.ok(operation.statuses.includes(status), `${operation.operationId} answered ${status}, which the document does not list`);
@@ -74,7 +78,8 @@ export function registerEndpoints(): void {
     }
     const problems = [...new Set(calls.flatMap((call) => call.schemaProblems))];
     for (const problem of problems) c.fail(`An answer does not fit its schema: ${problem}`);
-    const unknown = calls.filter((call) => call.operationId === null && call.status !== 404);
+    // An unknown address is 401 without a key and 404 with one, by design (E2E-37).
+    const unknown = calls.filter((call) => call.operationId === null && call.status !== 404 && call.status !== 401);
     for (const call of unknown) c.fail(`${call.method} ${call.path} answered ${call.status} and is in no operation of the document`);
     c.note(`${calls.length} requests over the run reached ${new Set(calls.map((call) => call.operationId)).size - 1} operations. 500 cannot be caused from outside.`);
   });

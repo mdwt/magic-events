@@ -19,22 +19,28 @@ const SEEDED_TABLES = ["location", "attribute", "attribute_option", "tag", "seas
 
 export interface Snapshot {
   rows: Record<string, number>;
-  digest: string;
+  digests: Record<string, string>;
+  // The same, leaving out updated_at, to tell a row rewritten unchanged from one whose content changed.
+  contents: Record<string, string>;
 }
 
 // A fingerprint of every row the seed writes, to tell whether a second seed changed anything.
 export async function seededSnapshot(): Promise<Snapshot> {
   const rows: Record<string, number> = {};
-  const digests: string[] = [];
+  const digests: Record<string, string> = {};
+  const contents: Record<string, string> = {};
   for (const table of SEEDED_TABLES) {
-    const found = await one<{ n: number; digest: string | null }>(
+    const found = await one<{ n: number; digest: string | null; content: string | null }>(
       state.dbUrl,
-      `select count(*)::int as n, md5(coalesce(string_agg(t::text, '|' order by t::text), '')) as digest from ${table} t`,
+      `select count(*)::int as n, md5(coalesce(string_agg(t::text, '|' order by t::text), '')) as digest,
+              md5(coalesce(string_agg((to_jsonb(t) - 'updated_at')::text, '|' order by (to_jsonb(t) - 'updated_at')::text), '')) as content
+         from ${table} t`,
     );
     rows[table] = found.n;
-    digests.push(found.digest ?? "");
+    digests[table] = found.digest ?? "";
+    contents[table] = found.content ?? "";
   }
-  return { rows, digest: digests.join(",") };
+  return { rows, digests, contents };
 }
 
 // What the system knows about a key: its user, tenant and credential ID, read from the database by the user's email

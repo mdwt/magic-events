@@ -59,7 +59,11 @@ export function registerSetup(): void {
     c.equal(counts(found.second.stdout), counts(found.first.stdout), "the second seed's counts");
     c.ok(/No new API keys/.test(found.second.stdout), "the second seed says No new API keys");
     c.equal(found.after.rows, found.before.rows, "rows after the second seed");
-    c.ok(found.after.digest === found.before.digest, "no seeded row changed on the second seed");
+    const tables = Object.keys(found.before.digests);
+    const changed = tables.filter((table) => found.before.contents[table] !== found.after.contents[table]);
+    c.equal(changed, [], "tables with a row whose content the second seed changed");
+    const touched = tables.filter((table) => !changed.includes(table) && found.before.digests[table] !== found.after.digests[table]);
+    c.equal(touched, [], "tables whose rows the second seed wrote again unchanged, with a new updated_at");
     return Promise.resolve();
   });
 
@@ -69,8 +73,9 @@ export function registerSetup(): void {
     c.ok(lines.some((line) => /listening/i.test(String(line.msg))), "the server logs that it is listening");
     const jobs = lines.find((line) => line.msg === "The jobs started");
     c.ok(jobs !== undefined && typeof jobs.findDueSourcesCron === "string" && typeof jobs.upkeepCron === "string", "it logs that the jobs started, with each schedule");
-    const settings = lines.find((line) => typeof line.port === "number" || typeof line.settings === "object");
-    c.ok(settings !== undefined, "it logs the settings that are safe to show when it starts");
+    const settings = lines.find((line) => line.msg === "Server started");
+    c.ok(settings !== undefined && typeof settings.port === "number", "it logs the settings that are safe to show when it starts");
+    c.ok(!main.text().includes(state.secret) && !main.text().includes(state.dbUrl), "no secret or database address in the start lines");
     c.equal((await send(main, { path: "/health" })).status, 200, "/health");
   });
 }
@@ -116,11 +121,14 @@ export function registerChecks(): void {
       );
       c.equal(over.map((one) => one.title), [], "searchable experiences whose last session is before today");
       const horizon = addMonths(today(), 24);
+      // A rule limited to some months, such as December and January, has its last session in the last of those
+      // months before the horizon, so it is allowed a year.
       const short = await query<{ title: string; last: string }>(
         state.dbUrl,
         `select e.title, max(s.start_date)::text as last from experience e join experience_session s on s.experience_id = e.id
           where e.recurrence_rule is not null and e.recurrence_end is null and e.status in ('expected','announced','confirmed','postponed')
-          group by e.id, e.title having max(s.start_date) < date '${horizon}' - interval '1 month'`,
+          group by e.id, e.title, e.recurrence_rule
+         having max(s.start_date) < date '${horizon}' - (case when e.recurrence_rule like '%BYMONTH%' then interval '12 months' else interval '1 month' end)`,
       );
       c.equal(short.map((one) => `${one.title} (${one.last})`), [], `open-ended recurring experiences without sessions up to ${horizon}`);
       c.equal((await send(upkeep, { path: "/v1/experiences/search", client: client("agency person"), body: WINTER })).status, 200, "search after upkeep");
@@ -128,7 +136,13 @@ export function registerChecks(): void {
       await upkeep.stop();
     }
     logs((lc) => {
-      lc.ok(upkeep.lines().some((one) => one.msg === "Kept the catalogue up"), "the upkeep job is in the log");
+      const lines = upkeep.lines();
+      const kept = lines.find((one) => one.msg === "Kept the catalogue up");
+      lc.ok(kept !== undefined, "the upkeep job is in the log");
+      const started = lines.find((one) => one.msg === "Job started" && one.job === "catalogue.keep-up");
+      const finished = lines.find((one) => one.msg === "Job finished" && one.job === "catalogue.keep-up");
+      lc.ok(started !== undefined && finished !== undefined && typeof finished.durationMs === "number", "the job's start and finish are logged, with its duration");
+      lc.ok(kept?.jobId !== undefined && kept.jobId === started?.jobId, "the job's own lines carry its ID");
     });
   });
 }

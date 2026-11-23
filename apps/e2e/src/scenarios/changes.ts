@@ -31,7 +31,8 @@ function kinds(items: ChangeItem[]): Record<string, string> {
 
 const E2E_27: Body = { location: "hermanus", from: "2026-12-01", to: "2027-05-31" };
 
-export function registerChanges(): void {
+// Run straight after E2E-21, as its text says: E2E-22 changes the December stay.
+export function registerNothingChanged(): void {
   scenario("E2E-26", "Nothing changed, nothing reported", async ({ c, logs }) => {
     const { call, result } = await changes({ ...DECEMBER, since: since(c) });
     c.equal([result.items.length, result.total], [0, 0], "items and total");
@@ -42,6 +43,9 @@ export function registerChanges(): void {
     });
   });
 
+}
+
+export function registerChanges(): void {
   scenario("E2E-27", "What changed is reported, with what kind of change", async ({ c }) => {
     const items = await allChanges({ ...E2E_27, since: since(c) });
     c.equal(
