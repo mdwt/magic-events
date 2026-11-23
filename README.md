@@ -196,14 +196,18 @@ pnpm tunnel
 
 It prints a public address like `https://<random-words>.trycloudflare.com`. Leave it running.
 
-**3. Allow the tunnel's host name**
+**3. Tell the server about the tunnel**
 
 The MCP endpoint only answers to host names it knows. Add the tunnel's to `API_ALLOWED_HOSTS` in `.env`, without
-`https://`, then restart the server:
+`https://`, set `API_TRUST_PROXY` on the line below it, then restart the server:
 
 ```sh
 API_ALLOWED_HOSTS=localhost,127.0.0.1,[::1],<random-words>.trycloudflare.com
+API_TRUST_PROXY=loopback
 ```
+
+`cloudflared` connects from your own machine, so without `API_TRUST_PROXY` every caller looks like localhost. With it,
+the rate limit and the logs see each caller's real address.
 
 A quick check that the tunnel reaches the server:
 
