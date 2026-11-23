@@ -274,7 +274,8 @@ Each such value is saved for review, with as much detail as there is: the raw li
 
 A season is a named period of the year in one location, such as whale season in Hermanus. Seasons are predefined rows that Data processing owns, each with its location and its dates (see [data-model.md](data-model.md)). A season has no source and is not an experience.
 
-- **Applied while processing.** Each experience is given the seasons of its location that its dates fall inside, as tags. An ocean-side dinner in whale season gets whale season.
+- **Applied while processing.** Each experience is given the seasons of its location that all of its dates fall inside, as tags. An ocean-side dinner in whale season gets whale season.
+- **All of its dates.** The tag is on the experience, not on a session, so it is given only when every date is inside the season's periods. A single experience or a run gets it when every session is inside a period. A session of month or year precision is inside only when the whole month or year is. A recurring experience gets it when every date its recurrence gives is inside too, together with any dates listed beside the rule. A bounded recurrence is counted to its last date, and an open-ended one up to the sourcing horizon or the end of the season's last period, whichever is earlier, since a season's later years are not rows yet. So a market every Saturday of the year is in no season, whale watching every day from June to November is in whale season, and summer night markets in December and January are in summer.
 - **Stored by Catalogue** with the experience's other tags.
 - **The default seasons:** whale season, South African school holidays, high season, and summer, autumn, winter and spring. Their dates are rows.
 
@@ -507,7 +508,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Profile and versions | A change to the profile alone does not bump the version or write a change row, so a reworded profile is never reported by changed-since |
 | When the leading listing goes | The experience keeps the values it has. The next source taking over, as Sources that disagree describes, is for phase 2 |
 | Dates | An extractor returns the dates a listing gives and no others: listed dates as sessions, a stated pattern as a recurrence. It never fills in the days between a first and a last date, and never works a pattern out into dates |
-| Seasons | Predefined rows per location, not experiences. An experience is given the seasons its dates fall inside, as tags |
+| Seasons | Predefined rows per location, not experiences. An experience is given a season as a tag only when all of its dates fall inside the season's periods: every session, the whole month or year for month or year precision, and every date its recurrence gives. An open-ended recurring experience that runs all year gets no season |
 | Already over | An extractor leaves out experiences whose last date is before the fetch time |
 | Beyond the horizon | An extractor leaves out experiences whose first date is beyond the sourcing horizon, 24 months by default |
 | Festival programmes | A festival is one experience. Its programme items are not extracted separately |

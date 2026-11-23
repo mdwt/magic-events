@@ -212,7 +212,7 @@ The description is the context the classifier reads to decide when a definition 
 A named period of the year in one location, such as whale season in Hermanus. Seasons are predefined rows. A season has no source, and it is not an experience or an experience type.
 
 - **Holds:** name, slug, description, the location it applies to, its dates.
-- **Rules:** while it processes, Data processing gives each experience the seasons of its location that its dates fall inside, as tags (see [data-processing.md](data-processing.md)). Catalogue stores them with the experience's other tags.
+- **Rules:** while it processes, Data processing gives each experience the seasons of its location that all of its dates fall inside, as tags (see [data-processing.md](data-processing.md)). Catalogue stores them with the experience's other tags. The tag is on the experience, not on a session, so a market that runs all year carries no season.
 - The system starts with whale season, South African school holidays, high season, and summer, autumn, winter and spring. Their dates are rows.
 
 ## Discovery
@@ -252,7 +252,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Attributes and tags | Data processing owns the definitions: a configurable list in the database of attributes with a name, a description, a type and a default value, their options, and tags. They are rows with a default set, not enums. Catalogue owns each experience's attribute values and tags, which are what clients query |
 | Dates | An experience's dates are its sessions, and it is on no other date. Search by dates matches sessions, never the span from the first date to the last |
 | Types | Single is one session. A run is one session per listed date, in a row or not. Recurring has a recurrence, from which Catalogue generates the sessions, with skipped and extra dates |
-| Seasons | Not an experience and not an experience type. Predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates fall inside them |
+| Seasons | Not an experience and not an experience type. Predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates all fall inside them |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Position | An experience's own position, the venue's coordinates, is optional. One with no position is searched from its location's centre |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |

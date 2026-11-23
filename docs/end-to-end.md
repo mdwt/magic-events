@@ -206,7 +206,7 @@ The run and the weekly class are never returned for a day between their dates. T
   - The FynArts Festival carries `whale-season` and `winter`. "Hermanus Whale Cruises boat-based whale watching" (June to November) carries `whale-season` and `whales`. "Christmas Eve Dinner 2026 at Moody Lagoon" carries `summer`, `high-season` and `south-african-school-holidays`, and not `whale-season`.
   - No search returns an experience that is a season. "Southern Right Whales in Walker Bay" must not be an experience. Depends on issue 48.
 
-A season tag is on the experience, not on each session. A market that runs all year carries every season, so a season tag says the experience falls in that season at some point, not on the days of the stay.
+A season tag is on the experience, not on each session, so an experience carries a season only when all of its dates fall inside it. A market that runs all year carries no season.
 
 ### The long planning window
 
