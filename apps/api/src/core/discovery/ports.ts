@@ -136,7 +136,96 @@ export interface Discovery {
   getListingPriorities(listingIds: string[]): Promise<Record<string, number>>;
 }
 
-// Outbound port: what Discovery needs from storage.
+// ---- Storage ----
+
+// A source as a run needs it: with the sync state its adapter kept from the last run.
+export interface SourceForRun extends Source {
+  syncState: Record<string, unknown>;
+}
+
+// What Discovery knows of a listing when a run returns it again.
+export interface KnownListing {
+  id: string;
+  sourceListingId: string;
+  fingerprint: string;
+  state: "listed" | "removed";
+}
+
+// One version of a listing's content, to be saved as a pending raw listing.
+export interface ListingVersion {
+  runId: string;
+  url: string | null;
+  contentType: string;
+  content: string;
+  fingerprint: string;
+  fetchedAt: Date;
+}
+
+export interface RunOutcome {
+  status: "succeeded" | "failed";
+  complete: boolean;
+  listingsFound: number;
+  listingsNewOrChanged: number;
+  listingsUnchanged: number;
+  error: string | null;
+  finishedAt: Date;
+}
+
+// The oldest pending raw listing, locked for this transaction, with the ID of its listing's latest version.
+export interface LockedRawListing {
+  rawListing: ClaimedRawListing;
+  latestRawListingId: string;
+}
+
+// A raw listing as marking it needs it.
+export interface RawListingForMark {
+  id: string;
+  listingId: string;
+  status: "pending" | "processed" | "failed" | "superseded";
+  attempts: number;
+  maxProcessingAttempts: number;
+}
+
+// Outbound port: what Discovery needs from storage. Each method that saves a raw listing, or changes its status,
+// appends the domain event for it in the same transaction.
 export interface DiscoveryRepository {
   upsertSource(input: Omit<Source, "id">): Promise<Source>;
+  listSources(): Promise<Source[]>;
+  findSource(sourceId: string): Promise<SourceForRun | null>;
+  // Active sources that have no run in progress and whose last run started at least their fetch interval before
+  // `now`, or that have never run.
+  findDueSources(now: Date): Promise<Source[]>;
+  saveSyncState(sourceId: string, syncState: Record<string, unknown>): Promise<void>;
+
+  startRun(sourceId: string, startedAt: Date): Promise<string>;
+  finishRun(runId: string, outcome: RunOutcome): Promise<void>;
+
+  findListings(sourceId: string): Promise<KnownListing[]>;
+  // Creates the listing, first and last seen by the version's run, with its first raw listing.
+  saveNewListing(input: { sourceId: string; sourceListingId: string } & ListingVersion): Promise<string>;
+  // Saves a new version of a listing: its fingerprint, last seen and state listed, with a new raw listing.
+  saveListingVersion(input: { listingId: string } & ListingVersion): Promise<void>;
+  // Sets the last seen run of listings that came back unchanged.
+  markListingsSeen(listingIds: string[], runId: string): Promise<void>;
+  // Listed listings of the source that at least `missedRuns` successful, complete runs have started after the
+  // run that last saw them.
+  findMissedListings(sourceId: string, missedRuns: number): Promise<string[]>;
+  // Sets the listings to removed, each with a pending raw listing of kind removed, all in one transaction.
+  removeListings(listingIds: string[], runId: string, removedAt: Date): Promise<void>;
+
+  // Must be called inside a transaction, which holds the lock until it ends. Locked rows are skipped.
+  lockOldestPendingRawListing(): Promise<LockedRawListing | null>;
+  // Sets the listing's pending and failed versions other than the newer one, and older than it, to superseded.
+  // Versions locked by another transaction are skipped. Returns the IDs it set.
+  supersedeOlderVersions(input: { listingId: string; newerRawListingId: string }): Promise<string[]>;
+  findRawListingForMark(rawListingId: string): Promise<RawListingForMark | null>;
+  markRawListingProcessed(input: { id: string; listingId: string }): Promise<void>;
+  markRawListingFailed(input: {
+    id: string;
+    listingId: string;
+    attempts: number;
+    error: string;
+    willRetry: boolean;
+  }): Promise<void>;
+  findListingPriorities(listingIds: string[]): Promise<Record<string, number>>;
 }
