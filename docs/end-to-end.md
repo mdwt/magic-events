@@ -581,56 +581,56 @@ These hold before the scenarios are run and again after any fix made during the 
 
 | ID | Result (pass or fail) | Date | What was seen |
 | --- | --- | --- | --- |
-| C-01 | | | |
-| C-02 | | | |
-| C-03 | | | |
-| C-04 | | | |
-| C-05 | | | |
-| C-06 | | | |
-| C-07 | | | |
-| C-08 | | | |
-| C-09 | | | |
-| E2E-01 | | | |
-| E2E-02 | | | |
-| E2E-03 | | | |
-| E2E-04 | | | |
-| E2E-05 | | | |
-| E2E-06 | | | |
-| E2E-07 | | | |
-| E2E-08 | | | |
-| E2E-09 | | | |
-| E2E-10 | | | |
-| E2E-11 | | | |
-| E2E-12 | | | |
-| E2E-13 | | | |
-| E2E-14 | | | |
-| E2E-15 | | | |
-| E2E-16 | | | |
-| E2E-17 | | | |
-| E2E-18 | | | |
-| E2E-19 | | | |
-| E2E-20 | | | |
-| E2E-21 | | | |
-| E2E-22 | | | |
-| E2E-23 | | | |
-| E2E-24 | | | |
-| E2E-25 | | | |
-| E2E-26 | | | |
-| E2E-27 | | | |
-| E2E-28 | | | |
-| E2E-29 | | | |
-| E2E-30 | | | |
-| E2E-31 | | | |
-| E2E-32 | | | |
-| E2E-33 | | | |
-| E2E-34 | | | |
-| E2E-35 | | | |
-| E2E-36 | | | |
-| E2E-37 | | | |
-| E2E-38 | | | |
-| E2E-39 | | | |
-| E2E-40 | | | |
-| E2E-41 | | | |
-| E2E-42 | | | |
-| E2E-43 | | | |
-| E2E-44 | | | |
+| C-01 | by hand | | |
+| C-02 | pass | 23 Nov 2026 | pnpm typecheck exit 0, pnpm lint exit 0, pnpm build exit 0 |
+| C-03 | pass | 23 Nov 2026 | pnpm db:migrate:test exit 0; pnpm test exit 0, 896 passed, 0 projects with skipped tests |
+| C-04 | pass | 23 Nov 2026 | migrate on an empty database: exit 0, 8 migrations; again: exit 0, still 8 |
+| C-05 | pass | 23 Nov 2026 | seed: "Default data seeded: Hermanus, 9 attributes, 65 tags, 7 seasons, 12 sources, 2 tenants, 3 users." and 5 keys; again: the same counts, "No new API keys", no row of 10 tables changed |
+| C-06 | pass | 23 Nov 2026 | "Server started" port 50107, log level debug, no secret; "The jobs started" with 0 0 29 2 * and 0 0 29 2 *; /health 200; SIGTERM with a search in hand: the search 200, "Stopping" then "Stopped", exit 0 |
+| C-07 | by hand | | |
+| C-08 | pass | 23 Nov 2026 | upkeep every minute: "Kept the catalogue up" past 0, closed 0, generated 0; 0 searchable experiences over, 0 recurring short of 2028-11-23 |
+| C-09 | pass | 23 Nov 2026 | restore and seed: a search with the new key: 200, total 281; 281 searchable, 0 without an embedding; changes since 17:10: 9 (Studio 54 New Years Eve Party: removed status+booking was {"status":"confirmed","booking":"open"}; ISA Miniature Convention: changed onSaleAt was {"onSaleAt":null}; Stanford Festive Market: changed sessions was {"sessions":[{"startDate":"2026-12-11","endDate":"2026-12-11","precision":"day",…; Ballyhoo: The 50 Year Celebration: confirmed status+booking was {"status":"announced","booking":"not_yet"}; The Latin Guitar with James Grace: changed price was {"price":{"min":200,"max":200,"currency":"ZAR"}}; A Tribute to Elton John: changed booking was {"booking":"open"}; Riaan Benadé Live: rescheduled sessions was {"sessions":[{"startDate":"2026-12-14","endDate":"2026-12-14","precision":"day",…; Crimson House: postponed status+booking was {"status":"confirmed","booking":"open"}; Neil Diamond Tribute - Johan Liebenberg: cancelled status+booking was {"status":"confirmed","booking":"open"}); 20 to 30 Sep 2027 first "Private whale watching charter with Southern Right Charters"; restore again: exit 1, "already has tables" |
+| E2E-01 | pass | 23 Nov 2026 | winter stay: 200, total 38; "Hermanus FynArts Festival" announced, booking not_yet, 2027-06-24..2027-07-04; "Sculpture on the Cliffs" confirmed, booking none, 2026-06-01..2027-06-30 (month); "Hermanus Country Market" confirmed, booking none, 2027-06-26 09:00; log: "Searched experiences" at info: count 20, total 38, 8 ms, userId 62ce9b41-2d92-4257-89bc-2342ccf65409 |
+| E2E-02 | pass | 23 Nov 2026 | category visual_arts: 4 (Hermanus FynArts Festival, Sculpture on the Cliffs, Akwaaba Market, Hermanus Country Market); tag whales: 3, every one tagged whales |
+| E2E-03 | pass | 23 Nov 2026 | 12 to 31 Dec, family and minimum age up to 10: 80 items, none for adults; minimum age 18 or more: 5 (Dam Fine Wine, Wild about Wine, Electro Dance - Sunset Beats to Late Night Bass, Somos Sunset House & Dining, Millennium Live by The Gecko) |
+| E2E-04 | pass | 23 Nov 2026 | winter stay, bookable true: 11, all confirmed, open and bookable (Private whale watching charter with Southern Right Charters, Boat-based whale watching with Southern Right Charters, Hermanus Whale Cruises boat-based whale watching, Shark Cage Diving & Surface Viewing, Shark cage diving with Cape Shark Adventures, Panthera Africa Sunset Visits, Cuvée Weekends, Family Sharing Lunch, Sourdough Baking Class, Deli Dining at Dal-Italia, Harold Porter National Botanical Garden visit) |
+| E2E-05 | pass | 23 Nov 2026 | by location: same 38 items as E2E-01; cape-agulhas, both, neither: 400 location: The feed does not cover a place called cape-agulhas. It covers: hermanus. Give one of them, or a point with near. \| 400 near: Give location or near, not both: the search is around one place. \| 400 location: Say where to search: give location, a place such as hermanus, or near, a point such as { "lat": -34.4187, "lng": 19.2345 }. |
+| E2E-06 | pass | 23 Nov 2026 | near the centre within 25 km: 37 items, the same as by location; radius 201: 400 "The radius can be at most 200 km. Give a smaller radiusKm, or leave it out for 60 km."; 120 with a position, 111 at 0 km; "Raiders of the Lost Ark: Open-Air Cinema" in Stanford at 21.2 km, out at 10 km |
+| E2E-07 | pass | 23 Nov 2026 | "sculpture and art galleries…": total 38, first three of the tier ["Sculpture on the Cliffs","Harold Porter National Botanical Garden visit","Fernkloof Fynbos Festival"], 13 ms; "FynArts": first of its tier "Hermanus FynArts Festival", first overall "Private whale watching charter with Southern Right Charters" Live run: "sculpture and art galleries…": total 38, first three of the tier ["Sculpture on the Cliffs","Harold Porter National Botanical Garden visit","Fernkloof Fynbos Festival"], 1980 ms; "FynArts": first of its tier "Hermanus FynArts Festival", first overall "Private whale watching charter with Southern Right Charters" |
+| E2E-08 | pass | 23 Nov 2026 | limit 10, offsets 0 to 30: totals 38, 38, 38, 38, sizes 10, 10, 10, 8, 38 distinct, E2E-01's order |
+| E2E-09 | pass | 23 Nov 2026 | tools/list: search_experiences, get_experience_changes; listChanged false; 5 search_experiences calls, each equal to its REST answer; log: "Tool called" at info: tool search_experiences, callerKind agent, arguments {"location":"hermanus","from":"2027-06-20","to":"2027-06-30"} |
+| E2E-10 | by hand | | |
+| E2E-11 | pass | 23 Nov 2026 | 11 Dec: "Rumours of Fleetwood Mac" confirmed, booking open, bookable, 2026-12-11 18:00, Hermanus Golf Club, R430; 12 Dec: not returned |
+| E2E-12 | pass | 23 Nov 2026 | 1 Dec to 10 Jan: "Swallow Series Wine Tasting Lunches" confirmed, booking open, bookable, 2026-12-05 12:00, 2027-01-09 12:00; 7 to 10 Dec: "Sourdough Baking Class" confirmed, booking open, bookable, 2026-12-10 11:00; 1 to 7 Feb: "Where the Wild Things Come to Rest: Carol Bryant Wildlife Sculpture Exhibition" confirmed, booking none, 2026-10-03..2027-03-31; not returned between their dates |
+| E2E-13 | pass | 23 Nov 2026 | 14 to 15 Aug 2027: "Kalfiefees Hermanus Kunstefees" expected, booking none, 2027-08-01..2027-08-31 (month); 1 to 5 Sep: not returned |
+| E2E-14 | pass | 23 Nov 2026 | December stay: "Hermanus Country Market" confirmed, booking none, 2026-12-12 09:00, 2026-12-19 09:00; "Hermanus Country Market Summer Night Markets" confirmed, booking none, 2026-12-09 17:00, 2026-12-16 17:00; Mon to Fri: no Saturday market; February: no night market |
+| E2E-15 | pass | 23 Nov 2026 | winter stay, tag whale-season: 4 items; FynArts tags books, whale-season, winter; Christmas Eve Dinner tags christmas, high-season, south-african-school-holidays, summer, wine; no season among 231 experiences |
+| E2E-16 | pass | 23 Nov 2026 | May 2028: "Hermanus Country Market" confirmed, booking none, 2028-05-06 09:00, 2028-05-13 09:00; September 2027: "Swallow Series Wine Tasting Lunches" confirmed, booking open, bookable, 2027-09-04 12:00; next editions: "Stanford in Bloom" expected, booking none, 2027-09-01..2027-09-30 (month); "Hermanus Botanical Society Flower Show" expected, booking none, 2027-09-01..2027-09-30 (month); "Hermanus Whale Festival" expected, booking none, 2027-10-01..2027-10-31 (month); "Pam Golding Hangklip Marathon" expected, booking none, 2027-10-01..2027-10-31 (month) |
+| E2E-17 | pass | 23 Nov 2026 | 2028-12-01 to 2028-12-14, past the 24 month horizon: 0 items, none recurring |
+| E2E-18 | pass | 23 Nov 2026 | schedule every minute, one source: run succeeded, found 1; "Nothing was pending."; 0 to embed; winter stay with a query: Hermanus FynArts Festival, by meaning true (live run) |
+| E2E-19 | pass | 23 Nov 2026 | run 1 failed: "GET http://127.0.0.1:50135/whats-on failed: connect ECONNREFUSED 127.0.0.1:50135"; "A job failed and will be tried again" at warn, attempt 1, wait {"from":60,"to":120} s; port opened, run 2 succeeded 106 s later as attempt 2 of job 8832301f-14a2-4f84-8598-3e5eeb0ef4d0; 0 listings missing |
+| E2E-20 | pass | 23 Nov 2026 | captures --no-model: 38 sources loaded, 357 experiences saved, 231 new, 0 failed; runs [{"status":"succeeded","n":38}]; raw listings [{"status":"processed","n":354}]; log: 38 "Run finished" lines with counts, 708 "Raw listing processed", 462 "Experience published"; log: 1065 events recorded, 1065 "Domain event published" lines at info, e.g. raw_listing.captured 52b92686-6a6f-4246-80a1-d5290135cb4e Live run: captures --no-model: 38 sources loaded, 357 experiences saved, 231 new, 0 failed; runs [{"status":"succeeded","n":38}]; raw listings [{"status":"processed","n":354}]; log: 38 "Run finished" lines with counts, 708 "Raw listing processed", 462 "Experience published"; log: 1065 events recorded, 1065 "Domain event published" lines at info, e.g. raw_listing.captured 13e1504f-6931-4aa4-9f74-9a7bf80be208 |
+| E2E-21 | pass | 23 Nov 2026 | second captures load: 38 sources, every one 0 new or changed; 231 experiences, no new version Live run: second captures load: 38 sources, every one 0 new or changed; 231 experiences, no new version; refetch "Wesgro Cape Overberg events" twice: Wesgro Cape Overberg events: 1 found, 0 new or changed, 1 unchanged, 0 removed; 231 experiences, no new version |
+| E2E-22 | pass | 23 Nov 2026 | Benguela Cove load: 4 of 14 pages changed; Race2Hermanus 1 of 1; 231 experiences, as before; "Andrew Young Live Concert" postponed, booking closed, 2027-01-09 17:30; "That ’80s Show" confirmed, booking open, bookable, 2026-12-12 19:30, 2027-03-06 19:30; Christmas Eve Dinner R650; "Race2Hermanus Triathlon" confirmed, booking open, bookable, 2027-05-02 07:30; log: 15 events recorded, 15 "Domain event published" lines at info, e.g. raw_listing.captured 69262767-8bbc-4148-9652-d2115e2f9808 |
+| E2E-23 | pass | 23 Nov 2026 | page deleted, three Benguela Cove loads: returned after the second, not after the third; stored status removed |
+| E2E-24 | pass | 23 Nov 2026 | 2026-12-11, query "Fleetwood Mac": "Rumours of Fleetwood Mac" returned once, one experience of 4 listings on 4 sources; 2026-11-28, query "Rosoberry": "Rosoberry Harvest Fest" returned once, one experience of 5 listings on 5 sources |
+| E2E-25 | pass | 23 Nov 2026 | reprocess with no selector: exit 1; FynArts Festival reprocessed and keeps its ID and version; Quicket: 63 of 63 listings sent back, 231 experiences as before, none with a new version, 0 pending Live run: reprocess with no selector: exit 1; FynArts Festival reprocessed and keeps its ID and version; Quicket: 63 of 63 listings sent back, 231 experiences as before, none with a new version, 0 pending; refetch --source, --listing and --location printed their counts; reprocess --experience --now kept the FynArts Festival's ID; 38 sources fetched for the place |
+| E2E-26 | pass | 23 Nov 2026 | December stay since T1: 200, 0 items, total 0 |
+| E2E-27 | pass | 23 Nov 2026 | 1 Dec 2026 to 31 May 2027 since T1: 6 items: Swallow Series Wine Tasting Lunches: removed status+booking was {"status":"confirmed","booking":"open"}; Race2Hermanus Triathlon: confirmed status+booking+bookingUrl was {"status":"announced","booking":"not_yet","bookingUrl":null}; That ’80s Show: rescheduled sessions was {"sessions":["2026-12-12..2026-12-12 19:30","2027-02-27..2027-02-27 19:30"]}; Dancing Queen: The Ultimate ABBA Experience: cancelled status+booking was {"status":"confirmed","booking":"open"}; Christmas Eve Dinner: changed price was {"price":{"min":null,"max":null,"currency":null}}; Andrew Young Live Concert: postponed status+booking was {"status":"confirmed","booking":"open"}. Since before the load, December stay: 88 items, each new with no fields and no previous |
+| E2E-28 | pass | 23 Nov 2026 | search 30 Jan 2027: Dancing Queen not returned; changes since T1, plain, bookable true, status confirmed: 6 items, Dancing Queen cancelled (was {"status":"confirmed","booking":"open"}), Swallow Series removed (was {"status":"confirmed","booking":"open"}) \| 5 items, Dancing Queen cancelled (was {"status":"confirmed","booking":"open"}), Swallow Series removed (was {"status":"confirmed","booking":"open"}) \| 5 items, Dancing Queen cancelled (was {"status":"confirmed","booking":"open"}), Swallow Series removed (was {"status":"confirmed","booking":"open"}) |
+| E2E-29 | pass | 23 Nov 2026 | "That ’80s Show" since T1: 2027-02-20 to 2027-02-28: rescheduled, movedOut true, sessions now 2026-12-12, 2027-03-06, before ["2027-02-27..2027-02-27 19:30"] \| 2027-03-01 to 2027-03-10: rescheduled, movedOut false, sessions now 2027-03-06, before [] |
+| E2E-30 | pass | 23 Nov 2026 | get_experience_changes with E2E-27's arguments: 6 items, equal to REST, the price change with fields ["price"] and previous {"price":{"min":null,"max":null,"currency":null}}; since an hour ahead: tool error invalid_input, [{"path":"since","message":"since is in the future. Give the time you last searched, such as 2027-02-01T09:30:00Z."}] |
+| E2E-31 | pass | 23 Nov 2026 | tenant travel_agency active, user client; two keys printed once; person key over REST and agent key over MCP: E2E-01's 38 items; again: exit 1 "There is already a tenant with the slug second-example-agency. Choose another slug.", exit 1 "There is already a user with this email address. Each user needs their own." |
+| E2E-32 | pass | 23 Nov 2026 | tenant second-example-app travel_app active {"currency":"ZAR"}; tenant list shows 4 tenants; the new agent key over MCP: 38 items |
+| E2E-33 | pass | 23 Nov 2026 | suspended: /v1/experiences/search 403 forbidden, /v1/experiences/search 403 forbidden, /mcp 403 forbidden, /mcp 403 forbidden; active again: 200, 200, 200, 200 |
+| E2E-34 | pass | 23 Nov 2026 | key revoke: "Revoked the person key "planning desk" of Second Planner <planner@second-agency.example.com>, ID iZ8hzmlvqpV2s8MTQCwUPB7wv8lwdfsH. Every call with it is refused from now on."; the revoked key: 401 with WWW-Authenticate, twice; the agent key: 200; key list: "planning desk" revoked, "trip assistant" enabled |
+| E2E-35 | pass | 23 Nov 2026 | 6 keys, REST and MCP at once, 3 rounds: 36 answers, all 200 and equal (total 38), none naming a tenant or user |
+| E2E-36 | pass | 23 Nov 2026 | 6 admin addresses with the planner's and the admin's keys: all 404 not_found; tools/list: two tools; list_tenants and issue_credential: -32602; OpenAPI has no tenant, user or credential path; App Planner's keys: 200 |
+| E2E-37 | pass | 23 Nov 2026 | no key, Bearer nonsense, "Token abc", "Bearer", /mcp and /v1/nothing-here without a key: 401 with WWW-Authenticate; /v1/nothing-here with a key: 404; /health: 200 {"status":"ok"}; /openapi.json: 401, then 200 equal to the committed file; x-api-key: 200 |
+| E2E-38 | pass | 23 Nov 2026 | 9 wrong inputs, each 400 invalid_input over REST and a tool error over MCP naming the field: from: "Give from, the first day of the stay, as a date such as 2027-06-20." \| to: "The stay ends before it starts: to is before from. Give the first day as from and the last day as to." \| date: "date is not a field this takes. Check its spelling." \| attributes.colour: "There is no attribute called colour. You can filter on: audience, category, format, language, minimum_age, scale, setting, tier, wheelchair_accessible." \| attributes.category: "category has no option opera. Use one of: music, performing_arts, film, visual_arts, food_and_drink, sport, outdoor_and_adventure, nature_and_wildlife, culture_and_heritage, wellness, holidays_and_celebrations, hobbies_and_lifestyle, community_and_causes, faith_and_spirituality, business_and_professional." \| attributes.minimum_age: "minimum_age takes a number, such as 12, or a range, such as { "max": 12 }." \| attributes.minimum_age: "The range for minimum_age is empty. Give min, max or both, such as { "max": 12 }." \| limit: "Give limit as a whole number from 1 to 100." |
+| E2E-39 | pass | 23 Nov 2026 | database cut: /v1/experiences/search 503 unavailable Retry-After 10, /mcp 503 unavailable Retry-After 10, /health 503 unavailable Retry-After 10, /openapi.json 503 unavailable Retry-After 10, /v1/experiences/changes 503 unavailable Retry-After 10; every operation 503; database back: 200, 200, 200, 200, 200; 298 answers of the run, 95 of them errors: none holds a stack trace, SQL, a table, a path, a library or a provider |
+| E2E-40 | pass | 23 Nov 2026 | API_RATE_LIMIT_MAX=5: requests 1 to 6 from one address 200, 200, 200, 200, 429, 429; a key issued with a limit of 5: searches 200, 200, 200, 200, 200, 429, Retry-After 60; another key 200; no 429 with the defaults |
+| E2E-41 | pass | 23 Nov 2026 | E2E-01's request e54b52ac-3cba-49be-821b-b39442099846: "Request completed" 200 in 33 ms, tenantId 86d7bb6d-5491-423a-9092-c264e8127439, userId 62ce9b41-2d92-4257-89bc-2342ccf65409, callerKind person, credentialId PPxXu5LXHHlaZjIG6TeBdkmBMxhVX1X0; 9 keys searched for in 4 logs: none found |
+| E2E-42 | pass | 23 Nov 2026 | 25 experiences against their captured pages: title 25, dates 25, status 25, venue 25, price 25, categories and tags 25 |
+| E2E-43 | pass | 23 Nov 2026 | today to 24 months, 60 km, 229 items: none over, none far away, none twice, no season, every title an experience, every bookable item with a link, Quicket days as listed |
+| E2E-44 | pass | 23 Nov 2026 | 20 to 30 Sep 2027: 39 items, first "Private whale watching charter with Southern Right Charters" (["luxury"]), tiers in order; luxury and premium: 6, no parkrun or market; REST and MCP equal |

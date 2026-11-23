@@ -297,7 +297,7 @@ export function registerPlanning(): void {
         `"FynArts": first of its tier "${festivalTier[0]?.title ?? ""}", first overall "${fynarts.result.items[0]?.title ?? ""}"`,
     );
     if (state.live) {
-      c.note("The run with the embedding model unreachable is E2E-07 on the server without AWS_REGION, in the live run.");
+      c.note("Here the query is ordered by meaning; the embedding model unreachable is the case pnpm e2e runs, with no AWS settings.");
     } else {
       c.ok(tookMs < 5_000 + 2_000, `with the embedding model unreachable the search took ${Math.round(tookMs)} ms`);
       c.note("This run has no AWS settings, so every query text was ordered by keyword alone: the third step is the first.");
