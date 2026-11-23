@@ -12,9 +12,9 @@ the subject.
 | # | Issue | Area | Status |
 | --- | --- | --- | --- |
 | 1 | The Docker engine was down, and port 5432 belongs to another project | Environment | Closed |
-| 2 | Which table holds the tenant | Organizations | Provisional |
-| 3 | Who an agent's credential belongs to | Identity | Provisional |
-| 4 | MCP sign-in with OAuth | Identity | Open |
+| 2 | Which table holds the tenant | Organizations | Closed |
+| 3 | Who an agent's credential belongs to | Identity | Closed |
+| 4 | MCP sign-in with OAuth | Identity | Closed |
 | 5 | An experience with no position of its own | Catalogue | Provisional |
 | 6 | Search cannot check attribute filters against the definitions | Catalogue | Open |
 | 7 | Semantic ranking is not built | Catalogue | To do |
@@ -72,33 +72,24 @@ this project now has a Postgres of its own:
 
 ## 2. Which table holds the tenant
 
-**Provisional.** From the open question in [data-model.md](data-model.md): Better Auth's organization plugin has its own
-organization and member tables, which overlap the tenant.
+**Closed, 2026-11-23.** Decided: the tenant is our own `tenant` table, owned by Organizations. Better Auth's
+organization plugin is not used. Version 1 is not a full SaaS, so there is no sign-up: the seed creates both sides.
 
-- **Built:** our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's
-  `user` table (`tenant_id`, `role`). The organization plugin is not used. A user belongs to one tenant, and a system
-  admin to none.
-- **The other way:** the organization plugin holds the tenant, with kind, status and configuration as extra fields on its
-  organization table, and membership and role in its member table. That allows a user in several tenants, and adds the
-  plugin's invitation table and its endpoints.
-- **Decide:** keep our own table, or move to the plugin.
+- **Our side:** the seed saves each tenant in the `tenant` table.
+- **Better Auth's side:** the seed saves each user on Better Auth's `user` table, with the tenant and the role in two
+  fields of ours (`tenant_id`, `role`), and issues each user's API keys through Better Auth. A user belongs to one
+  tenant, and a system admin to none.
+- Better Auth's HTTP handler is not mounted, so nothing signs up or signs in over HTTP.
 
 ## 3. Who an agent's credential belongs to
 
-**Provisional.** From the open question in [architecture.md](architecture.md).
-
-- **Built:** every credential is an API key that belongs to one user. Whether a person or an agent uses the key is
-  recorded on the key. An agent's key therefore acts as its user: the same tenant and the same role.
-- **The other way:** a key that belongs to the tenant, with no user behind it.
-- **Still missing either way:** no flow revokes a key. Keys are issued by the seed only.
+**Closed, 2026-11-23.** Decided: as built. Every credential is an API key that belongs to one user. Whether a person or
+an agent uses the key is recorded on the key, so an agent's key acts as its user: the same tenant and the same role.
 
 ## 4. MCP sign-in with OAuth
 
-**Open.** Version 1 authenticates MCP the same way as REST: an API key in the `Authorization: Bearer` header. The MCP
-specification's own sign-in is OAuth 2.1, which lets a client such as Claude connect by signing in, with no key to paste.
-Better Auth has a plugin for it.
-
-- **Decide:** whether version 1 needs it, or API keys are enough for the first round of testing.
+**Closed, 2026-11-23.** Decided: no OAuth in version 1. MCP authenticates the same way as REST, with an API key in the
+`Authorization: Bearer` header, for the first round and for testing.
 
 ## 5. An experience with no position of its own
 

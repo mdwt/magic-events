@@ -244,12 +244,12 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
 | Auth | Better Auth and its own tables in v1 |
+| Tenant | Our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's user table, and its organization plugin is not used. The seed creates the tenants, their users and their API keys. There is no sign-up |
 | Domain dependencies | Services call each other's services. No table holds a copy of another domain's data, and no domain event is needed for the hand-off between domains |
 | Raw content | Stored in Postgres in a `text` column, so JSON and HTML both fit and the copy stays exact. **Later:** move raw content to MinIO (S3) and store a key instead |
 | Trip context | None. The system is an experience feed that serves results from the caller's search parameters |
 
 ## Open questions
 
-- [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
 - [ ] A change row has one kind, but one version can both confirm an experience and move its dates. Which kind does changed-since report?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
