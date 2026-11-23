@@ -43,8 +43,10 @@ export interface DiscoverySettings {
   defaultFetchIntervalHours: number;
   defaultMissedRunsBeforeRemoval: number;
   defaultMaxProcessingAttempts: number;
-  // How often the schedule looks for sources that are due a fetch.
-  scheduleIntervalSeconds: number;
+  // When the schedule looks for sources that are due a fetch, as a cron expression in UTC.
+  scheduleCron: string;
+  // A run that is still running after this long did not finish, and counts as failed.
+  runTimeoutMinutes: number;
   // How many times a failed fetch is tried again before the source waits for its next regular fetch.
   fetchRetries: number;
   // How long after a failed fetch the first retry comes. The wait doubles with each retry.
@@ -60,8 +62,6 @@ export interface DiscoverySettings {
 }
 
 export interface ProcessingSettings {
-  // How long the processing worker waits before looking again when nothing is pending.
-  idleIntervalSeconds: number;
   // How many processing workers run at once.
   workers: number;
   // The sourcing horizon: an experience that starts later than this is left out of extraction.

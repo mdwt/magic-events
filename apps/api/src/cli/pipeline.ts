@@ -70,17 +70,14 @@ async function main(): Promise<void> {
 
     if (command === "discover" || command === "run") {
       const name = option("--source");
-      let runs: RunSummary[];
-      if (process.argv.includes("--due")) {
-        runs = await discovery.runDueSources();
-      } else {
-        const sources = (await discovery.listSources()).filter((source) =>
-          name === undefined ? source.active : source.name === name,
-        );
-        if (name !== undefined && sources.length === 0) throw new Error(`There is no source named "${name}".`);
-        runs = [];
-        for (const source of sources) runs.push(await discovery.runSource(source.id));
-      }
+      const sources = process.argv.includes("--due")
+        ? await discovery.findDueSources()
+        : (await discovery.listSources()).filter((source) =>
+            name === undefined ? source.active : source.name === name,
+          );
+      if (name !== undefined && sources.length === 0) throw new Error(`There is no source named "${name}".`);
+      const runs: RunSummary[] = [];
+      for (const source of sources) runs.push(await discovery.runSource(source.id));
       console.log("Discovery:");
       printRuns(runs);
     }

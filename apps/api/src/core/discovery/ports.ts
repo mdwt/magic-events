@@ -123,8 +123,9 @@ export interface Discovery {
   // Creates the source, or updates the one that has this name in this location.
   saveSource(input: SaveSourceInput): Promise<Source>;
   listSources(): Promise<Source[]>;
-  // Fetches every active source whose fetch interval has passed since its last run started.
-  runDueSources(): Promise<RunSummary[]>;
+  // The active sources that are due a fetch: never fetched, or one fetch interval since the last run started.
+  // A source that is being fetched now is not due. Trying a failed fetch again is the job queue's work, not this.
+  findDueSources(): Promise<Source[]>;
   // Fetches one source now, whether or not it is due. A fetch that fails is a failed run, not a thrown error.
   runSource(sourceId: string): Promise<RunSummary>;
   // Claims the next pending raw listing, or returns null when none is pending. Only the latest version of a
