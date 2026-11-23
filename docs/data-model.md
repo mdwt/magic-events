@@ -79,7 +79,7 @@ Stored with each experience, in their own tables:
 | Session | One unbroken stretch of time the experience is on (a show night, a market day, a three-day festival) | Every date the experience is on is inside a session. Can be cancelled or sold out on its own (see Dates and sessions) |
 | Attribute value | The experience's value for an attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
 | Tag | A tag on the experience | A tag appears once per experience |
-| Source link | A listing that this experience was built from | One experience can have links from many listings and sources. A listing can link to several experiences, with at most one link to each. Data processing matches listings by these links |
+| Source link | A listing that this experience was built from, with how many readings of the listing in a row did not yield it | One experience can have links from many listings and sources. A listing can link to several experiences, with at most one link to each. Data processing matches listings by these links. A link a listing's readings keep missing is removed only after the source's missed runs before removal readings in a row (see Matching in [data-processing.md](data-processing.md)) |
 | Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. When the dates changed, the previous values hold every session the experience had, generated ones included. Feeds changed-since (UC2) |
 
 ### Dates and sessions
