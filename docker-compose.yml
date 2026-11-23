@@ -1,3 +1,6 @@
+# The local infrastructure of magic-events: one Postgres. The job queue lives in the same database, so there is nothing
+# else to run. Start it with `pnpm db:up` and stop it with `pnpm db:down`. See "The database" in README.md.
+
 # A fixed name, so the main checkout and every worktree share the one database container and volume.
 name: magic-events
 
@@ -5,13 +8,18 @@ services:
   postgres:
     # Postgres 18 with the pgvector extension, which holds the experience embeddings.
     image: pgvector/pgvector:pg18
+    # Comes back up with Docker, until it is stopped with `pnpm db:down`.
     restart: unless-stopped
+    # The login and the development database, as DATABASE_URL in .env.example has them. The migrate script creates the
+    # database when it is missing, and the tests create their own, magic_events_test, on the same server.
     environment:
       POSTGRES_USER: magic
       POSTGRES_PASSWORD: magic
       POSTGRES_DB: magic_events
+    # On port 5434 of the host, so it does not clash with a Postgres already on 5432.
     ports:
       - "5434:5432"
+    # The data is kept in a named volume, so it survives `pnpm db:down`. `docker compose down -v` deletes it.
     volumes:
       - pgdata:/var/lib/postgresql
 

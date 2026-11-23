@@ -185,42 +185,6 @@ is set.
 
 ## Connecting Claude
 
-The MCP endpoint is `POST /mcp` (Streamable HTTP, stateless). It authenticates like REST: `Authorization: Bearer <key>`.
-The key comes from the seed, which prints it once, or from a system admin through the API.
-
-Which key to use: an agent's key in a tenant, so the logs show that an agent is calling; or a system admin's key, to use
-the onboarding tools.
-
-### Claude Code
-
-On the same machine as the server, Claude Code connects to localhost directly:
-
-```sh
-claude mcp add --transport http magic-events http://localhost:4000/mcp --header "Authorization: Bearer <key>"
-```
-
-### Claude on claude.ai, Claude Desktop and mobile
-
-A custom connector connects from Anthropic's cloud, not from your machine. The server must be reachable over the public
-internet at an HTTPS address on port 443, so `http://localhost` does not work. For a local server, open a tunnel:
-
-1. With the server running, run `pnpm tunnel` from the repository root. It runs
-   `cloudflared tunnel --url http://localhost:4000` and prints a public address, `https://<name>.trycloudflare.com`.
-2. Add `<name>.trycloudflare.com` to `API_ALLOWED_HOSTS` in `.env`, and restart the server. The MCP endpoint answers
-   only the host names listed there.
-3. In Claude, go to Settings, Connectors, Add custom connector. The URL is `https://<name>.trycloudflare.com/mcp`.
-4. For Authentication, choose **No sign-in**.
-5. Under **Request headers** (in some organisations under Advanced), add a header named `authorization` whose value is
-   `Bearer <key>`, typed in full: Claude sends the value exactly as entered.
-
-Things to know:
-
-- A quick tunnel gets a new address every time it starts. After restarting the tunnel, change `API_ALLOWED_HOSTS`,
-  restart the server, and remove the connector and add it again with the new address.
-- While the tunnel runs, the local API is reachable from the internet. Every endpoint but the health check needs an API
-  key.
-- Authentication settings cannot be changed once a connector is added. To change the key, remove the connector and add
-  it again.
-- Request headers on custom connectors are in beta and offered to a limited set of organisations. Where that section is
-  not shown, a server that authenticates with an API key cannot be added as a custom connector. Version 1 has no OAuth
-  (see [docs/v1-decisions.md](../../docs/v1-decisions.md)).
+The MCP endpoint is `POST /mcp` (Streamable HTTP, stateless), and it takes the same API key as REST:
+`Authorization: Bearer <key>`. The steps for Claude Desktop, claude.ai and Claude Code, with a Cloudflare tunnel for a
+local server, are in the [root README](../../README.md#connect-claude).

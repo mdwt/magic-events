@@ -1,104 +1,279 @@
 # magic-events
 
-A multi-tenant feed of what is on in a place: festivals, concerts, matches, markets, shows, exhibitions and seasons.
-Travel agencies and travel apps are the tenants. Their people and their AI agents query the same feed, through a REST
-API and an MCP endpoint, to plan trips. Version 1 covers Hermanus, South Africa.
+magic-events is a feed of what's on in a place: festivals, concerts, matches, markets, shows, exhibitions, and seasons
+like whale season. Travel agencies and travel apps use it to plan trips, and so do their AI agents. Everyone gets the
+same feed, over a REST API or an MCP endpoint. Version 1 covers Hermanus, South Africa.
 
-The brief and the principles the system is built on are in [AGENTS.md](AGENTS.md). Domain-driven design is kept light on
-purpose: don't overcook it.
+> **New here, person or agent?** Everything is written down. Start with
+> [docs/architecture.md](docs/architecture.md) for how the system is built, and [AGENTS.md](AGENTS.md) for the brief
+> and the principles behind it. The rest is listed under [Documentation](#documentation).
 
-## Projects
+## How it works
 
-| Project | What it is |
+```mermaid
+flowchart LR
+  SRC[Event sites and feeds] --> DIS[Discovery]
+  DIS --> DP[Data processing]
+  DP --> CAT[Catalogue]
+  CAT --> REST[REST API]
+  CAT --> MCP[MCP endpoint]
+  REST --> P[Planners and their apps]
+  MCP --> A[AI agents, such as Claude]
+```
+
+1. **Discovery** fetches listings from the Hermanus sources (RSS feeds, PDF calendars and web pages) on a schedule,
+   and keeps each one exactly as it was fetched.
+2. **Data processing** turns each listing into clean experiences. A language model extracts them, and they are then
+   categorised, tagged and matched against what is already there, so nothing shows up twice.
+3. **Catalogue** publishes the experiences and answers searches by place, dates and interests. It also remembers every
+   change, so a planner can come back months later and ask what's different.
+
+Two more domains sit around those three: **Identity** checks API keys and decides what a caller may do, and
+**Organizations** holds the tenants and their users.
+
+## Architecture
+
+The system is five domains on a ports-and-adapters (hexagonal) architecture, kept deliberately light. Each domain owns
+its data and reaches the outside world (Postgres, the models, the job queue, the sources) through a port, so any of
+them can be swapped by writing one adapter. REST, MCP and the scheduler are thin: they call the domains' services and
+hold no business rules. ESLint enforces these boundaries, so they don't depend on anyone remembering them.
+
+| Project | What's in it |
 | --- | --- |
-| [apps/api](apps/api/README.md) | The server: REST, MCP and the scheduler that runs the background jobs |
-| [apps/cli](apps/cli/README.md) | Command-line tools: the seed, the pipeline run by hand, and the loader for captured pages |
-| [apps/web](apps/web/README.md) | The web app (Next.js) |
 | [packages/core](packages/core/README.md) | The five domains, their ports, the outbound adapters and the wiring |
 | [packages/db](packages/db/README.md) | The Drizzle schema, the migrations and the database client |
+| [apps/api](apps/api/README.md) | The server: REST, MCP, and the scheduler that runs the background jobs |
+| [apps/cli](apps/cli/README.md) | The seed, the pipeline run by hand, and the loader for captured pages |
+| [apps/web](apps/web/README.md) | The web app (Next.js). A placeholder for now |
 
-## Documents
+Each project's README covers its own layout and commands. The full picture is in
+[docs/architecture.md](docs/architecture.md).
 
-| Document | Source of truth for |
+## Getting started
+
+You'll need three things installed:
+
+- **Node.js 24 or later**, from [nodejs.org](https://nodejs.org) or with `nvm install 24`.
+- **pnpm**: `npm install -g pnpm`.
+- **Docker**, for Postgres. [Docker Desktop](https://www.docker.com/products/docker-desktop/) is the easy route.
+
+Then, from the repository root:
+
+**1. Install the dependencies**
+
+```sh
+pnpm install
+```
+
+**2. Create your `.env`**
+
+```sh
+cp .env.example .env
+openssl rand -base64 48    # paste the output into .env as BETTER_AUTH_SECRET
+```
+
+`BETTER_AUTH_SECRET` is the only value you have to set. The defaults cover the rest.
+
+**3. Start Postgres**
+
+```sh
+pnpm db:up
+```
+
+This starts the one container in [docker-compose.yml](docker-compose.yml). More on it under
+[The database](#the-database).
+
+**4. Run the migrations and seed the data**
+
+```sh
+pnpm db:migrate    # creates the database and applies the migrations
+pnpm db:seed       # Hermanus, its sources, two example tenants, their users and API keys
+```
+
+The seed prints five API keys, each starting with `mev_`. **Copy them somewhere now.** They are stored only as a hash
+and can't be shown again, and running the seed a second time won't issue new ones.
+
+**5. Load some events**
+
+```sh
+pnpm cli:captures
+```
+
+This runs the captured Hermanus pages in `data/hermanus` through the pipeline, so you have real experiences to search
+without fetching a single website.
+
+**6. Start the server**
+
+```sh
+pnpm dev
+```
+
+The API is now on <http://localhost:4000>, and the web app on <http://localhost:3000>. Both restart when the code
+changes.
+
+**7. Check it works**
+
+```sh
+curl http://localhost:4000/health
+
+curl http://localhost:4000/v1/experiences/search \
+  -H "Authorization: Bearer <key>" \
+  -H "Content-Type: application/json" \
+  -d '{"location":"hermanus","from":"2026-12-10","to":"2026-12-20"}'
+```
+
+The first answers `{"status":"ok"}`. The second returns what's on in Hermanus over those ten days. Every endpoint is
+described in [apps/api](apps/api/README.md#endpoints) and in the OpenAPI document at `/openapi.json`.
+
+## The database
+
+Postgres is the only infrastructure, and Docker Compose runs it. Background jobs queue in the same database, so
+there's nothing else to start.
+
+| | |
 | --- | --- |
-| [docs/architecture.md](docs/architecture.md) | The domains, their boundaries, the rules, the background jobs and the use cases |
-| [docs/data-model.md](docs/data-model.md) | The resources the system stores and the rules they follow |
+| Image | `pgvector/pgvector:pg18`: Postgres 18 with pgvector, which stores the search embeddings |
+| Address | `localhost:5434`, so it won't clash with a Postgres you already run on 5432 |
+| Login | User `magic`, password `magic`, database `magic_events` |
+| Data | The `pgdata` volume, which survives a restart |
+
+```sh
+pnpm db:up                         # start it in the background
+pnpm db:down                       # stop it and keep the data
+docker compose logs -f postgres    # watch its logs
+docker compose down -v             # stop it and delete the data
+```
+
+The Compose project has a fixed name, `magic-events`, so the main checkout and every git worktree share one container
+and one database. After `docker compose down -v`, run steps 3 to 5 again to get back to a working setup. That is also
+the way out if you lose your API keys.
+
+## Connect Claude
+
+The server speaks MCP at `/mcp`, so Claude can search the feed for you and check what changed since last time. It
+signs in with the same API keys as REST. Use an **agent key** from the seed, such as the Agency Planner's
+`seed agent key`, so the logs show that an agent is calling.
+
+### Claude Desktop
+
+Claude Desktop reaches MCP servers through a custom connector, and connectors call out from Anthropic's cloud, not
+from your machine. So `http://localhost:4000` won't work: the server needs a public HTTPS address. A Cloudflare quick
+tunnel gives it one for free, with no account.
+
+**1. Install cloudflared**
+
+```sh
+brew install cloudflared
+```
+
+On Linux or Windows, see
+[Cloudflare's downloads](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/).
+
+**2. Open the tunnel**
+
+With the server running, in a second terminal:
+
+```sh
+pnpm tunnel
+```
+
+It prints a public address like `https://<random-words>.trycloudflare.com`. Leave it running.
+
+**3. Allow the tunnel's host name**
+
+The MCP endpoint only answers to host names it knows. Add the tunnel's to `API_ALLOWED_HOSTS` in `.env`, without
+`https://`, then restart the server:
+
+```sh
+API_ALLOWED_HOSTS=localhost,127.0.0.1,[::1],<random-words>.trycloudflare.com
+```
+
+A quick check that the tunnel reaches the server:
+
+```sh
+curl https://<random-words>.trycloudflare.com/health
+```
+
+**4. Add the connector**
+
+1. In Claude Desktop, open **Customize**, then **Connectors**.
+2. Click **Add**, then **Add custom connector**.
+3. Name it `magic-events`, set the URL to `https://<random-words>.trycloudflare.com/mcp`, and click **Continue**.
+4. For authentication, choose **No sign-in**.
+5. Under **Request headers**, pick `authorization` and enter `Bearer <key>` as the value. Type the word `Bearer` and
+   the space yourself: Claude sends the value exactly as you enter it.
+6. Click **Add**.
+
+On a Team or Enterprise plan, an owner adds it instead, under **Organization settings**, **Connectors**, **Add**,
+**Custom**, **Web**. Members then find it under **Customize**, **Connectors** and click **Connect**.
+
+**5. Use it**
+
+In a chat, click **+**, open **Connectors**, and turn `magic-events` on. Then ask something like:
+
+> What's on in Hermanus from 10 to 20 December 2026 for a couple who like art and wine?
+
+The same connector works on claude.ai and in the mobile apps.
+
+Good to know:
+
+- **The address changes every time the tunnel starts.** After a restart, update `API_ALLOWED_HOSTS`, restart the
+  server, then remove the connector and add it again with the new address.
+- **A connector's sign-in can't be edited.** To change the key, remove the connector and add it again.
+- **Request headers are in beta.** If the dialog has no **Request headers** section, your organisation doesn't have
+  them yet, and a server that signs in with an API key can't be added. Version 1 has no OAuth.
+- **The tunnel puts your local API on the internet.** Everything except `/health` needs an API key. Stop the tunnel
+  with Ctrl+C when you're done.
+
+### Claude Code
+
+Claude Code runs on your machine, so it connects to localhost directly, with no tunnel:
+
+```sh
+claude mcp add --transport http magic-events http://localhost:4000/mcp --header "Authorization: Bearer <key>"
+```
+
+## Fetching live data
+
+The captured pages are enough to explore. To fetch the real sources, add two things to `.env`:
+
+- `ANTHROPIC_API_KEY`, for the language model that turns listings into experiences.
+- `AWS_REGION` and AWS credentials, for the embedding model on Amazon Bedrock. Without them search still works, and
+  orders results by keyword alone.
+
+`pnpm cli:pipeline run` then fetches every source, processes what it found and embeds the results. The commands are in
+[apps/cli](apps/cli/README.md).
+
+One thing to know: a running server does this by itself. Its scheduler looks for due sources every 15 minutes, so it
+fetches real websites and calls the language model without being asked.
+
+## Documentation
+
+| Document | What it covers |
+| --- | --- |
+| [docs/architecture.md](docs/architecture.md) | The domains, their boundaries, the rules, the background jobs and the use cases. Start here |
+| [docs/data-model.md](docs/data-model.md) | What the system stores, and the rules the data follows |
 | [docs/discovery.md](docs/discovery.md) | How listings are fetched from sources |
 | [docs/data-processing.md](docs/data-processing.md) | How a raw listing becomes experiences, and how search ranks them |
 | [docs/domain-events.md](docs/domain-events.md) | The domain event log |
 | [docs/sources.md](docs/sources.md) | The sources the system holds for Hermanus |
 | [docs/hermanus-sources.md](docs/hermanus-sources.md) | Which Hermanus sites answer a plain fetch, checked one by one |
 | [docs/end-to-end.md](docs/end-to-end.md) | What version 1 must do, as scenarios a tester runs from the outside |
-| [docs/v1-decisions.md](docs/v1-decisions.md) | What version 1 leaves out and why, for review |
+| [docs/v1-decisions.md](docs/v1-decisions.md) | What version 1 leaves out, and why |
 | [docs/issues.md](docs/issues.md) | The issues and open questions being worked on |
 
-## Getting started
+## Contributing
 
-Needs Node 24 or later, pnpm and Docker.
+Before you push, run the three checks CI runs on every push and pull request:
 
 ```sh
-pnpm install
-cp .env.example .env    # then set BETTER_AUTH_SECRET: openssl rand -base64 48
-pnpm db:up              # Postgres 18 with pgvector, on port 5434
-pnpm db:migrate         # creates the database and applies the migrations
-pnpm db:seed            # Hermanus, its sources, tenants and users; prints the API keys once
-pnpm cli:captures       # loads the captured Hermanus pages in data/hermanus through the pipeline
-pnpm dev                # the API on port 4000 and the web app on port 3000
+pnpm lint         # ESLint, which also checks the architecture rules
+pnpm typecheck
+pnpm test
 ```
 
-Keep the keys the seed prints: they are stored only as a hash and are not shown again. Running the seed again issues
-none for a user that already has them.
+The tests need Postgres running and nothing else: the models are fakes. They use the database in `TEST_DATABASE_URL`,
+which they create, migrate and empty themselves, so never point it at a database you want to keep.
 
-For real data, set these in `.env` too:
-
-- `ANTHROPIC_API_KEY`, for the language model. `pnpm cli:captures` asks it only when a match is unsure, and never with
-  `--no-model`. Fetching the live sources needs it for every listing.
-- `AWS_REGION` and AWS credentials, for the embedding model on Amazon Bedrock. Without them, search orders by keyword
-  alone.
-
-`pnpm cli:pipeline run` fetches the live sources instead, then processes and embeds what it found. The server does the
-same by itself: once it is listening, its scheduler fetches every active source that is due, so it calls the sources'
-websites and the language model with no one asking. The commands are in [apps/cli](apps/cli/README.md).
-
-## Scripts
-
-| Script | Does |
-| --- | --- |
-| `pnpm dev` | Runs the API and the web app in watch mode |
-| `pnpm build` | Checks the types of every project and builds the web app |
-| `pnpm typecheck` | Checks the types of every project |
-| `pnpm lint` | Runs ESLint in every project, which also checks the architecture rules |
-| `pnpm test` | Runs the tests of every project, one project at a time |
-| `pnpm db:up`, `pnpm db:down` | Starts and stops Postgres in Docker |
-| `pnpm db:migrate`, `pnpm db:migrate:test` | Applies the migrations to the development and the test database |
-| `pnpm db:generate` | Generates a migration from a change to the schema |
-| `pnpm db:seed`, `pnpm db:seed:samples` | Seeds the default data, and the default data with sample experiences |
-| `pnpm db:studio` | Opens Drizzle Studio |
-| `pnpm cli:pipeline <command>` | Runs the pipeline by hand: `discover`, `process`, `embed`, `run`, `refetch` or `reprocess` |
-| `pnpm cli:captures` | Loads the captured pages in `data/hermanus` through the pipeline |
-| `pnpm openapi`, `pnpm openapi:check` | Writes the API's OpenAPI document to `apps/api/openapi.json`, and fails when that file is out of date |
-| `pnpm tunnel` | Opens a Cloudflare quick tunnel to the API on port 4000, for Claude to reach it |
-
-The arguments go straight after the script name, with no `--`: `pnpm cli:pipeline discover --source "Hermanus Times"`.
-
-The database tests use the database in `TEST_DATABASE_URL`, which they create, migrate and empty themselves. Never
-point it at a database you want to keep.
-
-## Connecting Claude
-
-Claude Code on the same machine connects to `http://localhost:4000/mcp` with an API key. Claude on claude.ai, Claude
-Desktop or mobile connects from Anthropic's cloud, so the server must be reachable at a public HTTPS address, which
-`pnpm tunnel` gives a local one. The steps are in [apps/api: Connecting Claude](apps/api/README.md#connecting-claude).
-
-## Continuous integration
-
-[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every push and every pull request. It installs with the
-pnpm version in `packageManager` and a frozen lockfile, on the Node version in `engines`, then runs `pnpm lint`,
-`pnpm typecheck` and `pnpm test` as separate steps, for every project. The tests run against a Postgres service with
-pgvector, the same image as `docker-compose.yml`, and need no model key: the language model and the embedding model are
-fakes in the tests. A newer push to the same branch cancels the run still going.
-
-## Workflow
-
-Large changes are made in a separate git worktree with a clean install, committed as they go, and squash-merged into
-`main` only when asked. See [AGENTS.md](AGENTS.md).
+Large changes happen in a separate git worktree and are squash-merged into `main`. The details are in
+[AGENTS.md](AGENTS.md).
