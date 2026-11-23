@@ -8,6 +8,55 @@
       "when": 1795420131611,
       "tag": "0000_married_centennial",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795438266446,
+      "tag": "0001_data_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795438274791,
+      "tag": "0002_events_resource_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795444739168,
+      "tag": "0003_experience_page_url",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795446199471,
+      "tag": "0004_experience_embedding_failures",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795449075375,
+      "tag": "0005_search_indexes",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795449710733,
+      "tag": "0006_experience_slug_prefix",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795454030559,
+      "tag": "0007_source_link_missed_readings",
+      "breakpoints": true
     }
   ]
 }

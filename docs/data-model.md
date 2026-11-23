@@ -26,10 +26,11 @@ flowchart LR
   DIS[Discovery] --> CAT[Catalogue]
   DP[Data processing] --> DIS
   DP --> CAT
+  CAT --> DP
   ID[Identity] --> ORG[Organizations]
 ```
 
-Arrows point from the service that calls to the service it calls. Catalogue and Organizations call nobody, so there are no cycles.
+Arrows point from the service that calls to the service it calls. Catalogue and Data processing call each other: Data processing saves experiences through Catalogue, and Catalogue reads the attribute definitions and the tag and season slugs from Data processing to check a search's filters. Organizations calls nobody.
 
 | Domain | Repository | What it holds |
 | --- | --- | --- |
@@ -60,13 +61,15 @@ The thing a client searches. System-managed and visible to every tenant. Every e
   - status and booking (below)
   - when: its sessions, its recurrence if it is recurring, timezone, opening hours (see Dates and sessions)
   - where: location, venue name and address, city, position
-  - price range, currency, on-sale time, booking close time, booking link, image
+  - price range for one person, currency, on-sale time, booking close time, booking link, image, its own page address if it has one. An organiser's own page about its own offerings is the page address of each of them; a page that lists other organisers' events is the page address of none (see Extractors in [data-processing.md](data-processing.md))
   - version
 - **Rules:**
   - Belongs to one location. Stores no distance; distance comes from the caller's point and radius at query time.
   - Its dates are its sessions, and it is on no other date (see Dates and sessions).
+  - A price of 0 and 0 means it is free. An empty price means the source states none. A lowest price of 0 beside a higher one means some get in free, such as children (see Price in [data-processing.md](data-processing.md)).
   - The version goes up on every real change, including changes to its sessions, attributes, tags and source links. Re-verifying a source does not count as a change, and an update that changes nothing doesn't bump the version. Sessions that Catalogue generates further ahead for an open-ended recurring experience do not count as a change either.
-  - An experience is not deleted while a source still lists it. There is no soft delete.
+  - Its fields come from its highest-priority listing where it states them, and from its other listings where it does not, as "When sources disagree" in [data-processing.md](data-processing.md) says. Processing a listing again with unchanged content is no change and writes no version.
+  - An experience is not deleted while a source still lists it. There is no soft delete. The pipeline never deletes one at all (see Nothing is lost in [discovery.md](discovery.md)).
   - When its last source link is removed because no source lists it any more, the experience is set to Removed, unless it is already Past or Cancelled (see [discovery.md](discovery.md)).
 
 Stored with each experience, in their own tables:
@@ -76,8 +79,8 @@ Stored with each experience, in their own tables:
 | Session | One unbroken stretch of time the experience is on (a show night, a market day, a three-day festival) | Every date the experience is on is inside a session. Can be cancelled or sold out on its own (see Dates and sessions) |
 | Attribute value | The experience's value for an attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
 | Tag | A tag on the experience | A tag appears once per experience |
-| Source link | A listing that this experience was built from | One experience can have links from many listings and sources. A listing can link to several experiences, with at most one link to each. Data processing matches listings by these links |
-| Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. Feeds changed-since (UC2) |
+| Source link | A listing that this experience was built from, with how many readings of the listing in a row did not yield it | One experience can have links from many listings and sources. A listing can link to several experiences, with at most one link to each. Data processing matches listings by these links. A link a listing's readings keep missing is removed only after the source's missed runs before removal readings in a row (see Matching in [data-processing.md](data-processing.md)) |
+| Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. When the dates changed, the previous values hold every session the experience had, generated ones included. Feeds changed-since (UC2) |
 
 ### Dates and sessions
 
@@ -149,14 +152,14 @@ What each status allows:
 | --- | --- | --- | --- |
 | Expected | Yes | No | Yes |
 | Announced | Yes | No | Yes |
-| Confirmed | Yes | Yes, while booking is Open | Yes |
+| Confirmed | Yes | Yes, while booking is Open and it has a link to book through | Yes |
 | Postponed | Yes | No | Yes |
 | Cancelled | No | No | Yes, as Cancelled |
 | Removed | No | No | Yes, as Removed |
 | Past | No | No | No |
 
-- An experience is bookable only when status is Confirmed and booking is Open. Everything else is info only.
-- A client can filter search to bookable experiences. An experience whose booking is Closed or Sold out is left out of that filter, and stays in search as info only while its status allows.
+- An experience is bookable only when status is Confirmed, booking is Open, and it has a link to book through: its booking link, or failing that its own page address. Everything else is info only. One that is Confirmed and Open with neither link gives a planner nothing to act on, so it is not bookable.
+- A client can filter search and changed-since to bookable experiences. The filter and the `bookable` flag on each result follow the same rule, so the filter returns exactly the results marked bookable. An experience whose booking is Closed or Sold out, or that has no link to book through, is left out of that filter, and stays in search as info only while its status allows.
 
 | Change | Reported by changed-since as |
 | --- | --- |
@@ -171,15 +174,33 @@ What each status allows:
 
 Dates changed means a session was added, moved or removed, or the recurrence changed.
 
+Changed-since takes the same search parameters as a search, without the query text, and the time of the client's last search. It returns one entry for each experience with a change since then, the most recent change first. Each entry carries:
+
+- **The change that matters most to a planner:** the first that applies of cancelled, removed, postponed, rescheduled, confirmed, new and changed. An experience first published since then is New, unless it has since been cancelled or removed.
+- **Every change since then,** newest first.
+
+Each change says what it changed and what that was before, read from its change row:
+
+- **Fields:** the experience's fields it changed, by their names in the result: title, status, booking, type, sessions, price, venue, openingHours, onSaleAt, bookingClosesAt, bookingUrl, pageUrl, imageUrl, summary, description and attributes. A change to the recurrence is a change to the sessions. Tags and seasons, the profile, the embedding, the source links and the version are never named, so a change to those alone names nothing.
+- **Previous:** what each named field a planner acts on was before, in the shape the result gives it now, so the experience beside it is the value after: a status or a booking as its word, a price as min, max and currency, a venue as the result's venue, a link or a time as text or empty, attributes by key. Previous sessions are the ones it was on, not cancelled, during the dates asked for, as the result shows sessions; one the change row does not say was sold out has no sold-out flag. Summary, description and the image are named with no earlier value: long text says little a planner acts on and would make every answer long. A change row that holds only an old recurrence rule gives no earlier sessions, since its dates were never stored.
+- **New** has no fields and no previous values: there was nothing before.
+
+Status and bookable narrow only the experiences that are going ahead. A Cancelled or Removed experience that matches the place, dates, attributes and tags is always reported. It is matched on its sessions in the dates, whatever each session's status.
+
+An experience the client saw for its dates and that has since moved out of them is reported too, because that is the change a planner most needs to hear:
+
+- **Matched on its sessions as they were.** Its first change row after the time given that holds previous sessions holds them as they were at that time. If one of them was Scheduled and overlapped the dates, the experience is reported, with the change kind it got, usually Rescheduled. One first published after that time was never seen by the client, so it is not matched this way. Place, attributes, tags, status and bookable apply as above, to the experience as it is now.
+- **Marked as moved out.** An entry whose experience has no session in the dates now (no Scheduled one, or none at all for a Cancelled or Removed one) carries `movedOut: true`. Its sessions are then the ones it has now, all outside the dates: where it moved to, or none when it has no dates left. Every other entry has `movedOut: false` and carries its sessions in the dates.
+
 ### Catalogue settings
 
 System settings are environment variables, read through the settings provider (see [architecture.md](architecture.md)).
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `CATALOGUE_PAST_CHECK_INTERVAL_MINUTES` | 60 | How often Catalogue moves finished experiences to Past, closes bookings whose close time has passed, and generates the sessions of open-ended recurring experiences further ahead |
+| `CATALOGUE_UPKEEP_CRON` | `0 * * * *` | When Catalogue's upkeep runs, as a cron expression in UTC: every hour. The upkeep moves finished experiences to Past, closes bookings whose close time has passed, and generates the sessions of open-ended recurring experiences further ahead |
 | `CATALOGUE_SESSION_HORIZON_MONTHS` | 24 | How far ahead Catalogue generates the sessions of an open-ended recurring experience. Trips are booked up to 18 months ahead |
-| `SEARCH_DEFAULT_RADIUS_KM` | 25 | The radius used when a client's search gives none |
+| `SEARCH_DEFAULT_RADIUS_KM` | 60 | The radius used when a client's search gives none. Wide enough to reach the neighbouring towns a location's sources cover, such as Gansbaai and Pringle Bay from Hermanus |
 | `SEARCH_MAX_RADIUS_KM` | 200 | The largest radius a client may ask for |
 
 ## Data processing
@@ -199,7 +220,7 @@ The description is the context the classifier reads to decide when a definition 
 A named period of the year in one location, such as whale season in Hermanus. Seasons are predefined rows. A season has no source, and it is not an experience or an experience type.
 
 - **Holds:** name, slug, description, the location it applies to, its dates.
-- **Rules:** while it processes, Data processing gives each experience the seasons of its location that its dates fall inside, as tags (see [data-processing.md](data-processing.md)). Catalogue stores them with the experience's other tags.
+- **Rules:** while it processes, Data processing gives each experience the seasons of its location that all of its dates fall inside, as tags (see [data-processing.md](data-processing.md)). Catalogue stores them with the experience's other tags. The tag is on the experience, not on a session, so a market that runs all year carries no season.
 - The system starts with whale season, South African school holidays, high season, and summer, autumn, winter and spring. Their dates are rows.
 
 ## Discovery
@@ -222,7 +243,7 @@ Better Auth's tables hold users, sessions and accounts. Identity also records wh
 
 The `events` table is an append-only record of what happened to raw listings and experiences. Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded. Catalogue appends one with every version of an experience. Each is written in the same transaction as the change it records.
 
-The table belongs to no domain: a domain's repository appends its own domain events, and nothing reads the table. Domains call each other's services and no hand-off depends on a domain event. The names, the columns and the six domain events are in [domain-events.md](domain-events.md).
+The table belongs to no domain: a domain's repository appends its own domain events, and nothing reads the table. The domain's service also publishes each one through the domain event port, once the change is saved. Domains call each other's services and no hand-off depends on a domain event. The names, the columns and the six domain events are in [domain-events.md](domain-events.md).
 
 ## Decisions
 
@@ -231,7 +252,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Terms | "Experience" is the thing a traveller goes to; "event" means domain event only |
 | Domain event names | `resource.verb`, lowercase, verb in the past tense |
 | Domain events defined | Six, only for sourcing and processing experiences, listed in [domain-events.md](domain-events.md). Locations, tenants and users raise none |
-| Domain event log | Appended to the `events` table as a record of what happened. Nothing reads it |
+| Domain event log | Appended to the `events` table as a record of what happened, and published through the domain event port. Nothing reads the table, and nothing subscribes yet |
 | Listings | Discovery keeps one lasting record per listing and fetches it again on every run. Raw listings are the versions of its content |
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |
@@ -239,17 +260,20 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Attributes and tags | Data processing owns the definitions: a configurable list in the database of attributes with a name, a description, a type and a default value, their options, and tags. They are rows with a default set, not enums. Catalogue owns each experience's attribute values and tags, which are what clients query |
 | Dates | An experience's dates are its sessions, and it is on no other date. Search by dates matches sessions, never the span from the first date to the last |
 | Types | Single is one session. A run is one session per listed date, in a row or not. Recurring has a recurrence, from which Catalogue generates the sessions, with skipped and extra dates |
-| Seasons | Not an experience and not an experience type. Predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates fall inside them |
+| Seasons | Not an experience and not an experience type. Predefined rows per location, owned by Data processing, and given as tags to the experiences whose dates all fall inside them |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
+| Position | An experience's own position, the venue's coordinates, is optional. One with no position is searched from its location's centre |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
+| Bookable | Confirmed, booking Open, and a booking link or, failing that, the experience's own page address. The `bookable` flag and the bookable filter apply the same rule |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
+| Moved out of the dates | Changed-since matches an experience on its sessions now and on its sessions before the first change since the time given, read from that change row. One that matched only before is reported with `movedOut: true` and the sessions it has now |
+| Change kind | A change row has one kind. When one version changes several things, it is the first that applies of cancelled, removed, postponed, rescheduled, confirmed and changed |
 | Auth | Better Auth and its own tables in v1 |
+| Tenant | Our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's user table, and its organization plugin is not used. The seed creates the tenants, their users and their API keys. There is no sign-up. A system admin can also onboard a tenant from the command line, with `pnpm cli:admin` (UC4 in [architecture.md](architecture.md)) |
 | Domain dependencies | Services call each other's services. No table holds a copy of another domain's data, and no domain event is needed for the hand-off between domains |
 | Raw content | Stored in Postgres in a `text` column, so JSON and HTML both fit and the copy stays exact. **Later:** move raw content to MinIO (S3) and store a key instead |
 | Trip context | None. The system is an experience feed that serves results from the caller's search parameters |
 
 ## Open questions
 
-- [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
-- [ ] A change row has one kind, but one version can both confirm an experience and move its dates. Which kind does changed-since report?
-- [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
+None. The working list is in [issues.md](issues.md).

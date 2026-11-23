@@ -1,0 +1,44 @@
+[
+  {
+    "source": "Trail Series Super League (Wildrunner)",
+    "sourceListingId": "https://www.trailseries.co.za/races#kogelberg-2027",
+    "url": "https://www.trailseries.co.za/races",
+    "rawFile": "raw/trail-series-kogelberg/races.txt",
+    "fetchedAt": "2026-11-23T13:41:59Z",
+    "title": "Trail Series Super League: Kogelberg Biosphere Reserve",
+    "summary": "A Trail Series Super League trail run through the Kogelberg Biosphere Reserve surrounding Kleinmond, with 23.5 km, 14 km and 7.3 km routes.",
+    "description": "Experience some of the most spectacular routes in the TSSL, through the Kogelberg Biosphere Reserve surrounding Kleinmond. This is as diverse a route as you can get with coastal pathways, forests and mountain trails complete with spectacular ocean views.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-08-15",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Kogelberg Biosphere Reserve",
+      "city": "Kleinmond"
+    },
+    "hints": [
+      "UP COMING",
+      "23.5km",
+      "14km",
+      "7.3km"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "trail-running"
+    ],
+    "profile": "The Kogelberg leg of the Trail Series Super League is a trail run through the Kogelberg Biosphere Reserve around Kleinmond on Sunday 15 August 2027. Runners choose a 23.5 km, 14 km or 7.3 km route over coastal paths, forest and mountain trails with ocean views. Entries are not open yet; the short route suits newer trail runners and the long route more experienced ones."
+  }
+]

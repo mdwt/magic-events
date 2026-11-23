@@ -1,0 +1,588 @@
+URL: https://www.quicket.co.za/events/401463-somos/
+Fetched: 2026-11-23T13:30:28Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+No under 18s
+
+#
+Somos
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Shane
+
+Follow
+
+Sun Dec 20, 15:00 - Sun Dec 20, 22:00
+
+Bossa Hermanus
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Somos presents: Sunset House & Dining
+
+Join us on the terrace for an 7hour debut day-to-night journey curated by Somos. We are bringing together good food, great energy, and house music as day turns into night.
+
+Starting under the warm afternoon sun at 3:00 PM, setting the tone with smooth melodic house,deep house ,soulful house ,Afro house, deep sunset grooves and your favourite sing alongs into the golden hour sequence.
+
+EVENT DETAILS
+
+• Time: 3:00 PM – 10:00 PM
+
+• Venue: Bossa Hermanus (Outdoor Terrace)
+
+• Music Style: Deep,tech ,soulful House, Melodic House & Afro House
+
+• Dress Code: Summer Chic / Smart Casual
+
+Ladies&Gents Make a effort
+
+(No athletic sportswear, tracksuits, no gym caps, or casual beach slides)
+
+• Table Bookings: DM @somos_evnts on Instagram
+
+SAFETY & SECURITY
+
+Dedicated security will be present throughout the event to ensure a safe, smooth, and enjoyable environment for everyone.
+
+TERMS & CONDITIONS
+
+• Media Consent: Filming and photography will take place throughout the event. By entering, you consent to being captured on photo and video for promotional and social media content.
+
+• Disclaimer of Liability: Attendance is at your own risk. Somos Events and venue management accept no responsibility for loss, theft, or damage to personal property, or personal injury sustained on-site. Please celebrate responsibly.
+
+We cannot wait to welcome you to the first edition of Somos
+
+Bring the energy,make an effort with dress code and get ready for a seamless day-to-night journey.See you on December 20th!
+
+## DIRECTIONS
+
+Somos
+
+Bossa Hermanus
+
+Hermanus Sports Club, Jose Burman Dr, Hermanus, 7200, South Africa
+
+Get Directions
+
+## DISCOVER
+
+AFRO HOUSE
+
+DEEP HOUSE
+
+MELODIC HOUSE
+
+SOULFUL HOUSE
+
+TECH HOUSE
+
+From
+
+R80
+
+No under 18s
+
+Sun Dec 20, 15:00 - Sun Dec 20, 22:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Bossa Hermanus
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Somos",
+  "startDate": "2026-12-20T13:00:00Z",
+  "endDate": "2026-12-20T20:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1012766_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Bossa Hermanus",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Hermanus Sports Club, Jose Burman Dr, Hermanus, 7200, South Africa",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/401463-somos/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "\r\nSomos presents: Sunset House &amp; Dining\r\nJoin us on the terrace for an 7hour debut day-to-night journey curated by Somos. We are bringing together good food, great energy, and house music as day turns into night.\r\nStarting under the warm afternoon sun at 3:00 PM, setting the tone with smooth melodic house,deep house ,soulful house ,Afro house,  deep sunset grooves and your favourite sing alongs into the golden hour sequence.\r\nEVENT DETAILS• Time: 3:00 PM – 10:00 PM• Venue: Bossa Hermanus (Outdoor Terrace)• Music Style: Deep,tech ,soulful House, Melodic House &amp; Afro House• Dress Code: Summer Chic / Smart CasualLadies&amp;Gents Make a effort (No athletic sportswear, tracksuits, no gym caps, or casual beach slides)• Table Bookings: DM @somos_evnts on Instagram\r\nSAFETY &amp; SECURITYDedicated security will be present throughout the event to ensure a safe, smooth, and enjoyable environment for everyone.\r\nTERMS &amp; CONDITIONS• Media Consent: Filming and photography will take place throughout the event. By entering, you consent to being captured on photo and video for promotional and social media content.• Disclaimer of Liability: Attendance is at your own risk. Somos Events and venue management accept no responsibility for loss, theft, or damage to personal property, or personal injury sustained on-site. Please celebrate responsibly.\r\nWe cannot wait to welcome you to the first edition of SomosBring the energy,make an effort with dress code and get ready for a seamless day-to-night journey.See you on December 20th!\r\n",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/401463-somos/#tickets",
+      "price": 100.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-09T17:00:00Z",
+      "sku": "761777"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/401463-somos/#tickets",
+      "price": 80.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-03T17:00:00Z",
+      "sku": "761779"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Shane",
+    "url": "https://www.quicket.co.za/app/#/account/event/401463/profile"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=401463, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1012775_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": true,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 401463,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Somos",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 97732,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "093a61fd-02f1-4a78-96da-03eaf6116045",
+ "seatingPricing": [],
+ "seatingProductId": "401463",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "Includes general event access. Limited general allocation available until sold out. Arrive early to catch the sunset session.\nWant to upgrade to a table? DM us on IG (@somos_evnts) for  table bookings.",
+   "extraServiceFee": 5.64,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 761777,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "General",
+   "price": 100,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "13 Dec 2026",
+   "serviceFee": 13.14,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    4
+   ],
+   "appliesTo": 1,
+   "description": "Includes general event access. Limited early bird allocation available until sold out. Arrive early to catch the sunset session.\nWant to upgrade to a table? DM us on IG (@somos_evnts) for  table bookings.",
+   "extraServiceFee": 4.51,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 761779,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Early bird ",
+   "price": 80,
+   "pureServiceFee": 7.5,
+   "salesNotStartedOrEnded": true,
+   "salesPeriodStatusMsg": "Sales ended",
+   "serviceFee": 12.01,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Bossa Hermanus"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=401463, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 97732,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:38:34Z) ===
+http://maps.google.co.za/maps?q=-34.4085505,19.2425779
+https://www.google.com/maps/dir/?api=1&destination=-34.4085505,19.2425779

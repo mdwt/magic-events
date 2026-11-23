@@ -1,0 +1,43 @@
+[
+  {
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "source": "Hangklip Marathon",
+    "sourceListingId": "https://www.hangklipmarathon.co.za/#Pam Golding Hangklip Marathon",
+    "url": "https://www.hangklipmarathon.co.za/",
+    "rawFile": "raw/hangklip-marathon/home.txt",
+    "fetchedAt": "2026-11-23T13:40:17Z",
+    "title": "Pam Golding Hangklip Marathon",
+    "summary": "A marathon and half marathon out and back from Kleinmond along Clarence Drive towards Betty's Bay, hosted by the Hangklip Athletics Club, expected in October 2027. The inaugural race was run on 25 October 2026; no 2027 date has been announced.",
+    "description": "The Pam Golding Hangklip Marathon is a scenic out-and-back adventure from Kleinmond to Betty's Bay along the dramatic cliffs of Clarence Drive, finishing where it began at the beautiful Kleinmond Lagoon. The half marathon will head out towards Betty's Bay from Kleinmond and turn around at Sea View, finishing along Beach Avenue, Kleinmond, to the lagoon. Hosted by the Hangklip Athletics Club and headline-sponsored by Pam Golding Properties, the inaugural race was run on Sunday 25 October 2026.",
+    "sessions": [
+      {
+        "start": "2027-10",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "name": "Kleinmond Lagoon",
+      "city": "Kleinmond"
+    },
+    "hints": [
+      "Race Weekend",
+      "Route"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "outdoor_and_adventure",
+        "sport"
+      ],
+      "format": "race",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "road-running"
+    ],
+    "profile": "A road marathon and half marathon from Kleinmond along Clarence Drive towards Betty's Bay and back, finishing at the Kleinmond Lagoon, with the ocean on one side and the Kogelberg on the other. The inaugural race was run on 25 October 2026, and the next is expected in October 2027, with no date announced yet. It suits road runners looking for a scenic coastal race."
+  }
+]

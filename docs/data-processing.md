@@ -22,9 +22,13 @@ Data processing owns the extractors, the classifier, the matching decision, and 
 
 ## Steps
 
-One raw listing is processed in one transaction, from claim to mark. If the worker crashes, the transaction rolls back and the raw listing is pending again.
+What the pipeline keeps, and that it deletes nothing, is in Nothing is lost in [discovery.md](discovery.md).
 
-1. **Claim.** The processing worker runs on a loop and claims a pending raw listing through the Discovery service. Only the latest version of a listing can be claimed (see Versions of a listing). It keeps going while raw listings are pending and waits the idle interval when there are none. The idle interval and the number of workers are settings (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
+One raw listing is processed in one transaction, from claim to mark. The claim locks the raw listing until the transaction ends, so no other worker, in this server or another, can claim it meanwhile. The work after the claim runs in a savepoint of that transaction. If the server stops part way, the transaction rolls back and the raw listing is pending again, with no attempt counted.
+
+Processing runs as a job (see Background jobs in [architecture.md](architecture.md)). The job is added after a fetch that found something new, changed or gone, and once an hour as a safety net. It processes pending raw listings until none is left. When a raw listing fails, the job stops and the queue runs it again later, so a failing raw listing is not tried again at once.
+
+1. **Claim.** Data processing claims a pending raw listing through the Discovery service. Only the latest version of a listing can be claimed (see Versions of a listing). The job keeps going while raw listings are pending. How many are processed side by side is a setting (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
 2. **Extract.** The extractor for the source's kind reads the content and returns zero or more extracted experiences (see Extractors).
 3. **Classify.** Each extracted experience is given its attribute values, tags, seasons and profile (see Classification).
 4. **Match.** Each extracted experience is matched to an existing experience or becomes a new one (see Matching).
@@ -35,8 +39,8 @@ One raw listing is processed in one transaction, from claim to mark. If the work
 Three cases need no extraction or end early:
 
 - **Removed raw listing** (kind removed, no content). The Catalogue service removes that listing's link from every experience it was linked to. An experience left with no links is set to Removed by Catalogue.
-- **Nothing extracted.** A post or page that describes no experience is marked processed. Any links the listing had are removed, as below.
-- **Failure.** If any step fails, including a language model answer that does not fit the expected shape, nothing from that raw listing is saved to Catalogue. It is marked failed with the error and one more attempt, and goes back to pending until it reaches the source's max processing attempts.
+- **Nothing extracted.** A post or page that describes no experience is marked processed. Each link the listing had counts a missed reading, as below; one empty reading removes nothing.
+- **Failure.** If any step fails, including a language model answer that does not fit the expected shape, the work rolls back to the savepoint, so nothing from that raw listing is saved to Catalogue and none of its domain events go out. It is then marked failed with the error and one more attempt in the same transaction, while the claim's lock is still held, so another worker cannot claim it before the attempt is counted, and each attempt is counted once. It goes back to pending until it reaches the source's max processing attempts.
 
 ### Versions of a listing
 
@@ -44,7 +48,24 @@ A listing can change twice before it is processed, so two of its versions can be
 
 ### Processing again
 
-Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions. What sets a listing back to pending is an open question.
+Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions.
+
+A system admin sends listings back from the command line, with `pipeline reprocess` and one of:
+
+- `--listing ID`: one listing.
+- `--experience ID`: every listing the experience is linked to. The experience is named by its ID or its slug.
+- `--source NAME`: every listing of a source, by its name.
+- `--location SLUG`: every listing of a location, by its slug.
+
+Data processing works out what to send back, through the Catalogue service for an experience or a location and through the Discovery service for a source, and asks the Discovery service to send those listings back. For each selected listing that is still listed, Discovery sets its latest version back to pending, with its attempts at 0 and its error cleared.
+
+- An older version is never sent back.
+- A latest version that is already pending is left as it is, and a removed listing is skipped.
+- An experience with no links has nothing to process again.
+- Sending back raises no domain event. Processing raises `raw_listing.processed` as usual.
+- It only sends listings back. The processing job picks them up, or `--now` processes them straight away.
+
+Matching starts from the listing's own links, so processing again updates the experiences it is linked to and creates none twice. When nothing changed, an experience gets no new version.
 
 ## Extractors
 
@@ -81,14 +102,15 @@ interface ExtractedExperience {
     skipped?: string[];                 // dates the rule gives on which the listing says it is not on
   };
   openingHours?: string;
-  venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };
-  price?: { min?: number; max?: number; currency: string };
+  venue?: { name?: string; address?: string; city?: string; position?: { lat: number; lng: number } };   // position: only as the listing states it
+  price?: { min?: number; max?: number; currency?: string };   // 0 and 0: the listing says in words that it is free (see Price)
   onSaleAt?: string;
   bookingClosesAt?: string;
   bookingUrl?: string;
   imageUrl?: string;
-  url?: string;                         // this experience's own page, if it has one
+  url?: string;                         // this experience's own page, if it has one: a link the listing gives, or the listing itself when it is a page about this experience alone. Saved as its page address
   hints: string[];                      // the source's own categories and labels, used by classification
+  minimumAge?: number;                  // the age limit the listing states, such as 18 for "No under 18s"
 }
 
 interface ExtractedSession {
@@ -103,7 +125,21 @@ interface ExtractedSession {
 }
 ```
 
-The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those.
+The fields are the experience fields in [data-model.md](data-model.md). An extractor never returns Removed or Past; Catalogue sets those. The page address follows whose page the listing is. When the source's pages are the organiser's own, about its own offerings (its `ownPages` setting, see [discovery.md](discovery.md)), such as Hermanus Whale Cruises' page of its two trips, the listing's address is the page address of every experience it gives that has no more specific page of its own, however many there are. Otherwise, the default, a listing that describes several experiences, such as a listing site's page of other organisers' events, is the own page of none of them, and the extractor drops a `url` that is the listing's own address when it returns more than one. A `url` that is a different, more specific page is kept either way.
+
+### Venue position
+
+An extractor returns the venue's latitude and longitude only when the listing itself states them: in its structured data (JSON-LD `geo`, or `latitude` and `longitude`), in a map link that carries them, or written in its text. It never works them out from an address, a venue's name or what the model knows of the place, so an experience whose listing states no coordinates is searched from its location's centre (see Position in [data-model.md](data-model.md)).
+
+The extractor checks the position in code: it must be a real latitude and longitude, no further than 100 km from the source's location. A position that fails is dropped with a warning, and the experience is kept without it. A lead listing sets the position, and a fill listing only fills it when it is empty, like the venue's other fields.
+
+### Price
+
+A price of 0 and 0 means the experience is free, and an empty price means the listing states none; there is no other field for it. An extractor gives 0 and 0 only when the listing says in words that it is free, in the language it is written in: "free entry", "admission: free", "no charge", "gratis toegang" and the like. The currency is the one the listing uses, or empty when it names none. A "free" about something else, such as free parking or a free welcome drink, says nothing about the price. When some get in free beside a price for others, such as children under 12 free and adults R150, the lowest price is 0 and the highest is what the others pay.
+
+The price is what one person pays. A package for several people, such as a picnic basket for two or a table of ten, is not a price for one: when the listing also gives a price per person, that is the price, and when it gives only the package for a number of people, the price is the package divided by that number. One price stated is both the lowest and the highest, and the extractor fills the other end in code when only one is given. A source's own "Cost: Free" field is taken at its word.
+
+Structured data often gives a ticket a price of 0 that is not entry, such as a Quicket donation ticket, so the extractor checks a 0 in code against the listing's words, in English and Afrikaans: 0 and 0 stands only when they say entry is free, and a lowest price of 0 beside a higher one only when they say entry is free for someone. A 0 they do not bear out is taken off, so a bare 0 with nothing in words leaves the price empty. A PDF calendar's 0 is kept as the model read it, since a PDF has no structured data.
 
 ### Dates
 
@@ -113,6 +149,7 @@ An extractor returns the dates a listing gives and no others. Catalogue saves th
 - **Several days in a row with no break**, such as a three-day festival or the period an exhibition is open, are one session with a start and an end.
 - **A stated pattern**, such as "every Saturday" or "the first Friday of the month", is returned as a recurrence. The extractor does not work the pattern out into dates; Catalogue generates the sessions from the rule. Dates the listing says are skipped go in `skipped`, and dates it lists outside the pattern go in `sessions`.
 - **Only a month or a year** is returned as one session with that precision.
+- **One start and one end from structured data.** Structured data often gives an event only its first start and its last end, even when it is on several separate dates between them. Quicket's search pages give nothing else: their visible text is empty, and an event's own page, whose schedule lists every date, is not what they fetch. When a page's text does not speak of the event, its session is cut to the two days that are stated, the first with its start time and the last with its end time, as a run. The days between are not filled in, so search never returns the event for a day it may not be on. A span that ends at an earlier time of day than it starts, such as a conference from Monday 15:00 to Friday 13:00 or a party until 04:00, cannot be the same hours on separate days, so it runs through and stays one session. The extraction instructions say the same, and the extractor checks it in code against the page's structured data.
 
 | Kind | How it extracts | Returns |
 | --- | --- | --- |
@@ -124,16 +161,22 @@ An extractor returns the dates a listing gives and no others. Catalogue saves th
 
 The three language model extractors share one implementation. Each kind only prepares the content differently. The model is given the content, the location's name and region, the fetch time and the extracted experience shape, and must answer in that shape. The model is reached through the language model port (see Ports).
 
-Two things every extractor leaves out:
+What every extractor leaves out:
 
+- **What is outside the area.** An experience is returned when it is in the location or in the district around it, within about an hour by road (roughly 60 km), the coastal villages and inland towns included. The first rule, half an hour, made the model leave out every row in Kleinmond, Betty's Bay, Pringle Bay and Gansbaai: 21 of the 45 future rows of the November 2026 monthly calendar, and the Trans Agulhas Boat Race and Gansbaai Christmas Lights Festival of the annual one. A PDF calendar's answer was never cut off: an answer that reaches the output limit fails the raw listing. How many experiences each calendar yielded, and how many the model answered, is logged at warn, so a short answer is seen.
 - **What is already over.** An experience whose last date is before the fetch time is not returned. A news post about last weekend produces nothing.
+- **A yearly event's edition that is over becomes the next one.** A listing that describes an event held every year, whose latest edition it gives is over, yields the next edition: Expected, one session with month precision in the same month of the next year it falls in after the fetch month, booking None, no price, no booking link and no on-sale or booking close time, and a summary that says when it was last held. A day is never given to it. An event named with only a year, or with no month, gets year precision. The model marks such an experience as a next edition, and the extractor sets its month, status and booking and takes off what belonged to the last edition, in code. An edition that is announced with dates is Announced or Confirmed as before. So the Whale Coast annual calendar's events of 2026 that are over, and an organiser's page that shows only its 2026 edition, still put their 2027 editions in the feed.
+- **What is beyond the sourcing horizon.** An experience whose first date is more than `DISCOVERY_HORIZON_MONTHS` after the fetch time is not returned (see [discovery.md](discovery.md)). An open-ended recurring experience starts inside the horizon, so it is returned.
 - **Festival programme items.** A festival is one experience. The talks, concerts and exhibitions on its programme are not extracted separately.
+- **Seasons and facts about the place.** Whales in the bay from June to November, the spring flowers or a town's beaches are not experiences. Seasons are predefined rows that become tags (see Seasons). An extracted experience whose dates are only months or years and are exactly one period of a season of its location is that season, and Data processing leaves it out with a warning before it is classified.
+- **A title that names nothing.** A title must name the experience. One that is only the place, a year, a month or a page's headings and labels, such as "Hermanus 2026" or "Time", is a misreading of the page: the instructions ask for a name taken from what the listing says the experience is, and the extractor drops one that still names nothing, with a warning.
+- **Titles are the event's own name, as a planner would say it to a client.** The instructions give the rules: no date, day or time, no ticket words, no pipes or site names, no "@ venue" tail when the venue is in its field, not in capitals, no fixture number that is not part of the name, never a venue's or an operator's name alone, the words that make a bare name say something, and the source's typos corrected. Before the check above, the extractor tidies a title in code in the ways that need no judgement: the segments between pipes that are only the place, a date, a label or the site's name are taken off and the rest joined ("Hermanus | Solstice | Secret Sunset" is "Solstice Secret Sunset"), a title wholly in capitals is put in title case with its acronyms kept ("ALBERT FROST TRIO" is "Albert Frost Trio"), and spaces before a comma, doubled spaces and punctuation at either end are taken off.
 
 ## Classification
 
 One step, shared by every source kind. The language model assigns each extracted experience its attribute values and tags, and writes its profile.
 
-- **Given:** the extracted experience (title, summary, description, venue, hints) and the definitions: every attribute with its options, and every tag, each with its description.
+- **Given:** the extracted experience (title, summary, description, venue, price, hints, the age limit it states) and the definitions: every attribute with its options, and every tag, each with its description.
 - **Returns:** a value for each attribute it can decide, the tags that apply, and the profile (see Profile).
 - **Checked against the definitions:** an attribute, option or tag that is not defined is not put on the experience and is saved for review (see Undefined values). A value must fit the attribute's type, and a single-valued attribute gets one value. An attribute with no value gets its default, if it has one.
 
@@ -148,10 +191,11 @@ The system starts with this set. They are rows in the database and can be added 
 | Category | Option, several values | The categories below | None | What the experience is about |
 | Format | Option | The formats below | None | The form it takes |
 | Audience | Option | Family, All ages, Adults | None | Who it is for |
-| Minimum age | Number | | None | The age limit a source states, such as 18 for "No under 18s" |
+| Minimum age | Number | | None | The age limit a source states, such as 18 for "No under 18s". Extraction reads it from the whole listing, since a page such as Quicket's shows it as a label beside the title and not in the description, and the classification check sets it whatever the model chose, with Audience Adults when it is 18 or more |
 | Language | Option, several values | English, Afrikaans, isiXhosa, Other | None | The language it is performed or presented in. Set where language matters: theatre, comedy, talks, film |
 | Setting | Option | Indoor, Outdoor, Both | None | Where it takes place |
 | Scale | Option | Local, Regional, Major | Local | How far people travel for it |
+| Tier | Option | Luxury, Premium, Standard, Everyday | Standard | How premium it is, from luxury to everyday. Search returns the most premium first |
 | Wheelchair accessible | True/false | | None | Set only when a source says so |
 
 Category and Format are separate. Category says what an experience is about and Format says the form it takes, so a jazz festival is Music and Festival, and a farmers' market is Food and drink and Market.
@@ -206,6 +250,15 @@ Audience is the only place that says an experience is for families. There is no 
 
 Scale says how far people travel for it: Local draws the town, Regional draws the province, Major draws visitors from across the country or abroad.
 
+Tier says how premium an experience is, from luxury to everyday. It is decided from the price, the venue, how many people it is for and how it is described, never from the category alone. Its options are in order, most premium first, and search returns its results in that order (see Ranking). An experience with no tier counts as Standard.
+
+| Tier | Description |
+| --- | --- |
+| Luxury | Exclusive or private, at a high price, with personal service: a private charter, a chef's table, a helicopter flight, a VIP or hospitality package. For few guests. |
+| Premium | A paid experience produced to a high standard that a luxury traveller would choose: a boat-based whale trip, a wine pairing or an estate dinner, a headline concert or festival, a tour led by an expert. |
+| Standard | An ordinary ticketed or paid event: a local gig, a workshop, a fun run with an entry fee, a show in a community hall. |
+| Everyday | Free or community: a parkrun, a town market, a school fête, a club meeting, a church service. |
+
 Default tags, grouped by the category they usually go with. Tags are flat: a tag belongs to no category and can go on any experience.
 
 | Usually with | Tags |
@@ -245,7 +298,8 @@ Each such value is saved for review, with as much detail as there is: the raw li
 
 A season is a named period of the year in one location, such as whale season in Hermanus. Seasons are predefined rows that Data processing owns, each with its location and its dates (see [data-model.md](data-model.md)). A season has no source and is not an experience.
 
-- **Applied while processing.** Each experience is given the seasons of its location that its dates fall inside, as tags. An ocean-side dinner in whale season gets whale season.
+- **Applied while processing.** Each experience is given the seasons of its location that all of its dates fall inside, as tags. An ocean-side dinner in whale season gets whale season.
+- **All of its dates.** The tag is on the experience, not on a session, so it is given only when every date is inside the season's periods. A single experience or a run gets it when every session is inside a period. A session of month or year precision is inside only when the whole month or year is. A recurring experience gets it when every date its recurrence gives is inside too, together with any dates listed beside the rule. A bounded recurrence is counted to its last date, and an open-ended one up to the sourcing horizon or the end of the season's last period, whichever is earlier, since a season's later years are not rows yet. So a market every Saturday of the year is in no season, whale watching every day from June to November is in whale season, and summer night markets in December and January are in summer.
 - **Stored by Catalogue** with the experience's other tags.
 - **The default seasons:** whale season, South African school holidays, high season, and summer, autumn, winter and spring. Their dates are rows.
 
@@ -253,20 +307,35 @@ A season is a named period of the year in one location, such as whale season in 
 
 Matching decides, for each extracted experience, whether it is an experience Catalogue already has. Data processing makes the decision; Catalogue supplies the source links and the candidates.
 
-1. **The listing already links to experiences.** The extracted experience is compared with those first, and the one it matches is updated. A Quicket or Ticketmaster listing describes one experience, so it always updates the one it links to.
-2. **Otherwise** Catalogue returns candidates: experiences in the same location with overlapping dates and a similar title. Cancelled, Removed and Past experiences are never candidates. A candidate with the same title, once normalised, and overlapping dates is a match, decided in code with no model. If no candidate matches that way, the language model is shown the extracted experience and the candidates and picks one or none. With none, a new experience is created.
-3. **Links that fall away.** An experience the listing linked to before, which this version no longer describes, loses that link. If it has no links left, Catalogue sets it to Removed.
+1. **The listing already links to experiences.** The extracted experience is compared with those first, and the one it matches is updated. A Quicket or Ticketmaster listing describes one experience, so it always updates the one it links to. A listing that describes several matches its links by the same normalised title. A link with another title, such as one made by hand, and with dates that fit is offered to the model in the next step, marked as already linked to this listing, unless its title is another experience of the same listing.
+2. **Otherwise** Catalogue returns candidates: experiences in the same location with dates that fit and a similar title. Cancelled, Removed and Past experiences are never candidates. A candidate with the same title, once normalised, and dates that fit is a match, decided in code with no model. If no candidate matches that way, the language model is shown the extracted experience and the candidates and picks one or none. With none, a new experience is created.
+3. **Dates that fit.** Dates of day precision on both sides must overlap, so two editions of a weekly or yearly experience on different days stay two experiences. When the extracted experience or a stored one has only month or year precision (every session, and no recurrence), the dates need only be near: in the same year, or within three months of each other across a year boundary. Two sources often give such an experience different months, such as the Hermanus Whale Festival in September 2027 on one and October 2027 on another, and they are one experience. Which month it keeps is the leading source's (see When sources disagree).
+4. **Links that fall away, over several readings.** An experience the listing linked to before, which this version does not yield, keeps its link, and Catalogue counts the miss on the link. Nothing else about the experience changes: no version, no change row, no domain event. The link is removed only when the listing has been read without it the source's missed runs before removal times in a row, the same number as for a listing that disappears (see [discovery.md](discovery.md)); a reading that yields it again sets the count back to 0. So a maintenance page, a bot wall, a page that loaded half, a cut-short file or a reading the model got wrong costs nothing that the next good reading does not undo. Once the link is removed, an experience with no links left is set to Removed by Catalogue. Only processed readings count: a raw listing that fails processing saves nothing and counts nothing. While its link is there, a leading listing that missed an experience still leads it.
 
 A listing can link to several experiences, and an experience has at most one link per listing. One experience can have links from many listings and sources.
+
+Two things that look alike are still two experiences:
+
+- **Another operator's or organiser's trip.** The same kind of trip, tour or class run by someone else, even from the same place, is another experience: boat-based whale watching from New Harbour by Hermanus Whale Cruises and by Southern Right Charters are two. Their normalised titles differ, so they are never matched in code, and the model's instructions say so.
+- **A series and one event in it.** A series or a season of events known only by its month, such as Stanford Hills' "Sunset Sessions" in December, is not the same experience as one dated event in it, such as "Jeremy Loops Live at Stanford Hills Sunset Sessions" on 23 December, unless the listing is about the whole series. Their titles differ, so they are never matched in code, and the model's question marks dates known only to the month or year so it can tell the two apart.
+- **The same place, day and time under another name.** The model is shown the start time of each side's dates where one is known. The same place on the same day at the same start time, under another name or in another source's wording, is the same experience unless the two clearly name different things, such as two films or two acts: "Ladies Night: Focker In-Law" at Whale Coast Mall and "Focker In-Law Premiere Night" at Road House Cinema, both 26 November at 18:30, are one screening. A building and the place it is in, such as a cinema inside a mall or a hall on an estate, are one place. No rule in code merges on place and time alone, since a market and a concert can share a lawn and an hour.
+- **A generic title and a particular one.** A title that names only the kind of event, such as "ParkRun", is not the same experience as "Hermanus parkrun" or "Groeneweide Parkrun". Their normalised titles differ, so they are never matched in code, and the model is told so.
+- **The same title on separate pages.** Two listings with the same title on different dates, each sold on its own page with its own ticket link, such as Quicket's "Blessing of the Harvest" on 7 and 30 January, are two experiences and not one with two sessions, because an experience has one booking link and each date is booked through its own page. Their day dates do not overlap, so matching by dates that fit already keeps them apart.
+
+The captures command (`apps/cli`) stands in for the model's match answer with a plain rule before it asks the model. That rule is never looser than safe: it says the same only when the titles have the same words once the venues' words and dates are set aside, or when one title only adds to the other for one dated experience at the same place on the same day. When one side is known only to the month or year and the other to the day, the titles must have the same words, and two recurring experiences must share at least two words. Anything else it is unsure of goes to the model, and with `--no-model` the pair is left as two experiences.
 
 ### When sources disagree
 
 The same experience appears on many sources, and they do not always agree. The Whale Festival is on Quicket, AllEvents, Wesgro, SA-Venues and the tourism PDF, and winetourism.com lists different FynArts 2027 dates from the organiser.
 
 - Each source has a priority number.
-- An experience's fields come from its highest-priority linked listing.
-- A lower-priority listing only fills fields that are empty.
-- When the highest-priority link is removed, the next one takes over.
+- An experience's fields come from its highest-priority linked listing, the leading one. It sets every field it states. A field it leaves empty keeps the stored value when the experience has other linked listings, since that value may be another source's; when the leading listing is the experience's only one, an empty field is cleared. The venue's name, address, city and position are each a field, and the price is one.
+- Attributes go by key in the same way: the keys the leading listing gives replace those keys, and the keys it does not give keep their stored values when there are other listings. Tags: its tags are added to the stored ones when there are other listings.
+- Seasons are worked out from the dates, not stated, so they always follow the dates: they are the ones the leading listing's dates give, and a season that no longer applies is taken off. Data processing names the location's season slugs on the save, so Catalogue can tell them from the other tags.
+- A lower-priority listing only fills fields and attribute keys that are empty, and adds the tags it gives.
+- **Processing again changes nothing.** Once every listing of an experience has been processed, processing any of them again with unchanged content, in any order and any number of times, writes no new version, change row or domain event. A leading listing that changes a value it states changes the experience. A lower-priority listing changes it only where nothing is stored: a value it filled before stays, even if it now gives another, because the experience does not record which listing gave which value.
+- On a tie in priority, the listing linked to the experience first keeps the lead, and the others only fill. A listing not linked yet comes after every linked one, so a new source of the same priority only fills. Two sources of the same priority therefore never take the lead from each other each time one is processed again. Catalogue gives an experience's listings in the order they were linked, the oldest first.
+- When the highest-priority link is removed, the experience keeps the values it has. The next source taking over is for phase 2.
 - Sessions and the recurrence are taken whole from the highest-priority listing that gives dates. Dates from two listings are never merged, so an experience never gets a date that only a lower-priority source lists.
 
 ## Data warehouse
@@ -278,19 +347,19 @@ After saving, Data processing appends each experience it saved to the data wareh
 - **Inside the raw listing's transaction.** A raw listing that fails leaves no rows.
 - **A copy, kept as history.** Catalogue's store stays the one that search and changed-since are served from.
 
-Who reads the warehouse is an open question in [architecture.md](architecture.md).
+Nobody reads the warehouse in version 1. It is loaded for the next version.
 
 ## Embeddings and semantic ranking
 
 What happens to the profile after it is saved. This part belongs to Catalogue, which stores experiences and answers searches. It is described here because it starts with the profile.
 
-A search takes filters and, optionally, a query text: what the traveller likes, in plain words, such as "romantic, quiet, something to do with art". The filters decide which experiences come back. The query text decides their order. Catalogue orders them by meaning, using embeddings, and by keyword, using Postgres full-text search, and combines the two.
+A search takes filters and, optionally, a query text: what the traveller likes, in plain words, such as "romantic, quiet, something to do with art". The filters decide which experiences come back. They come back most premium first, by tier, and the query text decides their order within a tier. Catalogue orders them by meaning, using embeddings, and by keyword, using Postgres full-text search, and combines the two.
 
 ```mermaid
 flowchart LR
   DP[Data processing] -- save with title and profile --> CAT[Catalogue service]
   CAT -- stores profile, clears embedding --> EXP[(experience)]
-  EW[Embedding worker] -- title and profile --> V[Embedding model]
+  EW[Embedding job] -- title and profile --> V[Embedding model]
   EW -- embedding and model --> EXP
   S[Search with a query text] -- query text --> V
   S -- filters, then ranks --> EXP
@@ -302,12 +371,15 @@ An embedding is a list of 1024 numbers that stands for a text's meaning. Texts t
 
 - **Model:** the embedding model is reached through the embedding port (see Ports). Any model that returns 1024 dimensions fits. The one version 1 uses is under Adapters.
 - **What is embedded:** the experience's title and profile as one text, with the title on the first line.
-- **Stored on the experience:** the embedding and the name of the model that made it, in Postgres with the pgvector extension.
+- **Stored on the experience:** the embedding and the name of the model that made it, in Postgres with the pgvector extension, and how many times the model failed on its text.
 - **Save makes no call.** When Data processing saves an experience whose title or profile changed, Catalogue clears the embedding. It does not call the embedding model, so saving never waits on it or fails because of it.
-- **The embedding worker makes the call.** It is part of Catalogue and is started by the scheduler. Each round it takes the experiences search can return (Expected, Announced, Confirmed, Postponed) whose embedding is empty or was made by a model other than the current one. It sends their texts to the embedding model, marked as documents, and stores the results.
-- **Failure:** a text that fails is left as it is and taken again on the next round. Until then the experience has no embedding, and search still returns it, ranked by keyword alone.
+- **The embedding job makes the call.** Embedding is the job `catalogue.embed-experiences`, which calls Catalogue's service (see Background jobs in [architecture.md](architecture.md)). It is queued after a processing job that processed anything, and every 15 minutes. It runs round after round until nothing is left to embed. Each round takes the experiences search can return (Expected, Announced, Confirmed, Postponed) whose embedding is empty or was made by a model other than the current one, and that are not set aside (see A text the model fails on). It sends their texts to the embedding model, marked as documents, and stores the results.
+- **Stored only if still current.** An embedding is stored only if the experience's title and profile are unchanged since its text was read. Otherwise the experience stays due and is embedded again.
+- **Failure:** when a whole round fails, each text is tried alone, so one text the model fails on does not hold back the others. Until it has an embedding, the experience is still returned by search, ranked by keyword alone.
+- **A text the model fails on** is counted on its experience and taken again by a later job. When the count reaches `EMBEDDING_MAX_ATTEMPTS`, the experience is set aside: it is no longer due, so a text the model always refuses stops failing the rounds, and Catalogue logs a warning with its ID once. A new title or profile clears the count with the embedding, so it is tried again. A stored embedding clears the count too.
+- **A model that is down:** when the model fails on every text of a round, Catalogue asks it to embed a short test text. If that fails too, the model is not answering: nothing is counted against the texts, and the round and the job fail, so the queue runs the job again after a doubling wait. If the test text succeeds, the failures are the texts' own and are counted, and the job does not fail.
 - **Not a change:** storing or clearing an embedding never bumps the experience's version or writes a change row.
-- **Changing the model or the provider:** change the embedding settings. Every stored embedding is then from another model, so the worker makes them all again from the stored profiles. Nothing is fetched or processed again, and the language model is not called. An embedding from another model is never compared with a query; until it is replaced, its experience is ranked by keyword alone. A model with a different number of dimensions also needs a schema change, because the column's size is fixed.
+- **Changing the model or the provider:** change the embedding settings. Every stored embedding is then from another model, so the embedding job makes them all again from the stored profiles. Nothing is fetched or processed again, and the language model is not called. An embedding from another model is never compared with a query; until it is replaced, its experience is ranked by keyword alone. A model with a different number of dimensions also needs a schema change, because the column's size is fixed.
 
 ### Search text
 
@@ -315,9 +387,9 @@ For the keyword side, each experience has a search text: a Postgres `tsvector` c
 
 ### Search with a query text
 
-- **Optional.** Without a query text, search applies the filters and returns the results in date order.
+- **Optional.** Without a query text, search applies the filters and returns the results by tier, most premium first, and in date order within a tier.
 - **Filters stay exact.** Place and radius, dates, status, bookable, and every attribute and tag filter are applied first and are never loosened. An embedding cannot tell 10 June from 10 July, or a minimum age of 18 from 16, so anything that must hold is a filter. The dates filter matches an experience's sessions, never the span from its first date to its last (see [data-model.md](data-model.md)).
-- **The query text only orders.** It never adds or removes a result. Every experience that passes the filters is returned, best match first, and paging applies after ordering.
+- **The query text only orders.** It never adds or removes a result. Every experience that passes the filters is returned, by tier and then best match first, and paging applies after ordering.
 - **Changed-since (UC2) takes no query text.** It reports changes to the experiences the filters select.
 - **REST and MCP are the same.** Both pass the query text to the same search port. The MCP tool's description tells an agent to put what must hold (dates, place, audience, minimum age) in the filters and what the traveller likes in the query text.
 
@@ -328,7 +400,9 @@ For the keyword side, each experience has a search text: a Postgres `tsvector` c
 3. **Semantic list:** the candidates that have an embedding from the current model, nearest to the query's embedding first, by cosine distance.
 4. **Keyword list:** the candidates whose search text contains any word of the query text, best full-text rank first.
 5. **Combined** by reciprocal rank fusion: a candidate's score is 1 / (60 + its place) in each list it is in, added up. A candidate near the top of both lists scores highest, and a distance never has to be compared with a full-text rank.
-6. **Order:** highest score first, then start date. A candidate in neither list scores 0 and comes last.
+6. **Order:** by tier first, most premium first, then highest score, then the start of its first session in the dates, then title, then ID. A candidate in neither list scores 0 and comes last in its tier.
+
+**Tier first, always.** With or without a query text, the results are ordered by the tier attribute before anything else, in the order of its options: Luxury, Premium, Standard, Everyday. An experience with no tier counts as the attribute's default, Standard. Catalogue reads the options and the default from Data processing's definitions on each search and hands them to the repository; nothing is copied into Catalogue's tables. When no tier attribute is defined, the order is as above without it. Changed-since keeps its own order, most recent change first.
 
 The distance is worked out exactly, over the candidates only, with no vector index. The filters leave a small set, so this is fast. An approximate index (HNSW) searches before the filters are applied and can return too few results after them.
 
@@ -360,6 +434,8 @@ LEFT JOIN semantic s USING (id)
 LEFT JOIN keyword k USING (id)
 ORDER BY score DESC, c.start_date;
 ```
+
+The SQL above shows the ranking as separate steps. As built, the two places are window functions in the ordering, over the rows the filters leave, and ties are broken by start date, title and ID. The result is the same.
 
 ## Ports
 
@@ -395,17 +471,17 @@ interface LanguageModel {
 }
 ```
 
-- **One kind of failure.** `ask` fails with `LanguageModelFailed` and a reason: declined, cut off, wrong shape, too long, or timed out. The caller does not read provider errors. Any of them fails the raw listing.
+- **One kind of failure.** `ask` fails with `LanguageModelFailed` and a reason: declined, cut off, wrong shape, too long, timed out, or unavailable. The caller does not read provider errors. Any of them fails the raw listing.
 - **What every adapter must do:** return only answers that fit the schema, accept a PDF as a document, and never cut content to make it fit.
 - **Instructions are the domain's.** The extraction and classification instructions are written once, in Data processing, and are the same whichever adapter runs them.
 
 ### Embedding port
 
-Owned by Catalogue, which stores embeddings and ranks searches. Catalogue still calls no other domain.
+Owned by Catalogue, which stores embeddings and ranks searches. Using it makes Catalogue depend on no other domain.
 
 ```ts
 interface EmbeddingModel {
-  model: string;        // saved with every embedding; a different name makes the worker embed again
+  model: string;        // saved with every embedding; a different name makes the embedding job embed again
   dimensions: number;   // must be 1024, the size of the column
   embed(texts: string[], purpose: "document" | "query"): Promise<number[][]>;   // one embedding per text, in the same order
 }
@@ -413,7 +489,7 @@ interface EmbeddingModel {
 
 - **Purpose.** A profile is a document and a search's query text is a query. An adapter whose model treats the two differently uses it; the others ignore it.
 - **One kind of failure.** `embed` fails with `EmbeddingFailed`. A text too long for the model is a failure and is never cut.
-- **Batching is the adapter's.** The worker hands over a round's texts. Whether they go in one request or one at a time is up to the adapter.
+- **Batching is the adapter's.** Catalogue hands over a round's texts. Whether they go in one request or one at a time is up to the adapter.
 
 ## Settings
 
@@ -421,11 +497,10 @@ System settings are environment variables, read through the settings provider (s
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `PROCESSING_IDLE_INTERVAL_SECONDS` | 30 | How long the processing worker waits before looking again when nothing is pending |
-| `PROCESSING_WORKERS` | 1 | How many processing workers run at once |
+| `PROCESSING_WORKERS` | 1 | How many raw listings the processing job works on side by side |
 | `LANGUAGE_MODEL_PROVIDER` | `anthropic` | Which language model adapter is used, by Data processing and Discovery |
 | `LANGUAGE_MODEL` | `claude-opus-5-5` | The model name handed to that adapter |
-| `LANGUAGE_MODEL_TIMEOUT_SECONDS` | 120 | How long to wait for an answer before the raw listing fails |
+| `LANGUAGE_MODEL_TIMEOUT_SECONDS` | 600 | How long to wait for an answer before the raw listing fails. A page of 20 experiences takes about 40 seconds, and a page of 50 or a year's calendar takes several minutes |
 
 Catalogue's embedding settings:
 
@@ -433,9 +508,11 @@ Catalogue's embedding settings:
 | --- | --- | --- |
 | `EMBEDDING_PROVIDER` | `bedrock` | Which embedding adapter is used |
 | `EMBEDDING_MODEL` | `amazon.titan-embed-text-v2:0` | The model name handed to that adapter, for profiles and query texts alike |
-| `EMBEDDING_INTERVAL_SECONDS` | 60 | How often the embedding worker looks for experiences to embed |
-| `EMBEDDING_BATCH_SIZE` | 100 | How many experiences the embedding worker takes in one round |
+| `EMBEDDING_BATCH_SIZE` | 100 | How many experiences the embedding job takes in one round |
 | `EMBEDDING_QUERY_TIMEOUT_SECONDS` | 5 | How long a search waits for the query's embedding before ranking by keyword alone |
+| `EMBEDDING_MAX_ATTEMPTS` | 3 | How many rounds the model may fail on an experience's text before it is set aside until its title or profile changes (see Embedding) |
+
+When embedding runs is not a setting: the job `catalogue.embed-experiences` is queued after a processing job that processed anything, and every 15 minutes (see Embedding).
 
 The attribute, option and tag definitions are not settings. They are rows (see Classification).
 
@@ -443,56 +520,65 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 
 | Service | Calls | For |
 | --- | --- | --- |
-| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
-| Data processing | Catalogue | Getting a location, matching by source link or candidates, saving experiences, removing source links |
+| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, the priority of each listing's source, finding a source by its name, sending listings back to be processed again |
+| Data processing | Catalogue | Getting a location, matching by source link or candidates, saving experiences, removing source links, the listings an experience is linked to |
 
 ## Decisions
 
 | Decision | |
 | --- | --- |
-| Steps | Extract, classify, match, save, then append to the data warehouse. One raw listing is one transaction, from claim to mark, including while the language model answers |
+| Steps | Extract, classify, match, save, then append to the data warehouse. One raw listing is one transaction, from claim to mark, including while the language model answers. The work after the claim is a savepoint |
 | Extraction | One extractor per source kind. Field mapping in code for Quicket and Ticketmaster. The language model for RSS feed, PDF calendar and web page |
 | Several experiences per listing | An extractor returns zero or more experiences. A post, page or calendar is never forced into one |
 | Classification | One step for every kind: the language model picks attribute values and tags from the definitions and their descriptions, and writes the profile |
 | Category and format | Separate attributes. Category is what an experience is about, format is the form it takes. Festival, market and talk are formats |
 | Audience | One attribute with Family, All ages and Adults. There is no family category |
 | Profile | A short text the language model writes for every experience, from its extracted fields and assigned values only. Saved beside the source's description, never in place of it. Written again on every processing, so it always reflects the latest version of the source |
-| Embeddings | Catalogue embeds each experience's title and profile, in a worker of its own. Saving an experience never calls the embedding model |
-| Ranking | A query text orders the results and never filters them. The order is by meaning and by keyword, combined by reciprocal rank fusion |
+| Embeddings | Catalogue embeds each experience's title and profile, in a job of its own, `catalogue.embed-experiences`. Saving an experience never calls the embedding model |
+| A text the model refuses | Counted on the experience, which is set aside after `EMBEDDING_MAX_ATTEMPTS` failures until its title or profile changes. A failure is counted only while the model answers a test text, so an outage sets nothing aside |
+| Ranking | Results are ordered by tier first, most premium first. A query text then orders them within a tier and never filters them. That order is by meaning and by keyword, combined by reciprocal rank fusion |
 | Ports and adapters | The language model and the embedding model are each reached through a port. The domain names no provider. A provider is changed by writing an adapter and changing a setting |
 | Adapters in version 1 | Language model: Claude, through the Anthropic API. Embedding model: Amazon Titan Text Embeddings V2, through Amazon Bedrock |
 | Definitions | Configurable rows with a default set, not enums. Improving classification means adding or rewording definitions |
-| Matching | By the listing's existing source links first, then by comparing candidates. The same normalised title and overlapping dates is a match in code. Otherwise the language model picks one candidate or none |
-| Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. When that link is removed, the next one takes over |
+| Matching | By the listing's existing source links first, then by comparing candidates. The same normalised title and dates that fit is a match in code. Otherwise the language model picks one candidate or none. Day dates on both sides fit when they overlap. When either side is known only to the month or year, they fit when they are in the same year or within three months across a year boundary |
+| Sources that disagree | Each source has a priority number. The highest-priority linked listing sets every field and attribute key it states, and what it leaves empty is kept when the experience has other listings. Lower-priority listings only fill what is empty and add their tags. Seasons follow the leading listing's dates. On a tie in priority, the listing linked first keeps the lead. Processing a listing again with unchanged content changes nothing |
 | Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
-| Processing again | Processed is not final. A listing's latest version can be processed again at any time |
+| Processing again | Processed is not final. A listing's latest version can be processed again at any time. A system admin sends listings back with `pipeline reprocess`: one listing, the listings an experience was built from, a source's or a location's |
+| Status and booking from a listing | Set by the rules under Status and booking from a listing. Expected is set for a recurring event whose coming edition has only a month or a year and is not announced yet |
+| Profile and versions | A change to the profile alone does not bump the version or write a change row, so a reworded profile is never reported by changed-since |
+| When the leading listing goes | The experience keeps the values it has. The next source taking over, as Sources that disagree describes, is for phase 2 |
 | Dates | An extractor returns the dates a listing gives and no others: listed dates as sessions, a stated pattern as a recurrence. It never fills in the days between a first and a last date, and never works a pattern out into dates |
-| Seasons | Predefined rows per location, not experiences. An experience is given the seasons its dates fall inside, as tags |
+| Seasons | Predefined rows per location, not experiences. An experience is given a season as a tag only when all of its dates fall inside the season's periods: every session, the whole month or year for month or year precision, and every date its recurrence gives. An open-ended recurring experience that runs all year gets no season |
 | Already over | An extractor leaves out experiences whose last date is before the fetch time |
+| Beyond the horizon | An extractor leaves out experiences whose first date is beyond the sourcing horizon, 24 months by default |
 | Festival programmes | A festival is one experience. Its programme items are not extracted separately |
 | Undefined values | An attribute, option or tag that is not defined is not put on the experience. It is saved for review with as much detail as possible, and version 1 does nothing more with it |
 | Data warehouse | A table in the same Postgres database. After saving, Data processing appends each experience it saved |
-| Failure | Nothing is saved from a raw listing that fails. It is retried up to the source's max processing attempts |
+| Failure | Nothing is saved from a raw listing that fails. Its failed attempt is counted in the claim's transaction, before another worker can claim it. It is retried up to the source's max processing attempts |
 
 ## Open questions
 
-Three questions are still open. Each has a proposed answer that is not agreed yet.
+None. The working list is in [issues.md](issues.md).
 
-- [ ] **Status and booking from a listing.** Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. Which status and booking does each of those get? *Proposed:* the rules in the table below, given to the extractors. Expected is never set from a listing.
-- [ ] **What sends a listing to be processed again.** Processed is not final (see Processing again), but nothing yet says what sets a listing back to pending. *Proposed:* a system admin action sets the latest version of chosen listings, by source or by kind, back to pending.
-- [ ] **Profile and versions.** The profile is written again on every processing (see Profile), in different words each time, and Catalogue bumps the version on every real change, so a reworded profile would be reported by changed-since. *Proposed:* a change to the profile alone does not bump the version or write a change row.
+## Status and booking from a listing
 
-The proposed rules for status and booking:
+Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. These are the rules the extractors are given, the first that applies. Expected is set only for an edition that has nothing but a month or a year; an experience with a day or a recurrence that the model calls Expected is saved as Announced.
 
 | What the listing says or shows | Status | Booking |
 | --- | --- | --- |
 | The organisers cancelled it | Cancelled | Closed |
 | Postponed, with no new date | Postponed | Closed |
-| Tickets are on sale | Confirmed | Open |
 | Sold out | Confirmed | Sold out |
+| "Save the date", or bookings, tickets or an RSVP open later | Announced | Not yet |
+| Tickets are on sale | Confirmed | Open |
+| Asks for an RSVP or a booking now, and says how: a link, an e-mail address, a phone number | Confirmed | Open |
 | Exact dates, and tickets go on sale later | Announced | Not yet |
-| Exact dates, and nothing to book | Confirmed | None |
-| Only a month or a year | Announced | Not set by this |
+| Exact dates, and nothing to book or reserve: a market, a free concert, an exhibition you walk into. A free event that needs no booking is None, not Open | Confirmed | None |
+| An event that comes round again, with only a month or a year for its coming edition and nothing that announces it: "usually", "every year in", "dates to be confirmed", or an annual event described with no dates for the next one | Expected | Not yet when tickets will go on sale, otherwise None |
+| Only a month or a year, for an edition the listing announces | Announced | Not set by this |
+| A yearly event whose latest edition is over: its next edition (see Extractors) | Expected | None |
+
+The extractor checks in code what must hold whatever the model said: Open or Sold out on an Announced or Expected experience makes it Confirmed, Postponed and Cancelled close booking unless it is None, Expected with a day or a recurrence is Announced, and a yearly event's next edition is Expected with booking None. Catalogue then keeps booking to what the status allows (see Experience status in [data-model.md](data-model.md)).
 
 ## Adapters
 
@@ -507,63 +593,47 @@ Each adapter is the only code that imports its provider's SDK.
 
 ### Anthropic adapter (language model)
 
-- **SDK:** the official TypeScript SDK, `@anthropic-ai/sdk`. It reads the API key from `ANTHROPIC_API_KEY`.
+- **SDK:** the official TypeScript SDK, `@anthropic-ai/sdk`. The API key comes from the settings provider (`ANTHROPIC_API_KEY`), and the client is made on the first call, so a process that never asks the model starts without a key.
 - **Model:** `LANGUAGE_MODEL`, by default `claude-opus-5-5`.
 - **Thinking:** this model always thinks, so no `thinking` parameter is sent. How hard it thinks is `output_config.effort`, from `ANTHROPIC_EFFORT`.
-- **Answer shape:** the call is `client.messages.parse` with `output_config.format` set to `zodOutputFormat(schema)`, and the answer is read from `parsed_output`.
-- **Failures:** `stop_reason` is checked before the answer is read. `refusal` becomes declined, `max_tokens` becomes cut off, and an empty `parsed_output` becomes wrong shape, each as `LanguageModelFailed`.
+- **Long answers:** the call is streamed (`client.beta.messages.stream`, then the final message), with the output limit at the model's maximum of 128,000 tokens. A page can list fifty experiences and a calendar a whole year, and the SDK only allows an answer that long on a streamed call.
+- **Answer shape:** `output_config.format` is the JSON schema of the port's Zod schema. The adapter reads `stop_reason` first, then parses the answer and checks it against the Zod schema itself. The SDK's own parser is not used, because it fails on a declined or cut-off answer before `stop_reason` can be read.
 - **Caching:** the port's `instructions` go in the system prompt, marked `cache_control: { type: "ephemeral" }`, so repeated calls read them from the cache. The port's `text` goes in the user message.
 - **Documents:** a PDF is sent as a `document` block, before the text.
-- **Refusal fallback:** turned on (`fallbacks: "default"` with the beta `server-side-fallback-2026-07-01`), so a request the model declines is run again on another model inside the same call.
+- **Refusal fallback:** turned on (`fallbacks: "default"` with the beta `server-side-fallback-2026-07-01`), so a request the model declines is run again on another model inside the same call. The answer is the text after the last fallback.
+- **Timeout:** one deadline, `LANGUAGE_MODEL_TIMEOUT_SECONDS`, over the whole call, the SDK's own retries included.
+
+Every failure becomes a `LanguageModelFailed`, and nothing else is thrown:
+
+| What happened | Reason |
+| --- | --- |
+| The model declined (`stop_reason` `refusal`) | declined |
+| The answer hit the output limit (`max_tokens`) | cut off |
+| The content does not fit the model: its context window, a request too large, too many PDF pages | too long |
+| The deadline passed, or the connection timed out | timed out |
+| Any other API or connection error, or no API key | unavailable |
+| The answer is not JSON, or does not fit the schema | wrong shape |
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | None; required | The Anthropic API key |
+| `ANTHROPIC_API_KEY` | None; needed where the model is called | The Anthropic API key |
 | `ANTHROPIC_EFFORT` | `medium` | How hard the model thinks: `low`, `medium`, `high`, `xhigh` or `max` |
 
-```ts
-import Anthropic from "@anthropic-ai/sdk";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-
-const client = new Anthropic();                     // reads ANTHROPIC_API_KEY
-
-async function ask<T>({ instructions, text, document, schema }: AskInput<T>): Promise<T> {
-  const response = await client.messages.parse({
-    model: settings.languageModel,                  // claude-opus-5-5
-    max_tokens: 16000,
-    output_config: { effort: settings.anthropicEffort, format: zodOutputFormat(schema) },
-    system: [{ type: "text", text: instructions, cache_control: { type: "ephemeral" } }],
-    messages: [{
-      role: "user",
-      content: [
-        ...(document
-          ? [{ type: "document" as const, source: { type: "base64" as const, media_type: "application/pdf" as const, data: document.base64 } }]
-          : []),
-        { type: "text" as const, text },
-      ],
-    }],
-  });
-
-  if (response.stop_reason === "refusal") throw new LanguageModelFailed("declined");
-  if (response.stop_reason === "max_tokens") throw new LanguageModelFailed("cut off");
-  if (!response.parsed_output) throw new LanguageModelFailed("wrong shape");
-  return response.parsed_output;
-}
-```
+The adapter is `packages/core/src/adapters/language-model/anthropic.ts`. Measured on real sources on 23 Nov 2026: a week's diary of 20 experiences took about 40 seconds, and a two-page monthly calendar of 48 took about 95.
 
 ### Bedrock adapter (embedding model)
 
-- **SDK:** the AWS SDK for JavaScript, `@aws-sdk/client-bedrock-runtime`, calling `InvokeModel`.
+- **SDK:** the AWS SDK for JavaScript, `@aws-sdk/client-bedrock-runtime`, calling `InvokeModel`. The SDK speaks HTTP/2. The client is made on the first call, so a process that never embeds starts without a region or credentials.
 - **Model:** `EMBEDDING_MODEL`, by default `amazon.titan-embed-text-v2:0`.
 - **Request:** `inputText`, with `dimensions` set to 1024 to match the column and `normalize` set to true. The embedding is the `embedding` field of the response.
-- **One text per request.** Titan takes a single text, so the adapter sends a round's texts one after another, a few at a time, and returns the embeddings in the order it was given the texts.
+- **One text per request.** Titan takes a single text, so the adapter sends a round's texts one after another, four at a time, and returns the embeddings in the order it was given the texts.
 - **Purpose is ignored.** Titan embeds documents and queries the same way.
 - **Length:** Titan accepts up to 8,192 tokens. A title and profile are a few sentences.
 - **Credentials:** the AWS SDK's default credential chain, in the region from `AWS_REGION`. The AWS account needs access to the model in that region.
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `AWS_REGION` | None; required | The AWS region Bedrock is called in |
+| `AWS_REGION` | None; needed only where embeddings are made | The AWS region Bedrock is called in |
 | AWS credentials | From the environment | Whatever the AWS SDK's default credential chain finds: access keys, a profile or a role |
 
 ```ts
@@ -581,3 +651,5 @@ async function embedOne(text: string): Promise<number[]> {
   return JSON.parse(new TextDecoder().decode(response.body)).embedding;
 }
 ```
+
+The adapter is `packages/core/src/adapters/embedding/bedrock.ts`, the only code that imports the AWS SDK. Measured on 23 Nov 2026: one text took about 1.3 to 2.0 seconds, so a search with a query text takes that much longer, inside the 5 second limit.

@@ -1,0 +1,896 @@
+URL: https://www.southernrightcharters.co.za/whale-watching/
+Fetched: 2026-11-23T13:57:30Z
+We value your privacy
+
+We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.
+
+Customize Reject All Accept All
+
+Customize Consent Preferences
+
+We use cookies to help you navigate efficiently and perform certain functions. You will find detailed information about all cookies under each consent category below.
+
+The cookies that are categorized as "Necessary" are stored on your browser as they are essential for enabling the basic functionalities of the site. ... Show more
+
+NecessaryAlways Active
+
+Necessary cookies are required to enable the basic features of this site, such as providing secure log-in or adjusting your consent preferences. These cookies do not store any personally identifiable data.
+
+-
+
+Cookie
+
+cookieyes-consent
+
+-
+
+Duration
+
+1 year
+
+-
+
+Description
+
+CookieYes sets this cookie to remember users' consent preferences so that their preferences are respected on subsequent visits to this site. It does not collect or store any personal information about the site visitors.
+
+-
+
+Cookie
+
+wpEmojiSettingsSupports
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+WordPress sets this cookie when a user interacts with emojis on a WordPress site. It helps determine if the user's browser can display emojis properly.
+
+-
+
+Cookie
+
+wordpress_test_cookie
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+WordPress sets this cookie to determine whether cookies are enabled on the users' browsers.
+
+Functional
+
+Functional cookies help perform certain functionalities like sharing the content of the website on social media platforms, collecting feedback, and other third-party features.
+
+-
+
+Cookie
+
+yt-remote-device-id
+
+-
+
+Duration
+
+Never Expires
+
+-
+
+Description
+
+YouTube sets this cookie to store the user's video preferences using embedded YouTube videos.
+
+-
+
+Cookie
+
+ytidb::LAST_RESULT_ENTRY_KEY
+
+-
+
+Duration
+
+Never Expires
+
+-
+
+Description
+
+The cookie ytidb::LAST_RESULT_ENTRY_KEY is used by YouTube to store the last search result entry that was clicked by the user. This information is used to improve the user experience by providing more relevant search results in the future.
+
+-
+
+Cookie
+
+yt-remote-connected-devices
+
+-
+
+Duration
+
+Never Expires
+
+-
+
+Description
+
+YouTube sets this cookie to store the user's video preferences using embedded YouTube videos.
+
+-
+
+Cookie
+
+yt-remote-cast-installed
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+The yt-remote-cast-installed cookie is used to store the user's video player preferences using embedded YouTube video.
+
+-
+
+Cookie
+
+yt-remote-session-app
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+The yt-remote-session-app cookie is used by YouTube to store user preferences and information about the interface of the embedded YouTube video player.
+
+-
+
+Cookie
+
+yt-remote-session-name
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+The yt-remote-session-name cookie is used by YouTube to store the user's video player preferences using embedded YouTube video.
+
+-
+
+Cookie
+
+yt-remote-cast-available
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+The yt-remote-cast-available cookie is used to store the user's preferences regarding whether casting is available on their YouTube video player.
+
+-
+
+Cookie
+
+yt-remote-fast-check-period
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+The yt-remote-fast-check-period cookie is used by YouTube to store the user's video player preferences for embedded YouTube videos.
+
+Analytics
+
+Analytical cookies are used to understand how visitors interact with the website. These cookies help provide information on metrics such as the number of visitors, bounce rate, traffic source, etc.
+
+-
+
+Cookie
+
+_gcl_au
+
+-
+
+Duration
+
+3 months
+
+-
+
+Description
+
+Google Tag Manager sets the cookie to experiment advertisement efficiency of websites using their services.
+
+-
+
+Cookie
+
+_ga
+
+-
+
+Duration
+
+1 year 1 month 4 days
+
+-
+
+Description
+
+Google Analytics sets this cookie to calculate visitor, session and campaign data and track site usage for the site's analytics report. The cookie stores information anonymously and assigns a randomly generated number to recognise unique visitors.
+
+-
+
+Cookie
+
+_gid
+
+-
+
+Duration
+
+1 day
+
+-
+
+Description
+
+Google Analytics sets this cookie to store information on how visitors use a website while also creating an analytics report of the website's performance. Some of the collected data includes the number of visitors, their source, and the pages they visit anonymously.
+
+-
+
+Cookie
+
+_gat_UA-*
+
+-
+
+Duration
+
+1 minute
+
+-
+
+Description
+
+Google Analytics sets this cookie for user behaviour tracking.
+
+-
+
+Cookie
+
+_ga_*
+
+-
+
+Duration
+
+1 year 1 month 4 days
+
+-
+
+Description
+
+Google Analytics sets this cookie to store and count page views.
+
+Performance
+
+Performance cookies are used to understand and analyze the key performance indexes of the website which helps in delivering a better user experience for the visitors.
+
+No cookies to display.
+
+Advertisement
+
+Advertisement cookies are used to provide visitors with customized advertisements based on the pages you visited previously and to analyze the effectiveness of the ad campaigns.
+
+-
+
+Cookie
+
+test_cookie
+
+-
+
+Duration
+
+15 minutes
+
+-
+
+Description
+
+doubleclick.net sets this cookie to determine if the user's browser supports cookies.
+
+-
+
+Cookie
+
+YSC
+
+-
+
+Duration
+
+session
+
+-
+
+Description
+
+Youtube sets this cookie to track the views of embedded videos on Youtube pages.
+
+-
+
+Cookie
+
+VISITOR_INFO1_LIVE
+
+-
+
+Duration
+
+6 months
+
+-
+
+Description
+
+YouTube sets this cookie to measure bandwidth, determining whether the user gets the new or old player interface.
+
+-
+
+Cookie
+
+VISITOR_PRIVACY_METADATA
+
+-
+
+Duration
+
+6 months
+
+-
+
+Description
+
+YouTube sets this cookie to store the user's cookie consent state for the current domain.
+
+-
+
+Cookie
+
+IDE
+
+-
+
+Duration
+
+1 year 24 days
+
+-
+
+Description
+
+Google DoubleClick IDE cookies store information about how the user uses the website to present them with relevant ads according to the user profile.
+
+Uncategorized
+
+Other uncategorized cookies are those that are being analyzed and have not been classified into a category as yet.
+
+-
+
+Cookie
+
+wordpress_a8e8702e3ed122edb0e7e5bcc1880b41
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wordpress_sec_a8e8702e3ed122edb0e7e5bcc1880b41
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wordpress_logged_in_a8e8702e3ed122edb0e7e5bcc1880b41
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wp-settings-0
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wp-settings-time-0
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wordpressuser_a8e8702e3ed122edb0e7e5bcc1880b41
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wordpresspass_a8e8702e3ed122edb0e7e5bcc1880b41
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+wp-postpass_a8e8702e3ed122edb0e7e5bcc1880b41
+
+-
+
+Duration
+
+past
+
+-
+
+Description
+
+Description is currently not available.
+
+-
+
+Cookie
+
+__Secure-ROLLOUT_TOKEN
+
+-
+
+Duration
+
+6 months
+
+-
+
+Description
+
+Description is currently not available.
+
+Reject All Save My Preferences Accept All
+
+Powered by
+
+OnlineBook Now
+
+Phone Us082 353 0550
+
+Whatsapp Us082 353 0550
+
+Trip Status
+
+-->
+
+- Whale Watching
+
+- Our Boat
+
+- What we encounter
+
+- Book
+
+- Home
+
+- Whale Watching
+
+- Our Boat
+
+- What we encounter
+
+- About Us
+
+- Blog
+
+- Contact
+
+- Book
+
+THE EXPERIENCE OF A
+
+LIFETIME
+
+## Boat Based
+
+# WHALE WATCHING
+
+Join Southern Right Charters for an informative and educational whale watching experience.
+
+Times
+
+06h30, 09h00, 12h00 & 15h00
+
+Daily Departures, weather permitting.
+
+Check-in is strictly 30 minutes prior to departure time
+
+for check-in & on-land introductory briefing.
+
+For private charters and group bookings, the additional trip time of 17h00 can be requested dependent on time of year.
+
+Rates
+
+2026 Whale Watching
+
+Adults R1 580
+
+Students | Seniors R1 480
+
+Children (under 12) R790
+
+Children (under 3) FREE
+
+Private Charter R78 000
+
+Private exclusive whale watching tours are available on request, please contact us directly.
+
+Duration
+
+1h30 – 3 hrs
+
+The tour time is not capped, duration all depends on the travelling time to the whales and the abundance of
+
+marine life on the day.
+
+Average 2 hours.
+
+Book Now
+
+## Whale Watching
+
+# TOUR OVERVIEW
+
+LETS GO! The whale watching experience begins with an on-land briefing led by our whale specialist guide – giving you some more information on the day’s plans ahead.
+
+We then set off from the Hermanus New Harbour in search of the ‘gentle giants.’
+
+During the tour, the friendly, knowledgeable crew are on hand to add that personal touch allowing for an all-round great experience.
+
+With all eyes on watch, the excitement builds for who can see the first whale of the trip!
+
+While around the whales, they are in charge – as we enter their world – getting to spend some unforgettable moments in nature.
+
+Our onboard team, will help interpret the whales (and other marine life encountered), keeping you informed, providing insight into the behaviours of the whales while we watch them.
+
+Our onboard videographer helps capture these moments, allowing you to really just be in the moment & absorb the experience.
+
+On return to land, peruse the local craft and souvenirs available, order your USB movie of the tour which is ready upon return or simply relax at our outdoor seating on the edge of the quay with reading material on all things whales.
+
+- Purpose-built catamaran
+
+- Experienced & Specialized Whale Watching Skipper & Crew
+
+- Whale Specialist Guide provides informative commentary
+
+- The duration of the tour is not capped allowing for a full experience
+
+- Videographer onboard, professional movie of your experience available to purchase
+
+- Sighting Guarantee
+
+- Choose from various daily departures
+
+- All ages welcome
+
+Our Boat
+Book Now
+
+-->
+
+When is Hermanus Whale Season?
+
+June to Mid-December Annually
+
+The peak Hermanus whale watching season typically runs from June to end November. This is the time when the southern right whales migrate to the coastal waters of Hermanus to mate, calve, and nurse their young. Visitors to Hermanus during this period can witness these magnificent creatures in their natural habitat, breaching, spouting, and tail-slapping.
+
+The town of Hermanus is known as one of the best whale watching destinations in the world. The peak whale season runs from June to end November, annually.
+
+-->
+
+What could you encounter?
+
+Southern Right, Humpback & Brydes whales
+
+During whale season, Hermanus is lucky to the host the bulk of the Southern Right Whales that migrate to the South African coastline. In addition the Humpback and Brydes whales can be seen.
+
+We focus the tour on searching and spending time with the whales but the marine life in the bay is diverse and there is a good chance of encountering Cape fur seals, various species of dolphins and an abundance of sea birds including the African penguin.
+
+Whale Species: Southern Right (Jun-Dec), Humpback (June-September) & Bryde’s whales (all year)
+
+-->
+
+Our whale watching boat
+
+Purpose-built catamaran, MV Miroshca
+
+MV Miroshca, our purpose-built whale watching catamaran was purpose built to ensure maximum passenger comfort and superior stability. Constant technical upgrades and maintenance ensure that Southern Right Charters leads the way in safe, comfortable marine tours in South Africa.
+
+READ MORE
+
+-->
+
+Sighting Guarantee
+
+50% Refund or Join us again, free
+
+Even with our success rate of 99% for whale & dolphin sighting, it is nature and we cannot ‘guarantee’ sightings. If on the rare occasion no whales or dolphins (i.e. cetaceans) are encountered, we offer a 50% refund on your ticket price paid or the opportunity to join us on the next available tour, for free. We cannot manage refunds and amendments for reservations made via 3rd parties.
+
+-->
+
+WHAT SHOULD YOU BRING?
+
+A windbreaker, camera & more
+
+In Hermanus, the weather is notoriously fickle, especially during the peak season which falls within South African spring. Temperatures can soar to 30 degrees Celsius or higher, but on other days, mist, rain, or wind can make conditions feel much colder.
+
+It’s important to remember that layering is key when dressing for unpredictable weather. So, be sure to pack appropriately and enjoy your adventure on the high seas!
+
+Have a look at this what to bring list if you’re not sure what you should bring with for whale spotting Hermanus.
+
+-->
+
+Terms & Conditions
+
+Weather permitting & flexible cancellation
+
+Upon the confirmation of any booking, it will be regarded that the client has read & accepted all
+
+the Terms and Conditions.
+
+Weather Permitting
+
+This is a weather/sea permitting activity.
+
+The tour may be cancelled with short notice if the weather/sea is unsuitable for the
+
+tour/experience.
+
+If the tour is cancelled, we will contact you via WhatsApp and/or email, only. Please
+
+ensure the contact details you provide at the time of booking are correct.
+
+Should the tour be cancelled due to poor weather/sea conditions, you’ll be offered a different date
+
+subject to availability or a full refund will be given. We recommend that you check your trip status online, especially if you are travelling from out-of-town for the tour
+
+Cancellation Terms
+
+Your reservation will be automatically cancelled if you do not arrive 15 minutes prior to departure
+
+time.
+
+Please call us if you are running late, arrival time is strictly 30 minutes before your reserved
+
+departure time (i.e.: 8:30am; 11:30am or 14:30pm)
+
+For bookings of 1- 10 Persons: Cancellations or amendments received less than 24hrs before
+
+time of trip, a 100% cancellation penalty fee will be charged.
+
+For bookings of 10+ Persons & Private charters: Cancellations or amendments received less than 7 days before time of trip, 100% cancellation fee will be charged.
+
+In the event of unforeseeable circumstances policies can be amended at the discretion of Southern
+
+Right Charters.
+
+Additional Info
+
+All Ages Welcome However, children under 13 years of age must wear life jackets for the full
+
+duration of the tour and be under adult supervision.
+
+For infants, the parents must be notified of the life jacket condition as often children under 2
+
+years old can find them uncomfortable and this also prevents the use of a body baby carrier/wrap.
+
+We strongly advise motion sickness syrup for children. No prams/strollers are permitted on board.
+
+No unaccompanied minors are allowed.
+
+Physical Requirement/Mobility Limited mobility is required, no wheelchair access.
+
+Consent, Indemnity & Liability All passengers are required to sign an indemnity form at check-in.
+
+If a guest refuses to sign the indemnity form, they will not be able to partake in the activity and
+
+will not receive a refund. The indemnity form must be signed by a Parent/Legal guardian for minors
+
+under 18 years.
+
+Marketing Material Any photo or video taken by the company during the tour can be used for marketing
+
+purposes without consent from the guest.
+
+Get up close & personal with
+
+THE HERMANUS WHALES
+
+Book Now
+
+-->
+
+### The latest from Instagram
+
+It’s. Been. A. Week ! With the winter storms evad
+
+Every days a school day Strandings are an unfortu
+
+Beach day Southern Right Whales – known to enjoy
+
+This is whale season in Hermanus. Every year, S
+
+6-7-26 Dolphin day for THE books Insane action ou
+
+Seems true !
+
+Load More
+
+Follow on Instagram
+
+-->
+
+x
+
+Book
+Chat
+Call
+
+.site-branding
+-->
+
+The Whale Shack,
+New Harbour, Hermanus
+
++27 (0) 82 353 0550
+
+info@southernrightcharters.co.za
+
+TRIP STATUS
+
+TODAY
+
+Monday
+
+23 Nov 2026
+
+09h00 & 12h00 – Good to Go
+
+15h00 – To be confirmed on forecast update
+
+Contact Us
+
+* Trip status is updated daily around 16h00 SAST.
+
+* Subject to unforseen circumstances.
+
+To Top

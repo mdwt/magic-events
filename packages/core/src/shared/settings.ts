@@ -1,0 +1,114 @@
+// System settings. They are read once at startup by the settings provider, which applies defaults and stops
+// the system when a value is invalid. A domain is handed its own group and never reads an environment variable.
+
+export interface ApiSettings {
+  host: string;
+  port: number;
+  // The one browser origin allowed to call the API.
+  corsOrigin: string;
+  // The host names the MCP endpoint answers to, which guards it against DNS rebinding.
+  allowedHosts: string[];
+  // The proxies whose X-Forwarded-For gives the caller's address: addresses, CIDR ranges or loopback. Empty is off.
+  trustProxy: string[];
+  logLevel: "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
+  // Readable log lines for a person at a terminal. Off in production, where logs are JSON.
+  logPretty: boolean;
+  // Requests one address may make in a window, before any credential is checked.
+  rateLimitMax: number;
+  rateLimitWindowSeconds: number;
+  bodyLimitBytes: number;
+}
+
+export interface DatabaseSettings {
+  url: string;
+}
+
+export interface IdentitySettings {
+  // The secret Better Auth signs and hashes with.
+  authSecret: string;
+  // Requests one API key may make in a window.
+  apiKeyRateLimitMax: number;
+  apiKeyRateLimitWindowSeconds: number;
+}
+
+export interface CatalogueSettings {
+  // The radius used when a search gives none.
+  searchDefaultRadiusKm: number;
+  // The largest radius a search may ask for.
+  searchMaxRadiusKm: number;
+  // How far ahead the sessions of an open-ended recurring experience are generated.
+  sessionHorizonMonths: number;
+  // When Catalogue's upkeep runs, as a cron expression in UTC: finished experiences to Past, bookings whose close
+  // time has passed to Closed, and the sessions of open-ended recurring experiences generated further ahead.
+  upkeepCron: string;
+}
+
+export interface DiscoverySettings {
+  // The values a new source gets when it is saved without them.
+  defaultFetchIntervalHours: number;
+  defaultMissedRunsBeforeRemoval: number;
+  defaultMaxProcessingAttempts: number;
+  // When the schedule looks for sources that are due a fetch, as a cron expression in UTC.
+  scheduleCron: string;
+  // A run that is still running after this long did not finish, and counts as failed.
+  runTimeoutMinutes: number;
+  // How many times a failed fetch is tried again before the source waits for its next regular fetch.
+  fetchRetries: number;
+  // How long after a failed fetch the first retry comes. The wait doubles with each retry.
+  fetchRetryBackoffMinutes: number;
+  // How long an adapter waits for a source to answer.
+  fetchTimeoutSeconds: number;
+  // The User-Agent every adapter sends, so a source can see who is fetching.
+  userAgent: string;
+  // How far ahead experiences are sourced.
+  horizonMonths: number;
+  // The API keys of sources, by the name of the setting a source row names, such as QUICKET_API_KEY.
+  credentials: Record<string, string | undefined>;
+}
+
+export interface ProcessingSettings {
+  // How many processing workers run at once.
+  workers: number;
+  // The sourcing horizon: an experience that starts later than this is left out of extraction.
+  horizonMonths: number;
+}
+
+export interface LanguageModelSettings {
+  // Which language model adapter is used, by Data processing and Discovery.
+  provider: "anthropic";
+  // The model name handed to that adapter.
+  model: string;
+  // How long to wait for an answer.
+  timeoutSeconds: number;
+  // The Anthropic adapter's own settings. The key is needed only where the language model is called.
+  anthropicApiKey: string | undefined;
+  anthropicEffort: "low" | "medium" | "high" | "xhigh" | "max";
+}
+
+// Catalogue's embedding model, which embeds experiences and the query texts of searches.
+export interface EmbeddingSettings {
+  // Which embedding adapter is used.
+  provider: "bedrock";
+  // The model name handed to that adapter, for experiences and query texts alike.
+  model: string;
+  // How many experiences one round of embedding takes.
+  batchSize: number;
+  // How long a search waits for its query's embedding before it ranks by keyword alone.
+  queryTimeoutSeconds: number;
+  // How many rounds the model may fail on an experience's text before it is set aside until its title or profile
+  // changes.
+  maxAttempts: number;
+  // The Bedrock adapter's own setting. Needed only where embeddings are made.
+  awsRegion: string | undefined;
+}
+
+export interface Settings {
+  api: ApiSettings;
+  database: DatabaseSettings;
+  identity: IdentitySettings;
+  catalogue: CatalogueSettings;
+  discovery: DiscoverySettings;
+  processing: ProcessingSettings;
+  languageModel: LanguageModelSettings;
+  embedding: EmbeddingSettings;
+}

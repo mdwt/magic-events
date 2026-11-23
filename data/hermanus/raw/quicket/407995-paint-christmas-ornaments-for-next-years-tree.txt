@@ -1,0 +1,526 @@
+URL: https://www.quicket.co.za/events/407995-paint-christmas-ornaments-for-next-years-tree/
+Fetched: 2026-11-23T13:34:03Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+Paint Christmas Ornaments for Next Year's Tree
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Peppermint Pottery Studios
+
+Follow
+
+https://www.lili.africa/peppermint-pottery/?srsltid=AYCX9vKAU0nCCF4t9cU0s6pq9pJTaV2Qi812DaAbiptOOYT-yJHderJL
+
+Fri Dec 18, 11:00 - Fri Dec 18, 13:00
+
+Peppermint Pottery
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Start a new family tradition this holiday! Paint three of our cutest ceramic Christmas trees, and we'll glaze and fire them while you enjoy the festive season.
+
+They'll be ready to collect in the new year, all set to come out with the decorations next December. Every year you'll remember the summer holiday you made them.
+
+Please note: ornaments from these sessions will NOT be ready before Christmas 2026 – they are made for next year's tree.
+
+Ages: 5–95, no experience needed · Includes: clay or paint, glazing & firing · Collection: 2–3 weeks after your session, or in the new year for sessions from 18 Dec. National courier available. · Bookings: 12 places per session. No show = no refund. Reschedule with 24 hours’ notice.
+
+## DIRECTIONS
+
+Paint Christmas Ornaments for Next Year's Tree
+
+Peppermint Pottery
+
+31 Harbour Rd, Kleinmond, 7195
+
+Get Directions
+
+## DISCOVER
+
+CERAMIC
+
+CHRISTMAS DECORATION
+
+CLAY
+
+CRAFT
+
+DECORATION
+
+HANDMAKING
+
+PAINT
+
+POTTERY
+
+From
+
+R200
+
+Family friendly
+
+Fri Dec 18, 11:00 - Fri Dec 18, 13:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Peppermint Pottery
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Paint Christmas Ornaments for Next Year's Tree",
+  "startDate": "2026-12-18T09:00:00Z",
+  "endDate": "2026-12-18T11:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1021633_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Peppermint Pottery",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "31 Harbour Rd, Kleinmond, 7195",
+      "addressLocality": "Kleinmond",
+      "postalCode": "7195",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/407995-paint-christmas-ornaments-for-next-years-tree/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Start a new family tradition this holiday! Paint three of our cutest ceramic Christmas trees, and we'll glaze and fire them while you enjoy the festive season.\r\nThey'll be ready to collect in the new year, all set to come out with the decorations next December. Every year you'll remember the summer holiday you made them.\r\nPlease note: ornaments from these sessions will NOT be ready before Christmas 2026 – they are made for next year's tree. Ages: 5–95, no experience needed · Includes: clay or paint, glazing & firing · Collection: 2–3 weeks after your session, or in the new year for sessions from 18 Dec. National courier available. · Bookings: 12 places per session. No show = no refund. Reschedule with 24 hours’ notice.",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/407995-paint-christmas-ornaments-for-next-years-tree/#tickets",
+      "price": 200.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-10T13:29:00Z",
+      "sku": "772037"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Peppermint Pottery Studios",
+    "url": "https://www.lili.africa/peppermint-pottery/?srsltid=AYCX9vKAU0nCCF4t9cU0s6pq9pJTaV2Qi812DaAbiptOOYT-yJHderJL"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=407995, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1021634_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 407995,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Paint Christmas Ornaments for Next Year's Tree",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 48368,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "631693b6-07c8-4d8a-8cf8-57a4b28f4e4c",
+ "seatingPricing": [],
+ "seatingProductId": "407995",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    12
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 772037,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "1 Person",
+   "price": 200,
+   "pureServiceFee": 7.5,
+   "salesNotStartedOrEnded": true,
+   "salesPeriodStatusMsg": "Sales ended",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Peppermint Pottery"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=407995, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 48368,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:41:14Z) ===
+http://maps.google.co.za/maps?q=-34.3438029,19.013255
+https://www.google.com/maps/dir/?api=1&destination=-34.3438029,19.013255

@@ -1,0 +1,43 @@
+[
+  {
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "source": "Fernkloof Nature Reserve",
+    "sourceListingId": "https://www.fernkloof.org.za/index.php/hermanus-botanical-society/annual-flower-show#Flower Show",
+    "url": "https://www.fernkloof.org.za/index.php/hermanus-botanical-society/annual-flower-show",
+    "rawFile": "raw/fernkloof-flower-show/annual-flower-show.txt",
+    "fetchedAt": "2026-11-23T13:29:43Z",
+    "title": "Hermanus Botanical Society Flower Show",
+    "summary": "The Hermanus Botanical Society's annual flower show at Fernkloof Nature Reserve, expected in September 2027. It was last held from 24 to 27 September 2026; the 2027 dates have not been announced.",
+    "description": "Annual Flower Show. Hermanus Botanical Society Flower Show, 24 - 27 September 2026, Fernkloof Nature Reserve. The 2026 show included a raffle and a silent auction of artwork.",
+    "sessions": [
+      {
+        "start": "2027-09",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "name": "Fernkloof Nature Reserve",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Annual Flower Show"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "nature_and_wildlife",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "fair_or_expo",
+      "audience": "all_ages",
+      "scale": "regional"
+    },
+    "tags": [
+      "flowers",
+      "fynbos"
+    ],
+    "profile": "The Hermanus Botanical Society's annual flower show at Fernkloof Nature Reserve, a community show of the area's fynbos and wildflowers. It was last held from 24 to 27 September 2026, and the 2027 show is expected in September, with dates still to be announced. It suits flower and fynbos lovers visiting Hermanus in spring."
+  }
+]

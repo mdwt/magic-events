@@ -1,22 +1,32 @@
-import cors from "@fastify/cors";
-import Fastify from "fastify";
-import { createDb, sql } from "@magic-events/db";
-import type { Env } from "./env.ts";
-import { mcpRoutes } from "./mcp.ts";
+import { isDatabaseUnavailable } from "@magic-events/core/adapters/storage/unavailable.ts";
+import { createServices, type Overrides, type Services } from "@magic-events/core/services.ts";
+import type { Settings } from "@magic-events/core/shared/settings.ts";
+import type { Db } from "@magic-events/db";
+import { sql } from "drizzle-orm";
+import type { FastifyInstance } from "fastify";
+import type pino from "pino";
+import { createServer } from "./rest/server.ts";
 
-export async function buildApp(env: Env) {
-  const app = Fastify({ logger: true });
-  const { db, close } = createDb(env.DATABASE_URL);
-  app.addHook("onClose", async () => close());
+// Builds the server on the core's services. The domains, their adapters and the wiring between them are in
+// packages/core; this app adds the inbound sides: REST, MCP and the scheduler.
 
-  await app.register(cors, { origin: env.CORS_ORIGIN });
+export type { Overrides, Services };
 
-  app.get("/health", async () => {
-    await db.execute(sql`select 1`);
-    return { status: "ok" };
+export async function buildApp(deps: {
+  settings: Settings;
+  db: Db;
+  logger: pino.Logger;
+  overrides?: Overrides;
+}): Promise<{ app: FastifyInstance; services: Services }> {
+  const services = createServices(deps);
+  const app = await createServer({
+    settings: deps.settings.api,
+    logger: deps.logger,
+    services,
+    checkDatabase: async () => {
+      await deps.db.execute(sql`select 1`);
+    },
+    isUnavailable: isDatabaseUnavailable,
   });
-
-  await app.register(mcpRoutes, { db });
-
-  return app;
+  return { app, services };
 }

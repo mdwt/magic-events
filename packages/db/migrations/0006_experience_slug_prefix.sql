@@ -1,0 +1,1 @@
+CREATE INDEX "experience_slug_prefix_idx" ON "experience" USING btree ("slug" text_pattern_ops);

@@ -1,0 +1,854 @@
+[
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1473643551",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1473643551",
+    "rawFile": "raw/webtickets/shark-cage-diving-surface-viewing-gansbaai-1473643551.txt",
+    "fetchedAt": "2026-11-23T15:42:12+02:00",
+    "title": "Shark Cage Diving & Surface Viewing",
+    "summary": "Shark cage diving and surface viewing from a boat out of Gansbaai. No scuba diving experience is needed and all ages are welcome.",
+    "description": "Dispel those myths and fears and go Shark Cage Diving Today!\n\nExperience their true magnificence with an up close and personal encounter with sharks. The viewing decks onboard the boat offer spectacular surface viewing with cage diving as optional.\n\nNo scuba diving experience is needed. All ages are welcome, young and old.\n\nSharks you may encounter: Copper Sharks, Sevengill Cow Sharks, and the rare Great White Shark.\nTour Duration: approx. 4 hrs. (depending on shark activity/sea conditions. Excludes 2.5 - 3hr. travel time)\n\nTour Includes:\nBreakfast or lunch on arrival\nShark cage diving & surface viewing\nDrinks and snacks on the boat\nUse of the dive gear\nA warm meal on return to shore\n\nPlease remember we are dealing with wildlife and shark sightings can never be guaranteed.\n\nTime slots may vary according to sea/tidal & weather conditions and the number of trips we can run on the day.\n\nYour tour details and exact meeting/collection time will be confirmed the day before.\n\nDon't forget to bring:\nSomething warm to wear (fleece or a wind-proof jacket)\nComfortable shoes\nSwimming trunks/bathing suit (wear underneath your clothes)\nTowel\nHat, sunglasses & sunscreen\nCamera\nSeasickness or motion sickness tablets if appropriate (consult a pharmacy, we are not authorized to dispense any medication)\n\nBookings close 48 hours before time of tour.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=DAILY",
+      "start": "2026-11-23"
+    },
+    "venue": {
+      "city": "Gansbaai",
+      "position": {
+        "lat": -34.617616,
+        "lng": 19.353638
+      }
+    },
+    "price": {
+      "min": 2350,
+      "max": 3850,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1473643551",
+    "imageUrl": "https://content.webtickets.co.za/sharkdiving/panel_SHARK%20CAGE%20DIVING.jpg",
+    "hints": [
+      "Adventure & Adrenaline",
+      "Nature",
+      "Tourism & Attractions"
+    ],
+    "attributes": {
+      "tier": "premium",
+      "category": [
+        "nature_and_wildlife",
+        "outdoor_and_adventure"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "major"
+    },
+    "tags": [
+      "sharks"
+    ],
+    "profile": "A boat trip out of Gansbaai to see sharks up close, with surface viewing from the deck and optional cage diving. The tour takes about four hours and includes a meal on arrival, drinks and snacks on the boat, dive gear and a warm meal back on shore. No diving experience is needed, and it suits all ages."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1531501239",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1531501239",
+    "rawFile": "raw/webtickets/cape-shark-adventures-1531501239.txt",
+    "fetchedAt": "2026-11-23T15:42:18+02:00",
+    "title": "Shark cage diving with Cape Shark Adventures",
+    "summary": "Shark cage diving trips from Kleinbaai, Gansbaai, run several times a day. All equipment, drinks and refreshments are provided on this family friendly activity.",
+    "description": "Lose sight of the shore and explore our planet’s blue heart with Cape Shark Adventures, Gansbaai.\n\nWe offer multiple daily trips where guests can experience a thrilling shark cage diving adventure.\n\nAll equipment, drinks and refreshments are provided on this family friendly activity.\n\nGet 15% Off until the end of August\nUse promo code (Shark15) to get your discount at checkout.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=DAILY",
+      "start": "2026-11-23",
+      "startTime": "09:00"
+    },
+    "venue": {
+      "name": "Cape Shark Adventures",
+      "address": "1 Swart Street, Kleinbaai, Gansbaai",
+      "city": "Gansbaai",
+      "position": {
+        "lat": -34.6140313,
+        "lng": 19.3544652
+      }
+    },
+    "price": {
+      "min": 2400,
+      "max": 2950,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1531501239",
+    "imageUrl": "https://content.webtickets.co.za/wildhorizonsshark/panel_white_20230725_110650.jpg",
+    "hints": [
+      "Adventure & Adrenaline",
+      "Tourism & Attractions"
+    ],
+    "attributes": {
+      "tier": "premium",
+      "category": [
+        "nature_and_wildlife",
+        "outdoor_and_adventure"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "major"
+    },
+    "tags": [
+      "sharks"
+    ],
+    "profile": "A shark cage diving trip by boat from Kleinbaai in Gansbaai, with several trips a day. Equipment, drinks and refreshments are included. It is billed as family friendly and suits anyone keen to see sharks at sea."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1550128907",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1550128907",
+    "rawFile": "raw/webtickets/harold-porter-national-botanical-garden-1550128907.txt",
+    "fetchedAt": "2026-11-23T15:42:23+02:00",
+    "title": "Harold Porter National Botanical Garden visit",
+    "summary": "Harold Porter National Botanical Garden in Betty's Bay showcases diverse plant species, with waterfalls, ponds and walking trails through flora ranging from fynbos to forest species.",
+    "description": "Harold Porter National Botanical garden, situated in Betty’s Bay, showcases diverse plant species, this tranquil oasis features waterfalls, ponds, and walking trails, explore the garden’s beauty, with flora ranging from fynbos to forest species, and enjoy the serene atmosphere.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=DAILY",
+      "start": "2026-11-23"
+    },
+    "venue": {
+      "name": "Harold Porter National Botanical Garden",
+      "address": "Harold Porter National Botanical Gardens, Broadwith Road, Betty's Bay",
+      "city": "Betty's Bay",
+      "position": {
+        "lat": -34.3508333,
+        "lng": 18.9269444
+      }
+    },
+    "price": {
+      "min": 30,
+      "max": 70,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1550128907",
+    "imageUrl": "https://content.webtickets.co.za/haroldporter/panel_webtickets%201_20240701_112940.jpg",
+    "hints": [
+      "Nature",
+      "Tourism & Attractions"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "attraction",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "gardens",
+      "fynbos",
+      "hiking"
+    ],
+    "profile": "Day entry to Harold Porter National Botanical Garden in Betty's Bay. Visitors walk the trails past waterfalls and ponds through plants from fynbos to forest species. It suits anyone who wants a quiet outdoor visit to a botanical garden."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607498579",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607498579",
+    "rawFile": "raw/webtickets/raiders-of-the-lost-ark-open-air-cinema-at-landskein-1607498579.txt",
+    "fetchedAt": "2026-11-23T15:42:29+02:00",
+    "title": "Raiders of the Lost Ark: Open-Air Cinema",
+    "summary": "Raiders of the Lost Ark (1981) screened under the stars at the Amphitheatre at Landskein, Stanford. Gates open 17:00 and the movie starts 19:30.",
+    "description": "Dust off your fedora – Indiana Jones is coming to Landskein! Join the fearless archaeologist on his daring hunt for a legendary relic in Raiders of the Lost Ark (1981), as the Walker Bay sky fills with stars.\n\nSettle into your spot with blankets, cushions or camping chairs and enjoy an unforgettable evening of iconic characters, sharp dialogue and cinematic flair beneath twinkling fairy lights.\n\nTime: Gates open 5:00 PM | Movie starts 7:30 PM\nVenue: The Amphitheatre at Landskein, Stanford\n\nLandskein wines, drinks, wood-fired pizza, popcorn and snacks available for purchase. No outside food or beverages permitted. In case of adverse weather, guests will be notified via email.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein",
+      "address": "The Amphitheatre at Landskein, Stanford",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4290142,
+        "lng": 19.4653361
+      }
+    },
+    "price": {
+      "min": 90,
+      "max": 130,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607498580",
+    "imageUrl": "https://content.webtickets.co.za/landskein/panel_0b0f0b803c30494a9ec26c8a5ecff447.png",
+    "hints": [
+      "Movies & Film"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "film"
+      ],
+      "format": "screening",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "outdoor-cinema"
+    ],
+    "profile": "An open-air screening of Raiders of the Lost Ark in the amphitheatre at Landskein near Stanford. Guests bring blankets, cushions or camping chairs, and wine, wood-fired pizza, popcorn and snacks are sold on site. It suits film fans after an evening outdoors."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1598631600",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1598631600",
+    "rawFile": "raw/webtickets/most-influential-icons-gala-dinner-2026-1598631600.txt",
+    "fetchedAt": "2026-11-23T15:42:34+02:00",
+    "title": "Most Influential Icons Gala Dinner",
+    "summary": "An annual gala that honours individuals and organisations whose leadership, service, innovation and dedication have made a meaningful impact within their communities.",
+    "description": "Most Influential Icons Gala (MIIGD) is an annual celebration that honours individuals and organisations whose leadership, service, innovation, and dedication have made a meaningful impact within their communities and beyond. The gala recognises icons from diverse sectors, including business, education, arts and culture, community development, youth empowerment, sports, health, and public service.\n\nMore than an awards event, the Most Influential Icons Gala is a platform for inspiration, networking, and collaboration. Through keynote addresses, powerful performances, and the recognition of outstanding changemakers, the evening encourages others to lead with purpose.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "17:00"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Municipal Auditorium",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.4181442,
+        "lng": 19.2380447
+      }
+    },
+    "price": {
+      "min": 370,
+      "max": 500,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1598631601",
+    "imageUrl": "https://content.webtickets.co.za/miigd2026/panel_IMG_2472_20260706_124135.JPG",
+    "hints": [
+      "Business & Professional"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "business_and_professional",
+        "community_and_causes"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A gala dinner and awards evening at the Hermanus Municipal Auditorium that recognises community changemakers from business, education, the arts, sport, health and public service. The evening has keynote addresses, performances and networking. It suits adults interested in community leadership and recognition events."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1596575025",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1596575025",
+    "rawFile": "raw/webtickets/ubumnandi-festival-seventh-annual-summer-picnic-1596575025.txt",
+    "fetchedAt": "2026-11-23T15:42:39+02:00",
+    "title": "Ubumnandi Festival Summer Picnic",
+    "summary": "Ubumnandi Festival is a dance music festival started in Hermanus, giving youth in music, photography, videography, design and other art codes a stage in front of a big crowd.",
+    "description": "Ubumnandi Festival is a Dance Music Festival started in Hermanus in the Overstrand Region of the Western Cape in South Africa founded by Master Blaq Entertainment (PTY) LTD Trading as Blue Sky South Africa.\n\nThis high-profile Festival provides an opportunity for youth in different art codes to showcase their talent and skills for a big crowd of people and supporters from all over the country. The applicable art codes at this present moment are Music, Photography, Videography, Graphic Designs, Entrepreneurship, Drawing, Local Market etc.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Mount Pleasant Sports Field",
+      "address": "Mount Pleasant Sports Field, Hermanus",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.419174,
+        "lng": 19.215774
+      }
+    },
+    "price": {
+      "min": 50,
+      "max": 50,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1596575056",
+    "imageUrl": "https://content.webtickets.co.za/ubumnandifestival/panel_Celebrating%2010%20Years%20of%20Ubumnandi%20Festival%20-%20DEc%20jpg_20260604_141618.jpg",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "festival",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "electronic"
+    ],
+    "profile": "The seventh annual summer picnic of the Ubumnandi dance music festival, held at Mount Pleasant Sports Field in Hermanus. Young performers and creatives showcase their talent to supporters, and there is a local market. It suits dance music fans looking for a daytime outdoor festival."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607764088",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607764088",
+    "rawFile": "raw/webtickets/whale-coast-symphony-orchestra-at-landskein-1607764088.txt",
+    "fetchedAt": "2026-11-23T15:42:43+02:00",
+    "title": "Whale Coast Symphony Orchestra",
+    "summary": "An open-air evening as the Whale Coast Symphony Orchestra from Hermanus plays the greatest compositions of the classical repertoire at Landskein, Stanford.",
+    "description": "Join us for an enchanting open-air evening as the Whale Coast Symphony Orchestra from neighbouring Hermanus takes us on an amble through the greatest compositions of the classical repertoire.\n\nSettle into your spot with blankets, cushions or camping chairs and enjoy timeless melodies under the Walker Bay sky at Landskein.\nTime: Gates open at 4:30 PM | Concert starts at 6:30 PM\nVenue: The Amphitheatre at Landskein, Stanford\nLandskein wines, refreshing drinks, wood-fired pizza, popcorn and snacks will be available for purchase.\n\nPlease note: No outside food or beverages permitted.\nShould adverse weather conditions prevent the event from going ahead, guests will be notified via email.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein",
+      "address": "The Amphitheatre at Landskein, Stanford",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4290142,
+        "lng": 19.4653361
+      }
+    },
+    "price": {
+      "min": 127.5,
+      "max": 150,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607764089",
+    "imageUrl": "https://content.webtickets.co.za/landskein/panel_bcdbc9a85d654c3691cb467dbe2c49c5.png",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "classical"
+    ],
+    "profile": "An open-air classical concert by the Whale Coast Symphony Orchestra in the amphitheatre at Landskein near Stanford. Guests bring blankets or camping chairs, and wine, pizza and snacks are sold on site. It suits classical music lovers who enjoy an evening outdoors."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1604981085",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1604981085",
+    "rawFile": "raw/webtickets/hermanus-carols-2026-1604981085.txt",
+    "fetchedAt": "2026-11-23T15:41:59+02:00",
+    "title": "Hermanus Carols",
+    "summary": "The Rotary Club of Hermanus invites you to gather under the stars for Hermanus Carols, with the Zwelihle Youth Choir, a Nativity Play and carols. Funds raised support Rotary projects.",
+    "description": "This festive season, the Rotary Club of Hermanus invites you to gather under the stars for Hermanus Carols a joyful celebration in our beautiful town.\n\n· Children are invited to meet Father Christmas (don’t forget to bring a present with your child’s name on it!)\n\n·Experience the powerful voices, vibrant energy and rich African rhythms of Hermanus’s Zwelihle Youth Choir in a captivating performance filled with uplifting harmonies.\n\n· Be moved by the Nativity Play, led by Bass Baritone Corniël Calitz and well known Hermanus singers · Sing along with the choir to heartwarming carols under the night sky\n\n· Grab a hearty snack from the local food stalls or bring your own picnic basket and blanket and settle in for an evening of festive cheer.\n\nAll funds raised will support Rotary projects, including Early Childhood Development and the Bursary Fund for the Overstrand Learning Hub.\n\nGates open 18:00 with pre-carols entertainment starting at 18:30, and the Nativity Play, 19:30 – 20:45\n\nBring your picnic basket with drinks, snacks, and a blanket\n\nChildren 6 and below Free",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-15",
+        "precision": "day",
+        "startTime": "18:30",
+        "endTime": "20:45"
+      }
+    ],
+    "venue": {
+      "name": "Attie Bishop Stadium",
+      "address": "Attie Bishop Field, Opposite Hermanus High School",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.4097162,
+        "lng": 19.2413397
+      }
+    },
+    "price": {
+      "min": 0,
+      "max": 350,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1604981086",
+    "imageUrl": "https://content.webtickets.co.za/hermanusrotary/panel_Version%202%20-%20JPG_20261008_115348.jpg",
+    "hints": [
+      "Family & Kids",
+      "Music",
+      "Special Days"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "holidays_and_celebrations",
+        "music",
+        "community_and_causes"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "choral",
+      "charity"
+    ],
+    "profile": "An outdoor carols evening on Attie Bishop Field in Hermanus, run by the Rotary Club of Hermanus. There is a performance by the Zwelihle Youth Choir, a Nativity Play, sing-along carols, a visit from Father Christmas for children and local food stalls, or guests bring a picnic. It suits families and anyone wanting a festive community evening, and the money raised goes to Rotary projects."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1580511893",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1580511893",
+    "rawFile": "raw/webtickets/carols-by-candlelight-1580511893.txt",
+    "fetchedAt": "2026-11-23T15:42:48+02:00",
+    "title": "Carols by Candlelight",
+    "summary": "Carols by Candlelight at Harold Porter National Botanical Garden, presented by the Hermanus Rotary Club. Bring a picnic basket and sing your favourite Christmas carols.",
+    "description": "We are thrilled to announce that our Candle by Candlelight event will be presented by the Hermanus Rotary Club! Join us with your friends and family, bring along your picnic basket, and enjoy singing your favorite Christmas carols.\n\nGates open: 18:30 and the concert starts at 19:30",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-17",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Harold Porter National Botanical Garden",
+      "address": "Harold Porter National Botanical Gardens, Broadwith Road, Betty's Bay",
+      "city": "Betty's Bay",
+      "position": {
+        "lat": -34.3508333,
+        "lng": 18.9269444
+      }
+    },
+    "price": {
+      "min": 65,
+      "max": 160,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1580511934",
+    "imageUrl": "https://content.webtickets.co.za/haroldporter/panel_be2119ed5b584a2fab1d9abbceb6936e.png",
+    "hints": [],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "holidays_and_celebrations",
+        "music"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "A carols evening in Harold Porter National Botanical Garden in Betty's Bay, presented by the Hermanus Rotary Club. Guests bring a picnic and sing Christmas carols together. It suits friends and families looking for a festive evening outdoors."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607764459",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607764459",
+    "rawFile": "raw/webtickets/sterling-eq-at-landskein-1607764459.txt",
+    "fetchedAt": "2026-11-23T15:42:54+02:00",
+    "title": "Sterling EQ",
+    "summary": "An open-air evening with Sterling EQ, South Africa's all-female crossover ensemble and SAMA winners, bringing classical music to life with a contemporary twist.",
+    "description": "Join us for a captivating open-air evening with Sterling EQ, South Africa’s all-female crossover ensemble and SAMA winners, as they bring classical music to life with a bold contemporary twist.\n\nSettle into your spot with blankets, cushions or camping chairs and enjoy soaring melodies under the Walker Bay sky at Landskein.\nTime: Gates open at 5:00 PM | Concert starts at 7:30 PM\nVenue: The Amphitheatre at Landskein, Stanford\nLandskein wines, refreshing drinks, wood-fired pizza, popcorn and snacks will be available for purchase.\n\nPlease note: No outside food or beverages permitted.\nShould adverse weather conditions prevent the event from going ahead, guests will be notified via email.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-17",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein",
+      "address": "The Amphitheatre at Landskein, Stanford",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4290142,
+        "lng": 19.4653361
+      }
+    },
+    "price": {
+      "min": 242.25,
+      "max": 285,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607764460",
+    "imageUrl": "https://content.webtickets.co.za/landskein/panel_23e2d23220954029b3cb3846ce7a52fc.png",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "classical"
+    ],
+    "profile": "An open-air concert by Sterling EQ, an all-female crossover ensemble playing classical music with a contemporary twist, in the amphitheatre at Landskein near Stanford. Guests bring blankets or chairs, and wine, pizza and snacks are sold on site. It suits music lovers who enjoy classical with a modern edge."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607764956",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607764956",
+    "rawFile": "raw/webtickets/carols-by-candlelight-with-the-overberg-choir-1607764956.txt",
+    "fetchedAt": "2026-11-23T15:42:59+02:00",
+    "title": "Carols by Candlelight with the Overberg Choir",
+    "summary": "The 90 voices of the Overberg Choir, joined by special guests Dezi Ray and Louna Stofberg, sing festive classics at Carols by Candlelight at Landskein, Stanford.",
+    "description": "Celebrate the magic of Christmas at Carols by Candlelight, as the 90 voices of the Overberg Choir, joined by special guests Dezi Ray & Louna Stofberg, fill the night with beloved festive classics.\n\nSettle into your spot with blankets, cushions or camping chairs and let the choir usher you into the Christmas spirit at Landskein.\nTime: Gates open at 5:00 PM | Concert starts at 7:30 PM\nVenue: The Amphitheatre at Landskein, Stanford\nLandskein wines, refreshing drinks, wood-fired pizza, popcorn and snacks will be available for purchase.\n\nPlease note: No outside food or beverages permitted.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-19",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Landskein",
+      "address": "The Amphitheatre at Landskein, Stanford",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4290142,
+        "lng": 19.4653361
+      }
+    },
+    "price": {
+      "min": 127.5,
+      "max": 150,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607764957",
+    "imageUrl": "https://content.webtickets.co.za/landskein/panel_f5716036ba4742c0a762a5357f541e60.png",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "holidays_and_celebrations",
+        "music"
+      ],
+      "format": "parade_or_ceremony",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "choral"
+    ],
+    "profile": "A Christmas carols concert by the 90-voice Overberg Choir with guests Dezi Ray and Louna Stofberg, in the amphitheatre at Landskein near Stanford. Guests settle on blankets or chairs, with wine, pizza and snacks for sale. It suits anyone wanting a festive choral evening outdoors."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607765433",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607765433",
+    "rawFile": "raw/webtickets/open-air-cinema-love-actually-at-landskein-1607765433.txt",
+    "fetchedAt": "2026-11-23T15:43:04+02:00",
+    "title": "Open Air Cinema - Love Actually",
+    "summary": "An open-air screening of Richard Curtis' Love Actually, the festive classic of interwoven love stories, at the Amphitheatre at Landskein, Stanford.",
+    "description": "Join us for a heart-warming open-air cinema night as we screen Richard Curtis’ Love Actually, the much-loved festive classic of interwoven love stories, laughter and Christmas cheer.\nSettle into your spot with blankets, cushions or camping chairs and enjoy an unforgettable evening of romance, humour and holiday magic at Landskein.\nTime: Gates open at 5:30 PM | Movie starts at 8:00 PM\nVenue: The Amphitheatre at Landskein, Stanford\nLandskein wines, refreshing drinks, wood-fired pizza, popcorn and snacks will be available for purchase.\nPlease note: No outside food or beverages permitted.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-23",
+        "precision": "day",
+        "startTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Landskein",
+      "address": "The Amphitheatre at Landskein, Stanford",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4290142,
+        "lng": 19.4653361
+      }
+    },
+    "price": {
+      "min": 110.5,
+      "max": 130,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607765434",
+    "imageUrl": "https://content.webtickets.co.za/landskein/panel_0d8dfacb40a14a7b8e95bdd169d17374.png",
+    "hints": [
+      "Movies & Film"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "film",
+        "holidays_and_celebrations"
+      ],
+      "format": "screening",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "outdoor-cinema",
+      "christmas"
+    ],
+    "profile": "An open-air screening of the festive film Love Actually in the amphitheatre at Landskein near Stanford. Guests bring blankets or camping chairs, and wine, pizza, popcorn and snacks are sold on site. It suits anyone after a relaxed Christmas-season movie night outdoors."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1605036227",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1605036227",
+    "rawFile": "raw/webtickets/andrew-young-picnic-concert-1605036227.txt",
+    "fetchedAt": "2026-11-23T15:43:09+02:00",
+    "title": "Andrew Young Picnic Concert",
+    "summary": "An outdoor picnic concert at Harold Porter National Botanical Garden in Betty's Bay with saxophonist Andrew Young, featuring Tony Drake on keyboards.",
+    "description": "Spend a glorious summer evening surrounded by the spectacular natural beauty of Harold Porter National Botanical Garden in Bettys’ Bay, with award-winning international saxophonist Andrew Young, featuring Tony Drake on keyboards.\nSet against the magnificent backdrop of the Kogelberg mountains and indigenous fynbos, this special outdoor picnic concert is the perfect way to enjoy the festive season with family and friends.\nFrom the timeless music of The Beatles and unforgettable movie themes to soul, rock, rhythm & blues and much-loved favourites, Andrew brings his unmistakable sound, exceptional musicianship, infectious energy, warmth and humour to the stage.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-27",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Harold Porter National Botanical Garden",
+      "address": "Harold Porter National Botanical Gardens, Broadwith Road, Betty's Bay",
+      "city": "Betty's Bay",
+      "position": {
+        "lat": -34.3508333,
+        "lng": 18.9269444
+      }
+    },
+    "price": {
+      "min": 80,
+      "max": 190,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1605036969",
+    "imageUrl": "https://content.webtickets.co.za/haroldporter/panel_Picture2_20261008_111326.png",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "A summer evening picnic concert in Harold Porter National Botanical Garden in Betty's Bay, with saxophonist Andrew Young and Tony Drake on keyboards. The set runs from The Beatles and movie themes to soul, rock and rhythm and blues. Guests bring a picnic, and it suits families and friends."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1603240597",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1603240597",
+    "rawFile": "raw/webtickets/jesse-clegg-and-ross-learmonth-live-at-stanford-hills-estate-1603240597.txt",
+    "fetchedAt": "2026-11-23T15:43:15+02:00",
+    "title": "Jesse Clegg & Ross Learmonth Live",
+    "summary": "A sunset concert with Jesse Clegg and Ross Learmonth at Stanford Hills Estate. Doors open 15:00 and the show starts 17:30.",
+    "description": "Join Jesse Clegg and Ross Learmonth for a Sunset Concert at Stanford Hills Estate this December.\n\nDoors Open: 15:00\nShow starts at 17:30\n\nDo Bring: picnic blanket or fold out chairs\n\nDon’t Bring: food or drinks, plenty will be available for purchase",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-30",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Stanford Hills Estate, Weltevrede Farm, Stanford, 7210",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4226775,
+        "lng": 19.4738795
+      }
+    },
+    "price": {
+      "min": 200,
+      "max": 320,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1603240655",
+    "imageUrl": "https://content.webtickets.co.za/realartistmanagement/panel_JesseStan_20261015_112410.jpg",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A sunset concert by Jesse Clegg and Ross Learmonth at Stanford Hills Estate outside Stanford. Guests bring a picnic blanket or fold-out chairs, and food and drinks are sold on site. It suits anyone wanting live music on a farm on a summer evening."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607765961",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607765961",
+    "rawFile": "raw/webtickets/new-years-s-eve-family-day-at-landskein-1607765961.txt",
+    "fetchedAt": "2026-11-23T15:43:20+02:00",
+    "title": "New Year's Eve Family Day",
+    "summary": "One last carefree afternoon of the year at Landskein, with live music by Groove DJ, a jumping castle, a water slide and an all-you-can-eat braai.",
+    "description": "Spend one last carefree afternoon of the year at Landskein before the countdown begins. Live music by Groove DJ, a jumping castle and water slide make for a joyful family day.\nSettle into your spot with blankets, cushions or camping chairs and enjoy an all-you-can-eat braai: lamb chops, boerewors, chicken thighs, assorted salads, freshly baked bread and desserts.\nTime: Gates open at 12:00 PM | Groove DJ from 2:00 PM | Ends at 6:00 PM\nVenue: Landskein, Stanford\nLandskein wines and refreshing drinks will be available for purchase.\nPlease note: No outside food or beverages permitted.\nShou?ld adverse weather conditions prevent the event from going ahead, guests will be notified via email.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-31",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Landskein",
+      "address": "The Amphitheatre at Landskein, Stanford",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.4290142,
+        "lng": 19.4653361
+      }
+    },
+    "price": {
+      "min": 150,
+      "max": 400,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607765962",
+    "imageUrl": "https://content.webtickets.co.za/landskein/panel_f760df0fe0714eb890942ceb4546b18a.png",
+    "hints": [
+      "Special Days"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "holidays_and_celebrations",
+        "food_and_drink"
+      ],
+      "format": "party",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "new-years-eve"
+    ],
+    "profile": "A New Year's Eve family afternoon at Landskein near Stanford, with a DJ, a jumping castle and a water slide. The ticket includes an all-you-can-eat braai, and wine and drinks are sold. It suits families who want to end the year outdoors before the countdown."
+  },
+  {
+    "source": "Webtickets",
+    "sourceListingId": "1607038629",
+    "url": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607038629",
+    "rawFile": "raw/webtickets/studio-54-new-years-eve-party-1607038629.txt",
+    "fetchedAt": "2026-11-23T15:43:25+02:00",
+    "title": "Studio 54 New Years Eve Party",
+    "summary": "Dutchies' New Year's Eve party with a Studio 54 disco theme, with a laser show, big screen and DJ, 21:00 till late.",
+    "description": "IT'S BACK! Dutchies' legendary New Year's Eve returns with a Studio 54 disco theme.\n31 December 2026 | 21:00 till late | Dress to impress\nRemember the best NYE ever? The laser show, big screen and DJ are back to see out 2026 in style.\nYOUR TICKET INCLUDES:\n- Entrance\n- Welcome drink\n- Oliebollen & champagne at midnight\n- Lasers, screens & DJ entertainment\n\nA cash bar and a selected tapas menu will be available.\nDust off the sequins and see you on the dance floor!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-31",
+        "precision": "day",
+        "startTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "Dutchies Restaurant",
+      "address": "Dutchies Restaurant, Grotto Street, Hermanus 7200",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.4128271,
+        "lng": 19.2873986
+      }
+    },
+    "price": {
+      "min": 455,
+      "max": 455,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/Performance.aspx?itemid=1607038630",
+    "imageUrl": "https://content.webtickets.co.za/studio54newyears/panel_efd7c35da92640e5bfd4f986118e8e56.png",
+    "hints": [
+      "Music"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "holidays_and_celebrations",
+        "music"
+      ],
+      "format": "party",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "new-years-eve",
+      "electronic"
+    ],
+    "profile": "A Studio 54 disco-themed New Year's Eve party at Dutchies restaurant on Grotto Street in Hermanus. The ticket includes entrance, a welcome drink, and oliebollen and champagne at midnight, with lasers, screens and a DJ; a cash bar and tapas menu are available. It suits adults who want to dress up and dance into the new year."
+  }
+]

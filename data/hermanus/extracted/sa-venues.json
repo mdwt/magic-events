@@ -1,0 +1,21 @@
+[
+  {
+    "source": "SA-Venues",
+    "sourceListingId": "https://www.sa-venues.com/events/westerncape/hermanus-whale-festival/",
+    "url": "https://www.sa-venues.com/events/westerncape/hermanus-whale-festival/",
+    "rawFile": "raw/sa-venues/hermanus-whale-festival.txt",
+    "fetchedAt": "2026-11-23T13:54:01Z",
+    "title": "Hermanus Whale Festival",
+    "summary": "The Hermanus Whale Festival is an annual event that commemorates the return of southern right whales to the coastal realms of Hermanus. It is scheduled at the beginning of October, coinciding with the zenith of whale activity in the region.",
+    "description": "Please note: 2027 dates are still to be confirmed. Please confirm with the event organiser before making any travel plans relating to this event.\n\nThe Hermanus Whale Festival stands as a unique testament to ecological stewardship, marking its distinction as the sole ECO-MARINE Festival worldwide. This annual event commemorates the majestic return of southern right whales to the coastal realms of Hermanus, South Africa.\n\nFrom its modest origins over three decades ago, the festival has burgeoned into an internationally renowned affair, drawing between 75,000 to 130,000 attendees over a span of three days. Its evolution is palpable, with each passing year witnessing an expansion of its offerings.\n\nThe festival boasts a myriad of attractions, including a dazzling street parade, bustling markets teeming with the creations of local artisans, gastronomic delights, enlightening marine exhibits, engaging children's activities, live musical performances, and, undoubtedly, unparalleled land-based whale watching experiences.\n\nCentral to its essence is a tribute to the legacy of Wendy the Whale, whose narrative epitomizes humanity's capacity to coexist harmoniously with nature, underscored by communal solidarity in safeguarding the environment. Throughout the festival, every event and activity serves as a conduit for raising awareness about the imperative to conserve not only the whales but also all marine life inhabiting our coastal waters.\n\nScheduled at the beginning of October, coinciding with the zenith of whale activity in the region, the Hermanus Whale Festival stands as a beacon of environmental advocacy and communal celebration, uniting individuals in reverence for the ocean's wonders.",
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "sessions": [{ "start": "2027-10", "precision": "month" }],
+    "venue": { "city": "Hermanus" },
+    "hints": ["Outdoor Events", "Annual Festivals"],
+    "attributes": { "tier": "standard", "category": ["nature_and_wildlife", "community_and_causes", "music"], "format": "festival", "audience": "all_ages", "setting": "outdoor", "scale": "major" },
+    "tags": ["whales"],
+    "profile": "The Hermanus Whale Festival is an annual three-day eco-marine festival celebrating the return of southern right whales to Hermanus, drawing 75,000 to 130,000 people. Visitors watch whales from land and enjoy a street parade, artisan markets, food, marine exhibits, children's activities and live music. It suits families and anyone visiting for the whales; the 2027 dates were still to be confirmed."
+  }
+]

@@ -1,0 +1,183 @@
+[
+  {
+    "source": "Overstrand Municipality Tourism Diary",
+    "sourceListingId": "tourism-diary-2026-11-18#Christmas Stalletjies",
+    "url": "https://www.overstrand.gov.za/top-things-to-do-this-weekend/",
+    "rawFile": "raw/overstrand-diary/top-things-to-do-this-weekend.txt",
+    "fetchedAt": "2026-11-23T13:26:38Z",
+    "title": "Christmas Stalletjies",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-18",
+        "end": "2026-11-24",
+        "precision": "day"
+      }
+    ],
+    "openingHours": "All day",
+    "venue": {
+      "name": "Uilenkraalsmond Resort",
+      "city": "Gansbaai"
+    },
+    "hints": [
+      "Wednesday 18th November 2026"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "holidays_and_celebrations"
+      ],
+      "format": "market",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas"
+    ],
+    "profile": "Christmas stalls at Uilenkraalsmond Resort near Gansbaai, open all day from 18 to 24 November 2026. Visitors browse the stalls for Christmas shopping. It suits anyone staying in the Gansbaai area in the week before the festive season."
+  },
+  {
+    "source": "Overstrand Municipality Tourism Diary",
+    "sourceListingId": "tourism-diary-2026-11-18#Annual Art Exhibition",
+    "url": "https://www.overstrand.gov.za/top-things-to-do-this-weekend/",
+    "rawFile": "raw/overstrand-diary/top-things-to-do-this-weekend.txt",
+    "fetchedAt": "2026-11-23T13:26:38Z",
+    "title": "Annual Art Exhibition",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-19",
+        "end": "2026-11-25",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Enlighten Education Trust",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Thursday 19th November 2026"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "visual_arts"
+      ],
+      "format": "exhibition",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "An annual art exhibition at the Enlighten Education Trust in Hermanus, on from 19 to 25 November 2026. Visitors view the artworks on show. It suits art lovers in Hermanus that week."
+  },
+  {
+    "source": "Overstrand Municipality Tourism Diary",
+    "sourceListingId": "tourism-diary-2026-11-18#Thursday Community Walks",
+    "url": "https://www.overstrand.gov.za/top-things-to-do-this-weekend/",
+    "rawFile": "raw/overstrand-diary/top-things-to-do-this-weekend.txt",
+    "fetchedAt": "2026-11-23T13:26:38Z",
+    "title": "Thursday Community Walks",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=TH",
+      "start": "2026-11-26",
+      "startTime": "07:30"
+    },
+    "venue": {
+      "address": "23 Molteno Str",
+      "city": "Onrus"
+    },
+    "hints": [
+      "Thursday 19th November 2026"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "outdoor_and_adventure",
+        "community_and_causes"
+      ],
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "hiking"
+    ],
+    "profile": "A community walk that sets off from 23 Molteno Street, Onrus, at 07:30 on Thursdays. Participants walk together in the early morning. It suits walkers staying in Onrus or nearby Hermanus."
+  },
+  {
+    "source": "Overstrand Municipality Tourism Diary",
+    "sourceListingId": "tourism-diary-2026-11-18#Thursday Morning Market",
+    "url": "https://www.overstrand.gov.za/top-things-to-do-this-weekend/",
+    "rawFile": "raw/overstrand-diary/top-things-to-do-this-weekend.txt",
+    "fetchedAt": "2026-11-23T13:26:38Z",
+    "title": "Thursday Morning Market",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=TH",
+      "start": "2026-11-26",
+      "startTime": "09:00",
+      "endTime": "13:00"
+    },
+    "venue": {
+      "address": "14 Queen Victoria Street",
+      "city": "Stanford"
+    },
+    "hints": [
+      "Thursday 19th November 2026"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A Thursday morning market at 14 Queen Victoria Street, Stanford, from 09:00 to 13:00. Visitors browse the market stalls in the village. It suits anyone in Stanford on a Thursday morning."
+  },
+  {
+    "source": "Overstrand Municipality Tourism Diary",
+    "sourceListingId": "tourism-diary-2026-11-18#Friday Morning Market",
+    "url": "https://www.overstrand.gov.za/top-things-to-do-this-weekend/",
+    "rawFile": "raw/overstrand-diary/top-things-to-do-this-weekend.txt",
+    "fetchedAt": "2026-11-23T13:26:38Z",
+    "title": "Friday Morning Market",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "09:00",
+      "endTime": "11:30"
+    },
+    "venue": {
+      "name": "Pretorius Hall",
+      "city": "Gansbaai"
+    },
+    "hints": [
+      "Friday 20th November 2026"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A Friday morning market at Pretorius Hall in Gansbaai from 09:00 to 11:30. Visitors browse the market stalls in the hall. It suits anyone in Gansbaai on a Friday morning."
+  }
+]

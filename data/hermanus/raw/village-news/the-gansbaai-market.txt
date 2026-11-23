@@ -1,0 +1,549 @@
+URL: https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-8/
+Fetched: 2026-11-23T14:15:11Z
+TodayMon 23 NovHigh tide02:36Low tide20:28WindS 22 km/hSea17°CSunset19:34Whale seasonIn season nowOn today 1 of 212:30 The Metropolitan Opera: Carmen (Bizet) Encore at Road House Cinema Whale Coast14:00 Hermanus Hacking Group
+
+Search ⚲Advertiser login
+
+Advertiser sign in
+
+- Home
+
+- News
+
+- Environment
+
+- Sport
+
+- Community
+
+- What’s on
+
+- Classifieds
+
+- Overstrand Jobs
+
+- Publications
+
+- Puzzles
+
+- Contact us
+
+- Send us news
+
+- Advertise with us
+
+Sign in
+
+Welcome!Log into your account
+
+your username
+
+your password
+
+Forgot your password?
+
+Password recovery
+
+Recover your password
+
+your email
+
+Search
+
+The Village News
+
+Whale Coast
+
+Free every ThursdayDistributed across the Whale CoastDistribution points
+
+- Home
+
+- News
+
+- Environment
+
+- Sport
+
+- Community
+
+- What’s on
+
+- Classifieds
+
+- Overstrand Jobs
+
+- Publications
+
+- Puzzles
+
+- Contact us
+
+- Send us news
+
+- Advertise with us
+
+November 202691 listings · tap a date to see that day
+
+Pick a date
+
+←→
+
+Dates with something on are marked.
+
+Wed11Thu12Fri13Sat14Sun15Mon16Tue17Wed18Thu19Fri20Sat21Sun22Mon23Tue24Wed25Thu26Fri27Sat28Sun29Mon30Tue1Wed2Thu3Fri4Sat5Sun6Mon7Tue8Wed9Thu10
+
+Narrow it down
+
+EverythingWeekends 45Free 66Every week 222Every month 17Markets 8Music 8Talks 7Family 5Workshops 4Wine & Food 4Sport 4Arts 3Clubs 2Meetings 2
+
+Advertisement
+
+« All Events
+
+# The Gansbaai Market
+
+28 November.09:00 -13:00
+
+Free
+
+- « Benguela Cove parkrun
+
+- Rosoberry Harvest Fest 2026 »
+
+Every Saturday. Enjoy fresh produce, home-baked foods, refreshments, crafts and entertainment at this popular ‘kuierplek’. Phone 028 384 8325 or email Glenda.
+
+WhereKapokblom Street, opposite Gansbaai Tourism
+
+CostFree
+
+Phone028 384 8325
+
+Emailgansbaaitourism1@overstrand.gov.za
+
+Add to calendar
+
+-
+
+Google Calendar
+
+-
+
+iCalendar
+
+-
+
+Outlook 365
+
+-
+
+Outlook Live
+
+Share
+
+WhatsAppFacebookCopy link
+
+## Details
+
+-
+Date:
+
+28 November
+
+-
+Time:
+
+09:00 -13:00
+
+-
+Cost:
+Free
+
+- Event Category: Every week
+
+- « Benguela Cove parkrun
+
+- Rosoberry Harvest Fest 2026 »
+
+Advertisement
+
+© 2026 The Village News. All rights reserved.
+
+The Village News
+
+A free weekly newspaper for the Whale Coast, printed every Thursday
+and distributed across the Whale Coast.
+
+#### Sections
+
+- News
+
+- Environment
+
+- What's on
+
+- Sport
+
+- Community
+
+#### Areas
+
+- Hangklip–KleinmondKleinmond · Betty’s Bay · Palmiet · Proteadorp
+
+- Greater HermanusHermanus · Onrus · Hawston · Zwelihle · Hemel-en-Aarde Valley
+
+- StanfordThembelihle
+
+- Greater GansbaaiGansbaai · De Kelders · Kleinbaai · Franskraal
+
+#### About the paper
+
+- About us
+
+- Our ethics and standards
+
+- Editorial and complaints policy
+
+- Corrections and takedown policy
+
+- Disclaimer
+
+- Advertising terms
+
+- Community group on Facebook
+
+#### Talk to us
+
+- Contact us and meet the team
+
+- Send us your news
+
+- admin@thevillagenews.co.za
+
+- 079 408 7722 · office and WhatsApp
+
+- Available Monday to Friday
+
+- Bookings close Monday 17:00
+
+- Privacy policy · Terms of use
+
+Advertise with usTeam desk login
+
+Designed and developed by onlinehub.co.za
+
+✕
+×
+
+Close ×
+
+Distribution · free every Thursday
+
+## Free every Thursday, all over the Whale Coast.
+
+Not a mailing list and not an algorithm. Real shelves, in real shops, from Grabouw to Kleinbaai — picked up by people
+who live here, and still lying on the table on Sunday.
+
+Freeevery Thursday
+
+Whale Coastand Overstrand
+
+Know a spot we are missing?
+Tell us →
+
+### Every shop that stocks it
+
+All 214 · tap any name to find it on Google
+
+Every one of these takes a bundle each Thursday. 214 shops, cafés, filling stations and offices across the Overstrand. Tap any name to find it on Google.
+
+----- The site's own event records for this listing (all occurrences in the window), from /wp-json/tribe/events/v1/events -----
+[
+ {
+  "id": 1641,
+  "global_id": "www.thevillagenews.co.za?id=1641",
+  "global_id_lineage": [
+   "www.thevillagenews.co.za?id=1641"
+  ],
+  "author": "0",
+  "status": "publish",
+  "date": "2026-11-08 05:15:16",
+  "date_utc": "2026-11-08 03:15:16",
+  "modified": "2026-11-08 05:15:16",
+  "modified_utc": "2026-11-08 03:15:16",
+  "url": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-8/",
+  "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1641",
+  "title": "The Gansbaai Market",
+  "description": "<p><strong>Every Saturday.</strong> Enjoy fresh produce, home-baked foods, refreshments, crafts and entertainment at this popular ‘kuierplek’. Phone 028 384 8325 or email Glenda.</p>",
+  "excerpt": "",
+  "slug": "the-gansbaai-market-8",
+  "image": false,
+  "all_day": false,
+  "start_date": "2026-11-28 09:00:00",
+  "start_date_details": {
+   "year": "2026",
+   "month": "11",
+   "day": "28",
+   "hour": "09",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "end_date": "2026-11-28 13:00:00",
+  "end_date_details": {
+   "year": "2026",
+   "month": "11",
+   "day": "28",
+   "hour": "13",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_start_date": "2026-11-28 07:00:00",
+  "utc_start_date_details": {
+   "year": "2026",
+   "month": "11",
+   "day": "28",
+   "hour": "07",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_end_date": "2026-11-28 11:00:00",
+  "utc_end_date_details": {
+   "year": "2026",
+   "month": "11",
+   "day": "28",
+   "hour": "11",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "timezone": "Africa/Johannesburg",
+  "timezone_abbr": "SAST",
+  "cost": "Free",
+  "cost_details": {
+   "currency_symbol": "",
+   "currency_code": "",
+   "currency_position": "",
+   "values": [
+    "0"
+   ]
+  },
+  "website": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-8/",
+  "show_map": true,
+  "show_map_link": true,
+  "hide_from_listings": false,
+  "sticky": false,
+  "featured": false,
+  "categories": [
+   {
+    "name": "Every week",
+    "slug": "every-week",
+    "term_group": 0,
+    "term_taxonomy_id": 91,
+    "taxonomy": "tribe_events_cat",
+    "description": "",
+    "parent": 0,
+    "count": 222,
+    "filter": "raw",
+    "id": 91,
+    "urls": {
+     "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/91",
+     "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+    }
+   }
+  ],
+  "tags": [],
+  "venue": [],
+  "organizer": [],
+  "custom_fields": []
+ },
+ {
+  "id": 1839,
+  "global_id": "www.thevillagenews.co.za?id=1839",
+  "global_id_lineage": [
+   "www.thevillagenews.co.za?id=1839"
+  ],
+  "author": "0",
+  "status": "publish",
+  "date": "2026-11-15 05:15:13",
+  "date_utc": "2026-11-15 03:15:13",
+  "modified": "2026-11-15 05:15:13",
+  "modified_utc": "2026-11-15 03:15:13",
+  "url": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-9/",
+  "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1839",
+  "title": "The Gansbaai Market",
+  "description": "<p><strong>Every Saturday.</strong> Enjoy fresh produce, home-baked foods, refreshments, crafts and entertainment at this popular ‘kuierplek’. Phone 028 384 8325 or email Glenda.</p>",
+  "excerpt": "",
+  "slug": "the-gansbaai-market-9",
+  "image": false,
+  "all_day": false,
+  "start_date": "2026-12-05 09:00:00",
+  "start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "05",
+   "hour": "09",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "end_date": "2026-12-05 13:00:00",
+  "end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "05",
+   "hour": "13",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_start_date": "2026-12-05 07:00:00",
+  "utc_start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "05",
+   "hour": "07",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_end_date": "2026-12-05 11:00:00",
+  "utc_end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "05",
+   "hour": "11",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "timezone": "Africa/Johannesburg",
+  "timezone_abbr": "SAST",
+  "cost": "Free",
+  "cost_details": {
+   "currency_symbol": "",
+   "currency_code": "",
+   "currency_position": "",
+   "values": [
+    "0"
+   ]
+  },
+  "website": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-9/",
+  "show_map": true,
+  "show_map_link": true,
+  "hide_from_listings": false,
+  "sticky": false,
+  "featured": false,
+  "categories": [
+   {
+    "name": "Every week",
+    "slug": "every-week",
+    "term_group": 0,
+    "term_taxonomy_id": 91,
+    "taxonomy": "tribe_events_cat",
+    "description": "",
+    "parent": 0,
+    "count": 222,
+    "filter": "raw",
+    "id": 91,
+    "urls": {
+     "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/91",
+     "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+    }
+   }
+  ],
+  "tags": [],
+  "venue": [],
+  "organizer": [],
+  "custom_fields": []
+ },
+ {
+  "id": 1992,
+  "global_id": "www.thevillagenews.co.za?id=1992",
+  "global_id_lineage": [
+   "www.thevillagenews.co.za?id=1992"
+  ],
+  "author": "0",
+  "status": "publish",
+  "date": "2026-11-22 05:15:10",
+  "date_utc": "2026-11-22 03:15:10",
+  "modified": "2026-11-22 05:15:10",
+  "modified_utc": "2026-11-22 03:15:10",
+  "url": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-10/",
+  "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1992",
+  "title": "The Gansbaai Market",
+  "description": "<p><strong>Every Saturday.</strong> Enjoy fresh produce, home-baked foods, refreshments, crafts and entertainment at this popular ‘kuierplek’. Phone 028 384 8325 or email Glenda.</p>",
+  "excerpt": "",
+  "slug": "the-gansbaai-market-10",
+  "image": false,
+  "all_day": false,
+  "start_date": "2026-12-12 09:00:00",
+  "start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "12",
+   "hour": "09",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "end_date": "2026-12-12 13:00:00",
+  "end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "12",
+   "hour": "13",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_start_date": "2026-12-12 07:00:00",
+  "utc_start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "12",
+   "hour": "07",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_end_date": "2026-12-12 11:00:00",
+  "utc_end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "12",
+   "hour": "11",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "timezone": "Africa/Johannesburg",
+  "timezone_abbr": "SAST",
+  "cost": "Free",
+  "cost_details": {
+   "currency_symbol": "",
+   "currency_code": "",
+   "currency_position": "",
+   "values": [
+    "0"
+   ]
+  },
+  "website": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-10/",
+  "show_map": true,
+  "show_map_link": true,
+  "hide_from_listings": false,
+  "sticky": false,
+  "featured": false,
+  "categories": [
+   {
+    "name": "Every week",
+    "slug": "every-week",
+    "term_group": 0,
+    "term_taxonomy_id": 91,
+    "taxonomy": "tribe_events_cat",
+    "description": "",
+    "parent": 0,
+    "count": 222,
+    "filter": "raw",
+    "id": 91,
+    "urls": {
+     "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/91",
+     "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+    }
+   }
+  ],
+  "tags": [],
+  "venue": [],
+  "organizer": [],
+  "custom_fields": []
+ }
+]

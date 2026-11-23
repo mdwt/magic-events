@@ -1,0 +1,419 @@
+[
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#zolani-mahola-karen-zoid",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Zolani Mahola & The Feminine Force featuring Karen Zoid",
+    "summary": "Zolani Mahola and her band The Feminine Force welcome special guest Karen Zoid to the Stanford Hills Sunset Sessions stage.",
+    "description": "Start the holidays with an evening of music and togetherness at Stanford Hills Estate. Zolani Mahola and her band, The Feminine Force, welcome special guest Karen Zoid to the stage for a celebration of diversity and sisterhood. As the sun sets over the farm, enjoy powerful vocals, moving songs and the energy of these artists sharing the stage. Bring a blanket, gather your friends and family, and settle in for a memorable Sunset Sessions show. Gates open: 15:00. Performance: 18:00. Adults: R350. Children aged 5–13: R200. Children under 5: Free. Outside food and drinks are not permitted.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-15",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://qkt.io/ZolaniZoid",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/913216112_2189409558279055_6869571923171972750_n-1-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Zolani Mahola & The Feminine Force featuring Karen Zoid is an outdoor concert at Stanford Hills Estate near Stanford on Tuesday 15 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music.",
+    "price": {
+      "min": 0,
+      "max": 350,
+      "currency": "ZAR"
+    }
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#spoegwolf",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Spoegwolf with Deon Meiring",
+    "summary": "Spoegwolf returns for its annual summer show at Stanford Hills Estate, with Deon Meiring opening.",
+    "description": "Join us at Stanford Hills Estate as Spoegwolf returns to the beautiful South African coast for its annual summer show. With festive lights, Christmas trees and a whole lot of singing, this is the perfect way to kick off the December holidays. Gates open: 15:00. Deon Meiring: 17:00. Spoegwolf: 18:00. All ages are welcome, and children under five can enter free of charge. Outside food and drinks are not permitted.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-16",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://itickets.co.za/events/487716",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/889867800_1110468545123465_2656223688878451971_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional",
+      "audience": "all_ages"
+    },
+    "tags": [
+      "rock-and-pop",
+      "christmas"
+    ],
+    "profile": "Spoegwolf LIVE at Stanford Hills Estate is an outdoor concert at Stanford Hills Estate near Stanford on Wednesday 16 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#neon-dreams-byrne",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Neon Dreams & Byrne: Dreaming Out Loud Festival",
+    "summary": "Canadian band Neon Dreams headline the Dreaming Out Loud Festival at Stanford Hills, joined by South African singer-songwriter Byrne.",
+    "description": "Get ready for an unforgettable summer afternoon as the Dreaming Out Loud Festival returns to South Africa this December. Headlining the festival are Canadian favourites Neon Dreams, joined by South African singer-songwriter Byrne. Gates open at 15:00. Show: 18:00–20:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-18",
+        "precision": "day",
+        "startTime": "15:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/355423-dreaming-out-loud-featuring-neon-dreams-byrne",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/891958409_1663683418475926_1317239806421042254_n.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Neon Dreams & Byrne: Dreaming Out Loud Festival is an outdoor concert at Stanford Hills Estate near Stanford on Friday 18 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#albert-frost-dan-patlansky",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Albert Frost & Dan Patlansky Live",
+    "summary": "Two of South Africa's most celebrated guitarists share the stage at Stanford Hills for an afternoon and evening of blues, rock and roots.",
+    "description": "Two of South Africa’s most celebrated guitarists share the stage for one unforgettable afternoon and evening in the Overberg. Albert Frost and Dan Patlansky bring together blues, rock and roots in a live performance full of soulful playing, bold musicianship and spontaneous moments. Bring a picnic blanket or fold-out chair, and enjoy the food vendors and cash bar on site. Adults: R300. Children aged 5–16: R200. Doors open: 15:00. Show: 18:00–20:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-20",
+        "precision": "day",
+        "startTime": "15:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/406946-albert-frost-dan-patlansky-live/",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/891099165_1607223008107536_5939427005553657301_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop",
+      "jazz"
+    ],
+    "profile": "Albert Frost & Dan Patlansky Live is an outdoor concert at Stanford Hills Estate near Stanford on Sunday 20 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music.",
+    "price": {
+      "min": 200,
+      "max": 300,
+      "currency": "ZAR"
+    }
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#watershed",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Watershed: Beating Hearts Tour",
+    "summary": "Watershed brings its Beating Hearts Tour to Stanford Hills, with special guest Keenan Eksteen.",
+    "description": "Watershed, one of South Africa’s best-loved live bands, brings its Beating Hearts Tour to Stanford Hills for an afternoon of live music in the Overberg. Just a stone’s throw from Hermanus, the estate’s rolling lawns and mountain views make a beautiful setting for a summer concert. Joining Watershed is special guest Keenan Eksteen. Gates open at 15:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-21",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/406446-watershed-live-at-stanford-hills/",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/889839729_1607228874773616_5671080332300453592_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Watershed: Beating Hearts Tour LIVE at Stanford Hills Estate is an outdoor concert at Stanford Hills Estate near Stanford on Monday 21 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#jeremy-loops",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Loop into Summer with Jeremy Loops",
+    "summary": "Jeremy Loops plays his much-loved annual summer show at Stanford Hills Estate.",
+    "description": "Catch South African live music sensation Jeremy Loops at Stanford Hills Estate. Set among the rolling hills of Stanford, this much-loved annual show has become a highlight of Jeremy’s summer tour—and a firm favourite on the festive-season calendar. This show sells out year after year, so book your tickets early. Gates open at 15:00. Show: 18:00–20:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-23",
+        "precision": "day",
+        "startTime": "15:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://jeremyloops.howler.co.za/events/jeremy-loops-live-at-stanford-hills-c65c",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/889001600_920297904374134_4796560606687743035_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Loop into Summer with Jeremy Loops, live at Stanford Hills is an outdoor concert at Stanford Hills Estate near Stanford on Wednesday 23 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#matthew-mole",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Matthew Mole with Tree 63 and Anica",
+    "summary": "A Boxing Day Sunset Session with Matthew Mole, Tree 63 and Anica at Stanford Hills Estate.",
+    "description": "Celebrate the magic of summer at Stanford Hills Sunset Sessions. Join us for an afternoon of live music, delicious food and a full cash bar. All ages are welcome, and children under five can enter free of charge. Outside food and drinks are not permitted. Doors open: 15:00. Anica: 16:00–16:45. Tree 63: 17:00–18:00. Matthew Mole: 18:30–20:00. Event ends: 20:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-26",
+        "precision": "day",
+        "startTime": "15:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607010268",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/891963581_1607559728073864_7077613132719774244_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional",
+      "audience": "all_ages"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Make Boxing Day Sing with Matthew Mole LIVE at Stanford Hills is an outdoor concert at Stanford Hills Estate near Stanford on Saturday 26 December 2026 (Boxing Day), part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#will-linley",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Summer Sounds Like Will Linley",
+    "summary": "A family-friendly outdoor summer concert with Will Linley at Stanford Hills Estate.",
+    "description": "Join us for a magical summer afternoon as Will Linley takes the stage at beautiful Stanford Hills Estate. Set in the heart of the Overberg, this family-friendly outdoor concert brings together live music, scenic views and feel-good summer vibes. Gates open at 15:00. Show: 18:00–20:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-28",
+        "precision": "day",
+        "startTime": "15:00",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.howler.co.za/events/will-linley-live-at-stanford-hills-estate-7c8f",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/895619200_1292909649647650_3288690946865006674_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional",
+      "audience": "all_ages"
+    },
+    "tags": [
+      "rock-and-pop"
+    ],
+    "profile": "Summer Sounds Like Will Linley, live at Stanford Hills is an outdoor concert at Stanford Hills Estate near Stanford on Monday 28 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  },
+  {
+    "source": "Stanford Hills Estate",
+    "sourceListingId": "https://stanfordhills.co.za/events/#jesse-clegg-ross-learmonth",
+    "url": null,
+    "rawFile": "raw/stanford-hills-estate/events.txt",
+    "fetchedAt": "2026-11-23T13:38:53Z",
+    "title": "Jesse Clegg & Ross Learmonth: Two Voices. One Sunset.",
+    "summary": "A sunset concert with Jesse Clegg and Ross Learmonth on the lawn at Stanford Hills Estate.",
+    "description": "Join Jesse Clegg and Ross Learmonth for a sunset concert at Stanford Hills Estate this December. Settle in on the lawn and enjoy an evening of live music in the beautiful Overberg. Bring a picnic blanket or fold-out chairs. Food and drinks will be available to purchase. Doors open: 15:00. Show starts: 17:30.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-30",
+        "precision": "day",
+        "startTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Stanford Hills Estate",
+      "address": "Weltevrede Farm, off the R43, Stanford, 7210",
+      "city": "Stanford"
+    },
+    "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1603240597",
+    "imageUrl": "https://stanfordhills.co.za/wp-content/uploads/2026/11/854179582_4757433947866664_7353460554030877224_n-1024x1024.jpg",
+    "hints": [
+      "Upcoming Events",
+      "Stanford Hills Sunset Sessions"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "rock-and-pop",
+      "folk-and-acoustic"
+    ],
+    "profile": "Jesse Clegg & Ross Learmonth: Two Voices. One Sunset. is an outdoor concert at Stanford Hills Estate near Stanford on Wednesday 30 December 2026, part of the estate's summer season of live music among the vineyards with the mountains as a backdrop. Gates open in the afternoon and tickets are on sale through the linked ticketing site. It suits travellers on the Whale Coast in the festive season looking for an evening of live music."
+  }
+]

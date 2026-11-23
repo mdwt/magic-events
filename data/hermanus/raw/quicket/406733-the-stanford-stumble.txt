@@ -1,0 +1,627 @@
+URL: https://www.quicket.co.za/events/406733-the-stanford-stumble/
+Fetched: 2026-11-23T13:32:35Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+#
+The Stanford Stumble
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By The Stanford Stumble
+
+Follow
+
+Sat Nov 28, 12:00 - Sat Nov 28, 19:00
+
+Stanford Hills Estate
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+STANFORD STUMBLE
+
+Walk • Run • Stumble • Laugh • Celebrate
+
+28 November 2026 | Stanford Hills | 12:00–18:00
+
+COME AS YOU ARE. STUMBLE AS YOU LIKE.
+
+The Stanford Stumble is back — but this year, we’re doing things a little differently.
+
+This isn’t a race.
+
+Everyone is a winner.
+
+There are no finish times to beat.
+
+And nobody is keeping score.
+
+The Stanford Stumble is a fun-filled family day out created to raise funds and awareness for the Butterfly Centre School NPO, a very special school supporting children who think and learn differently and therefore, don’t fit comfortably into mainstream education.
+
+The Butterfly Centre relies solely on fundraising and the generosity of its community to continue doing what it does — giving children a place where they are understood, supported, celebrated and allowed to learn in a way that works for them.
+
+So come and support an incredible cause while having a ridiculously good time doing it.
+
+THE STUMBLE
+
+Gather your family and friends, put together your most outrageous outfit and take on our 3 km route through the beautiful Stanford Hills farm.
+
+You can:
+
+WALK IT.
+
+RUN IT.
+
+STUMBLE IT.
+
+Or take your sweet time and simply enjoy the day.
+
+Along the route, you’ll discover a series of surprise stations. Think of them as your very own Stumble goodie bags — you won’t know exactly what’s waiting for you until you get there.
+
+Expect colour, refreshments, treats, surprises and plenty of opportunities to stop, laugh and make memories along the way.
+
+And remember…
+
+It’s not about how quickly you get there. It’s about enjoying the journey.
+
+BACK ON THE LAWN
+
+Once you’ve made your way back to Stanford Hills, the fun continues.
+
+Settle onto the lawn, grab something to eat and drink, let the kids loose and enjoy the afternoon together.
+
+The Butterfly Centre children will be helping to run the kids’ entertainment area, giving everyone the opportunity to meet some of the wonderful young people at the heart of the cause we’re supporting.
+
+We’ll also have:
+
+* ??? A Raffle draw
+
+* ?? Live music by Rivertones
+
+* ?? Kids’ entertainment
+
+* ?? Ridiculous outfits
+
+* ?? Colour and surprises
+
+* ?? Treats and refreshments
+
+* ?? Beautiful Stanford Hills surroundings
+
+* ?? A whole lot of community spirit
+
+There will also be a special word from Jami, owner and founder of the Butterfly Centre, sharing more about the school, its children and why this fundraiser matters so much.
+
+COME FOR THE FUN. STAY FOR THE CAUSE.
+
+The Stanford Stumble isn’t about being the fastest, fittest or most competitive person in the room.
+
+It’s about bringing people together.
+
+It’s about families spending a day outdoors.
+
+It’s about dressing up and being a little ridiculous.
+
+It’s about laughing with your friends.
+
+It’s about celebrating our differences.
+
+And most importantly, it’s about helping create a future where every child has a place where they belong.
+
+CELEBRATE EVERYONE. EXACTLY AS THEY ARE.
+
+## DIRECTIONS
+
+The Stanford Stumble
+
+Stanford Hills Estate
+
+Weltevrede Farm, Stanford, 7210, South Africa
+
+Get Directions
+
+From
+
+R120
+
+Sat Nov 28, 12:00 - Sat Nov 28, 19:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Stanford Hills Estate
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "The Stanford Stumble",
+  "startDate": "2026-11-28T10:00:00Z",
+  "endDate": "2026-11-28T17:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1017321_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Stanford Hills Estate",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Weltevrede Farm, Stanford, 7210, South Africa",
+      "addressLocality": "Stanford",
+      "postalCode": "7210",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/406733-the-stanford-stumble/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "STANFORD STUMBLE\r\nWalk • Run • Stumble • Laugh • Celebrate\r\n28 November 2026 | Stanford Hills | 12:00–18:00\r\nCOME AS YOU ARE. STUMBLE AS YOU LIKE.\r\nThe Stanford Stumble is back — but this year, we’re doing things a little differently.\r\nThis isn’t a race.Everyone is a winner.There are no finish times to beat.And nobody is keeping score.\r\nThe Stanford Stumble is a fun-filled family day out created to raise funds and awareness for the Butterfly Centre School NPO, a very special school supporting children who think and learn differently and therefore, don’t fit comfortably into mainstream education.\r\nThe Butterfly Centre relies solely on fundraising and the generosity of its community to continue doing what it does — giving children a place where they are understood, supported, celebrated and allowed to learn in a way that works for them.\r\nSo come and support an incredible cause while having a ridiculously good time doing it.\r\nTHE STUMBLE\r\nGather your family and friends, put together your most outrageous outfit and take on our 3 km route through the beautiful Stanford Hills farm.\r\nYou can:\r\nWALK IT.RUN IT.STUMBLE IT.\r\nOr take your sweet time and simply enjoy the day.\r\nAlong the route, you’ll discover a series of surprise stations. Think of them as your very own Stumble goodie bags — you won’t know exactly what’s waiting for you until you get there.\r\nExpect colour, refreshments, treats, surprises and plenty of opportunities to stop, laugh and make memories along the way.\r\nAnd remember…\r\nIt’s not about how quickly you get there. It’s about enjoying the journey.\r\nBACK ON THE LAWN\r\nOnce you’ve made your way back to Stanford Hills, the fun continues.\r\nSettle onto the lawn, grab something to eat and drink, let the kids loose and enjoy the afternoon together.\r\nThe Butterfly Centre children will be helping to run the kids’ entertainment area, giving everyone the opportunity to meet some of the wonderful young people at the heart of the cause we’re supporting.\r\nWe’ll also have:\r\n* ??? A Raffle draw* ?? Live music by Rivertones* ?? Kids’ entertainment* ?? Ridiculous outfits* ?? Colour and surprises* ?? Treats and refreshments* ?? Beautiful Stanford Hills surroundings* ?? A whole lot of community spirit\r\nThere will also be a special word from Jami, owner and founder of the Butterfly Centre, sharing more about the school, its children and why this fundraiser matters so much.\r\nCOME FOR THE FUN. STAY FOR THE CAUSE.\r\nThe Stanford Stumble isn’t about being the fastest, fittest or most competitive person in the room.\r\nIt’s about bringing people together.\r\nIt’s about families spending a day outdoors.\r\nIt’s about dressing up and being a little ridiculous.\r\nIt’s about laughing with your friends.\r\nIt’s about celebrating our differences.\r\nAnd most importantly, it’s about helping create a future where every child has a place where they belong.\r\nCELEBRATE EVERYONE. EXACTLY AS THEY ARE.",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/406733-the-stanford-stumble/#tickets",
+      "price": 120.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-03T00:00:00Z",
+      "sku": "769600"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/406733-the-stanford-stumble/#tickets",
+      "price": 60.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-03T00:00:00Z",
+      "sku": "769601"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "The Stanford Stumble",
+    "url": "https://www.quicket.co.za/app/#/account/event/406733/profile"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=406733, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1017325_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 406733,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "The Stanford Stumble",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 99225,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "3117654a-12bf-4e6b-8330-1e5647fde481",
+ "seatingPricing": [],
+ "seatingProductId": "406733",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 6.76,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 769600,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Adults",
+   "price": 120,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "28 Nov 2026",
+   "serviceFee": 14.26,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 3.38,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 769601,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Kids",
+   "price": 60,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "28 Nov 2026",
+   "serviceFee": 10.88,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Stanford Hills Estate"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=406733, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 99225,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:40:08Z) ===
+http://maps.google.co.za/maps?q=-34.4226932,19.4738643
+https://www.google.com/maps/dir/?api=1&destination=-34.4226932,19.4738643

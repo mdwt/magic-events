@@ -1,0 +1,531 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { describe, test } from "node:test";
+import { AppError } from "../src/shared/errors.ts";
+import { LanguageModelFailed } from "../src/shared/language-model.ts";
+import { answered, extraction, session } from "./fixtures/processing/answers.ts";
+import { LISTING, OTHER_LISTING, RAW, rawListing, setup, stored } from "./fixtures/processing/fakes.ts";
+import { fakeLanguageModel } from "../src/testing/fake-language-model.ts";
+
+// processNext with fakes of Discovery, Catalogue, the repository and the language model: no database.
+
+const whaleFestival = answered({
+  title: "Hermanus Whale Festival",
+  status: "confirmed",
+  booking: "none",
+  sessions: [session({ start: "2027-09-24", end: "2027-09-26" })],
+  hints: ["Festival", "Family"],
+});
+
+describe("processNext", () => {
+  test("returns null when nothing is pending, and asks the model nothing", async () => {
+    const { service, model } = setup({ pending: [] });
+    assert.equal(await service.processNext(), null);
+    assert.equal(model.requests.length, 0);
+  });
+
+  test("extracts, classifies, saves, appends to the warehouse and marks the raw listing processed", async () => {
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          answered({
+            url: "https://fynarts.example.com/festival-2027",
+            venueLatitude: -34.4187,
+            venueLongitude: 19.2345,
+          }),
+        ),
+      ],
+      classify: [
+        {
+          attributes: [
+            { key: "category", values: ["visual_arts", "music"] },
+            { key: "mood", values: ["festive"] },
+          ],
+          tags: ["jazz", "festivals"],
+          profile: "A ten-day arts festival across Hermanus.",
+        },
+      ],
+    });
+    const { service, state } = setup({ model });
+    const outcome = await service.processNext();
+
+    assert.deepEqual(outcome, {
+      rawListingId: RAW,
+      listingId: LISTING,
+      sourceName: "FynArts site",
+      outcome: "processed",
+      experiences: 1,
+      created: 1,
+      changed: 0,
+      unlinked: 0,
+      error: null,
+    });
+    const [saved] = state.saves;
+    assert.ok(saved);
+    assert.equal(saved.experienceId, undefined);
+    assert.equal(saved.title, "Hermanus FynArts");
+    assert.equal(saved.status, "announced");
+    assert.equal(saved.booking, "not_yet");
+    assert.equal(saved.pageUrl, "https://fynarts.example.com/festival-2027");
+    assert.deepEqual(saved.venue, { city: "Hermanus", position: { lat: -34.4187, lng: 19.2345 } });
+    assert.deepEqual(saved.sessions, [
+      {
+        startDate: "2027-06-12",
+        endDate: "2027-06-21",
+        precision: "day",
+        startTime: undefined,
+        endTime: undefined,
+        label: undefined,
+        soldOut: undefined,
+        cancelled: undefined,
+      },
+    ]);
+    assert.deepEqual(saved.attributes, { category: ["visual_arts", "music"], scale: ["local"] });
+    // The model's tag, then the season its dates fall in.
+    assert.deepEqual(saved.tags, ["jazz", "whale-season"]);
+    assert.equal(saved.profile, "A ten-day arts festival across Hermanus.");
+    assert.deepEqual(saved.source, { listingId: LISTING, rawListingId: RAW });
+    assert.equal(saved.precedence, "lead");
+
+    assert.equal(state.warehouse.length, 1);
+    assert.equal(state.warehouse[0]?.rawListingId, RAW);
+    assert.equal(state.warehouse[0].version, 1);
+    assert.equal(state.warehouse[0].experience.title, "Hermanus FynArts");
+
+    assert.deepEqual(
+      state.undefinedValues.map(({ kind, value }) => ({ kind, value })),
+      [
+        { kind: "attribute", value: "mood" },
+        { kind: "tag", value: "festivals" },
+      ],
+    );
+    assert.equal(state.undefinedValues[0]?.rawListingId, RAW);
+    assert.equal(state.undefinedValues[0].extractedExperience.title, "Hermanus FynArts");
+    assert.deepEqual(state.undefinedValues[0].modelAnswer.tags, ["jazz", "festivals"]);
+    assert.deepEqual(state.processed, [RAW]);
+  });
+
+  test("classifies each experience on its own, with the experience in the text and the definitions in the instructions", async () => {
+    const model = fakeLanguageModel({ extract: [extraction(answered(), whaleFestival)] });
+    const { service } = setup({ model });
+    await service.processNext();
+    const classifications = model.of("classify");
+    assert.equal(classifications.length, 2);
+    assert.match(classifications[0]?.text ?? "", /^Title: Hermanus FynArts/);
+    assert.match(classifications[1]?.text ?? "", /^Title: Hermanus Whale Festival[\s\S]*labels: Festival, Family/);
+    assert.match(classifications[0]?.instructions ?? "", /- visual_arts \(Visual arts\): Exhibitions/);
+    assert.equal(classifications[0]?.instructions, classifications[1]?.instructions);
+  });
+
+  test("a removed raw listing removes the listing's links, with no extraction", async () => {
+    const { service, state, model } = setup({
+      pending: [rawListing({ kind: "removed", content: null, contentType: null })],
+      experiences: [stored()],
+    });
+    const outcome = await service.processNext();
+    assert.equal(outcome?.outcome, "processed");
+    assert.equal(outcome.unlinked, 1);
+    assert.deepEqual(state.removals, [{ listingId: LISTING, rawListingId: RAW }]);
+    assert.equal(model.requests.length, 0);
+    assert.deepEqual(state.processed, [RAW]);
+  });
+
+  test("a listing that describes nothing is processed, and each link it had counts a missed reading", async () => {
+    const { service, state } = setup({ experiences: [stored()] });
+    const outcome = await service.processNext();
+    assert.equal(outcome?.outcome, "processed");
+    assert.equal(outcome.experiences, 0);
+    // Catalogue counts the miss and keeps the link until the source's missed runs before removal.
+    assert.equal(outcome.unlinked, 0);
+    assert.deepEqual(state.removals, []);
+    assert.deepEqual(state.misses, [
+      { listingId: LISTING, experienceId: stored().id, rawListingId: RAW, missesBeforeRemoval: 3 },
+    ]);
+    assert.deepEqual(state.warehouse, []);
+    assert.deepEqual(state.processed, [RAW]);
+  });
+
+  test("a season taken for an experience is left out, and the experiences beside it are saved", async () => {
+    // Xplorio's events page, whose introduction tells of the whales from June to November beside the festivals.
+    const content = readFileSync(new URL("./fixtures/sources/xplorio-events.html", import.meta.url), "utf8");
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          answered({
+            title: "Southern Right Whales in Walker Bay",
+            venueName: "Walker Bay",
+            sessions: [session({ start: "2027-06-01", end: "2027-11-30", precision: "month" })],
+          }),
+          answered({
+            title: "Hermanus Flower and Eco Fair",
+            venueName: "Fernkloof Nature Reserve",
+            sessions: [session({ start: "2027-09-01", end: "2027-09-30", precision: "month" })],
+          }),
+        ),
+      ],
+    });
+    const { service, state, logs } = setup({
+      model,
+      pending: [rawListing({ url: "https://xplorio.com/hermanus/en/things-to-do/events/", content })],
+    });
+    const outcome = await service.processNext();
+    assert.equal(outcome?.experiences, 1);
+    assert.deepEqual(
+      state.saves.map((saved) => saved.title),
+      ["Hermanus Flower and Eco Fair"],
+    );
+    assert.ok(logs.some((line) => line.message === "Season left out, not an experience"));
+  });
+
+    test("a stated age limit is the minimum age and makes the audience adults, though classification missed it", async () => {
+    // Quicket's page shows "No under 18s" as a label above the title, apart from the description.
+    const content = readFileSync(new URL("./fixtures/sources/quicket-somos.txt", import.meta.url), "utf8");
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          answered({
+            title: "Somos Sunset House & Dining",
+            status: "confirmed",
+            booking: "open",
+            sessions: [session({ start: "2026-12-20", end: "", startTime: "15:00", endTime: "22:00" })],
+            minimumAge: 18,
+          }),
+        ),
+      ],
+      classify: [{ attributes: [{ key: "audience", values: ["family"] }], tags: [], profile: "A sunset house party." }],
+    });
+    const { service, state } = setup({
+      model,
+      pending: [
+        rawListing({ url: "https://www.quicket.co.za/events/401463-somos/", content, contentType: "text/plain" }),
+      ],
+    });
+    await service.processNext();
+    assert.deepEqual(state.saves[0]?.attributes, { audience: ["adults"], minimum_age: [18], scale: ["local"] });
+    assert.match(model.of("classify")[0]?.text ?? "", /Age limit the source states: 18/);
+  });
+
+    test("processPending goes on until nothing is pending, or until the limit", async () => {
+    const pending = [rawListing(), rawListing({ id: "raw-2" }), rawListing({ id: "raw-3" })];
+    assert.equal((await setup({ pending }).service.processPending()).length, 3);
+    assert.equal((await setup({ pending }).service.processPending({ limit: 2 })).length, 2);
+  });
+});
+
+describe("A raw listing that fails", () => {
+  const failures = [
+    { name: "the model declines", model: () => fakeLanguageModel({ extract: [new LanguageModelFailed("declined")] }) },
+    {
+      name: "the classifier's answer has the wrong shape",
+      model: () =>
+        fakeLanguageModel({ extract: [extraction(answered())], classify: [new LanguageModelFailed("wrong_shape")] }),
+    },
+  ];
+
+  for (const failure of failures) {
+    test(`when ${failure.name}: nothing is saved, it is marked failed, and it is logged at warn`, async () => {
+      const { service, state, failures: marked, logs } = setup({ model: failure.model(), experiences: [stored()] });
+      const outcome = await service.processNext();
+      assert.equal(outcome?.outcome, "failed");
+      assert.match(outcome.error ?? "", /^The language model failed/);
+      assert.deepEqual(state.saves, []);
+      assert.deepEqual(state.removals, []);
+      assert.deepEqual(state.warehouse, []);
+      assert.deepEqual(state.processed, []);
+      assert.equal(marked.length, 1);
+      assert.equal(marked[0]?.id, RAW);
+      const failed = logs.find((line) => line.message === "Raw listing failed");
+      assert.equal(failed?.level, "warn");
+      assert.equal(failed.context.source, "FynArts site");
+    });
+  }
+
+  test("when Catalogue refuses a save, everything saved before it rolls back", async () => {
+    const { service, state, failures, logs } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered())] }),
+      saveFails: new AppError("invalid_input", "The sessions are not valid."),
+    });
+    const outcome = await service.processNext();
+    assert.equal(outcome?.error, "invalid_input: The sessions are not valid.");
+    assert.deepEqual(state.saves, []);
+    assert.equal(failures.length, 1);
+    assert.equal(logs.find((line) => line.message === "Raw listing failed")?.level, "warn");
+  });
+
+  test("a system error is logged at error, and the rest of the work rolls back", async () => {
+    const model = fakeLanguageModel({ extract: [extraction(answered(), whaleFestival)] });
+    let calls = 0;
+    const { service, state, logs } = setup({ model });
+    // The second classification blows up after the first experience was saved.
+    const ask = model.ask.bind(model);
+    model.ask = (request) => {
+      if (request.instructions.includes("Attributes:") && ++calls === 2) return Promise.reject(new Error("socket hang up"));
+      return ask(request);
+    };
+    const outcome = await service.processNext();
+    assert.equal(outcome?.error, "socket hang up");
+    assert.deepEqual(state.saves, []);
+    assert.deepEqual(state.warehouse, []);
+    assert.equal(logs.find((line) => line.message === "Raw listing failed")?.level, "error");
+  });
+
+  test("a source kind with no extractor fails with a clear error", async () => {
+    const { service, failures } = setup({
+      pending: [rawListing({ source: { ...rawListing().source, kind: "quicket" } })],
+    });
+    const outcome = await service.processNext();
+    assert.equal(outcome?.outcome, "failed");
+    assert.equal(outcome.error, 'No extractor reads the source kind "quicket" yet.');
+    assert.equal(failures[0]?.error, outcome.error);
+  });
+
+  test("is retried until it reaches its limit", async () => {
+    const model = fakeLanguageModel({ extract: () => new LanguageModelFailed("timed_out") });
+    const { service, failures } = setup({ model, maxAttempts: 3 });
+    const outcomes = await service.processPending();
+    assert.deepEqual(
+      outcomes.map((outcome) => outcome.outcome),
+      ["failed", "failed", "failed"],
+    );
+    assert.deepEqual(
+      failures.map((failure) => failure.willRetry),
+      [true, true, false],
+    );
+  });
+});
+
+describe("Matching", () => {
+  test("a listing of one experience that links to one still open updates it, whatever its title now", async () => {
+    const linked = stored({ title: "FynArts (dates to be announced)" });
+    const { service, state, model } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered())] }),
+      experiences: [linked],
+    });
+    await service.processNext();
+    assert.equal(state.saves[0]?.experienceId, linked.id);
+    assert.equal(model.of("match").length, 0);
+    assert.deepEqual(state.removals, []);
+  });
+
+  test("among several, each extracted experience is matched to the linked one with its title, and the others count a miss", async () => {
+    const fynArts = stored({ id: "e-fynarts" });
+    const whales = stored({ id: "e-whales", title: "Hermanus Whale Festival", firstDate: "2027-09-24", lastDate: "2027-09-26" });
+    const gone = stored({ id: "e-gone", title: "Kalfiefees" });
+    const { service, state } = setup({
+      model: fakeLanguageModel({ extract: [extraction(whaleFestival, answered())] }),
+      experiences: [fynArts, whales, gone],
+      candidates: [],
+    });
+    const outcome = await service.processNext();
+    assert.deepEqual(
+      state.saves.map((save) => save.experienceId),
+      ["e-whales", "e-fynarts"],
+    );
+    assert.deepEqual(state.misses, [{ listingId: LISTING, experienceId: "e-gone", rawListingId: RAW, missesBeforeRemoval: 3 }]);
+    assert.deepEqual(state.removals, []);
+    assert.equal(outcome?.unlinked, 0);
+  });
+
+  test("otherwise a candidate with the same title and overlapping dates is matched in code", async () => {
+    const candidate = stored({ id: "e-other", title: "The Hermanus FynArts 2027", listingIds: [OTHER_LISTING] });
+    const { service, state, model } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered())] }),
+      experiences: [candidate],
+    });
+    await service.processNext();
+    assert.equal(state.saves[0]?.experienceId, "e-other");
+    assert.equal(model.of("match").length, 0);
+  });
+
+  test("a month that another source gives differently still finds the stored experience, and matches it in code", async () => {
+    const october = stored({
+      id: "e-october",
+      title: "Hermanus Whale Festival",
+      firstDate: "2027-10-01",
+      lastDate: "2027-10-31",
+      onlyMonthOrYear: true,
+      listingIds: [OTHER_LISTING],
+    });
+    const september = answered({
+      title: "Hermanus Whale Festival",
+      sessions: [session({ start: "2027-09", end: "", precision: "month" })],
+    });
+    const { service, state, model, candidateQueries } = setup({
+      model: fakeLanguageModel({ extract: [extraction(september)] }),
+      experiences: [october],
+    });
+    await service.processNext();
+    // The candidates are searched for across the year, since the month is all that is known.
+    assert.deepEqual(candidateQueries, [
+      {
+        locationId: "00000000-0000-4000-8000-000000000001",
+        title: "Hermanus Whale Festival",
+        from: "2027-01-01",
+        to: "2027-12-31",
+        monthOrYear: { from: "2027-01-01", to: "2027-12-31" },
+      },
+    ]);
+    assert.equal(state.saves[0]?.experienceId, "e-october");
+    assert.equal(model.of("match").length, 0);
+  });
+
+  test("day dates search the dates themselves, and the year only for experiences known to the month", async () => {
+    const { service, candidateQueries } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered())] }),
+      candidates: [],
+    });
+    await service.processNext();
+    assert.deepEqual(
+      candidateQueries.map(({ from, to, monthOrYear }) => ({ from, to, monthOrYear })),
+      [{ from: "2027-06-12", to: "2027-06-21", monthOrYear: { from: "2027-01-01", to: "2027-12-31" } }],
+    );
+  });
+
+  test("another operator's whale watching from the same harbour is left to the model, and with none is a new experience", async () => {
+    const southernRight = stored({
+      id: "e-southern-right",
+      title: "Boat-based whale watching with Southern Right Charters",
+      type: "recurring",
+      venueName: "The Whale Shack, New Harbour",
+      firstDate: "2026-11-23",
+      lastDate: null,
+      recurrenceRule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+      listingIds: [OTHER_LISTING],
+    });
+    const whaleCruises = answered({
+      title: "Hermanus Whale Cruises boat-based whale watching",
+      type: "recurring",
+      status: "confirmed",
+      booking: "open",
+      sessions: [],
+      recurrence: {
+        rule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+        start: "2026-11-23",
+        end: "",
+        startTime: "",
+        endTime: "",
+        skipped: [],
+      },
+      venueName: "New Harbour",
+    });
+    const model = fakeLanguageModel({ extract: [extraction(whaleCruises)], match: [{ experienceId: "" }] });
+    const { service, state } = setup({ model, experiences: [southernRight] });
+    await service.processNext();
+    const [request] = model.of("match");
+    assert.match(request?.text ?? "", /Venue: New Harbour, Hermanus[\s\S]*Southern Right Charters; venue: The Whale Shack, New Harbour/);
+    assert.equal(state.saves[0]?.experienceId, undefined);
+  });
+
+  test("an experience the listing is linked to under another title is offered to the model first, marked as linked", async () => {
+    // The listing gives two experiences. The screening was linked to it by hand under the cinema's title.
+    const screening = stored({
+      id: "e-screening",
+      title: "Focker In-Law Premiere Night",
+      venueName: "Road House Cinema",
+      firstDate: "2026-11-26",
+      lastDate: "2026-11-26",
+      sessions: [{ startDate: "2026-11-26", endDate: "2026-11-26", startTime: "18:30" }],
+    });
+    const opera = stored({ id: "e-opera", title: "The Met Opera: Manon", firstDate: "2026-11-26", lastDate: "2026-11-26" });
+    const ladiesNight = answered({
+      title: "Ladies Night: Focker In-Law",
+      sessions: [session({ start: "2026-11-26", end: "", startTime: "18:30" })],
+      venueName: "Whale Coast Mall",
+    });
+    const manon = answered({ title: "The Met Opera: Manon", sessions: [session({ start: "2026-11-26", end: "" })] });
+    const model = fakeLanguageModel({
+      extract: [extraction(ladiesNight, manon)],
+      match: [{ experienceId: "e-screening" }],
+    });
+    const { service, state } = setup({ model, experiences: [screening, opera], candidates: [] });
+    await service.processNext();
+    assert.deepEqual(
+      state.saves.map((save) => save.experienceId),
+      ["e-screening", "e-opera"],
+    );
+    assert.deepEqual(state.removals, []);
+    const [request, ...more] = model.of("match");
+    assert.equal(more.length, 0);
+    const text = request?.text ?? "";
+    assert.match(text, /- ID e-screening: Focker In-Law Premiere Night; venue: Road House Cinema, Hermanus; dates: 2026-11-26 to 2026-11-26 at 18:30; this listing already links to it/);
+    // The opera is another experience of this listing, so it is not offered for the screening.
+    assert.doesNotMatch(text, /e-opera/);
+  });
+
+  test("when the model declines the linked experience, a new one is made and the old link counts a miss", async () => {
+    const screening = stored({ id: "e-screening", title: "Focker In-Law Premiere Night", firstDate: "2026-11-26", lastDate: "2026-11-26" });
+    const other = stored({ id: "e-other", title: "Christmas Market", firstDate: "2026-12-13", lastDate: "2026-12-13" });
+    const ladiesNight = answered({ title: "Ladies Night: Focker In-Law", sessions: [session({ start: "2026-11-26", end: "" })] });
+    const market = answered({ title: "Christmas Market", sessions: [session({ start: "2026-12-13", end: "" })] });
+    const model = fakeLanguageModel({ extract: [extraction(ladiesNight, market)], match: [{ experienceId: "" }] });
+    const { service, state } = setup({ model, experiences: [screening, other], candidates: [] });
+    await service.processNext();
+    assert.deepEqual(
+      state.saves.map((save) => save.experienceId),
+      [undefined, "e-other"],
+    );
+    assert.deepEqual(state.misses, [
+      { listingId: LISTING, experienceId: "e-screening", rawListingId: RAW, missesBeforeRemoval: 3 },
+    ]);
+  });
+
+  test("when no title matches, the model picks among the candidates", async () => {
+    const candidate = stored({ id: "e-other", title: "FynArts Festival of the Arts", listingIds: [OTHER_LISTING] });
+    const model = fakeLanguageModel({ extract: [extraction(answered())], match: [{ experienceId: "e-other" }] });
+    const { service, state } = setup({ model, experiences: [candidate] });
+    await service.processNext();
+    assert.equal(state.saves[0]?.experienceId, "e-other");
+    const [request] = model.of("match");
+    assert.match(request?.text ?? "", /Title: Hermanus FynArts[\s\S]*- ID e-other: FynArts Festival of the Arts/);
+  });
+
+  test("a pick that is not among the candidates makes a new experience", async () => {
+    const candidate = stored({ id: "e-other", title: "Something else", listingIds: [OTHER_LISTING] });
+    const model = fakeLanguageModel({ extract: [extraction(answered())], match: [{ experienceId: "invented" }] });
+    const { service, state } = setup({ model, experiences: [candidate] });
+    await service.processNext();
+    assert.equal(state.saves[0]?.experienceId, undefined);
+  });
+
+  test("two extracted experiences never match the same stored one", async () => {
+    const candidate = stored({ id: "e-other", title: "Hermanus FynArts", listingIds: [OTHER_LISTING] });
+    const { service, state } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered(), answered())] }),
+      experiences: [candidate],
+    });
+    await service.processNext();
+    assert.deepEqual(
+      state.saves.map((save) => save.experienceId),
+      ["e-other", undefined],
+    );
+  });
+
+  test("final experiences are never candidates", async () => {
+    const past = stored({ id: "e-past", title: "Hermanus FynArts", status: "past", listingIds: [OTHER_LISTING] });
+    const { service, state } = setup({
+      model: fakeLanguageModel({ extract: [extraction(answered())] }),
+      candidates: [past],
+    });
+    await service.processNext();
+    assert.equal(state.saves[0]?.experienceId, undefined);
+  });
+
+  test("a matched experience is led by this listing when its priority is highest, or tied and linked first", async () => {
+    const precedence = async (listingIds: string[], otherPriority: number) => {
+      const { service, state } = setup({
+        model: fakeLanguageModel({ extract: [extraction(answered())] }),
+        experiences: [stored({ id: "e-other", listingIds })],
+        priorities: { [OTHER_LISTING]: otherPriority },
+      });
+      await service.processNext();
+      return state.saves[0]?.precedence;
+    };
+    // This listing's source has priority 10.
+    assert.equal(await precedence([OTHER_LISTING], 20), "fill");
+    assert.equal(await precedence([OTHER_LISTING], 5), "lead");
+    // A tie: a listing not linked yet only fills, and of two linked ones the first keeps the lead.
+    assert.equal(await precedence([OTHER_LISTING], 10), "fill");
+    assert.equal(await precedence([LISTING, OTHER_LISTING], 10), "lead");
+    assert.equal(await precedence([OTHER_LISTING, LISTING], 10), "fill");
+  });
+});

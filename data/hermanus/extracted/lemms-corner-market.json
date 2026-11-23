@@ -1,0 +1,43 @@
+[
+  {
+    "source": "Nosy Rosy",
+    "sourceListingId": "https://nosyrosy.co.za/lemms-corner-market-hermanus/",
+    "url": "https://nosyrosy.co.za/lemms-corner-market-hermanus/",
+    "rawFile": "raw/lemms-corner-market/nosyrosy-lemms-corner-market.txt",
+    "fetchedAt": "2026-11-23T13:37:10Z",
+    "title": "Lemm’s Corner Market",
+    "summary": "Historically the oldest market in Hermanus, in the centre of town: every Sunday, with live music and 40 stalls.",
+    "description": "Lemm’s Corner Market is historically the oldest established market in Hermanus. It is right in the Center of town, surrounded by art galleries, restaurants and shops. Every Sunday it comes alive with a wonderful vibey atmosphere of music, wine, interesting art, artifacts, articles to buy and mingling locals & tourists. Celebrating Joy and Family Fun! Historically still the oldest market in Hermanus! Every Sunday! Live Music and 40 stalls to enjoy! The Lemms’ Corner Market is a Sunday Market that the entire family can join, with Arts, Crafts, Slow Food and a Band to enjoy and relax.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SU",
+      "start": "2026-11-29"
+    },
+    "venue": {
+      "name": "Lemm’s Corner",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "#Foodies"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "visual_arts",
+        "food_and_drink",
+        "music"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "A Sunday market at Lemm's Corner in the centre of Hermanus, said to be the town's oldest, with about 40 stalls and a live band. Visitors browse arts, crafts and artefacts, eat slow food and have a glass of wine among the galleries and restaurants of the town centre. It suits families and visitors spending a Sunday in Hermanus."
+  }
+]

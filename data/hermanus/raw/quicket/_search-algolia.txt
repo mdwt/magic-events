@@ -1,0 +1,3092 @@
+URL: https://qauipdmsel-dsn.algolia.net/1/indexes/*/queries (Quicket events search, POSTed from https://www.quicket.co.za/events/ page context; index 'products'; geo query aroundLatLng -34.45,19.20 radius 70km plus text queries per town and venue; hits filtered to the Overstrand by City/Venue/Address/_geoloc)
+Fetched: 2026-11-23T13:27:17Z
+
+{
+ "per": {
+  "geo": 207,
+  "Hermanus": 28,
+  "Onrus": 3,
+  "Onrusrivier": 2,
+  "Vermont": 0,
+  "Sandbaai": 7,
+  "Sand Bay": 1,
+  "Hawston": 0,
+  "Fisherhaven": 0,
+  "Voelklip": 0,
+  "Hemel-en-Aarde": 0,
+  "Hemel en Aarde": 2,
+  "Stanford": 12,
+  "Kleinmond": 15,
+  "Betty's Bay": 0,
+  "Bettys Bay": 0,
+  "Pringle Bay": 15,
+  "Gansbaai": 8,
+  "De Kelders": 62,
+  "Franskraal": 1,
+  "Kleinbaai": 0,
+  "Overstrand": 2,
+  "Whale Coast": 1,
+  "Rooi Els": 3,
+  "Hangklip": 11,
+  "Walker Bay": 1,
+  "Bientang": 1,
+  "Creation Wines": 198,
+  "Bouchard Finlayson": 4,
+  "Hamilton Russell": 15,
+  "Newton Johnson": 1,
+  "La Vierge": 28,
+  "Benguela Cove": 1,
+  "Lomond": 6,
+  "Stanford Hills": 4,
+  "Grootbos": 4,
+  "Gearing's Point": 6,
+  "Whale festival": 1,
+  "FynArts": 1,
+  "Peppermint Pottery": 11,
+  "FoMo": 2,
+  "Bartho Eksteen": 1,
+  "Golf Club Hermanus": 4,
+  "Whale Coast Mall": 1,
+  "De Wet": 3,
+  "Pringle Proms": 2,
+  "Plankies": 3,
+  "Birkenhead": 1
+ },
+ "total": 512,
+ "kept": [
+  {
+   "ProductName": "2025/2026 Day-permit for KCC Mountain bike trails",
+   "ProductUrl": "/events/298203-20252026-day-permit-for-kcc-mountain-bike-trails/",
+   "ProductDescription": "<p>Gain access to the KCC trails around Kleinmond for one day.</p>",
+   "DateFrom": 1737151200,
+   "DateTo": 1798668000,
+   "LastModified": "2026-10-30T11:34:07.1432908",
+   "VenueName": "KCC mountain bike trails",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Corner of Main Road and Lagoon Street, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.33985,
+    "lng": 19.0348434
+   },
+   "Organiser": "Kleinmond Cycle Club",
+   "OrganiserId": 39181,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/0701858_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0701858_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0701858_185_185.jpeg",
+   "Dates": [
+    1737151200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "298203",
+   "__q": [
+    "GEO",
+    "Kleinmond"
+   ]
+  },
+  {
+   "ProductName": "Kleinmond inniebos Kunstefees (KliK)",
+   "ProductUrl": "/events/339579-kleinmond-inniebos-kunstefees-klik/",
+   "ProductDescription": "<p>Three days, multiple venues, one small seaside town. KliK 2026 takes over Kleinmond from 27 to 29 November. Expect poetry, music, theatre, storytelling and art — built for anyone who loves words, music and the people who make them.</p><p><br></p><p>KliK 2026 brings together acclaimed writers, poe",
+   "DateFrom": 1795800600,
+   "DateTo": 1795946400,
+   "LastModified": "2026-11-21T21:51:29.7527158",
+   "VenueName": "Various Locations",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "102 Main Road, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3395729,
+    "lng": 19.0191822
+   },
+   "Organiser": "Cape Cultural Collective",
+   "OrganiserId": 82053,
+   "Categories": [
+    "Arts & Culture"
+   ],
+   "CategoryIds": [
+    9
+   ],
+   "ImageUrl": "//images.quicket.co.za/0947087_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0947087_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0947087_185_185.jpeg",
+   "Dates": [
+    1795800600,
+    1795843800,
+    1795935600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "339579",
+   "__q": [
+    "GEO",
+    "Kleinmond"
+   ]
+  },
+  {
+   "ProductName": "Kleinmond Cycling Club Membership (2026)",
+   "ProductUrl": "/events/353694-kleinmond-cycling-club-membership-2026/",
+   "ProductDescription": "<p>Annual membership applications are available for individuals, couples and families.</p><h4><strong style=\"background-color: initial; color: inherit\"><a href=\"https://www.quicket.co.za/events/203515-kleinmond-cycling-club-membership-2023/#/\" rel=\"noopener noreferrer\" target=\"_blank\">Join the club<",
+   "DateFrom": 1766008800,
+   "DateTo": 1798668000,
+   "LastModified": "2026-10-30T11:34:07.238036",
+   "VenueName": "KCC mountain bike trails",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Corner of Main Road and Lagoon Street, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.33985,
+    "lng": 19.0348434
+   },
+   "Organiser": "Kleinmond Cycle Club",
+   "OrganiserId": 39181,
+   "Categories": [
+    "Sports & Fitness"
+   ],
+   "CategoryIds": [
+    5
+   ],
+   "ImageUrl": "//images.quicket.co.za/0859541_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0859541_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0859541_185_185.jpeg",
+   "Dates": [
+    1766008800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "353694",
+   "__q": [
+    "GEO",
+    "Kleinmond"
+   ]
+  },
+  {
+   "ProductName": "Joshua na die Reen",
+   "ProductUrl": "/events/362915-joshua-na-die-reen/",
+   "ProductDescription": "<p>A live acoustic show with Joshua na die Reen in the new upmarket Kokkedolf space next to Burgundy restaurant</p>",
+   "DateFrom": 1796553000,
+   "DateTo": 1796556000,
+   "LastModified": "2026-10-26T15:19:24.1600195",
+   "VenueName": "7 Harbour Rd",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "7 Harbour Road, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.42065,
+    "lng": 19.2426643
+   },
+   "Organiser": "Burgundy Restaurant",
+   "OrganiserId": 89876,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1011446_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1011446_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1011446_185_185.png",
+   "Dates": [
+    1796553000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "ACOUSTIC"
+   ],
+   "objectID": "362915",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026",
+   "ProductUrl": "/events/370243-rumours-of-fleetwood-mac-tribute-at-hermanus-golf-club-11-dec-2026/",
+   "ProductDescription": "<p><strong style=\"color: rgba(0, 0, 0, 1)\">Rumours of Fleetwood Mac back by popular demand at Hermanus Golf Club with Two Chefs!</strong></p><p><br></p><p><strong style=\"color: rgba(0, 0, 0, 1)\">Join us for an incredible experience at this great venue.</strong></p><p><br></p><p>Rave reviews from aud",
+   "DateFrom": 1797004800,
+   "DateTo": 1797021000,
+   "LastModified": "2026-10-26T10:13:13.766267",
+   "VenueName": "Hermanus Golf Club",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Golf Road,  Off Main Rd, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4103165,
+    "lng": 19.25516
+   },
+   "Organiser": "Rumours of Fleetwood Mac Tribute",
+   "OrganiserId": 39915,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0906126_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/0906126_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/0906126_185_185.png",
+   "Dates": [
+    1797004800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "370243",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Golf Club Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Creedence - A Clearwater Revival at Hermanus Golf Club 4 Decemeber 2026",
+   "ProductUrl": "/events/370308-creedence-a-clearwater-revival-at-hermanus-golf-club-4-decemeber-2026/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1); background-color: rgba(255, 255, 255, 1)\">Creedence - A Clearwater Revival is a tribute paying homage to the brilliant songwriting and success of a great American band, Creedence Clearwater Revival.</span></p><p><br></p><p><strong style=\"color: rgba(0, 0, 0, ",
+   "DateFrom": 1796400000,
+   "DateTo": 1796416200,
+   "LastModified": "2026-11-21T23:37:38.7185766",
+   "VenueName": "Hermanus Golf Club",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Golf Road,  Off Main Rd, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4103165,
+    "lng": 19.25516
+   },
+   "Organiser": "Creedence - A Clearwater Revival Tribute",
+   "OrganiserId": 91267,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0906318_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/0906318_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/0906318_185_185.png",
+   "Dates": [
+    1796400000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "370308",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Golf Club Hermanus"
+   ]
+  },
+  {
+   "ProductName": "JINGLE BELL ROCK with The Family Band at Hermanus Golf Club",
+   "ProductUrl": "/events/371790-jingle-bell-rock-with-the-family-band-at-hermanus-golf-club/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\">This festive season, get ready for an unforgettable night of music, nostalgia, laughter, and holiday magic with </span><strong style=\"color: rgba(0, 0, 0, 1)\">The Family Band</strong><span style=\"color: rgba(0, 0, 0, 1); background-color: rgba(0, 0, 0, 0)\"> <",
+   "DateFrom": 1796313600,
+   "DateTo": 1796329800,
+   "LastModified": "2026-10-26T10:13:12.6392701",
+   "VenueName": "Hermanus Golf Club",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Golf Road,  Off Main Rd, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4103165,
+    "lng": 19.25516
+   },
+   "Organiser": "Monique ms events",
+   "OrganiserId": 62228,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0937409_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0937409_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0937409_185_185.jpeg",
+   "Dates": [
+    1796313600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "371790",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Golf Club Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Grip Gymnastics and Dance Concert 2026",
+   "ProductUrl": "/events/380987-grip-gymnastics-and-dance-concert-2026/",
+   "ProductDescription": "<p><span style=\"background-color: rgba(248, 249, 250, 1); color: rgba(98, 98, 98, 1)\">Join us for our end-of-year production, showcasing the talent, hard work and dedication of our acrobatic gymnastics and dance students. For the first time, we’re bringing our annual production to the theatre stage ",
+   "DateFrom": 1795852800,
+   "DateTo": 1795963500,
+   "LastModified": "2026-11-01T06:50:52.9187663",
+   "VenueName": "Road House Cinema at Whale Coast Mall",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "R43, Sandbaai, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.41461,
+    "lng": 19.2050838
+   },
+   "Organiser": "Grip Gymnastics",
+   "OrganiserId": 73351,
+   "Categories": [
+    "Sports & Fitness"
+   ],
+   "CategoryIds": [
+    5
+   ],
+   "ImageUrl": "//images.quicket.co.za/1003527_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1003527_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1003527_185_185.png",
+   "Dates": [
+    1795852800,
+    1795869900,
+    1795939200,
+    1795956300
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "380987",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Whale Coast",
+    "Whale festival",
+    "Whale Coast Mall"
+   ]
+  },
+  {
+   "ProductName": "Nomadic Orchestra",
+   "ProductUrl": "/events/386172-nomadic-orchestra/",
+   "ProductDescription": "<p><strong class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">Fri 4 Dec, 20h00</strong></p><p><strong class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">Tickets: R160 Quicket / R200 at the door </strong><span class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">(If still available)</span></p><p>",
+   "DateFrom": 1796407200,
+   "DateTo": 1796412600,
+   "LastModified": "2026-11-23T07:53:23.6221107",
+   "VenueName": "The Hangklip Hotel - The BOMA",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Pass through Pringle Bay on Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0971932_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0971932_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0971932_185_185.jpeg",
+   "Dates": [
+    1796407200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "386172",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "Andrew Young Live @ Benguela Cove",
+   "ProductUrl": "/events/389570-andrew-young-live-benguela-cove/",
+   "ProductDescription": "<p><strong style=\"color: rgba(0, 0, 0, 1)\">An Afternoon of Music. An Evening to Savour.</strong></p><p><span style=\"color: rgba(0, 0, 0, 1)\">Treat yourself to an unforgettable afternoon at the magnificent </span><strong style=\"color: rgba(0, 0, 0, 1)\">Benguela Cove Wine Estate</strong><span style=\"c",
+   "DateFrom": 1799508600,
+   "DateTo": 1799515800,
+   "LastModified": "2026-08-07T15:49:47.8161686",
+   "VenueName": "Benguela Cove Lagoon Wine Estate",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "R43, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.3458633,
+    "lng": 19.13473
+   },
+   "Organiser": "Andrew Young Management",
+   "OrganiserId": 50294,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0963142_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/0963142_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/0963142_185_185.png",
+   "Dates": [
+    1799508600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "#ANDREWYOUNG",
+    "#BENGUELACOVE",
+    "#HERMANUSEVENTS",
+    "#LIVECONCERT",
+    "#SAXOPHONIST"
+   ],
+   "objectID": "389570",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Benguela Cove"
+   ]
+  },
+  {
+   "ProductName": "Rosoberry Harvest Fest 2026",
+   "ProductUrl": "/events/395886-rosoberry-harvest-fest-2026/",
+   "ProductDescription": "<h1>Join <strong>Rosoberry Nursery &amp; Hermanus River Farm</strong> for the second Rosoberry Harvest Fest on <strong>28 November 2026</strong> – a relaxed, fun-filled family day celebrating berries, good food, music and summer on the farm.</h1><p><br></p><p>Harvest Fest falls at the peak of our be",
+   "DateFrom": 1795852800,
+   "DateTo": 1795878000,
+   "LastModified": "2026-11-17T10:14:57.7281173",
+   "VenueName": "Hermanus River Farmhouse",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Hermanus River Farm, R44, Kleinmond, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.30556,
+    "lng": 19.1355114
+   },
+   "Organiser": "Hermanus River Farm",
+   "OrganiserId": 83527,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/0981910_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/0981910_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/0981910_185_185.png",
+   "Dates": [
+    1795852800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BERRIES",
+    "GRASS FED BEEF",
+    "HARVEST",
+    "LIVE MUSIC"
+   ],
+   "objectID": "395886",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Kleinmond"
+   ]
+  },
+  {
+   "ProductName": "Jambo Core Throwdown 2.0",
+   "ProductUrl": "/events/398964-jambo-core-throwdown-20/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\">Get ready for the </span><strong style=\"color: rgba(0, 0, 0, 1)\">Jambo Core Throwdown 2.0</strong><span style=\"color: rgba(0, 0, 0, 1)\"> — a fun, high-energy partner race packed with running, functional fitness and a little friendly competition!</span></p><p>",
+   "DateFrom": 1798264800,
+   "DateTo": 1798279200,
+   "LastModified": "2026-09-24T14:31:17.2985238",
+   "VenueName": "Hermanus Cricket Club",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Jose Burman Drive, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.40873,
+    "lng": 19.24133
+   },
+   "Organiser": "Jambo Core Fitness",
+   "OrganiserId": 97332,
+   "Categories": [
+    "Health & Wellness"
+   ],
+   "CategoryIds": [
+    38
+   ],
+   "ImageUrl": "//images.quicket.co.za/0993756_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/0993756_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/0993756_185_185.png",
+   "Dates": [
+    1798264800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "398964",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Nádine live in Hermanus",
+   "ProductUrl": "/events/400158-ndine-live-in-hermanus/",
+   "ProductDescription": "<p>Nádine live in Hermanus! 5 December 2026 at Curro School, Sandbaai, Hermanus. Doors open at 18h30. Show starts at 19h00. </p><p>Music with purpose - in aid of Camphill Farm Community Hermanus.</p>",
+   "DateFrom": 1796490000,
+   "DateTo": 1796499000,
+   "LastModified": "2026-11-09T12:40:24.8668438",
+   "VenueName": "Curro Hermanus",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Curro Road, Sandbaai, 1, Sand Bay, Hermanus, 7200, South Africa, Sandbaai, Sand Bay, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.41247,
+    "lng": 19.1910343
+   },
+   "Organiser": "Camphill Farm Community Hermanus",
+   "OrganiserId": 97628,
+   "Categories": [
+    "Charity & Causes"
+   ],
+   "CategoryIds": [
+    50
+   ],
+   "ImageUrl": "//images.quicket.co.za/1020485_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1020485_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1020485_185_185.png",
+   "Dates": [
+    1796490000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CAMPHILL COMMUNITY HERMANUS",
+    "CAMPHILL FARM",
+    "CAMPHILL FARM COMMUNITY",
+    "CHILD FRIENDLY",
+    "CURRO SCHOOL",
+    "FAMILY SHOW",
+    "FUNDRAISING",
+    "GREAT CAUSE",
+    "HERMANUS",
+    "LIVE MUSIC CONCERT",
+    "LIVE PERFORMANCE",
+    "NÁDINE",
+    "NPO",
+    "SANDBAAI"
+   ],
+   "objectID": "400158",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Sandbaai",
+    "Gansbaai"
+   ]
+  },
+  {
+   "ProductName": "Crimson House",
+   "ProductUrl": "/events/401059-crimson-house/",
+   "ProductDescription": "<p><strong class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">Fri. 18 Dec @ 20.00pm</strong></p><p><strong class=\"ql-size-huge\">Tickets at the Door = R300 </strong><strong class=\"ql-size-large\">(If available)</strong></p><p><strong class=\"ql-size-huge\">Tickets on Quicket = R270</strong></p><p><str",
+   "DateFrom": 1797616800,
+   "DateTo": 1797624000,
+   "LastModified": "2026-11-22T20:05:32.7913064",
+   "VenueName": "The Hangklip Hotel - The BOMA",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Pass through Pringle Bay on Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0998902_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0998902_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0998902_185_185.jpeg",
+   "Dates": [
+    1797616800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BLUES-ROCK",
+    "BOOGIE",
+    "BRASS",
+    "CIRCUS ROCK",
+    "GYPSY PUNK",
+    "ROCK",
+    "SKA RHYTHM"
+   ],
+   "objectID": "401059",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "Neil Diamond Tribute - Johan Liebenberg",
+   "ProductUrl": "/events/401060-neil-diamond-tribute-johan-liebenberg/",
+   "ProductDescription": "<p><br></p><p><strong class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">Fri 11 Dec @ 20h00pm</strong></p><p><strong class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">Ticket price on Quicket = R200</strong></p><p><strong class=\"ql-size-huge\">Ticket price @ the Door = R230 </strong><strong class",
+   "DateFrom": 1797012000,
+   "DateTo": 1797017400,
+   "LastModified": "2026-11-22T21:24:10.2547498",
+   "VenueName": "The Hangklip Hotel",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/0998905_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0998905_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0998905_185_185.jpeg",
+   "Dates": [
+    1797012000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "401060",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "Somos",
+   "ProductUrl": "/events/401463-somos/",
+   "ProductDescription": "<p><br></p><p>Somos presents: Sunset House &amp; Dining</p><p><br></p><p>Join us on the terrace for an 7hour debut day-to-night journey curated by Somos. We are bringing together good food, great energy, and house music as day turns into night.</p><p><br></p><p>Starting under the warm afternoon sun ",
+   "DateFrom": 1797771600,
+   "DateTo": 1797796800,
+   "LastModified": "2026-11-06T19:57:07.0873516",
+   "VenueName": "Bossa Hermanus",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Jose Burman Drive, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.40855,
+    "lng": 19.2425785
+   },
+   "Organiser": "Shane",
+   "OrganiserId": 97732,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1012766_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1012766_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1012766_185_185.jpeg",
+   "Dates": [
+    1797771600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "AFRO HOUSE",
+    "DEEP HOUSE",
+    "MELODIC HOUSE",
+    "SOULFUL HOUSE",
+    "TECH HOUSE"
+   ],
+   "objectID": "401463",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Hermanus Pride Market - Saturday 5 December at Only Specials Lifestyle Hub",
+   "ProductUrl": "/events/401497-hermanus-pride-market-saturday-5-december-at-only-specials-lifestyle-hub/",
+   "ProductDescription": "<p>Pride is coming to Hermanus! Join to celebrate by supporting LGBT small businesses at our Hermanus Pride Market on Saturday Dec 5 from 10 am to 4 pm at Only Special Lifestyles Hub.</p><p><br></p><p>FREE entry </p><p><br></p><p>Enjoy  LGBT vendors offering unique Christmas gifts, food, drinks and ",
+   "DateFrom": 1796457600,
+   "DateTo": 1796479200,
+   "LastModified": "2026-10-06T07:53:55.1448015",
+   "VenueName": "Only Specials Café Lifestyle Hub",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "14 Aberdeen Street, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4188461,
+    "lng": 19.24077
+   },
+   "Organiser": "Village Drinks Cape Town & Stellenbosch",
+   "OrganiserId": 16756,
+   "Categories": [
+    "Community"
+   ],
+   "CategoryIds": [
+    61
+   ],
+   "ImageUrl": "//images.quicket.co.za/0999965_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/0999965_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/0999965_185_185.jpeg",
+   "Dates": [
+    1796457600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "401497",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Hidden Gems Wine Festival",
+   "ProductUrl": "/events/401916-hidden-gems-wine-festival/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\">Join us in the picturesque Hemel & Aarde Valley at Bartho Eksteen wine Estate just outside Hermanus, Western Cape on 20 December 2026 11am to 5pm to enjoy the wines of the Hidden Gem winemakers of the valley and surrounds, live music and foodie stalls' fare. ",
+   "DateFrom": 1797757200,
+   "DateTo": 1797778800,
+   "LastModified": "2026-10-30T09:20:54.100938",
+   "VenueName": "Bartho Eksteen Wine Estate",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Hemel en Aarde Road, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.3992538,
+    "lng": 19.21791
+   },
+   "Organiser": "Bartho Eksteen Wine Estate",
+   "OrganiserId": 73098,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1013483_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1013483_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1013483_185_185.jpeg",
+   "Dates": [
+    1797757200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "@WINE @FOODANDWINEFESTIVAL"
+   ],
+   "objectID": "401916",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Hemel en Aarde",
+    "Bartho Eksteen"
+   ]
+  },
+  {
+   "ProductName": "RAAF @ Pringle Bay, FoMo",
+   "ProductUrl": "/events/402967-raaf-pringle-bay-fomo/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\">RAAF IN PRINGLE BAY | FOMO</span></p><p><br></p><p><span style=\"color: rgba(0, 0, 0, 1)\">Pringle Bay, RAAF kom kuier!</span></p><p><span style=\"color: rgba(0, 0, 0, 1)\">Kom geniet ’n heerlike somersaand saam met Esté en Lourens by FOMO !</span></p><p><br></p>",
+   "DateFrom": 1797091200,
+   "DateTo": 1797102000,
+   "LastModified": "2026-11-13T15:15:43.6933882",
+   "VenueName": "FoMo Fine Art Gallery & Events",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Clarence Drive, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3391457,
+    "lng": 18.844532
+   },
+   "Organiser": "RAAF",
+   "OrganiserId": 26200,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1004596_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1004596_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1004596_185_185.jpeg",
+   "Dates": [
+    1797091200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "ART",
+    "BLUES",
+    "POP",
+    "RAAF",
+    "RAAFONTUUR",
+    "ROCK",
+    "WINE"
+   ],
+   "objectID": "402967",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "FoMo"
+   ]
+  },
+  {
+   "ProductName": "Hermanus | Summer Opener | Secret Sunrise Cape Town",
+   "ProductUrl": "/events/403200-hermanus-summer-opener-secret-sunrise-cape-town/",
+   "ProductDescription": "<p><strong>Hermanus we are BACK</strong></p><p><br></p><p>As we move and groove to music of all genres, our objectibve is to releive stress, connect with each other, and have a bit of fun to the sunrise.</p><p>A celebration of movement, music, and the people who make this town what it is.</p><p> Dif",
+   "DateFrom": 1795842000,
+   "DateTo": 1795845600,
+   "LastModified": "2026-10-14T16:26:08.3604981",
+   "VenueName": "Grotto Beach (Blue Flag)",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Grotto Street, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.413517,
+    "lng": 19.28757
+   },
+   "Organiser": "Secret Sunrise Cape Town",
+   "OrganiserId": 23532,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1005356_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1005356_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1005356_185_185.jpeg",
+   "Dates": [
+    1795842000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "403200",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Hermanus | Solstice | Secret Sunset",
+   "ProductUrl": "/events/403226-hermanus-solstice-secret-sunset/",
+   "ProductDescription": "<p><strong>The height of the sun in Hermanus</strong></p><p><br></p><p>Day meets night, sun meets moon.</p><p>The height of summer, and we are taking a moment to celebrate it.</p><p><br></p><p>As we move and groove to music of all genres, our objective is to relieve stress, connect with each other, ",
+   "DateFrom": 1797870600,
+   "DateTo": 1797874200,
+   "LastModified": "2026-10-14T16:26:08.3604981",
+   "VenueName": "Grotto Beach (Blue Flag)",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Grotto Street, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.413517,
+    "lng": 19.28757
+   },
+   "Organiser": "Secret Sunrise Cape Town",
+   "OrganiserId": 23532,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1005441_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1005441_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1005441_185_185.jpeg",
+   "Dates": [
+    1797870600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "403226",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Dam Fine Wine",
+   "ProductUrl": "/events/404338-dam-fine-wine/",
+   "ProductDescription": "<p><strong style=\"color: rgba(72, 88, 104, 1)\">Lomond Summer Events</strong></p><p><br></p><p><span style=\"color: rgba(72, 88, 104, 1)\">Our Lomond Summer Events are back for the 2026 festive season and run into our Blessing of the Harvest events in January 2027 during harvest time.</span></p><p><br>",
+   "DateFrom": 1797413400,
+   "DateTo": 1797426000,
+   "LastModified": "2026-10-28T16:26:12.0540692",
+   "VenueName": "Lomond Wine Estate - Gansbaai",
+   "City": "Gansbaai",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Avoca road, 7220, Gansbaai, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5661354,
+    "lng": 19.4830933
+   },
+   "Organiser": "Lomond Wine Estate",
+   "OrganiserId": 73986,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1009169_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1009169_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1009169_185_185.png",
+   "Dates": [
+    1797413400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "404338",
+   "__q": [
+    "GEO",
+    "Sandbaai",
+    "Gansbaai",
+    "Lomond"
+   ]
+  },
+  {
+   "ProductName": "Rooted in Cape Agulhas",
+   "ProductUrl": "/events/404553-rooted-in-cape-agulhas/",
+   "ProductDescription": "<p><strong>Lomond Summer Events</strong></p><p><br></p><p><span style=\"color: rgba(72, 88, 104, 1)\">Our Lomond Summer Events are back for the 2026 festive season and run into our Blessing of the Harvest events in January 2027 during harvest time.</span></p><p><br></p><p>Hosted by our Cellarmaster An",
+   "DateFrom": 1797588000,
+   "DateTo": 1797598800,
+   "LastModified": "2026-10-28T16:26:49.0237928",
+   "VenueName": "Lomond Wine Estate - Gansbaai",
+   "City": "Gansbaai",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Avoca road, 7220, Gansbaai, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5661354,
+    "lng": 19.4830933
+   },
+   "Organiser": "Lomond Wine Estate",
+   "OrganiserId": 73986,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1009279_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1009279_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1009279_185_185.png",
+   "Dates": [
+    1797588000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "404553",
+   "__q": [
+    "GEO",
+    "Sandbaai",
+    "Gansbaai",
+    "Lomond"
+   ]
+  },
+  {
+   "ProductName": "The Southernmost Christmas Tasting",
+   "ProductUrl": "/events/404563-the-southernmost-christmas-tasting/",
+   "ProductDescription": "<p><span style=\"color: rgba(72, 88, 104, 1)\"> </span></p><p><strong style=\"color: rgba(72, 88, 104, 1)\">Lomond Summer Events</strong></p><p><br></p><p><span style=\"color: rgba(72, 88, 104, 1)\">Our Lomond Summer Events are back for the 2026 festive season and run into our Blessing of the Harvest even",
+   "DateFrom": 1797847200,
+   "DateTo": 1797858000,
+   "LastModified": "2026-11-12T11:44:28.2730751",
+   "VenueName": "Lomond Wine Estate - Gansbaai",
+   "City": "Gansbaai",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "7220, Gansbaai, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5661354,
+    "lng": 19.4830933
+   },
+   "Organiser": "Lomond Wine Estate",
+   "OrganiserId": 73986,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1009286_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1009286_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1009286_185_185.png",
+   "Dates": [
+    1797847200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "404563",
+   "__q": [
+    "GEO",
+    "Sandbaai",
+    "Gansbaai",
+    "Lomond"
+   ]
+  },
+  {
+   "ProductName": "Wild about Wine",
+   "ProductUrl": "/events/404568-wild-about-wine/",
+   "ProductDescription": "<p><strong style=\"color: rgba(72, 88, 104, 1)\">Lomond Summer Events</strong></p><p><br></p><p><span style=\"color: rgba(72, 88, 104, 1)\">Our Lomond Summer Events are back for the 2026 festive season and run into our Blessing of the Harvest events in January 2027 during harvest time.</span></p><p><br>",
+   "DateFrom": 1798623000,
+   "DateTo": 1798635600,
+   "LastModified": "2026-11-12T11:44:28.2730751",
+   "VenueName": "Lomond Wine Estate - Gansbaai",
+   "City": "Gansbaai",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "7220, Gansbaai, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5661354,
+    "lng": 19.4830933
+   },
+   "Organiser": "Lomond Wine Estate",
+   "OrganiserId": 73986,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1009313_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1009313_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1009313_185_185.png",
+   "Dates": [
+    1798623000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "404568",
+   "__q": [
+    "GEO",
+    "Sandbaai",
+    "Gansbaai",
+    "Lomond"
+   ]
+  },
+  {
+   "ProductName": "Blessing of the Harvest",
+   "ProductUrl": "/events/404576-blessing-of-the-harvest/",
+   "ProductDescription": "<p><strong>Blessing of the Harvest 2027 - In collaboration with Lost Boy Wines</strong></p><p><br></p><p><strong>Lomond Summer Events</strong></p><p><strong style=\"color: rgba(72, 88, 104, 1)\"> </strong></p><p>Join us as we raise a glass to the season ahead and bless the 2027 harvest.</p><p><span st",
+   "DateFrom": 1799314200,
+   "DateTo": 1799326800,
+   "LastModified": "2026-11-12T11:44:28.3983897",
+   "VenueName": "Lomond Wine Estate - Gansbaai",
+   "City": "Gansbaai",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "7220, Gansbaai, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5661354,
+    "lng": 19.4830933
+   },
+   "Organiser": "Lomond Wine Estate",
+   "OrganiserId": 73986,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1009332_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1009332_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1009332_185_185.png",
+   "Dates": [
+    1799314200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "404576",
+   "__q": [
+    "GEO",
+    "Sandbaai",
+    "Gansbaai",
+    "Lomond"
+   ]
+  },
+  {
+   "ProductName": "Blessing of the Harvest",
+   "ProductUrl": "/events/404580-blessing-of-the-harvest/",
+   "ProductDescription": "<p><strong style=\"color: rgba(72, 88, 104, 1)\">Blessing of the Harvest 2027 - In collaboration with Lost Boy Wines</strong></p><p><span style=\"color: rgba(72, 88, 104, 1)\"> </span></p><p><strong style=\"color: rgba(72, 88, 104, 1)\">Lomond Summer Events. </strong></p><p><br></p><p><span style=\"color: ",
+   "DateFrom": 1801303200,
+   "DateTo": 1801314000,
+   "LastModified": "2026-10-28T16:23:42.5566976",
+   "VenueName": "Lomond Wine Estate - Gansbaai",
+   "City": "Gansbaai",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Avoca road, 7220, Gansbaai, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5661354,
+    "lng": 19.4830933
+   },
+   "Organiser": "Lomond Wine Estate",
+   "OrganiserId": 73986,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1009341_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1009341_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1009341_185_185.png",
+   "Dates": [
+    1801303200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "404580",
+   "__q": [
+    "GEO",
+    "Sandbaai",
+    "Gansbaai",
+    "Lomond"
+   ]
+  },
+  {
+   "ProductName": "Jack Parow",
+   "ProductUrl": "/events/405177-jack-parow/",
+   "ProductDescription": "<p><strong class=\"ql-size-huge\">21 DEC @ 20:00 pm</strong></p><p><strong class=\"ql-size-huge\">Tickets R350 on Quicket and R380 at the Door (If still available)</strong></p><p><br></p><p><span style=\"color: rgba(0, 0, 0, 1)\" class=\"ql-size-huge\">The Ambassador of Good Times is back! </span><strong st",
+   "DateFrom": 1797876000,
+   "DateTo": 1797883200,
+   "LastModified": "2026-11-22T20:05:32.7913064",
+   "VenueName": "The Hangklip Hotel - The BOMA",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Pass through Pringle Bay on Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1011139_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1011139_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1011139_185_185.jpeg",
+   "Dates": [
+    1797876000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "AFRIKAANS RAP",
+    "ENGLISH RAP",
+    "HIGH ENERGY",
+    "POP",
+    "RAP",
+    "RAPPER"
+   ],
+   "objectID": "405177",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "A Tribute to Elton John",
+   "ProductUrl": "/events/405245-a-tribute-to-elton-john/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\" class=\"ql-size-huge\">Mon 4 Jan, @ 20.00 pm</span></p><p><span style=\"color: rgba(0, 0, 0, 1)\" class=\"ql-size-huge\">Ticket prices: </span><strong class=\"ql-size-huge\" style=\"color: rgba(0, 0, 0, 1)\">R280 on Quicket</strong><span style=\"color: rgba(0, 0, 0, 1)\"",
+   "DateFrom": 1799085600,
+   "DateTo": 1799089200,
+   "LastModified": "2026-11-22T21:24:10.2547498",
+   "VenueName": "The Hangklip Hotel",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1011143_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1011143_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1011143_185_185.jpeg",
+   "Dates": [
+    1799085600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CLASSIC",
+    "ELTON JOHN",
+    "TRIBUTE"
+   ],
+   "objectID": "405245",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "BNC#10 - The 2027 BizNews Conference in Hermanus",
+   "ProductUrl": "/events/405764-bnc10-the-2027-biznews-conference-in-hermanus/",
+   "ProductDescription": "<p>WELCOME TO BNC#10  </p><p><br></p><p>Ten conferences. One tribe. Who would have bet on that when we first gathered in the Drakensberg?</p><p><br></p><p>The tenth annual BizNews Conference, BNC#10, takes place in Hermanus from Tuesday 9 to Thursday 11 March 2027. On-site registration opens Monday ",
+   "DateFrom": 1804510800,
+   "DateTo": 1804849200,
+   "LastModified": "2026-11-18T14:09:10.9191858",
+   "VenueName": "Hermanus Municipal Auditorium ",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "1 Harmony Avenue, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4181824,
+    "lng": 19.23703
+   },
+   "Organiser": "BizNews",
+   "OrganiserId": 56952,
+   "Categories": [
+    "Other"
+   ],
+   "CategoryIds": [
+    64
+   ],
+   "ImageUrl": "//images.quicket.co.za/1012814_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1012814_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1012814_185_185.jpeg",
+   "Dates": [
+    1804510800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BNC#10"
+   ],
+   "objectID": "405764",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "THE LATIN GUITAR with James Grace",
+   "ProductUrl": "/events/405897-the-latin-guitar-with-james-grace/",
+   "ProductDescription": "<p><span class=\"ql-size-large\">Begin the new year with an hour of Latin music performed by James Grace on the classical guitar.</span></p><p><br></p><p><span class=\"ql-size-large\">Brian Berkman’s Pringle Proms presents this lunchtime recital at Pringle Bay United Church on</span></p><p><span class=\"",
+   "DateFrom": 1799488800,
+   "DateTo": 1799493300,
+   "LastModified": "2026-10-29T10:31:25.6873379",
+   "VenueName": "Pringle Bay United Church",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "397 Park Street, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3521957,
+    "lng": 18.83152
+   },
+   "Organiser": "Pringle Proms",
+   "OrganiserId": 60099,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1013061_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1013061_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1013061_185_185.jpeg",
+   "Dates": [
+    1799488800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "GUITAR",
+    "JAMES GRACE",
+    "LATIN"
+   ],
+   "objectID": "405897",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Pringle Proms"
+   ]
+  },
+  {
+   "ProductName": "Low-carb cooking with Brian Berkman",
+   "ProductUrl": "/events/406406-low-carb-cooking-with-brian-berkman/",
+   "ProductDescription": "<p><span class=\"ql-size-large\">Join Brian Berkman at home in Pringle Bay for a relaxed morning of low-carb</span></p><p><span class=\"ql-size-large\">cooking, followed by lunch. Watch him demonstrate a generous summer menu,</span></p><p><span class=\"ql-size-large\">with practical techniques and ideas t",
+   "DateFrom": 1797663600,
+   "DateTo": 1797683400,
+   "LastModified": "2026-11-01T16:55:35.2671194",
+   "VenueName": "Pringle Proms",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Edward Road 1332, Pringle Bay , 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3464966,
+    "lng": 18.8456554
+   },
+   "Organiser": "Pringle Proms",
+   "OrganiserId": 60099,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1016311_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1016311_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1016311_185_185.jpeg",
+   "Dates": [
+    1797663600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BANTING",
+    "KETO",
+    "LCHF",
+    "LOW-CARB"
+   ],
+   "objectID": "406406",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Pringle Proms"
+   ]
+  },
+  {
+   "ProductName": "Watershed LIVE at Stanford Hills",
+   "ProductUrl": "/events/406446-watershed-live-at-stanford-hills/",
+   "ProductDescription": "<p>Just a stone’s throw from Hermanus, Stanford Hills is one of South Africa’s favourite live music venues, set among green lawns with a beautiful view of the mountains.</p><p>Join Watershed for an afternoon of big tunes, a big stage and the kind of sunset that makes you want to stay a little longer",
+   "DateFrom": 1797861600,
+   "DateTo": 1797876000,
+   "LastModified": "2026-11-02T11:17:40.2585114",
+   "VenueName": "Stanford Hills",
+   "City": "Stanford",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Weltevrede Farm, Stanford, 7210, 7210, Stanford, Western Cape, South Africa",
+   "PostCode": "7210",
+   "_geoloc": {
+    "lat": -34.42269,
+    "lng": 19.4738636
+   },
+   "Organiser": "Watershed",
+   "OrganiserId": 35061,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1016428_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1016428_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1016428_185_185.png",
+   "Dates": [
+    1797861600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "ACOUSTIC POP ROCK"
+   ],
+   "objectID": "406446",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Stanford",
+    "Stanford Hills"
+   ]
+  },
+  {
+   "ProductName": "The Stanford Stumble",
+   "ProductUrl": "/events/406733-the-stanford-stumble/",
+   "ProductDescription": "<p>STANFORD STUMBLE</p><p><br></p><p>Walk • Run • Stumble • Laugh • Celebrate</p><p><br></p><p>28 November 2026 | Stanford Hills | 12:00–18:00</p><p><br></p><p>COME AS YOU ARE. STUMBLE AS YOU LIKE.</p><p><br></p><p>The Stanford Stumble is back — but this year, we’re doing things a little differently",
+   "DateFrom": 1795860000,
+   "DateTo": 1795885200,
+   "LastModified": "2026-11-03T13:58:13.1599371",
+   "VenueName": "Stanford Hills Estate",
+   "City": "Stanford",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Weltevrede Farm, Stanford, 7210, South Africa, 7210, Stanford, Western Cape, South Africa",
+   "PostCode": "7210",
+   "_geoloc": {
+    "lat": -34.42269,
+    "lng": 19.4738636
+   },
+   "Organiser": "The Stanford Stumble",
+   "OrganiserId": 99225,
+   "Categories": [
+    "Charity & Causes"
+   ],
+   "CategoryIds": [
+    50
+   ],
+   "ImageUrl": "//images.quicket.co.za/1017321_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1017321_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1017321_185_185.jpeg",
+   "Dates": [
+    1795860000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "406733",
+   "__q": [
+    "GEO",
+    "Stanford",
+    "Stanford Hills"
+   ]
+  },
+  {
+   "ProductName": "Hermanus Pride Party",
+   "ProductUrl": "/events/406758-hermanus-pride-party/",
+   "ProductDescription": "<p>Hermanus PRIDE is celebrating its annual Pride party at the most iconic place, at FICKS Pool Restaurant in Hermanus.</p><p>We will celebrate all day, beginning with our PRIDE market at the ONLY SPECIALS LIFESTYLE HUB in the morning, followed by a PRIDE Fun Walk in the afternoon from there through",
+   "DateFrom": 1796482800,
+   "DateTo": 1796497200,
+   "LastModified": "2026-11-03T16:42:33.4582923",
+   "VenueName": "Fick's Pool Restaurant",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "8 Marine Drive, Westcliff, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4223938,
+    "lng": 19.23564
+   },
+   "Organiser": "Hermanus Pride",
+   "OrganiserId": 87114,
+   "Categories": [
+    "Community"
+   ],
+   "CategoryIds": [
+    61
+   ],
+   "ImageUrl": "//images.quicket.co.za/1017355_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1017355_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1017355_185_185.jpeg",
+   "Dates": [
+    1796482800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "HERMANUS PRIDE",
+    "LGBTQ+",
+    "PRIDE"
+   ],
+   "objectID": "406758",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Albert Frost & Dan Patlansky Live",
+   "ProductUrl": "/events/406946-albert-frost-dan-patlansky-live/",
+   "ProductDescription": "<h2><span style=\"color: rgba(0, 0, 0, 1)\">Stanford Hills Sunset Sessions</span></h2><h3><span style=\"color: rgba(0, 0, 0, 1)\">Albert Frost &amp; Dan Patlansky, Live</span></h3><p><strong style=\"color: rgba(0, 0, 0, 1)\">Sunday, 20 December 2026 | Stanford Hills, Stanford</strong></p><p><span style=\"c",
+   "DateFrom": 1797771600,
+   "DateTo": 1797789600,
+   "LastModified": "2026-11-04T14:35:16.8558955",
+   "VenueName": "Stanford Hills Estate",
+   "City": "Stanford",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Weltevrede Farm, Stanford, 7210, South Africa, 7210, Stanford, Western Cape, South Africa",
+   "PostCode": "7210",
+   "_geoloc": {
+    "lat": -34.42269,
+    "lng": 19.4738636
+   },
+   "Organiser": "Albert Frost",
+   "OrganiserId": 69757,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1018022_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1018022_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1018022_185_185.jpeg",
+   "Dates": [
+    1797771600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BLUES",
+    "ROCK"
+   ],
+   "objectID": "406946",
+   "__q": [
+    "GEO",
+    "Stanford",
+    "Stanford Hills"
+   ]
+  },
+  {
+   "ProductName": "Space to Become – Begin With You | A Women’s Mini-Retreat",
+   "ProductUrl": "/events/407052-space-to-become-begin-with-you-a-womens-mini-retreat/",
+   "ProductDescription": "<p><strong>What if, for one afternoon, you came first?</strong></p><p>It’s the end of the year. You’ve carried the work, the family, the lists, the to-dos, and everyone else’s needs. You’re tired in a way a weekend doesn’t fix.</p><p><br></p><p><em>Space to Become – Begin With You</em> is a three-ho",
+   "DateFrom": 1795942800,
+   "DateTo": 1795953600,
+   "LastModified": "2026-11-20T21:02:07.8579227",
+   "VenueName": "Hemelberg Guest House",
+   "City": "Cape Town",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Helshoogte Road Kylemore, Cape Town, 7600, South Africa, 7600, Cape Town, Western Cape, South Africa",
+   "PostCode": "7600",
+   "_geoloc": {
+    "lat": -33.9104271,
+    "lng": 18.9443588
+   },
+   "Organiser": "Roxanne Whatley coaching ",
+   "OrganiserId": 99348,
+   "Categories": [
+    "Health & Wellness"
+   ],
+   "CategoryIds": [
+    38
+   ],
+   "ImageUrl": "//images.quicket.co.za/1019329_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1019329_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1019329_185_185.png",
+   "Dates": [
+    1795942800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "407052",
+   "__q": [
+    "GEO"
+   ]
+  },
+  {
+   "ProductName": "ALBERT FROST TRIO",
+   "ProductUrl": "/events/407078-albert-frost-trio/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\" class=\"ql-size-huge\">Wed 30 Dec @ 20h00 in our BOMA </span></p><p><br></p><p><span class=\"ql-size-huge\">Tickets: </span><strong class=\"ql-size-huge\">R250 on Quicket</strong><span class=\"ql-size-huge\"> OR Tickets </span><strong class=\"ql-size-huge\">R280 @the D",
+   "DateFrom": 1798653600,
+   "DateTo": 1798660800,
+   "LastModified": "2026-11-22T20:05:32.7913064",
+   "VenueName": "The Hangklip Hotel - The BOMA",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Pass through Pringle Bay on Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1020223_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1020223_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1020223_185_185.jpeg",
+   "Dates": [
+    1798653600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "ACOUSTIC GROOVES",
+    "BLUES ROCK",
+    "ELECTRIC RIFFS",
+    "STAGE PRESENCE"
+   ],
+   "objectID": "407078",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "Akkedis - Jake Gunn  & Vriende",
+   "ProductUrl": "/events/407634-akkedis-jake-gunn-vriende/",
+   "ProductDescription": "<p><strong style=\"color: rgba(84, 84, 84, 1)\" class=\"ql-size-huge\">Sat 26 December 14.00 @ The Boma </strong></p><p><strong style=\"color: rgba(84, 84, 84, 1)\" class=\"ql-size-huge\">Tickets: R200 on Quicket / R230 at the door </strong><strong style=\"color: rgba(84, 84, 84, 1)\" class=\"ql-size-large\">(I",
+   "DateFrom": 1798286400,
+   "DateTo": 1798297200,
+   "LastModified": "2026-11-22T20:05:32.7913064",
+   "VenueName": "The Hangklip Hotel - The BOMA",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Pass through Pringle Bay on Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1020238_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1020238_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1020238_185_185.jpeg",
+   "Dates": [
+    1798286400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BLUES-ROCK"
+   ],
+   "objectID": "407634",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "New Years Eve - Downtown Gypsies and DJ for NYE 2026",
+   "ProductUrl": "/events/407640-new-years-eve-downtown-gypsies-and-dj-for-nye-2026/",
+   "ProductDescription": "<p><span class=\"ql-size-huge\">SAVE THE DATE for this NYE 2026</span></p><p><br></p><p><strong class=\"ql-size-huge\">Thursday 31 Dec @ 9pm </strong></p><p><strong class=\"ql-size-huge\">Band (3 sets of 45min)</strong></p><p><span class=\"ql-size-huge\">Doors open 8:00pm</span></p><p><br></p><p><br></p><p>",
+   "DateFrom": 1798736400,
+   "DateTo": 1798758000,
+   "LastModified": "2026-11-22T21:24:10.2547498",
+   "VenueName": "The Hangklip Hotel",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1020247_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1020247_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1020247_185_185.jpeg",
+   "Dates": [
+    1798736400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "70S -THEMED PARTY",
+    "DANCE",
+    "DOWNTOWN GYPSIES",
+    "DRESS UP",
+    "NEW YEARS EVE",
+    "NYE"
+   ],
+   "objectID": "407640",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "A TRIP DOWN MEMORY LANE",
+   "ProductUrl": "/events/407660-a-trip-down-memory-lane/",
+   "ProductDescription": "<p><strong>“A TRIP DOWN MEMORY LANE” WITH JAMES MARAIS &amp; MONIQUE CASSELLS</strong></p><p>James Marais and Monique Cassells have become well-known for their “oldies” music tribute shows since they began performing together in 2009.  Their popular duo show, “A Trip Down Memory Lane”, features song",
+   "DateFrom": 1797091200,
+   "DateTo": 1797098400,
+   "LastModified": "2026-11-09T11:07:27.7354684",
+   "VenueName": "De Wet Hall",
+   "City": "Onrus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Roos Street 8, 7201, Onrus, Western Cape, South Africa",
+   "PostCode": "7201",
+   "_geoloc": {
+    "lat": -34.4138031,
+    "lng": 19.1733379
+   },
+   "Organiser": "Everything HERMANUS Events",
+   "OrganiserId": 48134,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1020331_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1020331_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1020331_185_185.jpeg",
+   "Dates": [
+    1797091200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "407660",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Onrus",
+    "De Kelders",
+    "De Wet"
+   ]
+  },
+  {
+   "ProductName": "Electro DANCE - Sunset Beats to Late Night Bass",
+   "ProductUrl": "/events/407665-electro-dance-sunset-beats-to-late-night-bass/",
+   "ProductDescription": "<p><strong class=\"ql-size-large\">***Electro DANCE - Sunset Beats to Late Night Bass***</strong></p><p><br></p><p><span class=\"ql-size-huge\">16 December @ 7pm</span></p><p><strong class=\"ql-size-large\">Tickets </strong><strong class=\"ql-size-huge\">R100 on Quicket</strong><strong class=\"ql-size-large\"",
+   "DateFrom": 1797440400,
+   "DateTo": 1797462000,
+   "LastModified": "2026-11-09T10:55:12.9071881",
+   "VenueName": "Plankies",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "2021 Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.36846,
+    "lng": 18.8225689
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1020366_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1020366_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1020366_185_185.jpeg",
+   "Dates": [
+    1797440400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "AFRO HOUSE",
+    "BASS",
+    "DANCE PARTY",
+    "ELECTRO DANCE",
+    "NU-DISCO",
+    "SOULFUL",
+    "SUNSET BEATS"
+   ],
+   "objectID": "407665",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip",
+    "Plankies"
+   ]
+  },
+  {
+   "ProductName": "Sonnet Nationals 2026",
+   "ProductUrl": "/events/407768-sonnet-nationals-2026/",
+   "ProductDescription": "<p>Sonnet National 2026</p><p>27 - 30 December</p><p>Hermanus Yacht Club</p>",
+   "DateFrom": 1798322400,
+   "DateTo": 1798581600,
+   "LastModified": "2026-11-11T10:13:56.2298201",
+   "VenueName": "Hermanus Yacht Cub",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "H8RX+FP Hermanus, South Africa, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4088554,
+    "lng": 19.3492546
+   },
+   "Organiser": "Sonnet Class Association",
+   "OrganiserId": 99439,
+   "Categories": [
+    "Sports & Fitness"
+   ],
+   "CategoryIds": [
+    5
+   ],
+   "ImageUrl": "//images.quicket.co.za/Q5.jpg",
+   "ImageUrl_Medium": "//images.quicket.co.za/Q5_247_247.jpg",
+   "ImageUrl_Small": "//images.quicket.co.za/Q2_185_185.jpg",
+   "Dates": [
+    1798322400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "407768",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Paint Your Own Christmas Tree Ornaments",
+   "ProductUrl": "/events/407956-paint-your-own-christmas-tree-ornaments/",
+   "ProductDescription": "<p>Merry Christmas! Get into the festive spirit at Peppermint Pottery and paint three of our cutest ceramic Christmas trees to hang on your own tree.</p><p><br></p><p>Pick your colours, add your own patterns and sparkle, and we'll take care of the glazing and firing. Pottery lasts forever, so these ",
+   "DateFrom": 1796374800,
+   "DateTo": 1796382000,
+   "LastModified": "2026-11-11T10:09:39.4681371",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021639_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021639_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021639_185_185.png",
+   "Dates": [
+    1796374800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMICS",
+    "CHRISTMAS DECORATION",
+    "CLAY",
+    "PAINT",
+    "POTTERY"
+   ],
+   "objectID": "407956",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Paint Your Own Christmas Tree Ornaments",
+   "ProductUrl": "/events/407985-paint-your-own-christmas-tree-ornaments/",
+   "ProductDescription": "<p>Merry Christmas! Get into the festive spirit at Peppermint Pottery and paint three of our cutest ceramic Christmas trees to hang on your own tree.</p><p><br></p><p>Pick your colours, add your own patterns and sparkle, and we'll take care of the glazing and firing. Pottery lasts forever, so these ",
+   "DateFrom": 1796461200,
+   "DateTo": 1796468400,
+   "LastModified": "2026-11-11T10:09:39.4681371",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021641_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021641_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021641_185_185.png",
+   "Dates": [
+    1796461200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "407985",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Paint Your Own Christmas Tree Ornaments Sunday",
+   "ProductUrl": "/events/407987-paint-your-own-christmas-tree-ornaments-sunday/",
+   "ProductDescription": "<p>Merry Christmas! Get into the festive spirit at Peppermint Pottery and paint three of our cutest ceramic Christmas trees to hang on your own tree.</p><p><br></p><p>Pick your colours, add your own patterns and sparkle, and we'll take care of the glazing and firing. Pottery lasts forever, so these ",
+   "DateFrom": 1796547600,
+   "DateTo": 1796554800,
+   "LastModified": "2026-11-11T10:09:39.8603394",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021643_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021643_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021643_185_185.png",
+   "Dates": [
+    1796547600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMIC",
+    "CHRISTMAS DECORATION",
+    "CLAY",
+    "CRAFT",
+    "DECORATION",
+    "HANDMAKING",
+    "PAINT",
+    "POTTERY"
+   ],
+   "objectID": "407987",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Leaf-Print Christmas Décor with Clay",
+   "ProductUrl": "/events/407988-leaf-print-christmas-dcor-with-clay/",
+   "ProductDescription": "<p>The perfect holiday activity! Get creative in our studio as we head outside to pick our favourite leaves, then learn how to press them into clay to leave beautiful natural prints.</p><p><br></p><p>We'll cut our clay into festive shapes, and once we've glazed your pieces in soft blues, whites and ",
+   "DateFrom": 1797411600,
+   "DateTo": 1797418800,
+   "LastModified": "2026-11-11T10:09:39.4681371",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021215_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021215_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021215_185_185.png",
+   "Dates": [
+    1797411600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMIC",
+    "CHRISTMAS DECOR",
+    "CLAY",
+    "CRAFT",
+    "DECORATION",
+    "HANDMAKING",
+    "LEAVES",
+    "POTTERY"
+   ],
+   "objectID": "407988",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Creation Wines",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Paint Christmas Ornaments for Next Year's Tree",
+   "ProductUrl": "/events/407995-paint-christmas-ornaments-for-next-years-tree/",
+   "ProductDescription": "<p>Start a new family tradition this holiday! Paint three of our cutest ceramic Christmas trees, and we'll glaze and fire them while you enjoy the festive season.</p><p><br></p><p>They'll be ready to collect in the new year, all set to come out with the decorations next December. Every year you'll r",
+   "DateFrom": 1797584400,
+   "DateTo": 1797591600,
+   "LastModified": "2026-11-11T10:07:53.5830531",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021633_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021633_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021633_185_185.png",
+   "Dates": [
+    1797584400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMIC",
+    "CHRISTMAS DECORATION",
+    "CLAY",
+    "CRAFT",
+    "DECORATION",
+    "HANDMAKING",
+    "PAINT",
+    "POTTERY"
+   ],
+   "objectID": "407995",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Paint Christmas Ornaments for Next Year's Tree - Saturday",
+   "ProductUrl": "/events/408001-paint-christmas-ornaments-for-next-years-tree-saturday/",
+   "ProductDescription": "<p>Start a new family tradition this holiday! Paint three of our cutest ceramic Christmas trees, and we'll glaze and fire them while you enjoy the festive season.</p><p><br></p><p>They'll be ready to collect in the new year, all set to come out with the decorations next December. Every year you'll r",
+   "DateFrom": 1797670800,
+   "DateTo": 1797678000,
+   "LastModified": "2026-11-11T10:07:53.5830531",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021635_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021635_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021635_185_185.png",
+   "Dates": [
+    1797670800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMICS",
+    "CHRISTMAS DECORATION",
+    "CLAY",
+    "CRAFT",
+    "DECORATION",
+    "HANDMAKING",
+    "PAINT",
+    "POTTERY"
+   ],
+   "objectID": "408001",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Paint Christmas Ornaments for Next Year's Tree - Sunday",
+   "ProductUrl": "/events/408003-paint-christmas-ornaments-for-next-years-tree-sunday/",
+   "ProductDescription": "<p>Start a new family tradition this holiday! Paint three of our cutest ceramic Christmas trees, and we'll glaze and fire them while you enjoy the festive season.</p><p><br></p><p>They'll be ready to collect in the new year, all set to come out with the decorations next December. Every year you'll r",
+   "DateFrom": 1797757200,
+   "DateTo": 1797764400,
+   "LastModified": "2026-11-11T10:07:53.8806186",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021637_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021637_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021637_185_185.png",
+   "Dates": [
+    1797757200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMIC",
+    "CHRISTMAS DECOR",
+    "CHRISTMAS DECORATION",
+    "CLAY",
+    "CRAFT",
+    "DECORATION",
+    "HANDMAKING",
+    "PAINT",
+    "POTTERY"
+   ],
+   "objectID": "408003",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Play with Clay - Pinch Pot Animal Bowls",
+   "ProductUrl": "/events/408004-play-with-clay-pinch-pot-animal-bowls/",
+   "ProductDescription": "<p>Make your very own animal bowl! Using the age-old pinch-pot method, you'll shape a little bowl with your hands and then give it a character all of its own – add ears, a nose, legs or a long neck.</p><p><br></p><p>We glaze and fire it for you, so you'll take home a little friend to last forever. G",
+   "DateFrom": 1797843600,
+   "DateTo": 1797850800,
+   "LastModified": "2026-11-11T10:07:53.5830531",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021243_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021243_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021243_185_185.png",
+   "Dates": [
+    1797843600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CERAMICS",
+    "CLAY",
+    "DECORATION",
+    "HANDMAKING",
+    "POTTERY",
+    "SCULPTING"
+   ],
+   "objectID": "408004",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Play with Clay - Pinch Pot Animal Bowls (Tuesday)",
+   "ProductUrl": "/events/408007-play-with-clay-pinch-pot-animal-bowls-tuesday/",
+   "ProductDescription": "<p>Make your very own animal bowl! Using the age-old pinch-pot method, you'll shape a little bowl with your hands and then give it a character all of its own – add ears, a nose, legs or a long neck.</p><p><br></p><p>We glaze and fire it for you, so you'll take home a little friend to last forever. G",
+   "DateFrom": 1797930000,
+   "DateTo": 1797937200,
+   "LastModified": "2026-11-11T10:07:53.5830531",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021247_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021247_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021247_185_185.png",
+   "Dates": [
+    1797930000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "408007",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "DIY Pottery - Pinch Pot Animal Bells (Thursday)",
+   "ProductUrl": "/events/408013-diy-pottery-pinch-pot-animal-bells-thursday/",
+   "ProductDescription": "<p>Sculpt your own ceramic bell with a special character – a cat, a bunny or any creature you can dream up. Using the pinch-pot method, you'll sculpt a little bell and give it a special character – a cat, a bunny, or any creature you can imagine!</p><p><br></p><p>We glaze and fire it for you, ready ",
+   "DateFrom": 1798102800,
+   "DateTo": 1798110000,
+   "LastModified": "2026-11-11T10:07:53.5830531",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021285_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021285_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021285_185_185.png",
+   "Dates": [
+    1798102800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "408013",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "Nature & Clay Play: Leaf-Print Decorations",
+   "ProductUrl": "/events/408017-nature-clay-play-leaf-print-decorations/",
+   "ProductDescription": "<p>Wind down the holidays with a relaxed session of nature and clay. We’ll collect leaves from outside, play and learn about the patterns they leave in clay, and cut our pieces into fun shapes.</p><p><br></p><p>We glaze them in soft blues, whites and greens and fire them for you, so you’ll have a ha",
+   "DateFrom": 1798362000,
+   "DateTo": 1798369200,
+   "LastModified": "2026-11-11T10:09:39.4681371",
+   "VenueName": "Peppermint Pottery",
+   "City": "Kleinmond",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Harbour Road 31, 7195, Kleinmond, Western Cape, South Africa",
+   "PostCode": "7195",
+   "_geoloc": {
+    "lat": -34.3438034,
+    "lng": 19.0132542
+   },
+   "Organiser": "Peppermint Pottery Studios",
+   "OrganiserId": 48368,
+   "Categories": [
+    "Hobbies & Interests"
+   ],
+   "CategoryIds": [
+    62
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021272_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021272_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021272_185_185.png",
+   "Dates": [
+    1798362000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "ACTIVITES",
+    "CERAMICS",
+    "CLAY",
+    "CRAFT",
+    "CREATIVE",
+    "KIDS",
+    "KLEINMOND",
+    "LEAVES",
+    "POTTERY"
+   ],
+   "objectID": "408017",
+   "__q": [
+    "GEO",
+    "Kleinmond",
+    "Creation Wines",
+    "Peppermint Pottery"
+   ]
+  },
+  {
+   "ProductName": "The Festive Pop-Up Series: Pringle Bay (FoMo Gallery)",
+   "ProductUrl": "/events/408095-the-festive-pop-up-series-pringle-bay-fomo-gallery/",
+   "ProductDescription": "<p><strong>Experience an intimate, sun-drenched evening of live string quartet music, fine art, and local wine in the heart of Pringle Bay!</strong></p><p><br></p><p>Join <strong>Southern Light Strings</strong> at <strong>FoMo Fine Art Gallery &amp; Events</strong> on <strong>Thursday, 10 December 2",
+   "DateFrom": 1796918400,
+   "DateTo": 1796922900,
+   "LastModified": "2026-11-23T12:24:25.5995507",
+   "VenueName": "FoMo Fine Art Gallery & Events",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Clarence Drive, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3391457,
+    "lng": 18.844532
+   },
+   "Organiser": "Southern Light Strings ",
+   "OrganiserId": 99512,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1025618_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1025618_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1025618_185_185.png",
+   "Dates": [
+    1796918400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BRIDGERTON",
+    "CHRISTMAS CONCERT",
+    "CLASSICAL",
+    "FESTIVE",
+    "LIVE MUSIC",
+    "OVERSTRAND",
+    "PRINGLE BAY",
+    "STRING QUARTET"
+   ],
+   "objectID": "408095",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Overstrand",
+    "FoMo"
+   ]
+  },
+  {
+   "ProductName": "Mount Pleasant Primary Pop-Up Cinema",
+   "ProductUrl": "/events/408123-mount-pleasant-primary-pop-up-cinema/",
+   "ProductDescription": "<p>Hermanus FynArts presents a pop-up cinema fundraiser for Mount Pleasant Primary School, and it’s the very first outdoor movie night ever held at the school!</p><p><br></p><p>Join us as the sun sets over Hermanus for a screening of the much-loved animated film <strong><em>The Bad Guys 2</em> (PG)<",
+   "DateFrom": 1796659200,
+   "DateTo": 1796671800,
+   "LastModified": "2026-11-23T13:58:05.8511566",
+   "VenueName": "Mount Pleasant Primary School",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Dahlia Street, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4199638,
+    "lng": 19.2140522
+   },
+   "Organiser": "FynArts",
+   "OrganiserId": 99519,
+   "Categories": [
+    "Film & Media"
+   ],
+   "CategoryIds": [
+    3
+   ],
+   "ImageUrl": "//images.quicket.co.za/1021853_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1021853_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1021853_185_185.png",
+   "Dates": [
+    1796659200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "ANIMATION",
+    "FAMILY FRIENDLY",
+    "FUNDRAISER",
+    "SCHOOL"
+   ],
+   "objectID": "408123",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "FynArts"
+   ]
+  },
+  {
+   "ProductName": "Andrew Young Live @ Hermanus Golf Club",
+   "ProductUrl": "/events/408245-andrew-young-live-hermanus-golf-club/",
+   "ProductDescription": "<p><span style=\"color: rgba(0, 0, 0, 1)\">BACK BY POPULAR DEMAND — ANDREW YOUNG LIVE AT HERMANUS GOLF CLUB</span></p><p><br></p><p><span style=\"color: rgba(0, 0, 0, 1)\">For the 8th consecutive year, international saxophonist Andrew Young returns to the Hermanus Golf Club,  a firm favourite on his Coa",
+   "DateFrom": 1802966400,
+   "DateTo": 1802980800,
+   "LastModified": "2026-11-15T12:37:59.1872307",
+   "VenueName": "Hermanus Golf Club",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "off Main Road, Fernkloof Estate, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.4103165,
+    "lng": 19.25516
+   },
+   "Organiser": "Andrew Young Management",
+   "OrganiserId": 50294,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1023446_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1023446_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1023446_185_185.jpeg",
+   "Dates": [
+    1802966400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "#ANDREWYOUNG",
+    "#DINNERANDSHOW",
+    "#LIVE MUSIC",
+    "#SAXOPHONIST",
+    "HERMANUS GOLF CLUB",
+    "JAZZ",
+    "ON TOUR",
+    "POP",
+    "ROCK"
+   ],
+   "objectID": "408245",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Golf Club Hermanus"
+   ]
+  },
+  {
+   "ProductName": "Riaan Benadé Live @Panorama Farm - Nature's Haven",
+   "ProductUrl": "/events/408384-riaan-benad-live-panorama-farm-natures-haven/",
+   "ProductDescription": "<p>Riaan Benadé kom Gaansbaai toe die 14de Desember!</p><p>Kom beleef Riaan se musiek in lewende lywe saam met sy Bende op die verhoog.</p><p>Dit gaan 'n aand wees wat jy nie wil mis nie!</p><p><br></p>",
+   "DateFrom": 1797267600,
+   "DateTo": 1797273000,
+   "LastModified": "2026-11-20T09:09:25.3856963",
+   "VenueName": "Panorama Farm ~ Nature's Haven",
+   "City": "Franskraal",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Panorama Farm 709, Franskraal, 7220, South Africa, 7220, Franskraal, Western Cape, South Africa",
+   "PostCode": "7220",
+   "_geoloc": {
+    "lat": -34.5855751,
+    "lng": 19.3987465
+   },
+   "Organiser": "DeBende Produksies",
+   "OrganiserId": 36082,
+   "Categories": [
+    "Afrikaans"
+   ],
+   "CategoryIds": [
+    68
+   ],
+   "ImageUrl": "//images.quicket.co.za/1024987_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1024987_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1024987_185_185.png",
+   "Dates": [
+    1797267600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "408384",
+   "__q": [
+    "GEO",
+    "Gansbaai",
+    "Franskraal"
+   ]
+  },
+  {
+   "ProductName": "RAAF @ Onrusrivier, De Wet Saal",
+   "ProductUrl": "/events/408513-raaf-onrusrivier-de-wet-saal/",
+   "ProductDescription": "<h2>RAAF IN ONRUS | DIE DE WET SAAL</h2><h2>Maandag, 21 Desember 2026</h2><p><br></p><h2>RAAF is in Onrus as deel van hul jaarlikse somertoer!</h2><p><br></p><h2>Kom kuier saam met Lourens en Esté Raaf vir 'n aand vol musiek, stories, lekker lag en daardie besonderse RAAF-ergie wat mens nie sommer v",
+   "DateFrom": 1797868800,
+   "DateTo": 1797883200,
+   "LastModified": "2026-11-13T14:24:02.4504677",
+   "VenueName": "De Wet Saal",
+   "City": "Onrusrivier",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "8 Roos Street, 7201, Onrusrivier, Western Cape, South Africa",
+   "PostCode": "7201",
+   "_geoloc": {
+    "lat": -34.4138031,
+    "lng": 19.1733379
+   },
+   "Organiser": "RAAF",
+   "OrganiserId": 26200,
+   "Categories": [
+    "Afrikaans"
+   ],
+   "CategoryIds": [
+    68
+   ],
+   "ImageUrl": "//images.quicket.co.za/1022760_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1022760_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1022760_185_185.jpeg",
+   "Dates": [
+    1797868800
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "AFRIKAANS",
+    "BLUES",
+    "DEO",
+    "MULTI INSTRUMENTAL",
+    "POP",
+    "ROCK",
+    "ROCK N ROLL",
+    "SUMMER"
+   ],
+   "objectID": "408513",
+   "__q": [
+    "GEO",
+    "Onrus",
+    "Onrusrivier",
+    "De Kelders",
+    "De Wet"
+   ]
+  },
+  {
+   "ProductName": "RAAF @ Standford, Walkerbay Estate vir die GESINSDAG-FEES",
+   "ProductUrl": "/events/408533-raaf-standford-walkerbay-estate-vir-die-gesinsdag-fees/",
+   "ProductDescription": "<p>RAAF SOMERTOER 2026 | GESINSDAG-FEES</p><p>26 DESEMBER 2026 | WALKER BAY VINEYARDS &amp; BIRKENHEAD BREWERY, STANFORD</p><p><br></p><p>Wat maak 'n mens op 26 Desember wanneer die Kersfees-kuier nog lank nie verby is nie? Jy pak die hele gesin in en kom vier Gesinsdag saam met RAAF!</p><p><br></p>",
+   "DateFrom": 1798290000,
+   "DateTo": 1798304400,
+   "LastModified": "2026-11-13T12:20:59.8141157",
+   "VenueName": "Walker Bay Vineyards and Birkenhead Brewery",
+   "City": "Stanford",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "R326, Stanford, 7210, Stanford, Western Cape, South Africa",
+   "PostCode": "7210",
+   "_geoloc": {
+    "lat": -34.4382362,
+    "lng": 19.4654446
+   },
+   "Organiser": "RAAF",
+   "OrganiserId": 26200,
+   "Categories": [
+    "Afrikaans"
+   ],
+   "CategoryIds": [
+    68
+   ],
+   "ImageUrl": "//images.quicket.co.za/1022782_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1022782_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1022782_185_185.jpeg",
+   "Dates": [
+    1798290000
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "AFRIKAANS",
+    "ARTISTS",
+    "BLUES",
+    "BOXING DAY",
+    "CHILDREN ACTIVITIES",
+    "DAY FESTIVAL",
+    "DEO",
+    "FAMILY ACTIVITIES",
+    "FAMILY OUTING",
+    "FESTIVAL",
+    "FOLK",
+    "FOOD STALLS",
+    "LIVE",
+    "MIDDAY SHOW",
+    "MULTI INSTRUMENTAL",
+    "OUTDOORS",
+    "PICNIC",
+    "POP",
+    "SUMMER",
+    "WINE"
+   ],
+   "objectID": "408533",
+   "__q": [
+    "GEO",
+    "Stanford",
+    "Walker Bay",
+    "Birkenhead"
+   ]
+  },
+  {
+   "ProductName": "Zolani Mahola + Karen Zoid @ Stanford Hills Sunset Sessions",
+   "ProductUrl": "/events/408768-zolani-mahola-karen-zoid-stanford-hills-sunset-sessions/",
+   "ProductDescription": "<p><strong>Zolani Mahola + The Feminine Force (featuring Karen Zoid) | Stanford Hills Sunset Sessions</strong></p><p><br></p><p>Join us at Stanford Hills on Tues/15/Dec for the perfect way to start the holidays, as Zolani Mahola and her band \"The Feminine Force\" welcome a very special guest - Karen ",
+   "DateFrom": 1797350400,
+   "DateTo": 1797357600,
+   "LastModified": "2026-11-16T10:05:31.9240026",
+   "VenueName": "Stanford Hills Estate",
+   "City": "Stanford",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Weltevrede Farm, Stanford, 7210, South Africa, 7210, Stanford, Western Cape, South Africa",
+   "PostCode": "7210",
+   "_geoloc": {
+    "lat": -34.42269,
+    "lng": 19.4738636
+   },
+   "Organiser": "The One Who Sings",
+   "OrganiserId": 99718,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1023500_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1023500_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1023500_185_185.jpeg",
+   "Dates": [
+    1797350400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [],
+   "objectID": "408768",
+   "__q": [
+    "GEO",
+    "Stanford",
+    "Stanford Hills"
+   ]
+  },
+  {
+   "ProductName": "Qden Blaauw piano recital",
+   "ProductUrl": "/events/408812-qden-blaauw-piano-recital/",
+   "ProductDescription": "<p><br></p><p><img class=\"img-responsive\" src=\"//images.quicket.co.za/1023572_0.jpeg\"></p><p><br></p><p>Programme:</p><ul><li><span class=\"ql-ui\" contenteditable=\"false\"></span><span style=\"background-color: rgba(255, 255, 255, 1); color: inherit\">Wolfgang Amadeus Mozart — Piano Sonata No. 13 in B-f",
+   "DateFrom": 1798473600,
+   "DateTo": 1798479000,
+   "LastModified": "2026-11-16T10:47:57.239941",
+   "VenueName": "Gereformeerde Kerk @ Hermanus",
+   "City": "Sand Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Bergsig Street, Sand Bay, 7200, Sand Bay, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.41495,
+    "lng": 19.19416
+   },
+   "Organiser": "Qden Blaauw",
+   "OrganiserId": 99729,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1023568_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1023568_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1023568_185_185.jpeg",
+   "Dates": [
+    1798473600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CLASSICAL MUSIC"
+   ],
+   "objectID": "408812",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Sand Bay"
+   ]
+  },
+  {
+   "ProductName": "The Gecko , Hermanus",
+   "ProductUrl": "/events/408974-the-gecko-hermanus/",
+   "ProductDescription": "<p>Millennium Live by The Gecko, Hermanus </p>",
+   "DateFrom": 1797962400,
+   "DateTo": 1797973200,
+   "LastModified": "2026-11-17T09:34:07.2332947",
+   "VenueName": "The Gecko Bar & Restaurant",
+   "City": "Hermanus",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "New Harbour, Hermanus, 7200, South Africa, Hermanus, 7200, Hermanus, Western Cape, South Africa",
+   "PostCode": "7200",
+   "_geoloc": {
+    "lat": -34.434803,
+    "lng": 19.2252922
+   },
+   "Organiser": "Millennium ",
+   "OrganiserId": 38825,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1024032_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1024032_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1024032_185_185.jpeg",
+   "Dates": [
+    1797962400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "AFRIKAANSE MUSIEK"
+   ],
+   "objectID": "408974",
+   "__q": [
+    "GEO",
+    "Hermanus"
+   ]
+  },
+  {
+   "ProductName": "The Festive Pop-Up Series: Onrus (NG Kerk/Dutch Reformed Church Onrusrivier)",
+   "ProductUrl": "/events/409458-the-festive-pop-up-series-onrus-ng-kerkdutch-reformed-church-onrusrivier/",
+   "ProductDescription": "<p><strong>Experience an uplifting, resonant evening of live string quartet music in the heart of Onrusrivier!</strong></p><p><br></p><p>Join <strong>Southern Light Strings</strong> at <strong>NG Kerk Onrusrivier</strong> on <strong>Saturday , 12 December 2026</strong> for a special stop on <strong>",
+   "DateFrom": 1797091200,
+   "DateTo": 1797095700,
+   "LastModified": "2026-11-23T12:22:59.8102061",
+   "VenueName": "Nederduitse Gereformeerde Kerk @ Onrusrivier",
+   "City": "Onrusrivier",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "55 Berg Street, 7201, Onrusrivier, Western Cape, South Africa",
+   "PostCode": "7201",
+   "_geoloc": {
+    "lat": -34.4086266,
+    "lng": 19.168602
+   },
+   "Organiser": "Southern Light Strings ",
+   "OrganiserId": 99512,
+   "Categories": [
+    "Music"
+   ],
+   "CategoryIds": [
+    1
+   ],
+   "ImageUrl": "//images.quicket.co.za/1025622_0.png",
+   "ImageUrl_Medium": "//images.quicket.co.za/1025622_247_247.png",
+   "ImageUrl_Small": "//images.quicket.co.za/1025622_185_185.png",
+   "Dates": [
+    1797091200
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "BRIDGERTON",
+    "CHRISTMAS CONCERT",
+    "FESTIVE",
+    "HERMANUS",
+    "LIVE MUSIC",
+    "ONRUSRIVIER",
+    "OVERSTRAND",
+    "STRING QUARTET"
+   ],
+   "objectID": "409458",
+   "__q": [
+    "GEO",
+    "Hermanus",
+    "Onrus",
+    "Onrusrivier",
+    "Overstrand"
+   ]
+  },
+  {
+   "ProductName": "Christmas Lunch Boma - Asado de Navidad",
+   "ProductUrl": "/events/409895-christmas-lunch-boma-asado-de-navidad/",
+   "ProductDescription": "<p><strong style=\"color: rgba(31, 95, 158, 1)\" class=\"ql-size-large\">Event name</strong></p><p><span class=\"ql-size-large\">Asado de Navidad – Christmas Lunch Feast on Fire</span></p><p><strong style=\"color: rgba(31, 95, 158, 1)\" class=\"ql-size-large\">Short description</strong></p><p><span class=\"ql-",
+   "DateFrom": 1798194600,
+   "DateTo": 1798210800,
+   "LastModified": "2026-11-23T13:22:49.6638208",
+   "VenueName": "The Hangklip Hotel - The BOMA",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Pass through Pringle Bay on Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1026554_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1026554_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1026554_185_185.jpeg",
+   "Dates": [
+    1798194600
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "FEAST ON FIRE",
+    "FIRE COOKING",
+    "XMAS LUNCH"
+   ],
+   "objectID": "409895",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "De Kelders",
+    "Hangklip"
+   ]
+  },
+  {
+   "ProductName": "Christmas Lunch Main Restaurant - Festive Roast",
+   "ProductUrl": "/events/409901-christmas-lunch-main-restaurant-festive-roast/",
+   "ProductDescription": "<p><span class=\"ql-size-huge\">The Festive Xmas Roast</span></p><p><strong style=\"color: rgba(150, 22, 30, 1)\">Event name</strong></p><p>The Festive Xmas Roast – Christmas Done Right</p><p><strong style=\"color: rgba(150, 22, 30, 1)\">Short description</strong></p><p>A relaxed, merry Christmas Day lunc",
+   "DateFrom": 1795604400,
+   "DateTo": 1795615200,
+   "LastModified": "2026-11-22T21:42:42.5100192",
+   "VenueName": "The Hangklip Hotel",
+   "City": "Pringle Bay",
+   "Region": "Western Cape",
+   "Country": "South Africa",
+   "CurrencyISO": "ZAR",
+   "AddressFormatted": "Hangklip Road, 7196, Pringle Bay, Western Cape, South Africa",
+   "PostCode": "7196",
+   "_geoloc": {
+    "lat": -34.3681335,
+    "lng": 18.8223171
+   },
+   "Organiser": "The Hangklip Hotel",
+   "OrganiserId": 57333,
+   "Categories": [
+    "Food & Drink"
+   ],
+   "CategoryIds": [
+    12
+   ],
+   "ImageUrl": "//images.quicket.co.za/1026574_0.jpeg",
+   "ImageUrl_Medium": "//images.quicket.co.za/1026574_247_247.jpeg",
+   "ImageUrl_Small": "//images.quicket.co.za/1026574_185_185.jpeg",
+   "Dates": [
+    1795604400
+   ],
+   "Type": "Physical event",
+   "Indefinite": false,
+   "Tags": [
+    "CHRISTMAS LUNCH",
+    "FESTIVE",
+    "ROAST LUNCH"
+   ],
+   "objectID": "409901",
+   "__q": [
+    "GEO",
+    "Pringle Bay",
+    "Hangklip"
+   ]
+  }
+ ]
+}

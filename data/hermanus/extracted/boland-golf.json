@@ -1,0 +1,262 @@
+[
+  {
+    "source": "Boland Golf Union",
+    "sourceListingId": "https://bolandgolf.co.za/boland-golf-fixtures/#arabella-open-7",
+    "url": "https://bolandgolf.co.za/boland-golf-fixtures/",
+    "rawFile": "raw/boland-golf/fixtures.txt",
+    "fetchedAt": "2026-11-23T13:41:05Z",
+    "title": "Arabella Open",
+    "summary": "Arabella Open at Arabella Golf Club, Arabella Country Estate, on the Boland Golf Union fixtures list.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-04-25",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Arabella Golf Club, Arabella Country Estate",
+      "city": "Kleinmond",
+      "address": "Arabella Country Estate, R44 to Kleinmond, 7195"
+    },
+    "hints": [
+      "Boland Golf Fixtures",
+      "Open",
+      "M",
+      "W",
+      "Arabella"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "Arabella Open 7 is an open golf tournament for men and women at Arabella Golf Club, Arabella Country Estate, on the Boland Golf Union fixtures list. Golfers enter to play a day of competitive golf on the club's course. It suits visiting golfers who want a tournament round during their stay; entry details are not given on the fixtures list."
+  },
+  {
+    "source": "Boland Golf Union",
+    "sourceListingId": "https://bolandgolf.co.za/boland-golf-fixtures/#arabella-junior-open-10",
+    "url": "https://bolandgolf.co.za/boland-golf-fixtures/",
+    "rawFile": "raw/boland-golf/fixtures.txt",
+    "fetchedAt": "2026-11-23T13:41:05Z",
+    "title": "Arabella Junior Open",
+    "summary": "Arabella Junior Open at Arabella Golf Club, Arabella Country Estate, on the Boland Golf Union fixtures list.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-06-13",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Arabella Golf Club, Arabella Country Estate",
+      "city": "Kleinmond",
+      "address": "Arabella Country Estate, R44 to Kleinmond, 7195"
+    },
+    "hints": [
+      "Boland Golf Fixtures",
+      "Jnr",
+      "M",
+      "W",
+      "Arabella"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "Arabella Junior Open 10 is a junior open golf tournament for boys and girls at Arabella Golf Club, Arabella Country Estate, on the Boland Golf Union fixtures list. Golfers enter to play a day of competitive golf on the club's course. It suits visiting golfers who want a tournament round during their stay; entry details are not given on the fixtures list."
+  },
+  {
+    "source": "Boland Golf Union",
+    "sourceListingId": "https://bolandgolf.co.za/boland-golf-fixtures/#hermanus-senior-open-9",
+    "url": "https://bolandgolf.co.za/boland-golf-fixtures/",
+    "rawFile": "raw/boland-golf/fixtures.txt",
+    "fetchedAt": "2026-11-23T13:41:05Z",
+    "title": "Hermanus Senior Open",
+    "summary": "Hermanus Senior Open at Hermanus Golf Club, on the Boland Golf Union fixtures list.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-08-26",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Boland Golf Fixtures",
+      "Snr",
+      "M",
+      "W",
+      "Hermanus"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "Hermanus Senior Open 9 is a seniors' open golf tournament for men and women at Hermanus Golf Club, on the Boland Golf Union fixtures list. Golfers enter to play a day of competitive golf on the club's course. It suits visiting golfers who want a tournament round during their stay; entry details are not given on the fixtures list."
+  },
+  {
+    "source": "Boland Golf Union",
+    "sourceListingId": "https://bolandgolf.co.za/boland-golf-fixtures/#hermanus-junior-open-17",
+    "url": "https://bolandgolf.co.za/boland-golf-fixtures/",
+    "rawFile": "raw/boland-golf/fixtures.txt",
+    "fetchedAt": "2026-11-23T13:41:05Z",
+    "title": "Hermanus Junior Open",
+    "summary": "Hermanus Junior Open at Hermanus Golf Club, on the Boland Golf Union fixtures list.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-10-17",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Boland Golf Fixtures",
+      "Jnr",
+      "M",
+      "W",
+      "Hermanus"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "Hermanus Junior Open 17 is a junior open golf tournament for boys and girls at Hermanus Golf Club, on the Boland Golf Union fixtures list. Golfers enter to play a day of competitive golf on the club's course. It suits visiting golfers who want a tournament round during their stay; entry details are not given on the fixtures list."
+  },
+  {
+    "source": "Boland Golf Union",
+    "sourceListingId": "https://bolandgolf.co.za/boland-golf-fixtures/#kleinmond-open-19",
+    "url": "https://bolandgolf.co.za/boland-golf-fixtures/",
+    "rawFile": "raw/boland-golf/fixtures.txt",
+    "fetchedAt": "2026-11-23T13:41:05Z",
+    "title": "Kleinmond Open",
+    "summary": "Kleinmond Open at Kleinmond Golf Club, on the Boland Golf Union fixtures list.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-11-21",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Kleinmond Golf Club",
+      "city": "Kleinmond"
+    },
+    "hints": [
+      "Boland Golf Fixtures",
+      "Open",
+      "M",
+      "W",
+      "Kleinmond"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "Kleinmond Open 19 is an open golf tournament for men and women at Kleinmond Golf Club, on the Boland Golf Union fixtures list. Golfers enter to play a day of competitive golf on the club's course. It suits visiting golfers who want a tournament round during their stay; entry details are not given on the fixtures list."
+  },
+  {
+    "source": "Boland Golf Union",
+    "sourceListingId": "https://bolandgolf.co.za/boland-golf-fixtures/#hermanus-open-20",
+    "url": "https://bolandgolf.co.za/boland-golf-fixtures/",
+    "rawFile": "raw/boland-golf/fixtures.txt",
+    "fetchedAt": "2026-11-23T13:41:05Z",
+    "title": "Hermanus Open",
+    "summary": "Hermanus Open at Hermanus Golf Club, on the Boland Golf Union fixtures list.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2027-12-05",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Boland Golf Fixtures",
+      "Open",
+      "M",
+      "W",
+      "Hermanus"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "golf"
+    ],
+    "profile": "Hermanus Open 20 is an open golf tournament for men and women at Hermanus Golf Club, on the Boland Golf Union fixtures list. Golfers enter to play a day of competitive golf on the club's course. It suits visiting golfers who want a tournament round during their stay; entry details are not given on the fixtures list."
+  }
+]

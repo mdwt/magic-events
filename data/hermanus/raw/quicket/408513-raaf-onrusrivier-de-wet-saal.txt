@@ -1,0 +1,663 @@
+URL: https://www.quicket.co.za/events/408513-raaf-onrusrivier-de-wet-saal/
+Fetched: 2026-11-23T13:35:20Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+#
+RAAF @ Onrusrivier, De Wet Saal
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By RAAF
+
+Follow
+
+https://www.raafhome.co.za
+
+Mon Dec 21, 18:00 - Mon Dec 21, 22:00
+
+De Wet Saal
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+## RAAF IN ONRUS | DIE DE WET SAAL
+
+## Maandag, 21 Desember 2026
+
+## RAAF is in Onrus as deel van hul jaarlikse somertoer!
+
+## Kom kuier saam met Lourens en Esté Raaf vir 'n aand vol musiek, stories, lekker lag en daardie besonderse RAAF-ergie wat mens nie sommer vergeet nie.
+
+## Die deure open reeds om 17:00 vir 'n lekker saamkuier voor die konsert om 18:00. Daar sal 'n food truck wees vir iets lekkers om te eet, asook 'n kontantkroeg op die perseel.
+
+## En natuurlik kom die Raafontuur-wyne ook saam! Jy kan jou gunsteling Raafontuur-wyn sommer vooraf op Quicket saam met jou kaartjies koop. Wys net jou wynkaartjie by die geleentheid en ontvang jou wyn daar.
+
+## Kaartjies:
+
+## Volwassenes: R320
+
+## Kinders onder 12 jaar: R200
+
+##
+
+## Plek is beperk, so moenie te lank wag om jou kaartjies te kry nie!
+
+## Ons sien julle in Onrus!
+
+## DIRECTIONS
+
+RAAF @ Onrusrivier, De Wet Saal
+
+De Wet Saal
+
+8 Roos St, Onrusrivier, 7201, South Africa
+
+Get Directions
+
+## DISCOVER
+
+AFRIKAANS
+
+BLUES
+
+DEO
+
+MULTI INSTRUMENTAL
+
+POP
+
+ROCK
+
+ROCK N ROLL
+
+SUMMER
+
+From
+
+R200
+
+Mon Dec 21, 18:00 - Mon Dec 21, 22:00
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+De Wet Saal
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "RAAF @ Onrusrivier, De Wet Saal",
+  "startDate": "2026-12-21T16:00:00Z",
+  "endDate": "2026-12-21T20:00:00Z",
+  "image": [
+    "//images.quicket.co.za/1022760_300_300.jpeg"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "De Wet Saal",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "8 Roos St, Onrusrivier, 7201, South Africa",
+      "addressLocality": "Onrusrivier",
+      "postalCode": "7201",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/408513-raaf-onrusrivier-de-wet-saal/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "RAAF IN ONRUS | DIE DE WET SAALMaandag, 21 Desember 2026\r\nRAAF is in Onrus as deel van hul jaarlikse somertoer!\r\nKom kuier saam met Lourens en Esté Raaf vir 'n aand vol musiek, stories, lekker lag en daardie besonderse RAAF-ergie wat mens nie sommer vergeet nie.\r\nDie deure open reeds om 17:00 vir 'n lekker saamkuier voor die konsert om 18:00. Daar sal 'n food truck wees vir iets lekkers om te eet, asook 'n kontantkroeg op die perseel.\r\nEn natuurlik kom die Raafontuur-wyne ook saam! Jy kan jou gunsteling Raafontuur-wyn sommer vooraf op Quicket saam met jou kaartjies koop. Wys net jou wynkaartjie by die geleentheid en ontvang jou wyn daar.\r\nKaartjies:Volwassenes: R320Kinders onder 12 jaar: R200\r\nPlek is beperk, so moenie te lank wag om jou kaartjies te kry nie!Ons sien julle in Onrus!",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408513-raaf-onrusrivier-de-wet-saal/#tickets",
+      "price": 320.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-13T00:00:00Z",
+      "sku": "773088"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408513-raaf-onrusrivier-de-wet-saal/#tickets",
+      "price": 200.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-13T00:00:00Z",
+      "sku": "773089"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408513-raaf-onrusrivier-de-wet-saal/#tickets",
+      "price": 350.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-13T00:00:00Z",
+      "sku": "773090"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408513-raaf-onrusrivier-de-wet-saal/#tickets",
+      "price": 270.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-13T00:00:00Z",
+      "sku": "773091"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "RAAF",
+    "url": "https://www.raafhome.co.za"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=408513, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": true,
+ "bannerUrl": "//images.quicket.co.za/1022763_0.jpeg",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 408513,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "RAAF @ Onrusrivier, De Wet Saal",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 26200,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "9f8584b2-e40a-4356-8522-b9aa44e4a4f9",
+ "seatingPricing": [],
+ "seatingProductId": "408513",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 18.03,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 773088,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "General",
+   "price": 320,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "21 Dec 2026",
+   "serviceFee": 25.53,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 11.27,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 773089,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Under 12",
+   "price": 200,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "21 Dec 2026",
+   "serviceFee": 18.77,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 19.72,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 773090,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Raafontuur Rooi",
+   "price": 350,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "21 Dec 2026",
+   "serviceFee": 27.22,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 15.21,
+   "hasResaleTickets": true,
+   "hasSeatingCategory": false,
+   "id": 773091,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Raafontuur Wit",
+   "price": 270,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "21 Dec 2026",
+   "serviceFee": 22.71,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "De Wet Saal"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=408513, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 26200,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:42:10Z) ===
+http://maps.google.co.za/maps?q=-34.4138028,19.1733371
+https://www.google.com/maps/dir/?api=1&destination=-34.4138028,19.1733371

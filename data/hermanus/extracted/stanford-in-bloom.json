@@ -1,0 +1,46 @@
+[
+  {
+    "type": "single",
+    "status": "expected",
+    "booking": "none",
+    "source": "Stanford in Bloom",
+    "sourceListingId": "https://stanfordinbloom.co.za/home/#Stanford in Bloom",
+    "url": "https://stanfordinbloom.co.za/home/",
+    "rawFile": "raw/stanford-in-bloom/home.txt",
+    "fetchedAt": "2026-11-23T13:36:49Z",
+    "title": "Stanford in Bloom",
+    "summary": "Stanford's spring festival of open gardens, talks and workshops, and arts, music and culture, expected in September 2027. It was last held from 12 to 27 September 2026; the 2027 dates have not been announced.",
+    "description": "Experience Stanford in Bloom. The 2026 festival ran from 12 to 27 September 2026, with a full schedule of talks and workshops, arts, music and culture, and open gardens, presented by Stanford Tourism & Business.",
+    "sessions": [
+      {
+        "start": "2027-09",
+        "precision": "month"
+      }
+    ],
+    "venue": {
+      "city": "Stanford"
+    },
+    "hints": [
+      "2026 Events",
+      "Open Gardens",
+      "Talks & Workshops"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "nature_and_wildlife",
+        "hobbies_and_lifestyle",
+        "culture_and_heritage"
+      ],
+      "format": "festival",
+      "audience": "all_ages",
+      "scale": "regional"
+    },
+    "tags": [
+      "gardens",
+      "flowers",
+      "gardening"
+    ],
+    "profile": "Stanford in Bloom is the village of Stanford's spring festival, with open gardens, talks and workshops, and arts, music and culture over about two weeks. It was last held from 12 to 27 September 2026, and the 2027 edition is expected in September, with dates still to be announced. It suits garden lovers and visitors who enjoy a village festival in the Overberg spring."
+  }
+]

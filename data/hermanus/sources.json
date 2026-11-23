@@ -1,0 +1,271 @@
+{
+  "locationSlug": "hermanus",
+  "skip": [
+    "stanford-hills-estate",
+    "overstrand-diary",
+    "hermanus-co-za"
+  ],
+  "sources": [
+    {
+      "slug": "quicket",
+      "name": "Quicket event pages",
+      "priority": 20,
+      "active": true
+    },
+    {
+      "slug": "webtickets",
+      "name": "Webtickets event pages",
+      "priority": 20,
+      "active": true
+    },
+    {
+      "slug": "computicket",
+      "name": "Computicket",
+      "priority": 20,
+      "active": false,
+      "urls": [
+        "https://computicket.com/event/list?keyword=Hermanus"
+      ]
+    },
+    {
+      "slug": "whalecoast",
+      "name": "Whale Coast Tourism pages",
+      "priority": 15,
+      "active": true,
+      "skipFiles": [
+        "raw/whalecoast/annual-events-070826.pdf",
+        "raw/whalecoast/november-events-181126.pdf"
+      ]
+    },
+    {
+      "slug": "hermanus-tourism",
+      "name": "Hermanus Tourism",
+      "priority": 15,
+      "active": true
+    },
+    {
+      "slug": "stanford-tourism",
+      "name": "Stanford Tourism",
+      "priority": 15,
+      "active": true
+    },
+    {
+      "slug": "harold-porter-nbg",
+      "name": "SANBI Harold Porter Botanical Garden",
+      "priority": 15,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "hermanus-fynarts",
+      "name": "Hermanus FynArts pages",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "hermanus-whale-festival",
+      "name": "Hermanus Whale Festival pages",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "kalfiefees-hermanus",
+      "name": "Kalfiefees",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "hemel-en-aarde-wines",
+      "name": "Hemel-en-Aarde Wines",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "lighthouse2lighthouse",
+      "name": "Lighthouse 2 Lighthouse",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "energy-events-hermanus-trail-run",
+      "name": "Hermanus Trail Run",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "race2hermanus",
+      "name": "Race2Hermanus triathlon",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "trail-series-kogelberg",
+      "name": "Trail Series Kogelberg",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "boland-golf",
+      "name": "Boland Golf Union fixtures",
+      "priority": 30,
+      "active": true
+    },
+    {
+      "slug": "cape-cultural-collective-klik",
+      "name": "KliK Kleinmond inniebos Kunstefees",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "fernkloof-flower-show",
+      "name": "Fernkloof Nature Reserve",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "hangklip-marathon",
+      "name": "Hangklip Marathon",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "stanford-in-bloom",
+      "name": "Stanford in Bloom",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "wine-village-hermanus",
+      "name": "Wine Village Hermanus",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "wines2whales",
+      "name": "Wines2Whales",
+      "priority": 30,
+      "active": false,
+      "ownPages": true
+    },
+    {
+      "slug": "hermanus-country-market",
+      "name": "Hermanus Country Market",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "onrus-markie",
+      "name": "Onrus Markie Facebook page",
+      "priority": 30,
+      "active": false,
+      "ownPages": true
+    },
+    {
+      "slug": "hermanus-golf-club",
+      "name": "Hermanus Golf Club calendar",
+      "priority": 30,
+      "active": true
+    },
+    {
+      "slug": "benguela-cove",
+      "name": "Benguela Cove",
+      "priority": 30,
+      "active": false,
+      "ownPages": true
+    },
+    {
+      "slug": "stanford-hills",
+      "name": "Stanford Hills Estate",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "southern-right-charters",
+      "name": "Southern Right Charters",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "hermanus-whale-cruises",
+      "name": "Hermanus Whale Cruises",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "play-padel-hermanus",
+      "name": "Play Padel Hermanus",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "u3a-overberg",
+      "name": "U3A Overberg",
+      "priority": 30,
+      "active": true,
+      "ownPages": true
+    },
+    {
+      "slug": "allevents",
+      "name": "AllEvents.in event pages",
+      "priority": 5,
+      "active": true
+    },
+    {
+      "slug": "sa-venues",
+      "name": "SA-Venues",
+      "priority": 5,
+      "active": true
+    },
+    {
+      "slug": "xplorio",
+      "name": "Xplorio event pages",
+      "priority": 5,
+      "active": true
+    },
+    {
+      "slug": "lemms-corner-market",
+      "name": "Nosy Rosy directory",
+      "priority": 5,
+      "active": true
+    },
+    {
+      "slug": "wesgro",
+      "name": "Wesgro event pages",
+      "priority": 10,
+      "active": true,
+      "urls": []
+    },
+    {
+      "slug": "facebook",
+      "name": "Facebook events",
+      "priority": 10,
+      "active": false,
+      "urls": []
+    },
+    {
+      "slug": "village-news",
+      "name": "The Village NEWS What's On",
+      "priority": 10,
+      "active": true,
+      "urls": []
+    }
+  ]
+}

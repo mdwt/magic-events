@@ -1,0 +1,198 @@
+import assert from "node:assert/strict";
+import { after, before, describe, test } from "node:test";
+import { experienceChangesResultSchema, searchExperiencesResultSchema } from "@magic-events/core/catalogue/ports.ts";
+import { insertExperienceFixture } from "@magic-events/core/testing/experience-fixture.ts";
+import { input as listing } from "@magic-events/core/testing/catalogue-fake.ts";
+import { createHarness, type Harness } from "./helpers/harness.ts";
+
+let harness: Harness;
+let key: string;
+
+const valid = { near: { lat: -34.4187, lng: 19.2345 }, from: "2027-06-10", to: "2027-06-20" };
+
+// The jazz evening saved below is on 13 March 2027, apart from the search's dates.
+const march = { near: { lat: -34.4187, lng: 19.2345 }, from: "2027-03-01", to: "2027-03-31" };
+// A minute before the jazz evening was saved.
+let since: string;
+
+function changesWith(body: object, headers: Record<string, string> = { authorization: `Bearer ${key}` }) {
+  return harness.app.inject({ method: "POST", url: "/v1/experiences/changes", headers, payload: body });
+}
+
+function searchWith(body: object, headers: Record<string, string> = { authorization: `Bearer ${key}` }) {
+  return harness.app.inject({ method: "POST", url: "/v1/experiences/search", headers, payload: body });
+}
+
+interface ErrorBody {
+  error: { code: string; message: string; details: { path: string; message: string }[]; requestId: string };
+}
+
+function errorOf(response: { json: () => unknown }): ErrorBody["error"] {
+  const body = response.json() as ErrorBody;
+  assert.equal(typeof body.error.message, "string");
+  assert.equal(typeof body.error.requestId, "string");
+  return body.error;
+}
+
+before(async () => {
+  harness = await createHarness();
+  const hermanus = await harness.services.catalogue.saveLocation({
+    name: "Hermanus",
+    slug: "hermanus",
+    country: "ZA",
+    region: "Western Cape",
+    timezone: "Africa/Johannesburg",
+    latitude: -34.4187,
+    longitude: 19.2345,
+  });
+  await insertExperienceFixture(harness.db, {
+    locationId: hermanus.id,
+    title: "Hermanus Whale Festival",
+    booking: "open",
+    bookingUrl: "https://tickets.example.com/whale-festival",
+    sessions: [{ startDate: "2027-06-08", endDate: "2027-06-10" }],
+    attributes: { category: ["nature_and_wildlife"] },
+    tags: ["whales"],
+  });
+  since = new Date(Date.now() - 60_000).toISOString();
+  await harness.services.catalogue.saveExperience(listing({ locationId: hermanus.id }));
+  ({ key } = await harness.createCaller());
+});
+
+after(async () => {
+  await harness.close();
+});
+
+describe("POST /v1/experiences/search", () => {
+  test("returns 200 in the documented shape", async () => {
+    const response = await searchWith(valid);
+    assert.equal(response.statusCode, 200);
+    const result = searchExperiencesResultSchema.parse(response.json());
+    assert.equal(result.total, 1);
+    assert.deepEqual([result.limit, result.offset], [20, 0]);
+    assert.equal(result.items[0]?.title, "Hermanus Whale Festival");
+    assert.equal(result.items[0].bookable, true);
+  });
+
+  test("takes the key from an x-api-key header too", async () => {
+    const response = await searchWith(valid, { "x-api-key": key });
+    assert.equal(response.statusCode, 200);
+  });
+
+  test("refuses an unknown property", async () => {
+    const response = await searchWith({ ...valid, city: "Hermanus" });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.ok(error.details.some((detail) => detail.path === "city"), JSON.stringify(error.details));
+  });
+
+  test("refuses a date that is not a date", async () => {
+    const response = await searchWith({ ...valid, from: "2027-13-01" });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.ok(error.details.some((detail) => detail.path === "from"), JSON.stringify(error.details));
+  });
+
+  test("refuses a latitude out of range", async () => {
+    const response = await searchWith({ ...valid, near: { lat: 91, lng: 19.2345 } });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.ok(error.details.some((detail) => detail.path === "near.lat"), JSON.stringify(error.details));
+  });
+
+  test("refuses a radius above the limit and names it", async () => {
+    const response = await searchWith({ ...valid, radiusKm: 500 });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.match(error.message, /200 km/);
+    assert.deepEqual(
+      error.details.map((detail) => detail.path),
+      ["radiusKm"],
+    );
+  });
+
+  test("refuses a last day before the first", async () => {
+    const response = await searchWith({ ...valid, from: "2027-06-20", to: "2027-06-10" });
+    assert.equal(response.statusCode, 400);
+    assert.deepEqual(
+      errorOf(response).details.map((detail) => detail.path),
+      ["to"],
+    );
+  });
+
+  test("returns 401 without a key", async () => {
+    const response = await searchWith(valid, {});
+    assert.equal(response.statusCode, 401);
+    assert.equal(errorOf(response).code, "unauthenticated");
+  });
+
+  test("returns 403 for a suspended tenant", async () => {
+    const suspended = await harness.createCaller({ tenantStatus: "suspended" });
+    const response = await searchWith(valid, { authorization: `Bearer ${suspended.key}` });
+    assert.equal(response.statusCode, 403);
+    assert.equal(errorOf(response).code, "forbidden");
+  });
+});
+
+describe("POST /v1/experiences/changes", () => {
+  test("returns 200 in the documented shape", async () => {
+    const response = await changesWith({ ...march, since });
+    assert.equal(response.statusCode, 200);
+    const result = experienceChangesResultSchema.parse(response.json());
+    assert.deepEqual([result.total, result.limit, result.offset], [1, 20, 0]);
+    assert.equal(result.items[0]?.experience.title, "Jazz on the Cliffs");
+    assert.equal(result.items[0].change.kind, "new");
+    assert.deepEqual(
+      result.items[0].changes.map((change) => change.kind),
+      ["new"],
+    );
+  });
+
+  test("refuses a time in the future and names since", async () => {
+    const response = await changesWith({ ...march, since: new Date(Date.now() + 3_600_000).toISOString() });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.deepEqual(
+      error.details.map((detail) => detail.path),
+      ["since"],
+    );
+  });
+
+  test("refuses a time that is not a timestamp", async () => {
+    const response = await changesWith({ ...march, since: "last month" });
+    assert.equal(response.statusCode, 400);
+    assert.ok(errorOf(response).details.some((detail) => detail.path === "since"));
+  });
+
+  test("refuses a query text, naming it", async () => {
+    const response = await changesWith({ ...march, since, query: "jazz" });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.ok(error.details.some((detail) => detail.path === "query"), JSON.stringify(error.details));
+  });
+
+  test("returns 401 without a key", async () => {
+    const response = await changesWith({ ...march, since }, {});
+    assert.equal(response.statusCode, 401);
+    assert.equal(errorOf(response).code, "unauthenticated");
+  });
+
+  test("is in the OpenAPI document with its schemas", async () => {
+    const response = await harness.app.inject({
+      method: "GET",
+      url: "/openapi.json",
+      headers: { authorization: `Bearer ${key}` },
+    });
+    const operation = response.json<{
+      paths: Record<string, Record<string, { operationId: string; requestBody?: unknown; responses: object }>>;
+    }>().paths["/v1/experiences/changes"]?.post;
+    assert.equal(operation?.operationId, "getExperienceChanges");
+    assert.ok(operation.requestBody);
+    assert.ok("200" in operation.responses && "400" in operation.responses);
+  });
+});

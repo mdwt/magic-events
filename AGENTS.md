@@ -32,6 +32,7 @@ The system is organised into domains, and each domain uses ports and adapters. T
 - The goal is the cleanest and simplest data model that gives a functional version 1.
 - A context or service may depend on another context and call its service for the data it needs.
 - Never add a workaround to the data model to keep contexts apart: no copied data, no synced tables, no duplicated fields.
+- Each context has 1 service impl and 1 repository. dont implement more repositories or per table repos.
 
 ### Guard against over-engineering
 

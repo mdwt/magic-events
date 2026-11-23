@@ -1,0 +1,579 @@
+URL: https://www.quicket.co.za/events/408123-mount-pleasant-primary-pop-up-cinema/
+Fetched: 2026-11-23T13:34:59Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+Mount Pleasant Primary Pop-Up Cinema
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By FynArts
+
+Follow
+
+https://www.hermanusfynarts.co.za/
+
+Mon Dec 7, 18:00 - Mon Dec 7, 21:30
+
+Mount Pleasant Primary School
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Hermanus FynArts presents a pop-up cinema fundraiser for Mount Pleasant Primary School, and it’s the very first outdoor movie night ever held at the school!
+
+Join us as the sun sets over Hermanus for a screening of the much-loved animated film The Bad Guys 2 (PG).
+
+The Bad Guys are struggling to find trust and acceptance in their newly minted lives as Good Guys, when they are pulled out of retirement and forced to do “one last job” by an all-female squad of criminals.
+
+When: Monday 7 December 2026
+
+Where: Mount Pleasant Primary School, Dahlia Street, Mount Pleasant, Hermanus
+
+Gates open: 6pm
+
+Movie starts: 7:30pm, at sunset
+
+Tickets: R50 per person (general public)
+
+Special ticket prices are available directly from the school for Mount Pleasant Primary students and parents ONLY.
+
+Popcorn, hot dogs, sweets and soft drinks will be on sale on the night, so come hungry!
+
+Arrive early to get a good spot, and bring your cushions, blankets and camping chairs to make yourselves comfy. Invite your friends and family, and let’s celebrate the holiday season together.
+
+Every ticket helps raise funds for Mount Pleasant Primary School.
+
+Weather
+
+Outdoor cinema is weather-reliant. Should heavy rain or wind prevent us from hosting a safe and enjoyable outdoor movie night, we will move the cinema indoors to the school hall, so the show will go on, rain or shine!
+
+## DIRECTIONS
+
+Mount Pleasant Primary Pop-Up Cinema
+
+Mount Pleasant Primary School
+
+Dahlia St, Hermanus, 7200, South Africa
+
+Get Directions
+
+## DISCOVER
+
+ANIMATION
+
+FAMILY FRIENDLY
+
+FUNDRAISER
+
+SCHOOL
+
+From
+
+R50
+
+Family friendly
+
+Mon Dec 7, 18:00 - Mon Dec 7, 21:30
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Mount Pleasant Primary School
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Mount Pleasant Primary Pop-Up Cinema",
+  "startDate": "2026-12-07T16:00:00Z",
+  "endDate": "2026-12-07T19:30:00Z",
+  "image": [
+    "//images.quicket.co.za/1021853_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Mount Pleasant Primary School",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Dahlia St, Hermanus, 7200, South Africa",
+      "addressLocality": "Hermanus",
+      "postalCode": "7200",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/408123-mount-pleasant-primary-pop-up-cinema/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Hermanus FynArts presents a pop-up cinema fundraiser for Mount Pleasant Primary School, and it’s the very first outdoor movie night ever held at the school!\r\nJoin us as the sun sets over Hermanus for a screening of the much-loved animated film The Bad Guys 2 (PG).The Bad Guys are struggling to find trust and acceptance in their newly minted lives as Good Guys, when they are pulled out of retirement and forced to do “one last job” by an all-female squad of criminals.\r\nWhen: Monday 7 December 2026Where: Mount Pleasant Primary School, Dahlia Street, Mount Pleasant, HermanusGates open: 6pmMovie starts: 7:30pm, at sunsetTickets: R50 per person (general public)Special ticket prices are available directly from the school for Mount Pleasant Primary students and parents ONLY.\r\nPopcorn, hot dogs, sweets and soft drinks will be on sale on the night, so come hungry!Arrive early to get a good spot, and bring your cushions, blankets and camping chairs to make yourselves comfy. Invite your friends and family, and let’s celebrate the holiday season together.\r\nEvery ticket helps raise funds for Mount Pleasant Primary School.\r\nWeatherOutdoor cinema is weather-reliant. Should heavy rain or wind prevent us from hosting a safe and enjoyable outdoor movie night, we will move the cinema indoors to the school hall, so the show will go on, rain or shine!",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408123-mount-pleasant-primary-pop-up-cinema/#tickets",
+      "price": 50.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-11T00:00:00Z",
+      "sku": "772395"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/408123-mount-pleasant-primary-pop-up-cinema/#tickets",
+      "price": 200.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T00:00:00Z",
+      "sku": "775026"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "FynArts",
+    "url": "https://www.hermanusfynarts.co.za/"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=408123, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1021854_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": false,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 408123,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "Mount Pleasant Primary Pop-Up Cinema",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 99519,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "9da01ca5-02dd-4f73-92dc-c054d610a0b2",
+ "seatingPricing": [],
+ "seatingProductId": "408123",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 2.82,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 772395,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Single",
+   "price": 50,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "07 Dec 2026",
+   "serviceFee": 10.32,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 11.27,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 775026,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Gift a Family of 4 a Cinema Experience",
+   "price": 200,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "07 Dec 2026",
+   "serviceFee": 18.77,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Mount Pleasant Primary School"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=408123, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 99519,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:41:54Z) ===
+http://maps.google.co.za/maps?q=-34.4199624,19.2140521
+https://www.google.com/maps/dir/?api=1&destination=-34.4199624,19.2140521

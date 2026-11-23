@@ -1,0 +1,486 @@
+URL: https://www.thevillagenews.co.za/whats-on/ohpadel-december-tournament/
+Fetched: 2026-11-23T14:16:28Z
+TodayMon 23 NovHigh tide02:36Low tide20:28WindS 22 km/hSea17°CSunset19:34Whale seasonIn season nowOn today 1 of 212:30 The Metropolitan Opera: Carmen (Bizet) Encore at Road House Cinema Whale Coast14:00 Hermanus Hacking Group
+
+Search ⚲Advertiser login
+
+Advertiser sign in
+
+- Home
+
+- News
+
+- Environment
+
+- Sport
+
+- Community
+
+- What’s on
+
+- Classifieds
+
+- Overstrand Jobs
+
+- Publications
+
+- Puzzles
+
+- Contact us
+
+- Send us news
+
+- Advertise with us
+
+Sign in
+
+Welcome!Log into your account
+
+your username
+
+your password
+
+Forgot your password?
+
+Password recovery
+
+Recover your password
+
+your email
+
+Search
+
+The Village News
+
+Whale Coast
+
+Free every ThursdayDistributed across the Whale CoastDistribution points
+
+- Home
+
+- News
+
+- Environment
+
+- Sport
+
+- Community
+
+- What’s on
+
+- Classifieds
+
+- Overstrand Jobs
+
+- Publications
+
+- Puzzles
+
+- Contact us
+
+- Send us news
+
+- Advertise with us
+
+November 202691 listings · tap a date to see that day
+
+Pick a date
+
+←→
+
+Dates with something on are marked.
+
+Wed11Thu12Fri13Sat14Sun15Mon16Tue17Wed18Thu19Fri20Sat21Sun22Mon23Tue24Wed25Thu26Fri27Sat28Sun29Mon30Tue1Wed2Thu3Fri4Sat5Sun6Mon7Tue8Wed9Thu10
+
+Narrow it down
+
+EverythingWeekends 45Free 66Every week 222Every month 17Markets 8Music 8Talks 7Family 5Workshops 4Wine & Food 4Sport 4Arts 3Clubs 2Meetings 2
+
+Advertisement
+
+« All Events
+
+# Oh!Padel December Tournament
+
+11 December.17:00 -21:30
+
+Free
+
+- « Hermanus Duplicate Bridge Club
+
+- Rumours of Fleetwood Mac at Hermanus Golf Club »
+
+Padel tournament with delicious food available, bring your own alcoholic drinks, all other drinks, ice cream, milkshakes available
+
+Where27 Kleine Street, Stanford Industrial
+
+CostFree
+
+ContactOh!Padel
+
+Phone(028) 330-5007
+
+WhatsApp+27 (79) 516-9263
+
+Emailhowzit@ohpadel.club
+
+Bookingsapp.playtomic.io
+
+Add to calendar
+
+-
+
+Google Calendar
+
+-
+
+iCalendar
+
+-
+
+Outlook 365
+
+-
+
+Outlook Live
+
+Share
+
+WhatsAppFacebookCopy link
+
+## Details
+
+-
+Date:
+
+11 December
+
+-
+Time:
+
+17:00 -21:30
+
+-
+Cost:
+Free
+
+- Event Category: Sport
+
+- « Hermanus Duplicate Bridge Club
+
+- Rumours of Fleetwood Mac at Hermanus Golf Club »
+
+Advertisement
+
+© 2026 The Village News. All rights reserved.
+
+The Village News
+
+A free weekly newspaper for the Whale Coast, printed every Thursday
+and distributed across the Whale Coast.
+
+#### Sections
+
+- News
+
+- Environment
+
+- What's on
+
+- Sport
+
+- Community
+
+#### Areas
+
+- Hangklip–KleinmondKleinmond · Betty’s Bay · Palmiet · Proteadorp
+
+- Greater HermanusHermanus · Onrus · Hawston · Zwelihle · Hemel-en-Aarde Valley
+
+- StanfordThembelihle
+
+- Greater GansbaaiGansbaai · De Kelders · Kleinbaai · Franskraal
+
+#### About the paper
+
+- About us
+
+- Our ethics and standards
+
+- Editorial and complaints policy
+
+- Corrections and takedown policy
+
+- Disclaimer
+
+- Advertising terms
+
+- Community group on Facebook
+
+#### Talk to us
+
+- Contact us and meet the team
+
+- Send us your news
+
+- admin@thevillagenews.co.za
+
+- 079 408 7722 · office and WhatsApp
+
+- Available Monday to Friday
+
+- Bookings close Monday 17:00
+
+- Privacy policy · Terms of use
+
+Advertise with usTeam desk login
+
+Designed and developed by onlinehub.co.za
+
+✕
+×
+
+Close ×
+
+Distribution · free every Thursday
+
+## Free every Thursday, all over the Whale Coast.
+
+Not a mailing list and not an algorithm. Real shelves, in real shops, from Grabouw to Kleinbaai — picked up by people
+who live here, and still lying on the table on Sunday.
+
+Freeevery Thursday
+
+Whale Coastand Overstrand
+
+Know a spot we are missing?
+Tell us →
+
+### Every shop that stocks it
+
+All 214 · tap any name to find it on Google
+
+Every one of these takes a bundle each Thursday. 214 shops, cafés, filling stations and offices across the Overstrand. Tap any name to find it on Google.
+
+----- The site's own event records for this listing (all occurrences in the window), from /wp-json/tribe/events/v1/events -----
+[
+ {
+  "id": 1633,
+  "global_id": "www.thevillagenews.co.za?id=1633",
+  "global_id_lineage": [
+   "www.thevillagenews.co.za?id=1633"
+  ],
+  "author": "2",
+  "status": "publish",
+  "date": "2026-11-07 14:52:11",
+  "date_utc": "2026-11-07 12:52:11",
+  "modified": "2026-11-07 14:52:11",
+  "modified_utc": "2026-11-07 12:52:11",
+  "url": "https://www.thevillagenews.co.za/whats-on/ohpadel-december-tournament/",
+  "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1633",
+  "title": "Oh!Padel December Tournament",
+  "description": "<p>Padel tournament with delicious food available, bring your own alcoholic drinks, all other drinks, ice cream, milkshakes available</p>",
+  "excerpt": "",
+  "slug": "ohpadel-december-tournament",
+  "image": {
+   "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633.jpg",
+   "id": 1634,
+   "extension": "jpg",
+   "width": 5712,
+   "height": 4284,
+   "filesize": 4397080,
+   "sizes": {
+    "medium": {
+     "width": 300,
+     "height": 225,
+     "mime-type": "image/jpeg",
+     "filesize": 30155,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-300x225.jpg"
+    },
+    "large": {
+     "width": 1024,
+     "height": 768,
+     "mime-type": "image/jpeg",
+     "filesize": 142901,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-1024x768.jpg"
+    },
+    "thumbnail": {
+     "width": 150,
+     "height": 150,
+     "mime-type": "image/jpeg",
+     "filesize": 19675,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-150x150.jpg"
+    },
+    "medium_large": {
+     "width": 768,
+     "height": 576,
+     "mime-type": "image/jpeg",
+     "filesize": 94494,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-768x576.jpg"
+    },
+    "1536x1536": {
+     "width": 1536,
+     "height": 1152,
+     "mime-type": "image/jpeg",
+     "filesize": 256269,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-1536x1152.jpg"
+    },
+    "2048x2048": {
+     "width": 2048,
+     "height": 1536,
+     "mime-type": "image/jpeg",
+     "filesize": 391403,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-2048x1536.jpg"
+    },
+    "td_0x420": {
+     "width": 560,
+     "height": 420,
+     "mime-type": "image/jpeg",
+     "filesize": 61943,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-560x420.jpg"
+    },
+    "td_80x60": {
+     "width": 80,
+     "height": 60,
+     "mime-type": "image/jpeg",
+     "filesize": 15038,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-80x60.jpg"
+    },
+    "td_150x0": {
+     "width": 150,
+     "height": 113,
+     "mime-type": "image/jpeg",
+     "filesize": 18557,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-150x113.jpg"
+    },
+    "td_218x150": {
+     "width": 218,
+     "height": 150,
+     "mime-type": "image/jpeg",
+     "filesize": 22712,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-218x150.jpg"
+    },
+    "td_300x0": {
+     "width": 300,
+     "height": 225,
+     "mime-type": "image/jpeg",
+     "filesize": 30155,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-300x225.jpg"
+    },
+    "td_324x400": {
+     "width": 324,
+     "height": 400,
+     "mime-type": "image/jpeg",
+     "filesize": 38869,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-324x400.jpg"
+    },
+    "td_485x360": {
+     "width": 485,
+     "height": 360,
+     "mime-type": "image/jpeg",
+     "filesize": 51534,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-485x360.jpg"
+    },
+    "td_696x0": {
+     "width": 696,
+     "height": 522,
+     "mime-type": "image/jpeg",
+     "filesize": 83203,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-696x522.jpg"
+    },
+    "td_1068x0": {
+     "width": 1068,
+     "height": 801,
+     "mime-type": "image/jpeg",
+     "filesize": 153535,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-1068x801.jpg"
+    },
+    "td_1920x0": {
+     "width": 1920,
+     "height": 1440,
+     "mime-type": "image/jpeg",
+     "filesize": 357443,
+     "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633-1920x1440.jpg"
+    }
+   }
+  },
+  "all_day": false,
+  "start_date": "2026-12-11 17:00:00",
+  "start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "11",
+   "hour": "17",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "end_date": "2026-12-11 21:30:00",
+  "end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "11",
+   "hour": "21",
+   "minutes": "30",
+   "seconds": "00"
+  },
+  "utc_start_date": "2026-12-11 15:00:00",
+  "utc_start_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "11",
+   "hour": "15",
+   "minutes": "00",
+   "seconds": "00"
+  },
+  "utc_end_date": "2026-12-11 19:30:00",
+  "utc_end_date_details": {
+   "year": "2026",
+   "month": "12",
+   "day": "11",
+   "hour": "19",
+   "minutes": "30",
+   "seconds": "00"
+  },
+  "timezone": "Africa/Johannesburg",
+  "timezone_abbr": "SAST",
+  "cost": "Free",
+  "cost_details": {
+   "currency_symbol": "R",
+   "currency_code": "ZAR",
+   "currency_position": "prefix",
+   "values": [
+    "0"
+   ]
+  },
+  "website": "",
+  "show_map": true,
+  "show_map_link": true,
+  "hide_from_listings": false,
+  "sticky": false,
+  "featured": false,
+  "categories": [
+   {
+    "name": "Sport",
+    "slug": "sport",
+    "term_group": 0,
+    "term_taxonomy_id": 30,
+    "taxonomy": "tribe_events_cat",
+    "description": "",
+    "parent": 0,
+    "count": 4,
+    "filter": "raw",
+    "id": 30,
+    "urls": {
+     "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/30",
+     "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+    }
+   }
+  ],
+  "tags": [],
+  "venue": [],
+  "organizer": [],
+  "custom_fields": []
+ }
+]
+----- "Bookings" link on the page -----
+https://app.playtomic.io/tournaments/5ff05cf5-855e-4216-8831-cf1793057c98?utm_source=manager

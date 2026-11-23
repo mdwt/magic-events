@@ -1,0 +1,58 @@
+[
+  {
+    "source": "BikeRunTri Race2Hermanus",
+    "sourceListingId": "https://r2h.bikeruntri.co.za/",
+    "url": "https://r2h.bikeruntri.co.za/",
+    "rawFile": "raw/race2hermanus/home.txt",
+    "fetchedAt": "2026-11-23T13:34:19Z",
+    "title": "Race2Hermanus Triathlon",
+    "summary": "Race2Hermanus, part of the SA Triathlon Series, on Sunday 2 May 2027 in Hermanus, with Ultra, Standard and Sprint distances.",
+    "description": "Ultra: swim 2km, bike 80km, run 17km. Standard: swim 1.5km, bike 40km, run 11km. Sprint: swim 750m, bike 20km, run 5km. Solo, team and aquabike entries. Early bird until 31 Jan 2027, normal entry 1 Feb - 3 Apr 2027, late entry 4 - 25 Apr 2027. Entries are not yet open for R2H 2027.",
+    "type": "single",
+    "status": "announced",
+    "booking": "not_yet",
+    "sessions": [
+      {
+        "start": "2027-05-02",
+        "precision": "day",
+        "startTime": "07:30"
+      }
+    ],
+    "venue": {
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.4167,
+        "lng": 19.2333
+      }
+    },
+    "price": {
+      "min": 990,
+      "max": 3075,
+      "currency": "ZAR"
+    },
+    "bookingClosesAt": "2027-04-25",
+    "hints": [
+      "SA Triathlon Series",
+      "Ultra",
+      "Standard",
+      "Sprint",
+      "Aquabike"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "outdoor_and_adventure",
+        "sport"
+      ],
+      "format": "race",
+      "setting": "outdoor",
+      "scale": "major"
+    },
+    "tags": [
+      "swimming",
+      "cycling",
+      "road-running"
+    ],
+    "profile": "Race2Hermanus is a triathlon in Hermanus on Sunday 2 May 2027, part of the SA Triathlon Series. Athletes choose an Ultra, Standard or Sprint distance, solo or in teams, with a sea swim, a bike leg and a run. Entries open later and cost from R990 to R3 075, so it suits triathletes from first-timers on the sprint to experienced endurance racers."
+  }
+]

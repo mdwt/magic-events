@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Overstrand Arts</title>
+  <link href="https://arts.example.com/"/>
+  <link rel="self" href="https://arts.example.com/feed.atom"/>
+  <updated>2026-11-20T10:00:00Z</updated>
+  <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+  <entry>
+    <title>Open studios weekend</title>
+    <link rel="alternate" href="https://arts.example.com/open-studios"/>
+    <link rel="enclosure" href="https://arts.example.com/open-studios.jpg"/>
+    <id>tag:arts.example.com,2026:open-studios</id>
+    <updated>2026-11-20T10:00:00Z</updated>
+    <content type="html">&lt;p&gt;Open studios on 5 and 6 December 2026.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>Jazz on the lawn</title>
+    <link href="https://arts.example.com/jazz"/>
+    <id>tag:arts.example.com,2026:jazz</id>
+    <updated>2026-11-19T10:00:00Z</updated>
+    <summary>Jazz on the lawn every Sunday in January.</summary>
+  </entry>
+</feed>

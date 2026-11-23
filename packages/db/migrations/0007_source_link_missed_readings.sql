@@ -1,0 +1,1 @@
+ALTER TABLE "experience_source_link" ADD COLUMN "missed_readings" integer DEFAULT 0 NOT NULL;

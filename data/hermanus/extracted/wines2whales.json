@@ -1,0 +1,39 @@
+[
+  {
+    "source": "Wines2Whales",
+    "sourceListingId": "https://www.epic-series.com/races/wines2whales#2027",
+    "url": "https://www.epic-series.com/races/wines2whales",
+    "rawFile": "raw/wines2whales/race-page.txt",
+    "fetchedAt": "2026-11-23T13:32:49Z",
+    "title": "FNB Wines2Whales",
+    "summary": "Three days of mountain bike stage racing from the winelands to the coast in the Overberg, expected in November 2027. The 2026 race week ran from 6 to 15 November 2026; riders can join the early-bird priority list for 2027 entries, and no dates are published yet.",
+    "description": "Three days of mountain biking from wines to the coast! 3 days, 189 km, 3,850 m of climbing. The FNB Wines2Whales offers three events, the Chardonnay, Pinotage and Shiraz, and the Pinotage hosts two dedicated E-Bike events. The 2026 race week ran from 6 to 15 November 2026 and sold out fast. Join the GEES Early Bird Priority List and get exclusive early access to 2027 race entries before they're released to the general public.",
+    "type": "single",
+    "status": "announced",
+    "booking": "not_yet",
+    "sessions": [
+      {
+        "start": "2027-11",
+        "precision": "month"
+      }
+    ],
+    "hints": [
+      "Race with GEES in 2027",
+      "Early Bird Priority Sign-UP"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "outdoor_and_adventure",
+        "sport"
+      ],
+      "format": "race",
+      "setting": "outdoor",
+      "scale": "major"
+    },
+    "tags": [
+      "mountain-biking"
+    ],
+    "profile": "The FNB Wines2Whales is a three-day, 189 km mountain bike stage race through the Overberg from the winelands to the coast, with three events and e-bike categories. The 2026 race week ran in November, and the 2027 edition is expected in November, with entries opening first to riders on the early-bird list. It suits mountain bikers who want a sociable stage race through wine farms and coastal trails."
+  }
+]

@@ -1,0 +1,419 @@
+[
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "lvgdabn4ipjlf04lp0hsqri6ag@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Art in The Park",
+    "summary": "On the last Sunday of every month the Hermanus Art Circle holds an art exhibition at the Hermanus Cricket Grounds, with all the art on offer for sale.",
+    "description": "Art in the Park is a new initiative of the Hermanus Art Circle. \n\nOn the last Sunday of every month an art exhibition will be held at the Hermanus Cricket Grounds, to create an artistic and fun evening. Food and drinks will also be available whilst all the art on offer will be for sale! Stalls are R100 each.\n\nFor more info please contact HAC (http://www.hermanus.co.za/where-to-buy/arts-culture-a-heritage/art-galleries/5124-hermanus-art-circle)",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=-1SU",
+      "start": "2026-11-29",
+      "startTime": "10:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Hermanus Cricket Club",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "visual_arts"
+      ],
+      "format": "market",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "painting"
+    ],
+    "profile": "Art in the Park, by the Hermanus Art Circle, is an art exhibition and sale at the Hermanus Cricket Grounds on the last Sunday of every month, with food and drinks available. Visitors browse and buy local art. It suits art lovers; the calendar entry dates from 2015 and may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "tp7ci4ed550c7589tgbjif2duo@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Hermanuspietersfontein Food & Wine Market",
+    "summary": "Every Saturday the Hermanuspietersfontein Kos & Wynmark is opened at the Wine Village opposite Sandbaai.",
+    "description": "Every Saturday the Hermanuspietersfontein Kos & Wynmark is opened at the Wine Village opposite Sandbaai. All the food is freshly made with loving care. Enjoy a great meal at one of the many seating areas on the lawn or mingle with the crowds. For more information you can contact Anike de Goede on 072-3528046",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "13:00"
+    },
+    "venue": {
+      "name": "Wine Village Hermanus",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "The Hermanuspietersfontein Food & Wine Market opens every Saturday morning at the Wine Village opposite Sandbaai, with freshly made food. Visitors eat at seating areas on the lawn and mingle with the crowds. It suits food and wine lovers; the calendar entry dates from 2008 and may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "t9oqqncv5j1rqvli7b4hrm6ht4@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Wine Club Monthly Meeting",
+    "summary": "Every month the Wine Village hosts an evening to wine and dine amongst friends and enthusiasts, with hand-picked wines, talks and discussions.",
+    "description": "Every month the Wine Village hosts a great evening that gives you the chance to wine and dine amongst friends and enthusiasts. The evenings always feature a select number of hand picked wines whilst talks and discussions are also given.\n\nYou can choose to subscribe yearly at R300 p/person per year or you may pay on entrance (R30 p/person).\n\nFor more information please contact the wine village:\n028 316 3988 or winevillage@hermanus.co.za",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYMONTHDAY=1",
+      "start": "2026-12-01",
+      "startTime": "18:00",
+      "endTime": "20:00"
+    },
+    "venue": {
+      "name": "Wine Village Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 30,
+      "max": 30,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "talk",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "The Wine Village's monthly wine club evening on the 1st of the month, featuring a selection of hand-picked wines with talks and discussions. Guests pay R30 at the door or subscribe for the year. It suits wine enthusiasts; the calendar entry dates from 2014 and may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "5argivvdivpkq9mrbocmpu0ems@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Hermanus Country Market",
+    "summary": "Every Saturday morning a unique outdoor deli experience, where you can buy good, wholesome, local fresh produce, direct from the source.",
+    "description": "Please come and join us this and every Saturday morning to enjoy a unique outdoor deli experience, where you can buy good, wholesome, local fresh produce, direct from the source. 072 883 3894",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "13:30"
+    },
+    "venue": {
+      "name": "Hermanus Montessori School",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Hermanus Country Market as listed on the town calendar: an outdoor deli market every Saturday morning selling wholesome local fresh produce direct from the source. Visitors shop and eat. The calendar entry dates from 2008–2011 and gives the Hermanus Montessori School as the venue, which may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "4p97tin0rt4nb7h86nokqggf2o@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Weekly Tours of SANSA",
+    "summary": "Every Wednesday visitors can enjoy a free tour of the SANSA Centre, including the SANSA Space Weather Centre where solar activity is monitored.",
+    "description": "Every Wednesday visitors can enjoy a free tour of the SANSA Centre, including a visit to the SANSA Space Weather Centre where solar activity is monitored. You're also able to visit the Tech Unit and Science Centre, which help to explain the complex approaches that SANSA takes to monitor the stars and more.\n\nFor more information please contact SANSA on 028 312 1196 or email them via spacesci-info@sansa.org.za",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=WE",
+      "start": "2026-11-25",
+      "startTime": "11:00",
+      "endTime": "12:00"
+    },
+    "venue": {
+      "name": "SANSA Space Science",
+      "address": "Hospital Rd, Hermanus, 7200",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "culture_and_heritage"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A free weekly Wednesday tour of the SANSA Space Science centre in Hermanus, including the Space Weather Centre where solar activity is monitored, the Tech Unit and the Science Centre. Visitors learn how SANSA monitors space. It suits curious visitors of all ages; the calendar entry dates from 2015 and may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "onth2jh3jdii5ml2ibk4ut2l0o@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Hermanus First Friday Art Walk",
+    "summary": "On the first Friday of every month the art galleries in Hermanus Village centre remain open until 8pm for the Hermanus First Fridays Artwalk.",
+    "description": "On the first Friday of every month we showcase our towns wealth of fine art with \"Hermanus First Fridays Artwalk\"; an ideal opportunity to visit Hermanus Village centre as the twelve art galleries remain open to welcome you until 8pm. Stroll through the village, savour a glass of wine from one of our local vineyards and enjoy the astonishing range of art and fine craft on display.\n\nEnjoy over 300 artists, 4000 paintings and 200 sculptures and ceramics whilst you walk the town at twilight!\n\nFor more information please call 083 259 8869 or email originals@hermanus.co.za",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1FR",
+      "start": "2026-12-04",
+      "startTime": "17:00",
+      "endTime": "20:00"
+    },
+    "venue": {
+      "name": "Hermanus Village centre",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "visual_arts"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "painting",
+      "sculpture",
+      "ceramics",
+      "wine"
+    ],
+    "profile": "Hermanus First Fridays Artwalk: on the first Friday of every month the village galleries stay open until 8pm. Visitors stroll between galleries with a glass of local wine and see paintings, sculpture, ceramics and fine craft. It suits art lovers."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "kc85jag5r8uiu6v4vqnqacrve4@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Fisherman's Village Craft Market",
+    "summary": "A craft market at Lemm's Corner every Sunday.",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SU",
+      "start": "2026-11-29",
+      "startTime": "08:30",
+      "endTime": "15:00"
+    },
+    "venue": {
+      "name": "Lemm’s Corner",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "The Fisherman's Village Craft Market at Lemm's Corner, listed on the town calendar every Sunday from 08:30 to 15:00. Visitors browse craft stalls. The entry has no description and dates from 2008, so it may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "5shi1dcttpq0gitl8tbe3h18q8@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Cupcake & Tea Garden",
+    "summary": "The Cupcake & Tea Garden is open to all every Friday from 09h30 - 11h30, with nibbles, treats, tea and coffee.",
+    "description": "The Cupcake & Tea Garden is once again open to all every Friday from 09h30 - 11h30. There are some great nibbles and treats for everyone to enjoy, as well as tea and coffee.\n\nFor more information please contact Marie on 083-4571896",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "09:30",
+      "endTime": "11:30"
+    },
+    "venue": {
+      "name": "55 Berg St, Onrus, 7201",
+      "city": "Onrus"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "attraction",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A tea garden at 55 Berg Street in Onrus, open to all every Friday morning with nibbles, treats, tea and coffee. Visitors stop in for tea. It suits anyone wanting a quiet morning cuppa."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "hb6a43qrddc54ci62p09790010@google.com",
+    "url": "https://www.hermanus.co.za/what-to-do/events-calendar/index.html",
+    "rawFile": "raw/hermanus-co-za/events-calendar-feed.txt",
+    "fetchedAt": "2026-11-23T14:09:57Z",
+    "title": "Salt of the Earth Farm Stall",
+    "summary": "Local band Memory Lane performs on the last Sunday of every month 11:00 - 15:00; open for breakfast and lunch 09:00 - 15:30.",
+    "description": "Local band Memory Lane performs on the last Sunday of every month 11:00 - 15:00\nOpen for breakfast and lunch 09:00 - 15:30\nChristine\n082 922 3815",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=-1SU",
+      "start": "2026-11-29",
+      "startTime": "09:00",
+      "endTime": "15:30"
+    },
+    "venue": {
+      "name": "Southern Right Wine Estate",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Hermanus Events (Google Calendar)"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "music"
+      ],
+      "format": "dining_event",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Salt of the Earth Farm Stall at Southern Right Wine Estate, open for breakfast and lunch, with the local band Memory Lane playing on the last Sunday of every month from 11:00 to 15:00. Visitors eat and listen to live music. It suits families and anyone wanting a country Sunday lunch; the calendar entry dates from 2011 and may be out of date."
+  },
+  {
+    "source": "Hermanus.co.za",
+    "sourceListingId": "https://www.hermanus.co.za/what-to-do/markets/the-hermanus-country-market/index.html",
+    "url": "https://www.hermanus.co.za/what-to-do/markets/the-hermanus-country-market/index.html",
+    "rawFile": "raw/hermanus-co-za/market-the-hermanus-country-market.txt",
+    "fetchedAt": "2026-11-23T14:08:36Z",
+    "title": "The Hermanus Country Market",
+    "summary": "A small market with a lot of soul. Where good friends meet, eat, and buy beautiful things...",
+    "description": "A small market with a lot of soul. Where good friends meet, eat, and buy beautiful things...\nAn amazing array of fresh organic produce, homemade delicacies, artisan breads, probiotic yoghurts, handmade cheeses, home smoked fish, happy hen eggs, wheat-free bakes, a whole variety of arts & crafts, as well as live music, plants and all things that are good for your health and happiness!\nThe market has been going strong since 2006, and has now moved to the wonderful setting of the Hermanus Cricket Club. The traders all come from the greater Overstrand area, giving the market a truly local feel. The market organisers and the traders try as best we can to run the market according to eco-friendly principles, and we are committed to creating a wholesome experience with a minimal impact on the environment.\nCome and join us every Saturday between 08:00 and 12:00 and Wednesday from 16:00 till 20:00 in the evening at the Hermanus Cricket Club for some feel-good fun.\nFor more information contact the Hermanus Country Market or visit their site.\nPLEASE NOTE: The Evening Market will only be open from the 10th December 2014 until the 14th January 2015 - excluding the 24th December 2014",
+    "type": "recurring",
+    "status": "announced",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00",
+      "endTime": "12:00"
+    },
+    "venue": {
+      "name": "Hermanus Cricket Club",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Markets"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "music"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "The Hermanus Country Market at the Hermanus Cricket Club every Saturday morning, running since 2006 with organic produce, artisan breads, cheeses, smoked fish, baked goods, arts and crafts, plants and live music from Overstrand traders. Visitors shop and eat at an eco-minded local market. It suits families and food lovers; the page's Wednesday evening market ran only in 2014–2015."
+  }
+]

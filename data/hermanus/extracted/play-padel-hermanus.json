@@ -1,0 +1,40 @@
+[
+  {
+    "source": "Play Padel Hermanus",
+    "sourceListingId": "https://www.comeplaypadel.com/#Beginner Socials on Monday",
+    "url": "https://www.comeplaypadel.com/",
+    "rawFile": "raw/play-padel-hermanus/home.txt",
+    "fetchedAt": "2026-11-23T13:59:58Z",
+    "title": "Beginner Padel Social",
+    "summary": "Join us every Monday for a fun filled social for beginners, at Play Padel in the Hermanus Sports Club.",
+    "description": "BEGINNER SOCIALS ON MONDAY. Join us every monday for a fun filled social for beginners. Play Padel is creating an energetic, inclusive and welcoming padel culture for players of all ages and skill levels. Our home at Hermanus Sports Club: 4 Premium Courts (1 Panoramic), Clubhouse Facilities, Bossa Restaurant, Spectator Seating, Family Friendly Environment.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=MO",
+      "start": "2026-11-23"
+    },
+    "venue": {
+      "name": "Play Padel, Hermanus Sports Club",
+      "address": "Jose Burman Dr, Hermanus, 7200",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Latest Events",
+      "What's Happening"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "class_or_workshop",
+      "audience": "all_ages",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A weekly social padel session for beginners held every Monday at Play Padel, the four-court padel club at the Hermanus Sports Club. Newcomers play friendly games and meet the club's community, with a restaurant and clubhouse on site. It suits visitors who want to try padel or play socially while in Hermanus."
+  }
+]

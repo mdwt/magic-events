@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	>
+
+<channel>
+	<title>Hermanus Times</title>
+	<link>https://novanews.co.za/hermanustimes</link>
+	<item>
+		<title>Country Market moves for the holidays</title>
+		<link>https://novanews.co.za/hermanustimes/country-market-holidays/</link>
+		<pubDate>Fri, 20 Nov 2026 07:30:00 +0000</pubDate>
+		<guid isPermaLink="false">https://novanews.co.za/hermanustimes/?p=1199</guid>
+		<content:encoded><![CDATA[<p>The Hermanus Country Market opens on Wednesday 23 December as well as every Saturday.</p>]]></content:encoded>
+	</item>
+	<item>
+		<title>A post with no GUID</title>
+		<link>https://novanews.co.za/hermanustimes/a-post-with-no-guid/</link>
+		<content:encoded><![CDATA[<p>Its link is its ID.</p>]]></content:encoded>
+	</item>
+	</channel>
+</rss>

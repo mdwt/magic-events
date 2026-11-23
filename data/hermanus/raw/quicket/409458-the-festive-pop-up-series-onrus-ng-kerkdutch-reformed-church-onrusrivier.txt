@@ -1,0 +1,643 @@
+URL: https://www.quicket.co.za/events/409458-the-festive-pop-up-series-onrus-ng-kerkdutch-reformed-church-onrusrivier/
+Fetched: 2026-11-23T13:35:55Z
+
+=== Visible page text ===
+#
+
+-
+
+My account
+
+-
+My Tickets
+
+-
+Create Event
+
+-
+Saved Events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+-
+Log in
+
+-
+
+-
+Create Event
+
+-
+saved events
+
+-
+Help
+
+-
+Browse Events
+
+-
+Earn Commission
+
+-
+My Account
+
+Follow Us
+
+LOG IN
+
+-
+
+About
+
+-
+
+Directions
+
+Family friendly
+
+#
+The Festive Pop-Up Series: Onrus (NG Kerk/Dutch Reformed Church Onrusrivier)
+
+## Share event with friends
+
+## Enter your email to get a reminder about this event
+
+Save event
+
+## Save event
+
+By Southern Light Strings
+
+Follow
+
+Sat Dec 12, 18:00 - Sat Dec 12, 19:15
+
+Nederduitse Gereformeerde Kerk @ Onrusrivier
+
+-
+
+About
+
+-
+
+Directions
+
+## ABOUT
+
+Experience an uplifting, resonant evening of live string quartet music in the heart of Onrusrivier!
+
+Join Southern Light Strings at NG Kerk Onrusrivier on Saturday , 12 December 2026 for a special stop on The Festive Pop-Up Series.
+
+Set inside the warm, natural acoustics of the church, our curated 75-minute sunset programme celebrates the joy of a South African summer Christmas. Enjoy timeless classical masterpieces (Bach’s Jesu, Joy of Man’s Desiring and Corelli’s Christmas Concerto), beloved carols (Carol of the Bells, Silent Night), upbeat Bridgerton-style holiday pop crossovers (All I Want For Christmas, Feliz Navidad), and iconic South African summer favourites like Somerkersfees and Mango Groove’s Special Star.
+
+Whether you are a local resident or visiting Hermanus/Onrus for the December holidays, bring the whole family for an unforgettable musical celebration!
+
+Your Quartet for the Evening
+
+• Violin I: Elma Salt
+
+• Violin II: Petra Magner
+
+• Viola: Maja van Dyk
+
+• Cello: Maya Maile
+
+Evening Schedule (Saturday, 12 December 2026)
+
+• 17:00 — Church Doors Open (Unreserved seating - arrive early to choose your preferred seats)
+
+• 18:00 – 19:15 — Live String Quartet Performance (75-minute continuous set, no intermission)
+
+• 19:15 onwards — Evening concludes
+
+Ticket Options & Concessions
+
+• General Admission (Adult) - R250: Standard unreserved seating.
+
+• Pensioner / Student - R180: Discounted unreserved seating (valid Pensioner 60+ or student card may be requested at the door).
+
+• Child (Under 12) - R120: Discounted unreserved seating for children under 12 (children under 4 enter free when seated on a parent’s lap).
+
+Venue & Practical Info
+
+• Location: NG Kerk Onrusrivier (Main Halll/Hoofsaal), 55 Berg Street, Onrusrivier, Hermanus 7201
+
+• Seating: All seating is unreserved (first-come, first-served) inside the main church building.
+
+• Church Guidelines: To honour the church building and congregation guidelines, no food, wine, or alcohol is permitted inside.
+
+Seats are limited—book early to secure your spot!
+
+## DIRECTIONS
+
+The Festive Pop-Up Series: Onrus (NG Kerk/Dutch Reformed Church Onrusrivier)
+
+Nederduitse Gereformeerde Kerk @ Onrusrivier
+
+55 Berg St, Onrusrivier, 7201, South Africa
+
+Get Directions
+
+## DISCOVER
+
+BRIDGERTON
+
+CHRISTMAS CONCERT
+
+FESTIVE
+
+HERMANUS
+
+LIVE MUSIC
+
+ONRUSRIVIER
+
+OVERSTRAND
+
+STRING QUARTET
+
+From
+
+R250
+
+Family friendly
+
+Sat Dec 12, 18:00 - Sat Dec 12, 19:15
+
+Add To Calendar
+
+## Add to Calendar
+
+Do not miss the date, save your event date to your calendar of choice
+
+Google
+
+iOS
+
+Outlook
+
+Yahoo
+
+Nederduitse Gereformeerde Kerk @ Onrusrivier
+
+View Map
+
+TICKETS
+
+Payments are secure and encrypted
+
+-
+
++27 21 424 9308
+
+-
+
+support@quicket.co.za
+
+-
+© Copyright 2026 Quicket
+
+-
+Terms & Conditions
+
+-
+Privacy Policy
+
+-
+
+Cookie Settings
+
+=== JSON-LD (script[type=application/ld+json]) ===
+
+            {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "The Festive Pop-Up Series: Onrus (NG Kerk/Dutch Reformed Church Onrusrivier)",
+  "startDate": "2026-12-12T16:00:00Z",
+  "endDate": "2026-12-12T17:15:00Z",
+  "image": [
+    "//images.quicket.co.za/1025622_300_300.png"
+  ],
+  "location": {
+    "@type": "Place",
+    "name": "Nederduitse Gereformeerde Kerk @ Onrusrivier",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "55 Berg St, Onrusrivier, 7201, South Africa",
+      "addressLocality": "Onrusrivier",
+      "postalCode": "7201",
+      "addressRegion": "Western Cape",
+      "addressCountry": "South Africa"
+    }
+  },
+  "url": "https://www.quicket.co.za/events/409458-the-festive-pop-up-series-onrus-ng-kerkdutch-reformed-church-onrusrivier/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Experience an uplifting, resonant evening of live string quartet music in the heart of Onrusrivier!\r\nJoin Southern Light Strings at NG Kerk Onrusrivier on Saturday , 12 December 2026 for a special stop on The Festive Pop-Up Series.\r\nSet inside the warm, natural acoustics of the church, our curated 75-minute sunset programme celebrates the joy of a South African summer Christmas. Enjoy timeless classical masterpieces (Bach’s Jesu, Joy of Man’s Desiring and Corelli’s Christmas Concerto), beloved carols (Carol of the Bells, Silent Night), upbeat Bridgerton-style holiday pop crossovers (All I Want For Christmas, Feliz Navidad), and iconic South African summer favourites like Somerkersfees and Mango Groove’s Special Star.\r\nWhether you are a local resident or visiting Hermanus/Onrus for the December holidays, bring the whole family for an unforgettable musical celebration!\r\nYour Quartet for the Evening\r\n• Violin I: Elma Salt• Violin II: Petra Magner• Viola: Maja van Dyk• Cello: Maya Maile\r\nEvening Schedule (Saturday, 12 December 2026)\r\n• 17:00 — Church Doors Open (Unreserved seating - arrive early to choose your preferred seats)• 18:00 – 19:15 — Live String Quartet Performance (75-minute continuous set, no intermission)• 19:15 onwards — Evening concludes\r\nTicket Options &amp; Concessions \r\n• General Admission (Adult) - R250: Standard unreserved seating.• Pensioner / Student - R180: Discounted unreserved seating (valid Pensioner 60+ or student card may be requested at the door).• Child (Under 12) - R120: Discounted unreserved seating for children under 12 (children under 4 enter free when seated on a parent’s lap).\r\nVenue &amp; Practical Info\r\n• Location: NG Kerk Onrusrivier (Main Halll/Hoofsaal),  55 Berg Street, Onrusrivier, Hermanus 7201• Seating: All seating is unreserved (first-come, first-served) inside the main church building.• Church Guidelines: To honour the church building and congregation guidelines, no food, wine, or alcohol is permitted inside.\r\nSeats are limited—book early to secure your spot!",
+  "offers": [
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/409458-the-festive-pop-up-series-onrus-ng-kerkdutch-reformed-church-onrusrivier/#tickets",
+      "price": 250.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T09:52:00Z",
+      "sku": "774854"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/409458-the-festive-pop-up-series-onrus-ng-kerkdutch-reformed-church-onrusrivier/#tickets",
+      "price": 180.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T00:00:00Z",
+      "sku": "774941"
+    },
+    {
+      "@type": "Offer",
+      "url": "https://www.quicket.co.za/events/409458-the-festive-pop-up-series-onrus-ng-kerkdutch-reformed-church-onrusrivier/#tickets",
+      "price": 120.0000,
+      "priceCurrency": "ZAR",
+      "availability": "https://schema.org/InStock",
+      "validFrom": "2026-11-19T00:00:00Z",
+      "sku": "774942"
+    }
+  ],
+  "organizer": {
+    "@type": "Organization",
+    "name": "Southern Light Strings ",
+    "url": "https://www.quicket.co.za/app/#/account/event/409458/profile"
+  },
+  "eventStatus": "https://schema.org/EventScheduled"
+}
+    
+
+=== GetProductData (/Widget/Services/ProductService.svc/GetProductData?isWidget=false&productId=409458, the page's own ticket call) ===
+{
+ "errorCode": null,
+ "allowBuyTickets": true,
+ "allowNonSeatedTickets": false,
+ "allowOrphanedSeats": false,
+ "allowResaleTickets": false,
+ "bannerUrl": "//images.quicket.co.za/1025382_0.png",
+ "cartEnabled": false,
+ "codeEmail": null,
+ "currencyDecimalDigits": 2,
+ "currencySymbol": "R",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "discount_validation": null,
+ "donationOnly": false,
+ "facebookDiscountLink": "",
+ "facebookDiscountSaving": "",
+ "hasAnyDiscounts": true,
+ "hasFacebookDiscount": false,
+ "hasMerchandiseOnSale": false,
+ "id": 409458,
+ "isLoggedIn": false,
+ "maxResaleFee": 9999999,
+ "maxTicketsPerOrder": 0,
+ "merchOnly": false,
+ "minResaleFee": 5,
+ "name": "The Festive Pop-Up Series: Onrus (NG Kerk/Dutch Reformed Church Onrusrivier)",
+ "newCheckoutFlow": true,
+ "noSalesEnd": false,
+ "ongoingEvent": false,
+ "organiserId": 99512,
+ "preRegistrationId": null,
+ "preRegistrationStatus": null,
+ "preregistrationClosedMessage": null,
+ "preregistrationOpen": false,
+ "preregistrationRequired": false,
+ "seatPublicKey": "e123d480-1d46-421b-9166-6d987eaedc16",
+ "seatingPricing": [],
+ "seatingProductId": "409458",
+ "seatsHoldToken": null,
+ "serviceFeeCap": 75,
+ "showSeatLabels": false,
+ "teamEntry": false,
+ "teamEntryAllowIndividualEntry": false,
+ "teamEntryAllowPasswordProtect": false,
+ "teamEntryForcePasswordProtect": false,
+ "teamEntryMaxTeamSize": 0,
+ "teamRestrictToTicketType": false,
+ "tickets": [
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 774854,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "General Admission (Adult)",
+   "price": 250,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "12 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 774941,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Pensioner / Student",
+   "price": 180,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "12 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  },
+  {
+   "amounts": [
+    1,
+    20
+   ],
+   "appliesTo": 1,
+   "description": "",
+   "extraServiceFee": 0,
+   "hasResaleTickets": false,
+   "hasSeatingCategory": false,
+   "id": 774942,
+   "incrementTicketAmountBy": 1,
+   "isDiscounted": false,
+   "isDonation": false,
+   "isStreamingTicketType": false,
+   "isTicketGroup": false,
+   "isTicketGroupExpanded": true,
+   "name": "Child (Under 12)",
+   "price": 120,
+   "pureServiceFee": 7.5,
+   "salesPeriodStatusMsg": "12 Dec 2026",
+   "serviceFee": 7.5,
+   "showTicketGroupImage": false,
+   "showTicketStockInfo": {
+    "percent": 0,
+    "remaining": 0,
+    "total": 0,
+    "type": 0
+   },
+   "ticketGroupId": null,
+   "ticketGroupImage": "",
+   "ticketGroupSortOrder": null
+  }
+ ],
+ "useTicketGroups": false,
+ "venueName": "Nederduitse Gereformeerde Kerk @ Onrusrivier"
+}
+
+=== GetProductSchedules (/Widget/Services/ProductService.svc/GetProductSchedules?productId=409458, the page's own schedule call) ===
+{
+ "errorCode": null,
+ "errorMsg": "",
+ "definitions": [
+  {
+   "Key": "event",
+   "Value": "event"
+  },
+  {
+   "Key": "events",
+   "Value": "events"
+  },
+  {
+   "Key": "ticket",
+   "Value": "ticket"
+  },
+  {
+   "Key": "tickets",
+   "Value": "tickets"
+  },
+  {
+   "Key": "buyer",
+   "Value": "buyer"
+  },
+  {
+   "Key": "prereg",
+   "Value": "You need to register to buy tickets for this event"
+  },
+  {
+   "Key": "updatePreReg",
+   "Value": "You need to update your registration to buy tickets for this event"
+  },
+  {
+   "Key": "useAPromotionCode",
+   "Value": "Use a promotion code"
+  },
+  {
+   "Key": "ifYouHaveAPromotionCode",
+   "Value": "If you have a promotion code enter it here"
+  },
+  {
+   "Key": "howtobookdesktop",
+   "Value": null
+  },
+  {
+   "Key": "howtobookmobile",
+   "Value": null
+  },
+  {
+   "Key": "team",
+   "Value": "team"
+  },
+  {
+   "Key": "teams",
+   "Value": "teams"
+  },
+  {
+   "Key": "member",
+   "Value": "member"
+  },
+  {
+   "Key": "members",
+   "Value": "members"
+  },
+  {
+   "Key": "teamRestrict",
+   "Value": "choose what ticket type your team will be entering under"
+  },
+  {
+   "Key": "jointeam",
+   "Value": "join team"
+  },
+  {
+   "Key": "enterAsIndividual",
+   "Value": "enter as an individual"
+  },
+  {
+   "Key": "enterAsTeam",
+   "Value": "enter as a team"
+  },
+  {
+   "Key": "teamEntryTextBoth",
+   "Value": "This event allows you to enter as part of a team or as an individual"
+  },
+  {
+   "Key": "chooseYourSeats",
+   "Value": "Choose your seats"
+  },
+  {
+   "Key": "selectYourMerchandise",
+   "Value": "Select your merchandise"
+  },
+  {
+   "Key": "addMerchandise",
+   "Value": "Would you like to add merchandise to your order?"
+  },
+  {
+   "Key": "buttonText",
+   "Value": "Tickets"
+  }
+ ],
+ "organiserId": 99512,
+ "schedules": []
+}
+
+=== Map links (a[href] on the page containing maps, fetched 2026-11-23T13:42:38Z) ===
+http://maps.google.co.za/maps?q=-34.4086255,19.1686015
+https://www.google.com/maps/dir/?api=1&destination=-34.4086255,19.1686015

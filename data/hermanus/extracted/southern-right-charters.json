@@ -1,0 +1,100 @@
+[
+  {
+    "source": "Southern Right Charters",
+    "sourceListingId": "https://www.southernrightcharters.co.za/whale-watching/",
+    "url": "https://www.southernrightcharters.co.za/whale-watching/",
+    "rawFile": "raw/southern-right-charters/whale-watching.txt",
+    "fetchedAt": "2026-11-23T13:57:30Z",
+    "title": "Boat-based whale watching with Southern Right Charters",
+    "summary": "An informative and educational boat-based whale watching trip from Hermanus New Harbour, with daily departures during the peak whale season from June to end November, weather permitting.",
+    "description": "Join Southern Right Charters for an informative and educational whale watching experience. Times: 06h30, 09h00, 12h00 & 15h00. Daily Departures, weather permitting. Check-in is strictly 30 minutes prior to departure time for check-in & on-land introductory briefing. 2026 Whale Watching rates: Adults R1 580, Students | Seniors R1 480, Children (under 12) R790, Children (under 3) FREE. Duration 1h30 – 3 hrs, average 2 hours. The whale watching experience begins with an on-land briefing led by our whale specialist guide. We then set off from the Hermanus New Harbour in search of the ‘gentle giants.’ The peak Hermanus whale watching season typically runs from June to end November. Whale Species: Southern Right (Jun-Dec), Humpback (June-September) & Bryde’s whales (all year). Purpose-built catamaran, MV Miroshca. Sighting Guarantee: 50% Refund or Join us again, free.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+      "start": "2026-11-23"
+    },
+    "openingHours": "Daily departures at 06h30, 09h00, 12h00 & 15h00, weather permitting; check-in 30 minutes before departure",
+    "venue": {
+      "name": "The Whale Shack, New Harbour",
+      "address": "New Harbour, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 1580,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://secure.activitybridge.com/book?action=book&activityid=372",
+    "hints": [
+      "Whale Watching",
+      "Boat Based"
+    ],
+    "attributes": {
+      "tier": "premium",
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "major",
+      "wheelchair_accessible": false
+    },
+    "tags": [
+      "whales"
+    ],
+    "profile": "A guided boat trip from Hermanus New Harbour on a purpose-built catamaran to watch southern right and humpback whales, with daily departures from June to the end of November. Passengers get an on-land briefing, then spend about two hours at sea with a whale specialist guide and may also see dolphins, seals and seabirds. It suits visitors of all ages during whale season, with child, student and senior rates."
+  },
+  {
+    "source": "Southern Right Charters",
+    "sourceListingId": "https://www.southernrightcharters.co.za/whale-watching/#Private Charter",
+    "url": "https://www.southernrightcharters.co.za/whale-watching/",
+    "rawFile": "raw/southern-right-charters/whale-watching.txt",
+    "fetchedAt": "2026-11-23T13:57:30Z",
+    "title": "Private whale watching charter with Southern Right Charters",
+    "summary": "The whole catamaran chartered privately for an exclusive boat-based whale watching tour from Hermanus New Harbour, R78,000 for the boat, on request during the whale season.",
+    "description": "Private exclusive whale watching tours are available on request, please contact us directly. Private Charter R78 000. For private charters and group bookings, the additional trip time of 17h00 can be requested dependent on time of year. Duration 1h30 – 3 hrs: the tour time is not capped, duration all depends on the travelling time to the whales and the abundance of marine life on the day; average 2 hours. The whale watching experience begins with an on-land briefing led by our whale specialist guide, then sets off from the Hermanus New Harbour aboard the purpose-built catamaran MV Miroshca, with an experienced and specialised whale watching skipper and crew, a whale specialist guide's commentary and a videographer on board, whose professional movie of the trip is available to purchase. Sighting Guarantee: 50% Refund or Join us again, free.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+      "start": "2026-11-23"
+    },
+    "openingHours": "On request during the whale season; the regular departures are 06h30, 09h00, 12h00 and 15h00, and a 17h00 trip can be requested for private charters, dependent on time of year",
+    "venue": {
+      "name": "The Whale Shack, New Harbour",
+      "address": "New Harbour, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 78000,
+      "max": 78000,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Whale Watching",
+      "Boat Based",
+      "Private Charter"
+    ],
+    "attributes": {
+      "tier": "luxury",
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "major",
+      "wheelchair_accessible": false
+    },
+    "tags": [
+      "whales"
+    ],
+    "profile": "A private charter of Southern Right Charters' purpose-built catamaran from Hermanus New Harbour, for an exclusive whale watching tour during the southern right whale season from June to November. The party has the boat, the skipper and crew, a whale specialist guide and an on-board videographer to itself, for a trip of about two hours that is not capped, and can ask for a 17:00 departure. The charter is priced for the whole boat and is arranged directly with the operator."
+  }
+]

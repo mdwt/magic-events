@@ -1,0 +1,221 @@
+URL: https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1444
+Fetched: 2026-11-23T14:16:48Z
+(This listing has no detail page of its own: its link on What's On points to https://www.thevillagenews.co.za/whats-on/. Below is the site's own event record, fetched in the page with the site's events API.)
+{
+ "id": 1444,
+ "global_id": "www.thevillagenews.co.za?id=1444",
+ "global_id_lineage": [
+  "www.thevillagenews.co.za?id=1444"
+ ],
+ "author": "0",
+ "status": "publish",
+ "date": "2026-10-26 21:01:46",
+ "date_utc": "0000-00-00 00:00:00",
+ "modified": "2026-10-26 21:01:46",
+ "modified_utc": "0000-00-00 00:00:00",
+ "url": "https://www.thevillagenews.co.za/whats-on/",
+ "rest_url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1444",
+ "title": "Creedence &#8211; A Clearwater Revival Tribute at Hermanus Golf Club",
+ "description": "<p>Read what audiences are saying…🎸🎵🎤🎹🥁🎶</p>\n<p>🔴5* &#8220;Just absolutely incredible. My husband and I are huge CCR fans. If I closed my eyes, that was John Fogerty singing and playing (and we’ve seen him live.) All 4 musicians gave a brilliant performance.”</p>\n<p>🟠5* &#8220;It was the best rock band I have seen in a very long time. They captured CCR excellently! Thank you so much!&#8221;</p>\n<p>🔴5* &#8220;Excellent show. Band were very professional and the music was as wonderful as we expected from CCR. one of the best shows we have enjoyed.&#8221;</p>\n<p>🔴5* &#8220;What an amazing evening we experienced at the CCR show. &#8221;</p>\n<p>🟠5* &#8220;Thoroughly enjoyed the performance. All 4 members of the band are great musicians!&#8221;</p>\n<p>Your ticket is for the show. Dinner will be ordered from an a la carte menu. Full bar service available.</p>",
+ "excerpt": "",
+ "slug": "",
+ "image": {
+  "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444.jpg",
+  "id": 1445,
+  "extension": "jpg",
+  "width": 1280,
+  "height": 960,
+  "filesize": 326549,
+  "sizes": {
+   "medium": {
+    "width": 300,
+    "height": 225,
+    "mime-type": "image/jpeg",
+    "filesize": 21138,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-300x225.jpg"
+   },
+   "large": {
+    "width": 1024,
+    "height": 768,
+    "mime-type": "image/jpeg",
+    "filesize": 209103,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-1024x768.jpg"
+   },
+   "thumbnail": {
+    "width": 150,
+    "height": 150,
+    "mime-type": "image/jpeg",
+    "filesize": 7855,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-150x150.jpg"
+   },
+   "medium_large": {
+    "width": 768,
+    "height": 576,
+    "mime-type": "image/jpeg",
+    "filesize": 120077,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-768x576.jpg"
+   },
+   "td_0x420": {
+    "width": 560,
+    "height": 420,
+    "mime-type": "image/jpeg",
+    "filesize": 65272,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-560x420.jpg"
+   },
+   "td_80x60": {
+    "width": 80,
+    "height": 60,
+    "mime-type": "image/jpeg",
+    "filesize": 2172,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-80x60.jpg"
+   },
+   "td_150x0": {
+    "width": 150,
+    "height": 113,
+    "mime-type": "image/jpeg",
+    "filesize": 6333,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-150x113.jpg"
+   },
+   "td_218x150": {
+    "width": 218,
+    "height": 150,
+    "mime-type": "image/jpeg",
+    "filesize": 11325,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-218x150.jpg"
+   },
+   "td_300x0": {
+    "width": 300,
+    "height": 225,
+    "mime-type": "image/jpeg",
+    "filesize": 21138,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-300x225.jpg"
+   },
+   "td_324x400": {
+    "width": 324,
+    "height": 400,
+    "mime-type": "image/jpeg",
+    "filesize": 37188,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-324x400.jpg"
+   },
+   "td_485x360": {
+    "width": 485,
+    "height": 360,
+    "mime-type": "image/jpeg",
+    "filesize": 49960,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-485x360.jpg"
+   },
+   "td_696x0": {
+    "width": 696,
+    "height": 522,
+    "mime-type": "image/jpeg",
+    "filesize": 99014,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-696x522.jpg"
+   },
+   "td_1068x0": {
+    "width": 1068,
+    "height": 801,
+    "mime-type": "image/jpeg",
+    "filesize": 229042,
+    "url": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444-1068x801.jpg"
+   }
+  }
+ },
+ "all_day": false,
+ "start_date": "2026-12-04 18:00:00",
+ "start_date_details": {
+  "year": "2026",
+  "month": "12",
+  "day": "04",
+  "hour": "18",
+  "minutes": "00",
+  "seconds": "00"
+ },
+ "end_date": "2026-12-04 22:30:00",
+ "end_date_details": {
+  "year": "2026",
+  "month": "12",
+  "day": "04",
+  "hour": "22",
+  "minutes": "30",
+  "seconds": "00"
+ },
+ "utc_start_date": "2026-12-04 16:00:00",
+ "utc_start_date_details": {
+  "year": "2026",
+  "month": "12",
+  "day": "04",
+  "hour": "16",
+  "minutes": "00",
+  "seconds": "00"
+ },
+ "utc_end_date": "2026-12-04 20:30:00",
+ "utc_end_date_details": {
+  "year": "2026",
+  "month": "12",
+  "day": "04",
+  "hour": "20",
+  "minutes": "30",
+  "seconds": "00"
+ },
+ "timezone": "Africa/Johannesburg",
+ "timezone_abbr": "SAST",
+ "cost": "R350 for the show, dinner from a la carte menu",
+ "cost_details": {
+  "currency_symbol": "",
+  "currency_code": "",
+  "currency_position": "",
+  "values": [
+   "350"
+  ]
+ },
+ "website": "https://www.thevillagenews.co.za/whats-on/",
+ "show_map": true,
+ "show_map_link": true,
+ "hide_from_listings": false,
+ "sticky": false,
+ "featured": false,
+ "categories": [
+  {
+   "name": "Music",
+   "slug": "music",
+   "term_group": 0,
+   "term_taxonomy_id": 29,
+   "taxonomy": "tribe_events_cat",
+   "description": "",
+   "parent": 0,
+   "count": 8,
+   "filter": "raw",
+   "id": 29,
+   "urls": {
+    "self": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories/29",
+    "collection": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/categories"
+   }
+  }
+ ],
+ "tags": [],
+ "venue": [],
+ "organizer": [],
+ "custom_fields": [],
+ "json_ld": {
+  "@context": "http://schema.org",
+  "@type": "Event",
+  "name": "Creedence &#8211; A Clearwater Revival Tribute at Hermanus Golf Club",
+  "description": "&lt;p&gt;Read what audiences are saying…🎸🎵🎤🎹🥁🎶 🔴5* &quot;Just absolutely incredible. My husband and I are huge CCR fans. If I closed my eyes, that was John Fogerty singing and playing (and [&hellip;]&lt;/p&gt;\\n",
+  "image": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444.jpg",
+  "url": "https://www.thevillagenews.co.za/whats-on/",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "startDate": "2026-12-04T18:00:00+02:00",
+  "endDate": "2026-12-04T22:30:00+02:00",
+  "offers": {
+   "@type": "Offer",
+   "price": "R350 for the show, dinner from a la carte menu",
+   "priceCurrency": "ZAR",
+   "url": "https://www.thevillagenews.co.za/whats-on/",
+   "category": "primary",
+   "availability": "inStock",
+   "validFrom": "2026-10-26T00:00:00+00:00"
+  },
+  "performer": "Organization"
+ }
+}

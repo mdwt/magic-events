@@ -31,7 +31,7 @@ A site or feed that publishes experiences for one location.
 | --- | --- |
 | Name, kind | Kind picks the adapter that fetches it and the extractor that reads it (see Source kinds) |
 | Location | One location per source. A site that covers two places is entered twice, once per location |
-| Settings | JSON the adapter reads: page addresses, organiser ID, calendar name. Each kind defines its own |
+| Settings | JSON the adapter reads: page addresses, organiser ID, calendar name. Each kind defines its own. A web page source can also say `ownPages`: true when its pages are an organiser's, operator's or venue's own pages about its own offerings, false when left out. Data processing reads it from the claimed raw listing to give each experience on such a page the page as its address. A listing site, a feed or a file is never one |
 | Credentials | The name of the setting that holds the API key, such as `QUICKET_API_KEY`. Discovery gets the key from the settings provider. Keys are never stored in the table |
 | Sync state | JSON the adapter keeps between runs, such as Quicket's last-modified time for incremental fetches |
 | Fetch interval | How often this source is fetched |
@@ -83,19 +83,27 @@ A raw listing's content is never changed after it is saved. Only its status chan
 
 ## Source kinds
 
-Version 1 has five kinds. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research (23 Nov 2026).
+Version 1 defines five kinds and builds three: RSS feed, PDF calendar and web page. The Quicket and Ticketmaster kinds use an API, and version 1 has no API access to either, so their adapters and extractors are not built. That is the decision for version 1. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research, and each address was checked on 23 Nov 2026 (see [hermanus-sources.md](hermanus-sources.md)).
 
 | Kind | Sources it covers | How it is fetched | One listing is | Listing ID | Extracted by |
 | --- | --- | --- | --- | --- | --- |
 | Quicket | Quicket | API with a free key. Returns all public events with no location filter, incremental by last-modified | One event, as JSON | Quicket's event ID | Field mapping |
 | Ticketmaster | Ticketmaster Discovery | API with a free key. Filters by point | One event, as JSON | Ticketmaster's event ID | Field mapping |
 | RSS feed | Hermanus Times | Fetches the feed address in the source's settings | One post: its item in the feed, as XML, with the post's full text | The item's GUID | Language model |
-| PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
-| Web page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model |
+| PDF calendar | whalecoast.info annual and monthly events PDFs. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
+| Web page | The Overstrand weekly diary, Quicket's public search pages, organiser sites (FynArts, the Whale Festival), Wesgro, AllEvents.in, Xplorio | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model, given the page's visible text, its structured data and its map links |
 
 A kind is named for how a source is fetched, never for the software its site runs on. Two kinds have an API: Quicket and Ticketmaster. RSS feeds, PDF calendars and web pages are fetched as feeds, files and pages.
 
 Adding another RSS feed, web page or PDF calendar is adding a source row with its address in the settings. It needs no new code.
+
+A web page's content is what it says: its visible text, its structured data (JSON-LD), and its links to a map that carry coordinates, such as a Directions link to `maps?q=-34.42,19.23`. Many listing sites put their events in structured data, and Quicket's public search pages put them nowhere else. A map link's address is not visible text, and it is often the only place a page states where its venue is. All three are given to the language model. The values in structured data are read with their HTML entities decoded, as visible text already is, since a site can write the same text with different entities on each request: WordPress writes an email address's letters as entities or not, at random. A page whose body is an iCalendar file, such as a Google calendar's public address, is read as the calendar itself: its long lines unfolded, without DTSTAMP, the time the server generated the file, and with its events in a fixed order (by start, then UID, then the occurrence a changed event replaces), since Google Calendar lists them in a new order each time. Everything else an event says is kept.
+
+The page's fingerprint is taken from the same three, without the frame the site puts around every page: its navigation, sidebars and footer (`nav`, `aside` and `footer`, and the elements with their ARIA roles) where they stand outside the page's main part, its articles and its sections. Sites fill the frame with lists that change on every fetch: AllEvents.in's footer lists trending searches and upcoming events in a new order each time. A footer inside an article, such as an event card's price, is part of what the page says and stays in the fingerprint. The language model is still given the frame, since it can name an event the page itself does not. When ten pages or more of a source are fetched in one run, the lines of visible text that every one of them shows are the site's, and are left out of each page's fingerprint too. A site need not mark its banner, menus and tickers: The Village NEWS shows today's weather, tides and events at the top of every page, and its wind changes between fetches minutes apart. A line only some of the pages show is kept, so a page whose own date, time or price changes still changes its fingerprint. Fewer pages are not enough to tell: on a festival's home, programme and booking pages, a line on all three can be the festival's own dates. A captured page's fingerprint leaves out its first two lines, its address and the time it was read, so a page captured again unchanged keeps its fingerprint.
+
+Quicket's events come in through its public search pages, which need no key and are fetched as web pages. The Quicket kind, which uses its API, is not built in version 1. Ticketmaster's public site returns no events for Hermanus or the Overstrand, so nothing is lost by leaving its kind out.
+
+A page that only fills in with JavaScript does not answer a plain request, so the web page adapter cannot fetch it. Such pages are read with the agent-browser CLI, a headless Chrome, and loaded through the pipeline as captured pages (see [sources.md](sources.md)). Putting a headless browser inside the adapter is for the next version.
 
 The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown) and the sources it found closed (Facebook events, Eventbrite search) have no kind.
 
@@ -103,8 +111,8 @@ The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown)
 
 | Kind | A run is | Language model in the fetch | Language model in extraction |
 | --- | --- | --- | --- |
-| Quicket | Incremental: only what changed since the last run (see Open questions) | No | No |
-| Ticketmaster | Complete | No | No |
+| Quicket | Not built in version 1 | No | No |
+| Ticketmaster | Not built in version 1 | No | No |
 | RSS feed | Never complete. A feed holds only the latest posts, so a post that leaves the feed is not a removed listing | No | Yes |
 | PDF calendar | Complete | Yes, to find the current file | Yes |
 | Web page | Complete. An address that answers not found is a missing listing. Any other failure fails the run | No | Yes |
@@ -118,10 +126,10 @@ Checked on 23 Nov 2026 by calling each one without a key.
 | Kind | What is needed | Result of the check |
 | --- | --- | --- |
 | Quicket | An API key. Sign up at developer.quicket.co.za and get a key there | The API answers 401 without a key. Not yet tested with one |
-| Ticketmaster | An API key. Sign up at developer.ticketmaster.com. 5000 calls a day, 5 a second | The API answers 401 without a key. Its documentation lists South Africa. Whether it holds any Hermanus events is not yet known |
+| Ticketmaster | An API key. Sign up at developer.ticketmaster.com. 5000 calls a day, 5 a second | The API answers 401 without a key. Its public site returns no events for Hermanus or the Overstrand |
 | RSS feed | Nothing | The Hermanus Times feed at novanews.co.za/hermanustimes/feed/ answers a plain request: 10 posts a page with their full text, and `?paged=N` reaches older posts. Its article pages are open too. Its posts API, category pages and sitemaps answer 403 behind a Cloudflare browser check, which a headless browser did not pass either. Most posts are national news and sport. The site's own events calendar has listed nothing since November 2025 |
-| PDF calendar | Nothing | whalecoast.info is reachable. Its site has no events API, so the PDFs remain the source |
-| Web page | Nothing | Public pages. Not checked one by one |
+| PDF calendar | Nothing | whalecoast.info is reachable. The annual and monthly PDFs are linked from the site menu and have a text layer. Its weekly diary is an image there, and the same diary is a web page on overstrand.gov.za |
+| Web page | Nothing | Checked one by one: the Overstrand diary, Quicket search, AllEvents.in, Wesgro, FynArts and Xplorio answer a plain request with their events. SA-Venues has no Overstrand events, Webtickets has no page that lists a place's events, and Computicket shows none for Hermanus and guards its API |
 
 ## Fetch port and adapters
 
@@ -158,18 +166,47 @@ An adapter that filters by place does it here. Quicket has no location filter, s
 
 ## Fetching
 
-1. The schedule starts Discovery for each active source, at that source's fetch interval. How often the schedule looks for sources that are due is a setting (see Settings).
+1. The schedule starts Discovery for each active source, at that source's fetch interval. A source is fetched once a week unless its row says otherwise, and each fetch is a full update of everything the source lists. Each source keeps its own time: it is due one interval after its last fetch started. Every 15 minutes a job asks Discovery which sources are due and adds a fetch job for each (see Background jobs in [architecture.md](architecture.md)).
 2. Discovery gets the source's location (name, centre point, timezone) from the Catalogue service and inserts a run with status running.
 3. Discovery calls the adapter for the source's kind with the source's settings, credentials, sync state and the location.
 4. The adapter calls the source and returns the listings whole: one per API event, page, post or calendar. For each listing it returns the source's listing ID, the web address, the content type and the raw content. It does not clean, split or interpret anything.
-5. For each listing returned, Discovery computes the fingerprint and finds the listing record for the same source and listing ID:
+5. For each listing returned, Discovery takes out what a Postgres text column cannot hold (the NUL character, which some pages carry, and a lone half of a surrogate pair, which becomes U+FFFD), computes the fingerprint of what is left, and finds the listing record for the same source and listing ID:
    - no record: the listing is new. Discovery creates the record and saves the content as a raw listing with status pending
    - same fingerprint: counted as unchanged. Only the listing's last seen is updated
    - different fingerprint: the listing changed. Discovery updates the record's fingerprint and last seen, and saves the content as a new raw listing with status pending
-6. Discovery closes the run with its status, whether it was complete, its counts and any error.
+6. Discovery closes the run with its status, whether it was complete, its counts and any error. The error is one line of at most 500 characters that says what failed. A query the database refused gives the database's own reason, never the query, its parameters or the page. If closing the run fails, Discovery closes it again as failed with a fixed error, so a run is never left running and the caller always gets a result.
 7. If the run succeeded and the adapter reported it complete, Discovery checks for listings that have gone missing (below). An incremental run only returns what changed, so it never counts as a miss.
 
 If the fetch fails part way, the listings already saved stay saved and the run is marked failed. A failed run never counts as a miss.
+
+### When a fetch fails
+
+A failed fetch is tried again, with a longer wait each time. It does not wait for the next weekly fetch.
+
+- **The job queue tries it again.** A fetch is a job. A run that fails fails its job, and the queue runs the job again. Discovery itself holds no retry rule.
+- **Five retries.** The first comes 15 minutes after the failure, and the wait doubles each time: 15, 30, 60, 120 and 240 minutes. pg-boss adds a random extra of up to as much again, so that failed jobs do not all come back at once: each wait is between the one given here and twice it.
+- **When the retries are used up,** the job is given up. The source is due again one fetch interval after its last run started, and starts with a fresh set of retries.
+- **A success ends it.** The next fetch is one interval after the run that succeeded started.
+- **A run that never finished.** A run still running an hour after it started, because the server stopped part way, is closed as failed, so it never blocks its source.
+
+**Later:** the queue behind the job queue port becomes a durable workflow engine in the next version. Version 1 uses pg-boss, with its queues in the same Postgres database. Changing it means writing one adapter.
+
+### How far ahead
+
+Experiences are sourced from today to 24 months ahead, the sourcing horizon (`DISCOVERY_HORIZON_MONTHS`). Trips are booked up to 18 months before they start.
+
+- An adapter whose source can be asked for a range of dates asks for today to the horizon.
+- A page, feed or calendar is fetched whole, so the horizon is applied in extraction: an experience whose first date is beyond the horizon is left out (see [data-processing.md](data-processing.md)). It is picked up by a later run, once its date is inside the horizon.
+
+### Fetching on demand
+
+A system admin can fetch now from the command line, whether or not a source is due, with `pipeline refetch` and one of:
+
+- `--location SLUG`: every active source of the location, one after another.
+- `--source NAME`: one source.
+- `--listing ID`: the source of one listing.
+
+A listing is never fetched on its own, because an adapter fetches a whole source. A fetch on demand is a run like any other, and a source that is already being fetched is not fetched twice. A listing whose content has not changed is not processed again; sending it back is what processing again is for (see [data-processing.md](data-processing.md)).
 
 ## Listings that disappear
 
@@ -183,20 +220,34 @@ A listing that a source stops returning is checked again before anything changes
 
 Removed is not Cancelled. Cancelled means a source said the organisers cancelled it. Removed means no source lists it any more, whatever the reason. Statuses are defined in [data-model.md](data-model.md).
 
+## Nothing is lost
+
+Data is never lost because a source fails or is read badly.
+
+- **The pipeline deletes nothing.** No code deletes an experience, a listing, a raw listing, a run, a change row or a warehouse row. Saving an experience replaces its session, attribute, tag and link rows, and the values they held are kept in its change row.
+- **Removed, Cancelled and Past are statuses.** Such an experience stays stored, with every change row it has.
+- **Every version of a listing's content is kept** as a raw listing, superseded ones included, and its content is never changed after it is saved. A fetch whose fingerprint matches the stored version saves no copy, since it says the same; for a web page the fingerprint leaves out markup and the site's frame, so that markup is not kept.
+- **Every version of an experience has a change row** with the values it replaced. Every save from a listing is also appended whole to the data warehouse.
+- **A fetch that fails changes nothing.** Connection refused, a timeout or an HTTP error fails the run before any listing is saved, and a failed run counts nothing as missing (see When a fetch fails). A run that stopped part way is closed as failed and changes nothing else.
+- **A source that fails, is turned off or stops listing something leaves what it gave in the feed** until a link is removed by the rules above, or the dates pass. A listing must be missing from the source's missed runs before removal successful, complete runs; an experience must be missing from that many readings in a row of a listing that still exists (see Matching in [data-processing.md](data-processing.md)). An RSS feed's runs are never complete, so they count no miss.
+- **What is deleted, and by whom:** nothing by the system. Only a person rebuilding a database by hand deletes data. The definitions are configuration: saving an attribute or a season replaces its options or periods.
+
 ## Hand-off to Data processing
 
-Data processing never reads Discovery's tables. It uses two calls on the Discovery service:
+Data processing never reads Discovery's tables. It uses three calls on the Discovery service:
 
-- **Claim** pending raw listings. Two workers never get the same one: Discovery's repository claims them with `FOR UPDATE SKIP LOCKED`. Each comes with its source's kind and location.
-- **Mark** a raw listing processed, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
+- **Claim** pending raw listings. Two workers never get the same one: Discovery's repository claims them with `FOR UPDATE SKIP LOCKED`, and the lock is held until Data processing's transaction ends. Each comes with its source's kind and location.
+- **Mark** a raw listing processed, or failed with the error and one more attempt. Both marks are made in the claim's transaction, so a failed raw listing cannot be claimed again until its attempt is counted. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
+- **Send back** listings to be processed again: the latest version of each listing that is still listed goes back to pending, with its attempts at 0 and its error cleared. One that is already pending is left as it is, and a removed listing is skipped (see Processing again in [data-processing.md](data-processing.md)).
 
 | Status | Means | Moves to |
 | --- | --- | --- |
 | Pending | Saved by a run, waiting for processing | Processed, Failed |
-| Processed | Its experiences are extracted and saved | Nothing |
-| Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
+| Processed | Its experiences are extracted and saved | Pending, when it is sent back |
+| Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts, or when it is sent back |
+| Superseded | An older version of a listing that was still pending or failed when a newer version was claimed. It is never processed | Nothing |
 
-Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded (see [domain-events.md](domain-events.md)). They are a record only; the hand-off is the status.
+Discovery appends a domain event when it saves a raw listing and when one is marked processed, failed or superseded, and publishes it (see [domain-events.md](domain-events.md)). Nothing depends on them; the hand-off is the status.
 
 ## Language model in Discovery
 
@@ -218,9 +269,14 @@ System settings are environment variables, read through the settings provider (s
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `DISCOVERY_SCHEDULE_INTERVAL_SECONDS` | 60 | How often the schedule looks for sources that are due a fetch |
+| `DISCOVERY_SCHEDULE_CRON` | `*/15 * * * *` | When the schedule looks for sources that are due a fetch, as a cron expression in UTC: every 15 minutes |
+| `DISCOVERY_RUN_TIMEOUT_MINUTES` | 60 | How long a run may take. A run still running after this did not finish, and counts as failed |
+| `DISCOVERY_FETCH_RETRIES` | 5 | How many times a failed fetch is tried again before the source waits for its next regular fetch |
+| `DISCOVERY_FETCH_RETRY_BACKOFF_MINUTES` | 15 | How long after a failed fetch the first retry comes. The wait doubles with each retry |
+| `DISCOVERY_USER_AGENT` | `Mozilla/5.0 (compatible; magic-events/1.0)` | The User-Agent every adapter sends |
 | `DISCOVERY_FETCH_TIMEOUT_SECONDS` | 30 | How long an adapter waits for a source to answer |
-| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 24 | Fetch interval given to a new source |
+| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 168 | Fetch interval given to a new source: once a week |
+| `DISCOVERY_HORIZON_MONTHS` | 24 | How far ahead experiences are sourced |
 | `DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL` | 3 | Missed runs before removal given to a new source |
 | `DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS` | 3 | Max processing attempts given to a new source |
 | `QUICKET_API_KEY` | None | The Quicket API key. The Quicket source row names this setting |
@@ -232,10 +288,10 @@ The language model settings (`LANGUAGE_MODEL_PROVIDER`, `LANGUAGE_MODEL`, `LANGU
 
 | Service | Calls | For |
 | --- | --- | --- |
-| Discovery | Catalogue | The location of each source |
-| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
+| Discovery | Catalogue | The location of each source, and a location by its slug for a fetch on demand |
+| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, sending listings back to be processed again |
 
-Catalogue calls neither, so the dependencies have no cycles.
+Catalogue calls neither of these two for fetching or the hand-off. It calls Data processing for the attribute definitions and the tag and season slugs (see How domains talk in [architecture.md](architecture.md)).
 
 ## Decisions
 
@@ -245,8 +301,18 @@ Catalogue calls neither, so the dependencies have no cycles.
 | No copies | Services call each other's services. No table holds a copy of another domain's data |
 | One location per source | A source row carries its location and settings |
 | Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source. System settings, such as how often the schedule runs and the defaults a new source gets, are environment variables listed under Settings |
+| Schedule | Every source is fetched once a week by default, as a full update of everything it lists. The interval is set per source, and each source keeps its own time. A job looks for due sources every 15 minutes |
+| Background jobs | Fetching and processing run as jobs on a job queue, behind a port. Version 1's adapter is pg-boss, on queues in the same Postgres database. **Later:** a durable workflow engine, by writing one adapter |
+| Failed fetches | Tried again by the job queue five times with a doubling wait, starting at 15 minutes. Then the source waits one interval and starts again |
+| Horizon | Experiences are sourced from today to 24 months ahead. An experience that starts later is left out until a later run |
 | Language model | Discovery uses the language model port to find the current calendar file. PDFs are stored whole and read by the language model in processing, so no PDF text is extracted here |
-| Source kinds | Five in version 1: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |
+| Source kinds | Five are defined: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |
+| API kinds | Not built in version 1. There is no API access to Quicket or Ticketmaster. Quicket's events come in through its public pages, as web pages, whose runs are complete |
+| Pages that need a browser | Read with the agent-browser CLI and loaded as captured pages. A headless browser inside the web page adapter is for the next version |
+| What a location covers | A location has a centre and no radius. Extraction keeps experiences in the location and in the district around it, within about an hour by road (roughly 60 km), as an instruction to the language model. Half an hour, the first figure, made the model leave out Kleinmond, Betty's Bay, Pringle Bay and Gansbaai, which the coverage in [sources.md](sources.md) includes |
+| Recurring experiences with no feed | They come in from the organisers' own pages and the pages a browser scrape captures. A research source, where a language model researches the location on the web, is for the next version |
+| Last verified | Not in version 1. Discovery knows when each listing was last seen, and Catalogue is not told. Stamping last verified on source links is for the next version |
+| Fingerprint of a web page | Taken from its visible text, its structured data and its map links, without the site's navigation, sidebars and footer outside the page's main part, articles and sections, so tokens, timestamps, adverts and the lists a site's frame changes on every fetch do not make every fetch look like a change. The language model is still given the frame. When ten pages or more of a source are fetched in one run, the lines every one of them shows are left out too. Entities in structured data are decoded, and a calendar file is read without DTSTAMP and with its events in a fixed order. A captured page's fingerprint leaves out its address and the time it was read |
 | Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
 | Raw listing | One version of a listing's content, whole as fetched. Saved only when the listing is new or changed |
 | Adapters | Behind one port, the fetch port. Adapters fetch; Discovery saves; Data processing extracts |
@@ -257,8 +323,4 @@ Catalogue calls neither, so the dependencies have no cycles.
 
 ## Open questions
 
-- [ ] The location has only a centre point, but the sources cover Hermanus and the wider Overstrand (Stanford, Gansbaai, Kleinmond). Does a location need a radius for adapters to filter by?
-- [ ] Many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where a language model researches the location on the web (see Language model in Discovery).
-- [ ] Quicket's runs are incremental and only complete runs count as a miss, so a listing Quicket removes is never noticed, and an unchanged Quicket listing is never verified again. Does the Quicket adapter also make a complete run at some interval?
-- [ ] A planner checking back wants to know an experience was verified recently. Discovery knows when each listing was last seen, but an unchanged listing is not processed, so Catalogue never hears of it. *Proposed:* after each run, Discovery tells the Catalogue service which listings it saw, and Catalogue stamps last verified on their source links.
-- [ ] A web page's HTML can differ on every fetch (tokens, timestamps, adverts), so its fingerprint always differs and every run processes it again. Is the fingerprint taken from the page's visible text instead?
+None. The working list is in [issues.md](issues.md).

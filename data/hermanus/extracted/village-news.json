@@ -1,0 +1,1859 @@
+[
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1780",
+    "url": "https://www.thevillagenews.co.za/whats-on/the-metropolitan-opera-carmen-bizet-encore-at-road-house-cinema-whale-coast/",
+    "rawFile": "raw/village-news/the-metropolitan-opera-carmen-bizet-encore-at-road-house-cinema-whale-.txt",
+    "fetchedAt": "2026-11-23T14:13:48Z",
+    "title": "The Met Opera: Carmen (Bizet) Encore",
+    "summary": "EXPERIENCE CARMEN ON THE BIG SCREEN! An unforgettable tale of passion, obsession and betrayal awaits!",
+    "description": "EXPERIENCE CARMEN ON THE BIG SCREEN!\nAn unforgettable tale of passion, obsession and betrayal awaits! Experience Bizet’s iconic opera, Carmen, in this spectacular Met Opera production, featuring mezzo-soprano Clémentine Margaine and tenor Roberto Alagna.\nRoad House Cinema Whale Coast\n\n23 November – ONE DAY ONLY!\n\nTwo shows: 12:30 PM & 6:00 PM\nTwo showtimes. One extraordinary opera. Don’t miss your chance to experience the magic of the Met Opera on the big screen!\nBook your tickets now!",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-23",
+        "precision": "day",
+        "startTime": "12:30"
+      },
+      {
+        "start": "2026-11-23",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema",
+      "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 175,
+      "max": 175,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-carmen-bizet-encore",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/the-metropolitan-opera-carmen-bizet-encore-at-road-house-cinema-whale-coast-1780.jpg",
+    "hints": [
+      "Music",
+      "R175.00"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "film",
+        "music"
+      ],
+      "format": "screening",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "opera"
+    ],
+    "profile": "A one-day big-screen showing of the Met Opera's Carmen, with Clémentine Margaine and Roberto Alagna, at Road House Cinema Whale Coast, at 12:30 and 18:00. Visitors watch Bizet's opera in the cinema. It suits opera lovers."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1577",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-hacking-group-8/",
+    "rawFile": "raw/village-news/hermanus-hacking-group.txt",
+    "fetchedAt": "2026-11-23T14:13:53Z",
+    "title": "Hermanus Hacking Group",
+    "summary": "Every Monday. Volunteers are encouraged to join HHG to help clear alien vegetation.",
+    "description": "Every Monday. Volunteers are encouraged to join HHG to help clear alien vegetation. All tools are provided. Details via Quentin Southey.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=MO",
+      "start": "2026-11-23",
+      "startTime": "14:00",
+      "endTime": "17:00"
+    },
+    "venue": {
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "community_and_causes",
+        "nature_and_wildlife"
+      ],
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Every Monday afternoon the Hermanus Hacking Group meets to clear alien vegetation, with all tools provided and the location given on contact. Volunteers spend three hours on conservation work. It suits visitors who want to help the local environment."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1589",
+    "url": "https://www.thevillagenews.co.za/whats-on/whalers-social-run-8/",
+    "rawFile": "raw/village-news/whalers-social-run.txt",
+    "fetchedAt": "2026-11-23T14:13:57Z",
+    "title": "Whalers Social Run",
+    "summary": "Every Tuesday. Join the Whalers Athletic Club for its weekly 10km social run in Onrus, where the pace is easy and the gees is high.",
+    "description": "Every Tuesday. Join the Whalers Athletic Club for its weekly 10km social run in Onrus, where the pace is easy and the gees is high. Meet new friends, boost your energy and enjoy the good vibes!",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=TU",
+      "start": "2026-11-24",
+      "startTime": "17:00"
+    },
+    "venue": {
+      "name": "Onrus Beach",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "sport"
+      ],
+      "format": "race",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "road-running"
+    ],
+    "profile": "The Whalers Athletic Club's weekly 10 km social run in Onrus every Tuesday, meeting at the Onrus Beach parking area at 17:00 for 17:15. Runners go at an easy pace and meet new people. It suits runners visiting the area."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1610",
+    "url": "https://www.thevillagenews.co.za/whats-on/l2l-wonderful-wednesday-walks-8/",
+    "rawFile": "raw/village-news/l2l-wonderful-wednesday-walks.txt",
+    "fetchedAt": "2026-11-23T14:14:02Z",
+    "title": "L2L Wonderful Wednesday Walks",
+    "summary": "Every Wednesday. Families, including well-behaved dogs on leads, are invited to join the 5km-in-an-hour walk.",
+    "description": "Every Wednesday. Families, including well-behaved dogs on leads, are invited to join the 5km-in-an-hour walk. R20 donation (or more if you wish). Check the Lighthouse2Lighthouse Ladies Facebook or Instagram pages for the starting point. For the L2L walk alternating between Franskraal, Kleinbaai and De Kelders, phone Betsie at 083 395 7565.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=WE",
+      "start": "2026-11-25",
+      "startTime": "06:30"
+    },
+    "venue": {
+      "name": "Hermanus Waterfront",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Every week",
+      "R20 donation"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "outdoor_and_adventure",
+        "community_and_causes"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "hiking"
+    ],
+    "profile": "Every Wednesday at 06:30 the Lighthouse2Lighthouse walkers do a 5 km walk in an hour from the Hermanus Waterfront, for a R20 donation; families and dogs on leads are welcome. Walkers check the group's social pages for the starting point. It suits early risers and families."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1611",
+    "url": "https://www.thevillagenews.co.za/whats-on/stimulus-coffee-and-conversation-group-8/",
+    "rawFile": "raw/village-news/stimulus-coffee-and-conversation-group.txt",
+    "fetchedAt": "2026-11-23T14:14:06Z",
+    "title": "Stimulus Coffee and Conversation Group",
+    "summary": "Every Wednesday. Discuss serious issues with thoughtful people, for fun.",
+    "description": "Every Wednesday. Discuss serious issues with thoughtful people, for fun. All are welcome. For more information, phone Trevor Watkins.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=WE",
+      "start": "2026-11-25",
+      "startTime": "09:30"
+    },
+    "venue": {
+      "name": "Bossa Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "talk",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A weekly Wednesday-morning discussion group at Bossa Restaurant, Hermanus Sports Club, where people discuss serious issues for fun. All are welcome. It suits adults who enjoy conversation and debate."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1619",
+    "url": "https://www.thevillagenews.co.za/whats-on/sourdough-baking-class-8/",
+    "rawFile": "raw/village-news/sourdough-baking-class.txt",
+    "fetchedAt": "2026-11-23T14:14:10Z",
+    "title": "Sourdough Baking Class",
+    "summary": "Every Thursday. Join Biga Bakery’s hands-on class and discover the secrets to creating artisan dough, guided by expert bakers.",
+    "description": "Every Thursday. Join Biga Bakery’s hands-on class and discover the secrets to creating artisan dough, guided by expert bakers. Take home your own bread, a live starter plant and all the ingredients you need. Freshly baked quiche and coffee included. Only five spots at R450pp. Now also on Saturdays at 09:00.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=TH",
+      "start": "2026-11-26",
+      "startTime": "11:00",
+      "endTime": "15:00"
+    },
+    "venue": {
+      "name": "Biga Bakery, 12 Village Lane, Hemel-en-Aarde, Sandbaai",
+      "city": "Sandbaai"
+    },
+    "price": {
+      "min": 450,
+      "max": 450,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "R450"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "food_and_drink",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "class_or_workshop",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Biga Bakery's hands-on sourdough class every Thursday, with only five places at R450 per person. Participants learn to make artisan dough with expert bakers and take home their bread, a live starter and ingredients, with quiche and coffee included. It suits food lovers who want to learn to bake."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1621",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-chess-club-8/",
+    "rawFile": "raw/village-news/hermanus-chess-club.txt",
+    "fetchedAt": "2026-11-23T14:14:18Z",
+    "title": "Hermanus Chess Club",
+    "summary": "Every Thursday. Whether you’re a complete beginner, a casual player or a seasoned strategist, join the Hermanus Chess Club for an afternoon of fun, learning and friendly competition.",
+    "description": "Every Thursday. Whether you’re a complete beginner, a casual player or a seasoned strategist, join the Hermanus Chess Club for an afternoon of fun, learning and friendly competition. Boards and pieces are provided.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=TH",
+      "start": "2026-11-26",
+      "startTime": "16:00",
+      "endTime": "18:00"
+    },
+    "venue": {
+      "name": "Hermanus Brewery",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Hermanus Chess Club meets every Thursday afternoon at Hermanus Brewery, with boards and pieces provided. Beginners, casual players and seasoned players come for games, learning and friendly competition. It suits chess players of any level."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1754",
+    "url": "https://www.thevillagenews.co.za/whats-on/focker-in-law-sneak-peak-premiere-screening-at-road-house-cinema-whale-coast/",
+    "rawFile": "raw/village-news/focker-in-law-sneak-peak-premiere-screening-at-road-house-cinema-whale.txt",
+    "fetchedAt": "2026-11-23T14:14:22Z",
+    "title": "Focker In-Law Premiere Night",
+    "summary": "Get ready for a night of laughs, fun and a little family chaos! Join us at Road House Cinema Whale Coast on 26 November for an exclusive sneak peek screening of Focker-In-Law.",
+    "description": "Get ready for a night of laughs, fun and a little family chaos! Join us at Road House Cinema Whale Coast on 26 November for an exclusive sneak peek screening of Focker-In-Law.\nBring your partner, friends or even the in-laws and enjoy welcome drinks on arrival, courtesy of Walker Bay Estate, home to Birkenhead Brewery, plus loads of exciting prizes up for grabs!\nArrive from 6:30 PM to enjoy a drink, mingle and soak up the atmosphere before the screening kicks off at 8:00 PM. You won’t want to miss this one!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-26",
+        "precision": "day",
+        "startTime": "18:30"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema",
+      "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 120,
+      "max": 120,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/focker-in-law",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/focker-in-law-sneak-peak-premiere-screening-at-road-house-cinema-whale-coast-1754.png",
+    "hints": [
+      "R120.00"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "film"
+      ],
+      "format": "screening",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "comedy",
+      "craft-beer"
+    ],
+    "profile": "A sneak-peek screening of the comedy Focker-In-Law at Road House Cinema Whale Coast, with welcome drinks from Walker Bay Estate, home to Birkenhead Brewery, and prizes. Guests arrive from 18:30 to mingle before the 20:00 screening. It suits couples, friends and families wanting a film night out."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1626",
+    "url": "https://www.thevillagenews.co.za/whats-on/bhuki-cafe-8/",
+    "rawFile": "raw/village-news/bhuki-cafe.txt",
+    "fetchedAt": "2026-11-23T14:14:26Z",
+    "title": "Bhuki Café",
+    "summary": "Every Friday. Hook up with old friends to reminisce – and find new ones – at Bhuki Café.",
+    "description": "Every Friday. Hook up with old friends to reminisce – and find new ones – at Bhuki Café. Tea or coffee with two sweet or savoury treats for only R35. Proceeds help buy new books for the library.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "09:00",
+      "endTime": "11:00"
+    },
+    "venue": {
+      "name": "Hermanus Library",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 35,
+      "max": 35,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "R35"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "community_and_causes",
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "books",
+      "charity"
+    ],
+    "profile": "Bhuki Café at Hermanus Library every Friday morning: tea or coffee with two sweet or savoury treats for R35, with proceeds buying new books for the library. Visitors meet old friends and new ones over tea. It suits anyone wanting a relaxed morning cuppa for a good cause."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1627",
+    "url": "https://www.thevillagenews.co.za/whats-on/friday-morning-market-8/",
+    "rawFile": "raw/village-news/friday-morning-market.txt",
+    "fetchedAt": "2026-11-23T14:14:30Z",
+    "title": "Friday Morning Market",
+    "summary": "Every Friday. Hosted by Gansbaai NG Kerk, this fun-filled market offers freshly home-baked goodies – from jams to cookies and much more.",
+    "description": "Every Friday. Hosted by Gansbaai NG Kerk, this fun-filled market offers freshly home-baked goodies – from jams to cookies and much more.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "09:00",
+      "endTime": "11:30"
+    },
+    "venue": {
+      "name": "Pretorius Hall",
+      "city": "Gansbaai"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A Friday-morning market hosted by Gansbaai NG Kerk at Pretorius Hall, selling freshly home-baked goods from jams to cookies. Visitors browse and buy baked treats. It suits anyone looking for home baking."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1628",
+    "url": "https://www.thevillagenews.co.za/whats-on/cupcake-and-tea-garden-8/",
+    "rawFile": "raw/village-news/cupcake-and-tea-garden.txt",
+    "fetchedAt": "2026-11-23T14:14:34Z",
+    "title": "Cupcake and Tea Garden",
+    "summary": "Every Friday. The Onrus NG Kerk Tea Garden is open every Friday.",
+    "description": "Every Friday. The Onrus NG Kerk Tea Garden is open every Friday. Enjoy delicious nibbles and treats, tea and coffee. For more information, phone Siska at 082 762 2732.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "10:00",
+      "endTime": "12:00"
+    },
+    "venue": {
+      "name": "55 Berg St, Onrus",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "attraction",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Onrus NG Kerk tea garden at 55 Berg Street opens every Friday morning with nibbles, treats, tea and coffee. Visitors stop in for a cup and something sweet. It suits anyone wanting a quiet morning tea."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1629",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-duplicate-bridge-club-8/",
+    "rawFile": "raw/village-news/hermanus-duplicate-bridge-club.txt",
+    "fetchedAt": "2026-11-23T14:14:38Z",
+    "title": "Hermanus Duplicate Bridge Club",
+    "summary": "Every Friday. Take a partner for an enjoyable afternoon of duplicate bridge.",
+    "description": "Every Friday. Take a partner for an enjoyable afternoon of duplicate bridge. Also on Mondays and Wednesdays in Fernkloof Hall. For information, phone the secretary, Neil Archibald, at 081 092 4868.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "12:50"
+    },
+    "venue": {
+      "name": "De Wet Hall",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "match_or_tournament",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Hermanus Duplicate Bridge Club plays duplicate bridge every Friday afternoon at De Wet Hall in Onrus, and also on Mondays and Wednesdays in Fernkloof Hall. Players bring a partner for an afternoon of bridge. It suits bridge players visiting the area."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1629",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-duplicate-bridge-club-8/",
+    "rawFile": "raw/village-news/hermanus-duplicate-bridge-club.txt",
+    "fetchedAt": "2026-11-23T14:14:38Z",
+    "title": "Hermanus Duplicate Bridge Club",
+    "summary": "Duplicate bridge on Mondays and Wednesdays in Fernkloof Hall.",
+    "description": "Every Friday. Take a partner for an enjoyable afternoon of duplicate bridge. Also on Mondays and Wednesdays in Fernkloof Hall. For information, phone the secretary, Neil Archibald, at 081 092 4868.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=MO,WE",
+      "start": "2026-11-25"
+    },
+    "venue": {
+      "name": "Fernkloof Hall",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "match_or_tournament",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Hermanus Duplicate Bridge Club also plays duplicate bridge on Mondays and Wednesdays in Fernkloof Hall, besides its Friday afternoons at De Wet Hall in Onrus. Players bring a partner. It suits bridge players visiting the area."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1223",
+    "url": "https://www.thevillagenews.co.za/whats-on/stanford-sunset-market-2/",
+    "rawFile": "raw/village-news/stanford-sunset-market.txt",
+    "fetchedAt": "2026-11-23T14:14:42Z",
+    "title": "Stanford Sunset Market",
+    "summary": "Every last Friday of the month. Celebrate the best of Stanford – food, drink, deli products, gifts, music and people – on the Village Green, every last Friday of the month.",
+    "description": "Every last Friday of the month. Celebrate the best of Stanford – food, drink, deli products, gifts, music and people – on the Village Green, every last Friday of the month. Free entry and plenty of free parking. Dogs on leashes welcome.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=-1FR",
+      "start": "2026-11-27",
+      "startTime": "18:00",
+      "endTime": "20:00"
+    },
+    "venue": {
+      "name": "Stanford Village Green",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every month",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Stanford Sunset Market on the Village Green on the last Friday of every month, with food, drink, deli products, gifts and music. Entry and parking are free and dogs on leashes are welcome. It suits families and visitors wanting an evening market."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1637",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-parkrun-8/",
+    "rawFile": "raw/village-news/hermanus-parkrun.txt",
+    "fetchedAt": "2026-11-23T14:14:47Z",
+    "title": "Hermanus parkrun",
+    "summary": "Every Saturday. Run, jog or walk 5km in the picturesque Hemel-en-Aarde Valley.",
+    "description": "Every Saturday. Run, jog or walk 5km in the picturesque Hemel-en-Aarde Valley. You will receive a barcode to take for weekly scanning. No charge. One dog per person on a short lead is allowed. A stop/go system is in place before the turn-off to Camphill Road, so allow for this delay.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00"
+    },
+    "venue": {
+      "name": "Camphill Road, Hemel-en-Aarde",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "road-running"
+    ],
+    "profile": "Hermanus parkrun is a free 5 km run, jog or walk every Saturday at 08:00 in the Hemel-en-Aarde Valley; one dog per person on a short lead is allowed. Participants register once with parkrun and scan their barcode each week. It suits runners and walkers of any level."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1638",
+    "url": "https://www.thevillagenews.co.za/whats-on/benguela-cove-parkrun-8/",
+    "rawFile": "raw/village-news/benguela-cove-parkrun.txt",
+    "fetchedAt": "2026-11-23T14:14:51Z",
+    "title": "Benguela Cove parkrun",
+    "summary": "Every Saturday. Weekly 5km parkrun (or walk) to rejuvenate the muscles.",
+    "description": "Every Saturday. Weekly 5km parkrun (or walk) to rejuvenate the muscles. No charge. You only register once, regardless of how many different events you take part in.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00"
+    },
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Benguela Cove parkrun is a free weekly 5 km run or walk every Saturday at 08:00. Participants register once with parkrun and can take part at any parkrun. It suits runners and walkers of any level."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1622",
+    "url": "https://www.thevillagenews.co.za/whats-on/christmas-pop-up-and-gift-stall/",
+    "rawFile": "raw/village-news/christmas-pop-up-and-gift-stall.txt",
+    "fetchedAt": "2026-11-23T14:14:55Z",
+    "title": "Christmas Pop-up and Gift Stall",
+    "summary": "We are hosting a Christmas Pop-Up & Gift Stall at the church on the 28th November, 2026. Selling a variety of delicious treats, proudly showing of our exhibition of exquisite needlework, woodwork, and arts and craft, and offer a quiet reading corner where you are invited to join other book lovers.",
+    "description": "We are hosting a Christmas Pop-Up & Gift Stall at the church on the 28th November, 2026.\n\nSelling a variety of delicious treats, proudly showing of our exhibition of exquisite needlework, woodwork, and arts and craft, and offer a quiet reading corner where you are invited to join other book lovers. The morning include a “Cake Bake-off” competition, and everyone is welcome to participate.\n\nWe kindly extend a warm invitation to our community and visitors to join us for a Celebration of delicious treats, creativity, craftsmanship and community fun.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "09:00",
+        "endTime": "14:00"
+      }
+    ],
+    "venue": {
+      "name": "The Anglican Chapel of St Francis of Assisi, Betty's Bay",
+      "city": "Betty's Bay"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/christmas-pop-up-and-gift-stall-1622.jpg",
+    "hints": [
+      "Family",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "holidays_and_celebrations",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "craft",
+      "books"
+    ],
+    "profile": "A Christmas pop-up and gift stall at the Anglican Chapel of St Francis of Assisi in Betty's Bay, with treats, an exhibition of needlework, woodwork and arts and crafts, a reading corner and a cake bake-off anyone can enter. Visitors shop for gifts and join the morning's community fun. It suits locals and visitors alike."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1639",
+    "url": "https://www.thevillagenews.co.za/whats-on/lemms-corner-market-8/",
+    "rawFile": "raw/village-news/lemms-corner-market.txt",
+    "fetchedAt": "2026-11-23T14:15:00Z",
+    "title": "Lemm’s Corner Market",
+    "summary": "Every Saturday. Antiques, vintage and retro items, certified organic vegetables, flowers, candles, pottery, jewellery and more.",
+    "description": "Every Saturday. Antiques, vintage and retro items, certified organic vegetables, flowers, candles, pottery, jewellery and more. Also open during the First Fridays Art Walk from 16:00 until dark. Weather dependent. Stalls available for bakers and creatives: WhatsApp Elmine on 082 854 7491.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Lemm’s Corner",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle",
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "antiques",
+      "ceramics"
+    ],
+    "profile": "Lemm's Corner Market in Hermanus every Saturday, weather permitting, with antiques, vintage and retro items, organic vegetables, flowers, candles, pottery and jewellery; it also opens during the First Fridays Art Walk. Visitors browse the stalls in the town centre. It suits bargain hunters and vintage lovers."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1640",
+    "url": "https://www.thevillagenews.co.za/whats-on/junktique-market-8/",
+    "rawFile": "raw/village-news/junktique-market.txt",
+    "fetchedAt": "2026-11-23T14:15:06Z",
+    "title": "Junktique Market",
+    "summary": "Every Saturday. One man’s junk is another man’s treasure.",
+    "description": "Every Saturday. One man’s junk is another man’s treasure. Pop in and give new life to previously loved items. Treats and nibbles available. R50 per stall: to book, phone 028 341 8516.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "12:00"
+    },
+    "venue": {
+      "name": "Stanford Tourism Office Courtyard",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "antiques"
+    ],
+    "profile": "The Junktique Market in the Stanford Tourism Office courtyard every Saturday morning sells previously loved items, with treats and nibbles. Visitors hunt for second-hand treasures. It suits bargain hunters."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1641",
+    "url": "https://www.thevillagenews.co.za/whats-on/the-gansbaai-market-8/",
+    "rawFile": "raw/village-news/the-gansbaai-market.txt",
+    "fetchedAt": "2026-11-23T14:15:11Z",
+    "title": "The Gansbaai Market",
+    "summary": "Every Saturday. Enjoy fresh produce, home-baked foods, refreshments, crafts and entertainment at this popular ‘kuierplek’.",
+    "description": "Every Saturday. Enjoy fresh produce, home-baked foods, refreshments, crafts and entertainment at this popular ‘kuierplek’. Phone 028 384 8325 or email Glenda.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "13:00"
+    },
+    "venue": {
+      "name": "Kapokblom Street, opposite Gansbaai Tourism",
+      "city": "Gansbaai"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "The Gansbaai Market on Kapokblom Street, opposite Gansbaai Tourism, every Saturday morning, with fresh produce, home-baked foods, refreshments, crafts and entertainment. Visitors shop and linger at this popular meeting place. It suits families and market lovers."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1642",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-country-market-9/",
+    "rawFile": "raw/village-news/hermanus-country-market.txt",
+    "fetchedAt": "2026-11-23T14:15:15Z",
+    "title": "Hermanus Country Market",
+    "summary": "Every Saturday. A favoured chill zone, with fresh, organic produce; wholesome foods; homemade delicacies; arts and crafts; plants and flowers; beer and wine; coffee; and live music.",
+    "description": "Every Saturday. A favoured chill zone, with fresh, organic produce; wholesome foods; homemade delicacies; arts and crafts; plants and flowers; beer and wine; coffee; and live music.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Hermanus Cricket Club",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "music"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft",
+      "wine",
+      "craft-beer"
+    ],
+    "profile": "The Hermanus Country Market next to the Hermanus Cricket Field every Saturday, with organic produce, wholesome food, homemade delicacies, arts and crafts, plants, beer, wine, coffee and live music. Visitors shop, eat and relax. It suits families and anyone who likes a country market."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1643",
+    "url": "https://www.thevillagenews.co.za/whats-on/stanford-square-market-8/",
+    "rawFile": "raw/village-news/stanford-square-market.txt",
+    "fetchedAt": "2026-11-23T14:15:19Z",
+    "title": "Stanford Square Market",
+    "summary": "Every Saturday. Experience country life at this down-to-earth, family-friendly market every Saturday.",
+    "description": "Every Saturday. Experience country life at this down-to-earth, family-friendly market every Saturday. Meet the makers, creators and entrepreneurs offering a range of local foods and crafts.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Stanford Village Green",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "A family-friendly market on Stanford Village Square every Saturday, where makers, creators and entrepreneurs sell local food and crafts. Visitors meet the makers and experience country life. It suits families."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1644",
+    "url": "https://www.thevillagenews.co.za/whats-on/your-local-market-11/",
+    "rawFile": "raw/village-news/your-local-market.txt",
+    "fetchedAt": "2026-11-23T14:15:23Z",
+    "title": "Your Local Market",
+    "summary": "Every Saturday. Support local for good food, good finds and good times: delicious eats and freshly baked treats, organic fruit, veggies and herbs, arts and crafts, books, toys and home decor, antiques and pre-loved clothing.",
+    "description": "Every Saturday. Support local for good food, good finds and good times: delicious eats and freshly baked treats, organic fruit, veggies and herbs, arts and crafts, books, toys and home decor, antiques and pre-loved clothing. Furfriends on a leash are welcome.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "13:00"
+    },
+    "venue": {
+      "name": "De Wet Hall",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "antiques",
+      "craft",
+      "books"
+    ],
+    "profile": "Your Local Market at De Wet Hall in Onrus every Saturday morning, with food, baked treats, organic produce, arts and crafts, books, toys, décor, antiques and pre-loved clothing; dogs on leashes are welcome. Visitors browse and support local sellers. It suits families and bargain hunters."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1216",
+    "url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1216",
+    "rawFile": "raw/village-news/rosoberry-harvest-fest-2026.txt",
+    "fetchedAt": "2026-11-23T14:16:48Z",
+    "title": "Rosoberry Harvest Fest",
+    "summary": "Celebrate berry season at Rosoberry Harvest Fest with pick-your-own berries, live music, delicious local food, wine, craft beer, coffee, ice cream and family fun. Hosted by Rosoberry Nursery on Hermanus River Farm, this relaxed summer festival celebrates peak berry season, with strawberries, blackberries, youngberries, blueberries, raspberries and pepinos to enjoy straight from the bushes.",
+    "description": "Celebrate berry season at Rosoberry Harvest Fest with pick-your-own berries, live music, delicious local food, wine, craft beer, coffee, ice cream and family fun. Hosted by Rosoberry Nursery on Hermanus River Farm, this relaxed summer festival celebrates peak berry season, with strawberries, blackberries, youngberries, blueberries, raspberries and pepinos to enjoy straight from the bushes. Your ticket includes a punnet to take home, plus an empty punnet for picking and tasting berries throughout the day. Discover local vendors serving grass-fed beef boeries, brisket bowls, poke bowls, Belgian ales and local wines. Enjoy tractor rides, face painting, lawn games, nursery plants and fresh farm produce, or take a scenic 2.5km walk to the waterfall. Bring a picnic blanket and enjoy a summer day on the farm!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "17:00"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus River Farm",
+      "city": "Kleinmond"
+    },
+    "price": {
+      "min": 70,
+      "max": 200,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rosoberry-harvest-fest-2026-1216.png",
+    "hints": [
+      "Markets",
+      "R200 adults · R70 children u/12"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "food_and_drink",
+        "music",
+        "outdoor_and_adventure"
+      ],
+      "format": "festival",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "harvest",
+      "wine",
+      "craft-beer",
+      "hiking"
+    ],
+    "profile": "Rosoberry Harvest Fest at Hermanus River Farm celebrates berry season with pick-your-own berries, live music, local food, wine, craft beer, coffee and ice cream. Visitors pick berries, walk 2.5 km to a waterfall, and children enjoy tractor rides, face painting and lawn games. It suits families wanting a summer day on a farm."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1778",
+    "url": "https://www.thevillagenews.co.za/whats-on/the-cat-in-the-hat-3d-pre-release-screening-at-whale-coast-mall/",
+    "rawFile": "raw/village-news/the-cat-in-the-hat-3d-pre-release-screening-at-whale-coast-mall.txt",
+    "fetchedAt": "2026-11-23T14:15:39Z",
+    "title": "The Cat in the Hat (3D) Pre-release Screening",
+    "summary": "BE THE FIRST TO SEE THE CAT IN THE HAT! One day only!",
+    "description": "BE THE FIRST TO SEE THE CAT IN THE HAT!\nOne day only! Join us at Road House Cinema Whale Coast Mall on 28 November for an exclusive 3D pre-release screening of The Cat in the Hat!\nMiss it, and you’ll have to wait with the rest of the world until the official release on 4 December.\nDon’t wait around – book your tickets now and be first in line for the fun!\nONE DAY ONLY. ONE SHOW ONLY. ONE VERY MISCHIEVOUS CAT.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "13:00",
+        "endTime": "15:00"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema",
+      "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 109,
+      "max": 129,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/the-cat-in-the-hat-3d",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/the-cat-in-the-hat-3d-pre-release-screening-at-whale-coast-mall-1778.png",
+    "hints": [
+      "Family",
+      "3D Adults - R129.00 · 3D Kids (under 10) -R109.00 · 3D Seniors - R109.00"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "film"
+      ],
+      "format": "screening",
+      "audience": "family",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A one-day 3D pre-release screening of The Cat in the Hat at Road House Cinema Whale Coast Mall, ahead of its official release on 4 December. Families watch the film on one show only. It suits families with children."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1645",
+    "url": "https://www.thevillagenews.co.za/whats-on/panthera-africa-sunset-visits-8/",
+    "rawFile": "raw/village-news/panthera-africa-sunset-visits.txt",
+    "fetchedAt": "2026-11-23T14:15:42Z",
+    "title": "Panthera Africa Sunset Visits",
+    "summary": "Every Saturday. Enjoy an evening with loved ones as the sun sets and the cats come alive after a long day of rest.",
+    "description": "Every Saturday. Enjoy an evening with loved ones as the sun sets and the cats come alive after a long day of rest. Only 25 places available. Pre-bookings only, at R490 pp (no under-13s).",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "17:00"
+    },
+    "venue": {
+      "name": "Panthera Africa Big Cat Sanctuary (near Stanford)",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 490,
+      "max": 490,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "R490"
+    ],
+    "attributes": {
+      "tier": "premium",
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "tour_or_excursion",
+      "minimum_age": 13,
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [],
+    "profile": "Saturday sunset visits at Panthera Africa Big Cat Sanctuary near Stanford, when the cats become active after a day's rest. Only 25 places, pre-booked at R490 per person, with no under-13s. It suits adults and teenagers interested in big cats."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1769",
+    "url": "https://www.thevillagenews.co.za/whats-on/alan-committie-av-a-laugh-ta/",
+    "rawFile": "raw/village-news/alan-committie-av-a-laugh-ta.txt",
+    "fetchedAt": "2026-11-23T14:15:46Z",
+    "title": "Alan Committie: AV-A-LAUGH-TA",
+    "summary": "It’s been a year, right? If you, like me, could really do with some belly laughs to slide into 2027 on the right foot, look no further than Alan Committie’s brand-new show, which goes curtains-up at Road House Cinema in Whale Coast Mall.",
+    "description": "It’s been a year, right?\nIf you, like me, could really do with some belly laughs to slide into 2027 on the right foot, look no further than Alan Committie’s brand-new show, which goes curtains-up at Road House Cinema in Whale Coast Mall.\nAlan Committie is blasting into the festive season with A-VA-LAUGH-TA. True to form, audiences can expect a high-energy, stand-up special designed to banish the blues with interstellar wordplay, physical comedy, and Committie’s trademark take-downs of the crowd, as this award-winning comic tries to make sense of a year where everything feels a bit… alien.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-28",
+        "precision": "day",
+        "startTime": "19:30",
+        "endTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "Road House Cinema",
+      "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 180,
+      "max": 180,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/alan-c-av-a-laugh-ta",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/alan-committie-av-a-laugh-ta-1769.jpg",
+    "hints": [
+      "R180.00"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "performing_arts"
+      ],
+      "format": "performance",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "comedy"
+    ],
+    "profile": "Alan Committie's new stand-up show AV-A-LAUGH-TA at Road House Cinema in Whale Coast Mall, with wordplay, physical comedy and crowd take-downs. Audiences spend an evening laughing. It suits comedy fans."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1750",
+    "url": "https://www.thevillagenews.co.za/whats-on/homeschool-entrepreneurs-market/",
+    "rawFile": "raw/village-news/homeschool-entrepreneurs-market.txt",
+    "fetchedAt": "2026-11-23T14:15:50Z",
+    "title": "Homeschool entrepreneurs market",
+    "summary": "This is a fun opportunity for Homeschoolers to sell their creative products to the public! This is an event only for Homeschoolers but the public is welcome to visit and support!",
+    "description": "This is a fun opportunity for Homeschoolers to sell their creative products to the public! This is an event only for Homeschoolers but the public is welcome to visit and support!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-02",
+        "precision": "day",
+        "startTime": "09:00",
+        "endTime": "13:00"
+      }
+    ],
+    "venue": {
+      "name": "De Wet Hall",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/homeschool-entrepreneurs-market-1750-e1794890437941.jpg",
+    "hints": [
+      "Markets",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "family",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "A market at De Wet Hall in Onrus where homeschoolers sell their own creative products to the public. Visitors browse and support the young sellers. It suits families."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1999",
+    "url": "https://www.thevillagenews.co.za/whats-on/jingle-bell-rock-at-hermanus-golf-club/",
+    "rawFile": "raw/village-news/jingle-bell-rock-at-hermanus-golf-club.txt",
+    "fetchedAt": "2026-11-23T14:15:54Z",
+    "title": "Jingle Bell Rock with The Family Band",
+    "summary": "🎄🔴𝐅𝐞𝐬𝐭𝐢𝐯𝐞 𝐅𝐮𝐧 𝐟𝐨𝐫 𝐭𝐡𝐞 𝐰𝐡𝐨𝐥𝐞 𝐟𝐚𝐦𝐢𝐥𝐲‼️🎄🎄🎄\n🎄Catch Jingle Bell Rock with The Family Band on 3 December at Hermanus Golf Club\nJingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season. Featuring a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists 🎤🎹🎸🥁🎼🎸🎺🎷",
+    "description": "🎄🔴𝐅𝐞𝐬𝐭𝐢𝐯𝐞 𝐅𝐮𝐧 𝐟𝐨𝐫 𝐭𝐡𝐞 𝐰𝐡𝐨𝐥𝐞 𝐟𝐚𝐦𝐢𝐥𝐲‼️🎄🎄🎄\n🎄Catch Jingle Bell Rock with The Family Band on 3 December at Hermanus Golf Club\nJingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.\nFeaturing a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists 🎤🎹🎸🥁🎼🎸🎺🎷",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-03",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "22:00"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 350,
+      "max": 350,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://qkt.io/NYyjL7",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/jingle-bell-rock-at-hermanus-golf-club-1999.jpg",
+    "hints": [
+      "Music",
+      "R350"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music",
+        "holidays_and_celebrations"
+      ],
+      "format": "performance",
+      "audience": "family",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "cabaret"
+    ],
+    "profile": "Jingle Bell Rock is a Christmas variety show with The Family Band, an 8-piece live band playing Christmas hits and classics, at Hermanus Golf Club. Audiences sing, dance and celebrate the season. It suits families wanting festive fun."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1413",
+    "url": "https://www.thevillagenews.co.za/whats-on/first-fridays-art-walk-3/",
+    "rawFile": "raw/village-news/first-fridays-art-walk.txt",
+    "fetchedAt": "2026-11-23T14:15:58Z",
+    "title": "Hermanus First Friday Art Walk",
+    "summary": "Every first Friday of the month. Join the 23 art galleries in the Hermanus CBD for an evening art walk, every first Friday of the month, when all the galleries stay open late.",
+    "description": "Every first Friday of the month. Join the 23 art galleries in the Hermanus CBD for an evening art walk, every first Friday of the month, when all the galleries stay open late. Maps at all participating galleries: paintings, sculptures, ceramics, jewellery and photography.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1FR",
+      "start": "2026-12-04",
+      "startTime": "17:00",
+      "endTime": "20:00"
+    },
+    "venue": {
+      "name": "Hermanus CBD",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every month",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "visual_arts"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "painting",
+      "sculpture",
+      "ceramics",
+      "photography"
+    ],
+    "profile": "On the first Friday of every month the 23 art galleries in the Hermanus CBD stay open late for an evening art walk. Visitors collect a map at any gallery and walk between galleries showing paintings, sculpture, ceramics, jewellery and photography. It suits art lovers."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1475",
+    "url": "https://www.thevillagenews.co.za/whats-on/the-4th-annual-most-influential-icons-gala-dinner/",
+    "rawFile": "raw/village-news/the-4th-annual-most-influential-icons-gala-dinner.txt",
+    "fetchedAt": "2026-11-23T14:16:03Z",
+    "title": "Most Influential Icons Gala Dinner",
+    "summary": "Most Influential Icons Gala (MIIGD) is an annual celebration that honours individuals and organisations whose leadership, service, innovation, and dedication have made a meaningful impact within their communities and beyond. The gala recognises icons from diverse sectors, including business, education, arts and culture, community development, youth empowerment, sports, health, and public service.",
+    "description": "Most Influential Icons Gala (MIIGD) is an annual celebration that honours individuals and organisations whose leadership, service, innovation, and dedication have made a meaningful impact within their communities and beyond. The gala recognises icons from diverse sectors, including business, education, arts and culture, community development, youth empowerment, sports, health, and public service.\nMore than an awards event, the Most Influential Icons Gala is a platform for inspiration, networking, and collaboration. Through keynote addresses, powerful performances, and the recognition of outstanding changemakers, the evening encourages others to lead with purpose.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "17:00",
+        "endTime": "21:30"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Municipal Auditorium",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 370,
+      "max": 370,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/the-4th-annual-most-influential-icons-gala-dinner-1475.jpg",
+    "hints": [
+      "R370"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "community_and_causes"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Most Influential Icons Gala Dinner at the Municipal Auditorium honours people and organisations who have made an impact in their communities, with keynote addresses, performances and awards. Guests attend an evening of recognition and networking. It suits adults attending community gala events."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1444",
+    "url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1444",
+    "rawFile": "raw/village-news/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club.txt",
+    "fetchedAt": "2026-11-23T14:16:48Z",
+    "title": "Creedence - A Clearwater Revival",
+    "summary": "A tribute show to CCR at Hermanus Golf Club. Your ticket is for the show; dinner will be ordered from an a la carte menu.",
+    "description": "Read what audiences are saying…🎸🎵🎤🎹🥁🎶\n🔴5* “Just absolutely incredible. My husband and I are huge CCR fans. If I closed my eyes, that was John Fogerty singing and playing (and we’ve seen him live.) All 4 musicians gave a brilliant performance.”\n🟠5* “It was the best rock band I have seen in a very long time. They captured CCR excellently! Thank you so much!”\n🔴5* “Excellent show. Band were very professional and the music was as wonderful as we expected from CCR. one of the best shows we have enjoyed.”\n🔴5* “What an amazing evening we experienced at the CCR show. ”\n🟠5* “Thoroughly enjoyed the performance. All 4 members of the band are great musicians!”\nYour ticket is for the show. Dinner will be ordered from an a la carte menu. Full bar service available.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-04",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "22:30"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 350,
+      "max": 350,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club-1444.jpg",
+    "hints": [
+      "Music",
+      "R350 for the show, dinner from a la carte menu"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "cabaret",
+      "rock-and-pop"
+    ],
+    "profile": "Creedence – A Clearwater Revival, a four-piece tribute to CCR, plays at Hermanus Golf Club. The ticket is for the show, with dinner from an à la carte menu and a full bar. It suits fans of classic rock."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1975",
+    "url": "https://www.thevillagenews.co.za/whats-on/local-is-lekker-at-the-fabled-table/",
+    "rawFile": "raw/village-news/local-is-lekker-at-the-fabled-table.txt",
+    "fetchedAt": "2026-11-23T14:16:09Z",
+    "title": "Local is Lekker",
+    "summary": "📍 Local is Lekker @ The Fabled Table, La Vierge Hermanus\n\nHemel-en-Aarde Valley Rd\n📅 Saturday 5 December · 12:00 – 17:00\n\n💛 Kiddies welcome! Bring the whole family.",
+    "description": "📍 Local is Lekker @ The Fabled Table, La Vierge Hermanus\n\nHemel-en-Aarde Valley Rd\n📅 Saturday 5 December · 12:00 – 17:00\n\n💛 Kiddies welcome! Bring the whole family.\nSpend a laid-back afternoon among our vineyards on the Hemel-en-Aarde Ridge with freshly made pizza, delicious wine and live music by Edian Barnard. There’s plenty of lawn for little ones to run around while you relax.\nYour R500 ticket for two includes:\n\n• Two pizzas of your choice\n\n• One bottle from our Story Teller range\n\n• Live music by Edian Barnard\n\n• Entry for two guests\nOnly 50 tickets available. Swipe through, then book your spot before they’re gone. 👉",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "17:00"
+      }
+    ],
+    "venue": {
+      "name": "The Fabled Table, La Vierge",
+      "address": "Hemel-en-Aarde Valley Rd (R320), Hermanus, 7200",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 250,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://lavierge.co.za/product/local-is-lekker-at-the-fabled-table-5-december-2026/",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/local-is-lekker-at-the-fabled-table-1975.jpg",
+    "hints": [
+      "Wine & Food",
+      "R500 for two people, kiddies under 12 are free"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "food_and_drink",
+        "music"
+      ],
+      "format": "dining_event",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "Local is Lekker at The Fabled Table at La Vierge is a laid-back afternoon among the vineyards on the Hemel-en-Aarde Ridge with pizza, wine and live music by Edian Barnard. A R500 ticket for two includes two pizzas and a bottle of wine; children under 12 are free and only 50 tickets are available. It suits families and couples."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1426",
+    "url": "https://www.thevillagenews.co.za/whats-on/onrus-markie-2/",
+    "rawFile": "raw/village-news/onrus-markie.txt",
+    "fetchedAt": "2026-11-23T14:16:12Z",
+    "title": "Onrus Markie",
+    "summary": "Every first Saturday of the month. Visit this local-is-lekker community market to stock up on gifts and goodies, every first Saturday of the month: fresh produce, home-baked goods, arts, crafts and more, for over 20 years.",
+    "description": "Every first Saturday of the month. Visit this local-is-lekker community market to stock up on gifts and goodies, every first Saturday of the month: fresh produce, home-baked goods, arts, crafts and more, for over 20 years.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1SA",
+      "start": "2026-12-05",
+      "startTime": "09:00",
+      "endTime": "12:00"
+    },
+    "venue": {
+      "name": "De Wet Hall",
+      "city": "Onrus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every month",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "The Onrus Markie at De Wet Hall on the first Saturday of every month, a community market running for over 20 years with fresh produce, home-baked goods, arts and crafts. Visitors stock up on gifts and goodies. It suits families and market lovers."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1341",
+    "url": "https://www.thevillagenews.co.za/whats-on/nadine-live-in-hermanus/",
+    "rawFile": "raw/village-news/nadine-live-in-hermanus.txt",
+    "fetchedAt": "2026-11-23T14:16:16Z",
+    "title": "Nádine live in Hermanus",
+    "summary": "Music with purpose! Beloved South African singer and television presenter Nádine officially celebrated her 30-year milestone in the music industry.",
+    "description": "Music with purpose! Beloved South African singer and television presenter Nádine officially celebrated her 30-year milestone in the music industry.\n\nShe received the prestigious 30 Year Contribution Honorary Award at the Afri-Indie Music Awards. All proceeds raised on the evening will be gifted to Camphill Farm Community Hermanus.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "19:00",
+        "endTime": "21:00"
+      }
+    ],
+    "venue": {
+      "name": "Curro Hermanus",
+      "city": "Sandbaai"
+    },
+    "price": {
+      "min": 100,
+      "max": 230,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/400158-ndine-live-in-hermanus/?ref=events-list#/",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/nadine-live-in-hermanus-1341.jpg",
+    "hints": [
+      "Music",
+      "R230 per ticket, children under 10 is a R100 per ticket"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music",
+        "community_and_causes"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "charity"
+    ],
+    "profile": "South African singer and TV presenter Nádine, celebrating 30 years in music, performs live at Curro Hermanus, with all proceeds going to Camphill Farm Community Hermanus. Audiences enjoy an evening concert for a cause. It suits fans of Nádine and families."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1433",
+    "url": "https://www.thevillagenews.co.za/whats-on/landskein-cheese-wine-market-2/",
+    "rawFile": "raw/village-news/landskein-cheese-wine-market.txt",
+    "fetchedAt": "2026-11-23T14:16:20Z",
+    "title": "Landskein Cheese & Wine Market",
+    "summary": "Every first Sunday of the month. Every first Sunday of the month: local wines, craft beers, cheeses, baked goods, art and much more.",
+    "description": "Every first Sunday of the month. Every first Sunday of the month: local wines, craft beers, cheeses, baked goods, art and much more. Interested vendors can contact Allen on 028 054 0422 / 076 390 7443.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1SU",
+      "start": "2026-12-06",
+      "startTime": "10:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Landskein",
+      "address": "R43, Stanford",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every month",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine",
+      "craft-beer"
+    ],
+    "profile": "A cheese and wine market at Landskein Wines' amphitheatre near Stanford on the first Sunday of every month, with local wines, craft beers, cheeses, baked goods and art. Visitors taste and shop. It suits food and wine lovers."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1633",
+    "url": "https://www.thevillagenews.co.za/whats-on/ohpadel-december-tournament/",
+    "rawFile": "raw/village-news/ohpadel-december-tournament.txt",
+    "fetchedAt": "2026-11-23T14:16:28Z",
+    "title": "Oh!Padel December Tournament",
+    "summary": "Padel tournament with delicious food available, bring your own alcoholic drinks, all other drinks, ice cream, milkshakes available",
+    "description": "Padel tournament with delicious food available, bring your own alcoholic drinks, all other drinks, ice cream, milkshakes available",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-11",
+        "precision": "day",
+        "startTime": "17:00",
+        "endTime": "21:30"
+      }
+    ],
+    "venue": {
+      "name": "Oh!Padel",
+      "address": "27 Kleine Street, Stanford Industrial",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://app.playtomic.io/tournaments/5ff05cf5-855e-4216-8831-cf1793057c98?utm_source=manager",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/11/ohpadel-december-tournament-1633.jpg",
+    "hints": [
+      "Sport",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "sport"
+      ],
+      "format": "match_or_tournament",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A December padel tournament at Oh!Padel in Stanford, with food, ice cream and milkshakes for sale and bring-your-own alcoholic drinks. Players sign up to compete and spectators can watch. It suits padel players."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1446",
+    "url": "https://www.thevillagenews.co.za/whats-on/rumours-of-fleetwood-mac-at-hermanus-golf-club/",
+    "rawFile": "raw/village-news/rumours-of-fleetwood-mac-at-hermanus-golf-club.txt",
+    "fetchedAt": "2026-11-23T14:16:32Z",
+    "title": "Rumours of Fleetwood Mac",
+    "summary": "Rave reviews from audiences across the Western Cape (since 2021)… 🎤🎹🎸🎵🥁🎶🎸\n🔷”Wow! We loved every moment.",
+    "description": "Rave reviews from audiences across the Western Cape (since 2021)… 🎤🎹🎸🎵🥁🎶🎸\n🔷”Wow! We loved every moment. The show was incredible. Hugely talented musicians, with vocals that were spot on. A performance so faultless, I believe Stevie would have been proud!”\n🔷“This was an epic experience&#8230;.cannot wait to experience it again.”\n🔷”Brilliant show again !! Loved it . If my calculations are correct my 8th time seeing them. Just cant get enough”\n🔷”Absolutely amazing! I had the time of my life! What a fantastic group of musicians and the voice of the lead singer &#8230; incredible! In fact, the entire band was superb!”\n🔷”Excellent harmonies. Well balanced (v good sound engineer). Superb instrumentals. Brilliant vocals. Very professional. Well done !!”",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-11",
+        "precision": "day",
+        "startTime": "18:00",
+        "endTime": "22:30"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Golf Club",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 430,
+      "max": 430,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://qkt.io/v3dqgQ",
+    "imageUrl": "https://www.thevillagenews.co.za/wp-content/uploads/2026/10/rumours-of-fleetwood-mac-at-hermanus-golf-club-1446.png",
+    "hints": [
+      "Music",
+      "R430 for show, dinner from an a la carte menu"
+    ],
+    "attributes": {
+      "tier": "standard",
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "cabaret",
+      "rock-and-pop"
+    ],
+    "profile": "Rumours of Fleetwood Mac, a tribute band with rave reviews since 2021, plays at Hermanus Golf Club. The ticket is for the show, with dinner from an à la carte menu. It suits fans of Fleetwood Mac."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1647",
+    "url": "https://www.thevillagenews.co.za/whats-on/paddavlei-fun-run-walk-3/",
+    "rawFile": "raw/village-news/paddavlei-fun-run-walk.txt",
+    "fetchedAt": "2026-11-23T14:16:36Z",
+    "title": "Paddavlei Fun Run/Walk",
+    "summary": "Every third Saturday of the month. Support the Paddavlei Eco Group in managing, protecting and enhancing the restored wetlands that are part of Hawston’s natural heritage.",
+    "description": "Every third Saturday of the month. Support the Paddavlei Eco Group in managing, protecting and enhancing the restored wetlands that are part of Hawston’s natural heritage. It’s only 5km and double the fun with a friend!",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=3SA",
+      "start": "2026-12-19",
+      "startTime": "08:00"
+    },
+    "venue": {
+      "name": "Paddavlei lawns, Vlei St, Hawston",
+      "city": "Hawston"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every month",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "sport",
+        "nature_and_wildlife",
+        "community_and_causes"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "The Paddavlei fun run or walk, 5 km on the third Saturday of every month from the Paddavlei lawns in Hawston, supports the Paddavlei Eco Group's care of the restored wetlands. Participants run or walk with a friend. It suits families and casual runners."
+  }
+]

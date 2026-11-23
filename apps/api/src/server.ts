@@ -1,12 +1,89 @@
+import { createDb } from "@magic-events/db";
+import { createJobQueue } from "@magic-events/core/adapters/jobs/pg-boss.ts";
+import { createLogger } from "@magic-events/core/adapters/logging/pino.ts";
+import { loadSettings } from "@magic-events/core/adapters/settings/env.ts";
 import { buildApp } from "./app.ts";
-import { env } from "./env.ts";
+import type { Settings } from "@magic-events/core/shared/settings.ts";
+import { startJobs, type RunningJobs } from "./scheduler/jobs.ts";
 
-const app = await buildApp(env);
+// The entry point: settings, logger and database, then the server and, once it is listening, the jobs that fetch
+// the sources that are due and process pending raw listings. Both stop cleanly on SIGINT and SIGTERM.
 
-for (const signal of ["SIGINT", "SIGTERM"] as const) {
-  process.once(signal, () => {
-    void app.close().then(() => process.exit(0));
-  });
+function settingsOrExit(): Settings {
+  try {
+    return loadSettings();
+  } catch (error) {
+    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+    process.exit(1);
+  }
 }
 
-await app.listen({ host: env.API_HOST, port: env.API_PORT });
+const settings = settingsOrExit();
+const logger = createLogger(settings.api);
+const database = createDb(settings.database.url);
+
+try {
+  const { app, services } = await buildApp({ settings, db: database.db, logger });
+  // Empty until the server is listening, which is when the jobs start.
+  const running: { jobs?: RunningJobs } = {};
+
+  let stopping = false;
+  const stop = async (reason: string): Promise<void> => {
+    if (stopping) return;
+    stopping = true;
+    logger.info({ reason }, "Stopping");
+    try {
+      // The jobs first, so the fetch or the raw listing in hand finishes before the database closes.
+      await running.jobs?.stop();
+      await app.close();
+      await database.close();
+      logger.info({}, "Stopped");
+    } catch (error) {
+      logger.error({ err: error }, "Could not stop cleanly");
+      process.exitCode = 1;
+    }
+  };
+  process.once("SIGINT", (signal) => void stop(signal));
+  process.once("SIGTERM", (signal) => void stop(signal));
+
+  await app.listen({ host: settings.api.host, port: settings.api.port });
+  // The settings that are safe to show: no secret, no key and no database address.
+  logger.info(
+    {
+      host: settings.api.host,
+      port: settings.api.port,
+      allowedHosts: settings.api.allowedHosts,
+      trustProxy: settings.api.trustProxy,
+      corsOrigin: settings.api.corsOrigin,
+      logLevel: settings.api.logLevel,
+      rateLimitMax: settings.api.rateLimitMax,
+      rateLimitWindowSeconds: settings.api.rateLimitWindowSeconds,
+      bodyLimitBytes: settings.api.bodyLimitBytes,
+      languageModel: settings.languageModel.anthropicApiKey === undefined ? null : settings.languageModel.model,
+      embeddingModel: settings.embedding.awsRegion === undefined ? null : settings.embedding.model,
+      scheduleCron: settings.discovery.scheduleCron,
+      upkeepCron: settings.catalogue.upkeepCron,
+    },
+    "Server started",
+  );
+  try {
+    running.jobs = await startJobs({
+      queue: createJobQueue({ databaseUrl: settings.database.url, logger }),
+      catalogue: services.catalogue,
+      discovery: services.discovery,
+      dataProcessing: services.dataProcessing,
+      discoverySettings: settings.discovery,
+      processingSettings: settings.processing,
+      catalogueSettings: settings.catalogue,
+      logger,
+    });
+  } catch (error) {
+    logger.fatal({ err: error }, "Could not start the jobs");
+    process.exitCode = 1;
+    await stop("the jobs could not start");
+  }
+} catch (error) {
+  logger.fatal({ err: error }, "Could not start");
+  await database.close();
+  process.exitCode = 1;
+}
