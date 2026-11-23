@@ -23,7 +23,7 @@ Version 1 covers Hermanus and the towns around it. The brief's examples in Johan
 | A travel agent at an agency | Find what is on for a traveller's stay, and check back before booking | REST, or a tool built on it | Agency Planner, `planner@agency.example.com`, tenant Example Travel Agency, key "seed person key" |
 | An AI agent acting for that planner | The same, in conversation with the planner | MCP | The same user, key "seed agent key" |
 | A travel app | Search on behalf of the app's own users | REST from the app's server, or MCP from its assistant | App Planner, `planner@app.example.com`, tenant Example Travel App, keys "seed person key" and "seed agent key" |
-| The system admin | Onboard tenants and their users, issue keys, keep the feed running | REST, MCP and the command line | System Admin, `admin@example.com`, key "seed person key" |
+| The system admin | Onboard tenants and their users, issue and revoke keys, keep the feed running | The command line | System Admin, `admin@example.com`, key "seed person key" for the client endpoints |
 
 The seed prints each key once, when it issues it (`pnpm db:seed`). Keep them for the run. A second agency is onboarded in E2E-31.
 
@@ -36,7 +36,7 @@ The seed prints each key once, when it issues it (`pnpm db:seed`). Keep them for
 - **The server.** `pnpm --filter @magic-events/api start`, on `http://localhost:4000`. The fetching and processing jobs need `ANTHROPIC_API_KEY`, and embedding needs `AWS_REGION` and AWS credentials.
 - **REST.** Search is `POST /v1/experiences/search` and changes are `POST /v1/experiences/changes`, with `Authorization: Bearer <key>` and a JSON body.
 - **MCP.** `POST /mcp` with the key in `Authorization`, `Accept: application/json, text/event-stream`, and a JSON-RPC `tools/call` naming `search_experiences` or `get_experience_changes` with the same arguments as the REST body. The answer is in `result.structuredContent`.
-- **The command line.** `pipeline` and `captures`, run with `pnpm cli:pipeline <command>` and `pnpm cli:captures` from the root once the command line has moved to `apps/cli`, and with `pnpm pipeline <command>` and `pnpm --filter @magic-events/api captures` before that.
+- **The command line.** `admin`, for tenants, users and keys, run with `pnpm cli:admin <command>` from the root (the commands are in [apps/cli/README.md](../apps/cli/README.md)). `pipeline` and `captures`, run with `pnpm cli:pipeline <command>` and `pnpm cli:captures` from the root once the command line has moved to `apps/cli`, and with `pnpm pipeline <command>` and `pnpm --filter @magic-events/api captures` before that.
 - **Dates.** The dates below are chosen for a run before 5 December 2026. A later run keeps the same shape and moves the dates past today.
 - **A scenario passes** only when every condition under "Passes when" holds. "Depends on issue N" means the scenario fails until that issue in [issues.md](issues.md) lands.
 
@@ -369,46 +369,46 @@ The status Expected exists, but version 1 sets it nowhere: an annual festival kn
 
 ### Onboarding (UC4)
 
-#### E2E-31 · Onboard a travel agency over REST
+#### E2E-31 · Onboard a travel agency from the command line
 
 - **Goal:** the system admin sets up a new agency, and its planner can start at once.
-- **Who and how:** System Admin, REST.
+- **Who and how:** System Admin, the command line. Then Second Planner, REST and MCP.
 - **Steps:**
-  - `POST /v1/tenants` with `{ "name": "Second Example Agency", "slug": "second-example-agency", "kind": "travel_agency" }`.
-  - `POST /v1/tenants/second-example-agency/users` with `{ "name": "Second Planner", "email": "planner@second-agency.example.com" }`.
-  - `POST /v1/users/<user ID>/credentials` with `{ "name": "planning desk", "kind": "person" }`, then with `{ "name": "trip assistant", "kind": "agent" }`.
+  - `pnpm cli:admin tenant create --name "Second Example Agency" --slug second-example-agency --kind travel_agency`.
+  - `pnpm cli:admin user add --tenant second-example-agency --name "Second Planner" --email planner@second-agency.example.com`.
+  - `pnpm cli:admin key issue --user planner@second-agency.example.com --name "planning desk" --kind person`, then with `--name "trip assistant" --kind agent`.
   - With no wait, search with the winter stay using the person key over REST, and using the agent key over MCP.
-  - `GET /v1/users/<user ID>/credentials` and `GET /v1/tenants/second-example-agency`.
+  - `pnpm cli:admin key list --user planner@second-agency.example.com` and `pnpm cli:admin tenant show --slug second-example-agency`.
   - Create the tenant again, and add the user again.
 - **Passes when:**
-  - The tenant is 201, active, a travel agency. The user is 201 with role client and the tenant's ID. Each key is 201 and shown in that answer only.
+  - The tenant is created active, a travel agency. The user is added with role client in that tenant. Each key is printed once, in the block that says it cannot be shown again, and nowhere else: not in the command's log lines and not in the server's log.
   - Both searches are 200 with E2E-01's answer.
   - The list shows both keys, enabled, named, with who uses them, and no key. The tenant shows its one user.
-  - Creating it again is 409 `conflict` with a detail on `slug`, and adding the user again is 409 `conflict` with a detail on `email`.
+  - Creating it again fails with exit code 1 and says the slug is taken, and adding the user again fails with exit code 1 and says the email address is taken.
 
-#### E2E-32 · Onboard a travel app over MCP
+#### E2E-32 · Onboard a travel app from the command line
 
-- **Goal:** the same onboarding, done by the admin's own AI agent.
-- **Who and how:** System Admin, MCP.
-- **Steps:** `create_tenant` with `{ "name": "MCP Example App", "slug": "mcp-example-app", "kind": "travel_app" }`, `add_tenant_user`, `issue_credential` with kind agent, `list_tenants`, `get_tenant`.
-- **Passes when:** each call answers as its REST twin in E2E-31 does, and the issued key searches over MCP straight away.
+- **Goal:** the same onboarding for a travel app, whose assistant calls over MCP.
+- **Who and how:** System Admin, the command line. Then the app's user, MCP.
+- **Steps:** `pnpm cli:admin tenant create --name "Second Example App" --slug second-example-app --kind travel_app --configuration '{"currency":"ZAR"}'`, then `user add`, `key issue` with `--kind agent`, `tenant list` and `tenant show --slug second-example-app`. Search with the winter stay over MCP with the new key.
+- **Passes when:** each command answers as its twin in E2E-31 does, the tenant is a travel app with that configuration, `tenant list` shows it with every other tenant, and the issued key searches over MCP straight away.
 
 #### E2E-33 · A suspended tenant is refused
 
 - **Goal:** the system admin turns an agency's access off, and on again.
-- **Who and how:** System Admin and Second Planner, REST and MCP.
-- **Steps:** `PATCH /v1/tenants/second-example-agency` with `{ "status": "suspended" }`. Search with both of Second Planner's keys. Set it back to active and search again.
+- **Who and how:** System Admin, the command line. Second Planner, REST and MCP.
+- **Steps:** `pnpm cli:admin tenant update --slug second-example-agency --status suspended`. Search with both of Second Planner's keys. Run it again with `--status active` and search again.
 - **Passes when:** while suspended both keys get 403 `forbidden`, over REST and MCP alike. Once active both get 200 again.
 
 #### E2E-34 · A revoked key is refused
 
 - **Goal:** a key that leaked is switched off without stopping the planner's other key.
-- **Who and how:** System Admin and Second Planner, REST.
-- **Steps:** `DELETE /v1/users/<user ID>/credentials/<person key ID>`. Search with that key and with the agent key. List the user's keys.
+- **Who and how:** System Admin, the command line. Second Planner, REST.
+- **Steps:** `pnpm cli:admin key list --user planner@second-agency.example.com` for the person key's ID, then `pnpm cli:admin key revoke --user planner@second-agency.example.com --key <person key ID>`. Search with that key and with the agent key. List the user's keys again.
 - **Passes when:**
-  - The revoke answers 200 with the key disabled.
+  - The revoke says the key is revoked.
   - That key gets 401 `unauthenticated` with a `WWW-Authenticate` header, from then on. The agent key still gets 200.
-  - The list shows the revoked key as disabled.
+  - The list shows the revoked key as revoked, and the agent key as enabled.
 
 ### Several tenants at once
 
@@ -421,10 +421,10 @@ The status Expected exists, but version 1 sets it nowhere: an annual festival kn
 
 #### E2E-36 · A client cannot reach tenants, users or keys
 
-- **Goal:** one tenant never sees or changes another's people or keys.
-- **Who and how:** Agency Planner, REST and MCP.
-- **Steps:** with the Agency Planner's key: `GET /v1/tenants`, `GET /v1/tenants/example-travel-app`, `POST /v1/tenants`, `PATCH /v1/tenants/example-travel-app`, `GET /v1/users/<App Planner's ID>/credentials`, `DELETE` one of the App Planner's keys. Over MCP, `list_tenants` and `issue_credential`.
-- **Passes when:** every REST call is 403 `forbidden`, every MCP call is a tool error `forbidden`, and nothing changed: the App Planner's keys still work.
+- **Goal:** one tenant never sees or changes another's people or keys, because the API offers no way to.
+- **Who and how:** Agency Planner and System Admin, REST and MCP.
+- **Steps:** with the Agency Planner's key, then with the System Admin's: `GET /v1/tenants`, `GET /v1/tenants/example-travel-app`, `POST /v1/tenants`, `PATCH /v1/tenants/example-travel-app`, `GET /v1/users/<App Planner's ID>/credentials`, `DELETE` one of the App Planner's keys at `/v1/users/<App Planner's ID>/credentials/<key ID>`. Over MCP, `tools/list`, then `tools/call` naming `list_tenants` and `issue_credential`. `GET /openapi.json`.
+- **Passes when:** every REST call is 404 `not_found` with either key, because no such endpoint exists. `tools/list` names only `search_experiences` and `get_experience_changes`, and each other tool is refused as unknown. The OpenAPI document has no tenant, user or credential path. Nothing changed: the App Planner's keys still work.
 
 ### Trust and safety of the interface
 
