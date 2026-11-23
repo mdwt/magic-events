@@ -895,7 +895,11 @@ class LanguageModelExtractor implements Extractor {
     } else if (kept.length > 1 && itemUrl !== undefined) {
       for (const experience of kept) if (experience.url === itemUrl) delete experience.url;
     }
-    this.#logger.debug({ kind: this.kind, answered: answer.experiences.length, kept: kept.length }, "Extracted");
+    const counts = { kind: this.kind, answered: answer.experiences.length, kept: kept.length };
+    // A calendar lists dozens of rows, and a short answer is the one sign that rows were left out, so its count is
+    // always seen.
+    if (this.kind === "pdf_calendar") this.#logger.warn(counts, `A calendar yielded ${String(kept.length)} experiences`);
+    else this.#logger.debug(counts, "Extracted");
     return kept;
   }
 }

@@ -391,6 +391,39 @@ describe("A title that names no experience", () => {
   });
 });
 
+describe("A PDF calendar", () => {
+  test("keeps the rows of the district's smaller towns, and its yield is logged at warn", async () => {
+    // Five rows of the November 2026 monthly calendar: a live run left out every row outside Hermanus and
+    // Stanford, under the first area rule of half an hour by road.
+    const text = readFileSync(new URL("./fixtures/sources/whalecoast-november-events.txt", import.meta.url), "utf8");
+    assert.match(EXTRACTION_INSTRUCTIONS, /within about an hour by road, roughly 60 km/);
+    const row = (title: string, city: string, start: string) =>
+      answered({ title, city, status: "confirmed", booking: "none", sessions: [session({ start, end: "" })] });
+    const warnings: { fields: unknown; message: string | undefined }[] = [];
+    const logger: Logger = { ...silent, warn: (fields, message) => warnings.push({ fields, message }) };
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          row("Foraging Experience & Feast", "Pringle Bay", "2026-11-24"),
+          row("Full Moon Cycle & Walk", "Pringle Bay", "2026-11-24"),
+          row("Nativity Play", "Hermanus", "2026-11-26"),
+          row("Sokkie Mandjie Dance", "Betty's Bay", "2026-11-27"),
+          row("Rotsfondasie Kerk Basaar", "Gansbaai", "2026-11-28"),
+        ),
+      ],
+    });
+    const extractor = createExtractors({ languageModel: model, horizonMonths: 24, logger }).get("pdf_calendar");
+    assert.ok(extractor);
+    const experiences = await extractor.extract(
+      input({ content: Buffer.from(text).toString("base64"), contentType: "application/pdf" }),
+    );
+    assert.equal(experiences.length, 5);
+    assert.deepEqual(warnings, [
+      { fields: { kind: "pdf_calendar", answered: 5, kept: 5 }, message: "A calendar yielded 5 experiences" },
+    ]);
+  });
+});
+
 describe("The next edition of a yearly event", () => {
   const fixture = (name: string) => readFileSync(new URL(`./fixtures/sources/${name}`, import.meta.url), "utf8");
   // A month of the last edition, as a model following the instructions gives a next edition.
