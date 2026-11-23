@@ -93,7 +93,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
         ne(experienceChange.kind, "past"),
       );
       const where = and(
-        or(searchableNow(db, query), cancelledOrRemoved(db, query)),
+        or(searchableNow(db, query), cancelledOrRemoved(db, query), movedOut(db, query)),
         ...placeAndClassification(db, query),
         exists(db.select({ one: sql`1` }).from(experienceChange).where(reportable)),
       );
@@ -117,9 +117,28 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       const ids = page.map((row) => row.id);
       // A Cancelled or Removed experience carries its sessions in the dates whatever their status, as it matched.
       const ended = page.filter((row) => isReported(row.status) && !isSearchable(row.status)).map((row) => row.id);
-      const sessions = or(
+      const inDates = or(
         sessionInRange(query),
         ended.length === 0 ? undefined : and(inArray(experienceSession.experienceId, ended), sessionOverlaps(query)),
+      );
+      // One with no session in the dates now was matched on the sessions it had before, and has moved out. It
+      // carries the sessions it has now: the scheduled ones, or every one when it is Cancelled or Removed.
+      const onNow = await db
+        .selectDistinct({ id: experienceSession.experienceId })
+        .from(experienceSession)
+        .where(and(inArray(experienceSession.experienceId, ids), inDates));
+      const movedOutIds = ids.filter((id) => !onNow.some((row) => row.id === id));
+      const sessions = or(
+        inDates,
+        movedOutIds.length === 0
+          ? undefined
+          : and(
+              inArray(experienceSession.experienceId, movedOutIds),
+              or(
+                eq(experienceSession.status, "scheduled"),
+                ended.length === 0 ? undefined : inArray(experienceSession.experienceId, ended),
+              ),
+            ),
       );
       const [records, changes] = await Promise.all([
         toRecords(db, page, sessions, reported),
@@ -139,6 +158,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       const items = records.map(
         (record): ChangedExperienceRecord => ({
           experience: record,
+          movedOut: movedOutIds.includes(record.id),
           changes: (changesOf.get(record.id) ?? []).flatMap(({ kind, at }) =>
             kind === "past" ? [] : [{ kind, at: at.toISOString() }],
           ),
@@ -766,6 +786,40 @@ function cancelledOrRemoved(db: Db, query: ExperienceChangesQuery): SQL | undefi
   return and(
     inArray(experience.status, ["cancelled", "removed"]),
     exists(db.select({ one: sql`1` }).from(experienceSession).where(overlapping)),
+  );
+}
+
+// An experience changed-since reports because it was on during the dates before a change after the time given,
+// though it may not be now. Its sessions as they were then are the ones held by its first change row after that
+// time that holds sessions; a scheduled one overlapping the dates is one search would have returned it for. One
+// first published after that time was never seen by the client, so it is not matched this way. Status and bookable
+// narrow the ones going ahead, as in a search; Cancelled and Removed ones are always reported.
+function movedOut(db: Db, query: ExperienceChangesQuery): SQL | undefined {
+  const ofIt = and(eq(experienceChange.experienceId, experience.id), gt(experienceChange.changedAt, query.since));
+  const sessionsThen = db
+    .select({ sessions: sql`${experienceChange.previous} -> 'sessions'` })
+    .from(experienceChange)
+    .where(and(ofIt, sql`${experienceChange.previous} -> 'sessions' is not null`))
+    .orderBy(asc(experienceChange.changedAt), asc(experienceChange.version))
+    .limit(1);
+  return and(
+    notExists(
+      db
+        .select({ one: sql`1` })
+        .from(experienceChange)
+        .where(and(ofIt, eq(experienceChange.kind, "new"))),
+    ),
+    or(
+      and(
+        inArray(experience.status, query.statuses),
+        query.bookings === undefined ? undefined : inArray(experience.booking, query.bookings),
+      ),
+      inArray(experience.status, ["cancelled", "removed"]),
+    ),
+    sql`exists (select 1 from jsonb_array_elements(${sessionsThen}) as session
+      where session ->> 'status' = 'scheduled'
+        and (session ->> 'startDate')::date <= ${query.to}::date
+        and (session ->> 'endDate')::date >= ${query.from}::date)`,
   );
 }
 

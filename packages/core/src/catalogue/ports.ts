@@ -415,7 +415,20 @@ export type ReportedChange = z.infer<typeof reportedChangeSchema>;
 export const experienceChangeSchema = z.object({
   experience: experienceResultSchema.extend({
     status: z.enum(REPORTED_STATUSES).describe("Cancelled and removed experiences are final."),
+    sessions: z
+      .array(sessionResultSchema)
+      .describe(
+        "The sessions inside the dates asked for. When movedOut is true it has none there, and these are the " +
+          "sessions it has now, all outside the dates: where it moved to. Empty when it has no dates left.",
+      ),
   }),
+  movedOut: z
+    .boolean()
+    .describe(
+      "True when the experience was on during the dates asked for before a change since then, and is not on " +
+        "during them now: it moved out of the dates, or its sessions in them were dropped or cancelled. Treat it " +
+        "as no longer on during the stay.",
+    ),
   change: reportedChangeSchema.describe("The change that matters most to a planner."),
   changes: z.array(reportedChangeSchema).describe("Every change since the time given, newest first."),
 });
@@ -437,6 +450,9 @@ export interface ExperienceChangesQuery extends Omit<ExperienceSearchQuery, "que
 // An experience that changed, as the repository returns it.
 export interface ChangedExperienceRecord {
   experience: Omit<ExperienceRecord, "status"> & { status: ReportedStatus };
+  // True when it was matched on the sessions it had before a change after the time given, and has none in the dates
+  // now. Its sessions are then the ones it has now.
+  movedOut: boolean;
   // Its changes after the time given, newest first. Moves to Past are left out.
   changes: { kind: Exclude<ChangeKind, "past">; at: string }[];
 }
@@ -521,6 +537,7 @@ export interface Catalogue {
   removeSourceLink(input: { listingId: string; experienceId?: string; rawListingId: string }): Promise<string[]>;
   // What changed since a time among the experiences the search parameters select: new, confirmed, rescheduled,
   // postponed, cancelled, removed or otherwise changed. Cancelled and Removed ones are reported; Past ones never are.
+  // One that was on during the dates before a change since then, and is not now, is reported as moved out.
   getChangesSince(input: ExperienceChangesInput): Promise<ExperienceChangesResult>;
   // Catalogue's scheduled upkeep: sets finished experiences to Past, closes bookings whose close time has passed,
   // and generates the sessions of open-ended recurring experiences further ahead.

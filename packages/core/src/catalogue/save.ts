@@ -418,9 +418,15 @@ export function changedFields(before: StoredExperience, after: StoredExperience)
   return TRACKED_FIELDS.filter((field) => !isDeepStrictEqual(trackedValue(before, field), trackedValue(after, field)));
 }
 
-// The previous values of the fields that changed, for the change row.
+// The previous values of the fields that changed, for the change row. When the sessions or the recurrence changed,
+// `sessions` holds every session it had, generated ones included, so changed-since can tell that it was on during
+// a client's dates before the change.
 export function previousValues(before: StoredExperience, fields: TrackedField[]): Record<string, unknown> {
-  return Object.fromEntries(fields.map((field) => [field, trackedValue(before, field)]));
+  const previous: Record<string, unknown> = Object.fromEntries(
+    fields.map((field) => [field, trackedValue(before, field)]),
+  );
+  if (fields.includes("sessions") || fields.includes("recurrence")) previous.sessions = sortSessions(before.sessions);
+  return previous;
 }
 
 // A listed session was added, moved or removed, or the recurrence changed. A session that only became sold out,

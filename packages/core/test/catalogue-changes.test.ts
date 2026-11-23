@@ -8,7 +8,7 @@ import {
   type ReportedStatus,
 } from "../src/catalogue/ports.ts";
 import { AppError } from "../src/shared/errors.ts";
-import { fakeCatalogue } from "../src/testing/catalogue-fake.ts";
+import { fakeCatalogue, input, RAW_B } from "../src/testing/catalogue-fake.ts";
 
 // Changed-since with no database: the rules the service applies to what the repository found. Today is
 // 23 November 2026.
@@ -28,6 +28,7 @@ function record(
   status: ReportedStatus,
   changes: ReportedChange[],
   booking: ChangedExperienceRecord["experience"]["booking"] = "open",
+  movedOut = false,
 ): ChangedExperienceRecord {
   return {
     experience: {
@@ -56,6 +57,7 @@ function record(
       version: changes.length + 1,
       updatedAt: changes[0]?.at ?? "2026-10-01T10:00:00.000Z",
     },
+    movedOut,
     changes,
   };
 }
@@ -198,5 +200,71 @@ describe("the change reported", () => {
     const catalogue = fakeCatalogue();
     catalogue.changes.answer = { items: [record("a", "confirmed", [])], total: 1 };
     assert.deepEqual((await catalogue.service.getChangesSince(changesInput())).items, []);
+  });
+});
+
+describe("an experience that moved out of the dates", () => {
+  test("a reschedule keeps the sessions it had in the change row, which changed-since matches the dates on", async () => {
+    const catalogue = fakeCatalogue();
+    const { experience } = await catalogue.service.saveExperience(input());
+    const moved = await catalogue.service.saveExperience(
+      input({
+        experienceId: experience.id,
+        sessions: [{ startDate: "2027-04-17", precision: "day", startTime: "18:00", endTime: "22:00" }],
+        source: { ...input().source, rawListingId: RAW_B },
+      }),
+    );
+    assert.equal(moved.change, "rescheduled");
+    const previous = catalogue.writes[1]?.change?.previous?.sessions;
+    assert.deepEqual(previous, experience.sessions);
+    assert.deepEqual(
+      experience.sessions.map((session) => session.startDate),
+      ["2027-03-13"],
+    );
+  });
+
+  test("a changed recurrence keeps its generated sessions in the change row too", async () => {
+    const catalogue = fakeCatalogue();
+    const market = (rule: string, overrides: object = {}) =>
+      input({
+        title: "Saturday Market",
+        type: "recurring",
+        sessions: [],
+        recurrence: { rule, start: "2027-01-02", end: "2027-01-31" },
+        ...overrides,
+      });
+    const { experience } = await catalogue.service.saveExperience(market("FREQ=WEEKLY;BYDAY=SA"));
+    await catalogue.service.saveExperience(
+      market("FREQ=WEEKLY;BYDAY=SU", { experienceId: experience.id, source: { ...input().source, rawListingId: RAW_B } }),
+    );
+    const previous = catalogue.writes[1]?.change?.previous?.sessions as { startDate: string; origin: string }[];
+    assert.deepEqual(
+      previous.map((session) => [session.startDate, session.origin]),
+      [
+        ["2027-01-02", "generated"],
+        ["2027-01-09", "generated"],
+        ["2027-01-16", "generated"],
+        ["2027-01-23", "generated"],
+        ["2027-01-30", "generated"],
+      ],
+    );
+  });
+
+  test("is reported with the change it got, marked moved out, with the sessions it has now", async () => {
+    const catalogue = fakeCatalogue();
+    const moved = record("a", "confirmed", [change("rescheduled", "11-20")], "open", true);
+    moved.experience.sessions = [
+      { startDate: "2027-08-14", endDate: "2027-08-14", precision: "day", startTime: null, endTime: null, label: null, soldOut: false },
+    ];
+    catalogue.changes.answer = { items: [moved, record("b", "confirmed", [change("changed", "11-15")])], total: 2 };
+    const result = await catalogue.service.getChangesSince(changesInput());
+    assert.deepEqual(
+      result.items.map((item) => [item.experience.id, item.change.kind, item.movedOut]),
+      [
+        ["a", "rescheduled", true],
+        ["b", "changed", false],
+      ],
+    );
+    assert.deepEqual(result.items[0]?.experience.sessions.map((session) => session.startDate), ["2027-08-14"]);
   });
 });

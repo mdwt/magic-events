@@ -289,12 +289,13 @@ export class CatalogueService implements Catalogue {
     this.#logger.debug({ query }, "Finding changes");
     const { items, total } = await this.#repository.findChangesSince(query);
 
-    const changed = items.flatMap(({ experience, changes }): ExperienceChange[] => {
+    const changed = items.flatMap(({ experience, movedOut, changes }): ExperienceChange[] => {
       const change = reportedChange(changes);
       if (change === null) return [];
       return [
         {
           experience: { ...experience, bookable: experience.status === "confirmed" && experience.booking === "open" },
+          movedOut,
           change,
           changes,
         },

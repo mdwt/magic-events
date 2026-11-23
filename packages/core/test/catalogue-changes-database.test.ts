@@ -122,6 +122,27 @@ before(async () => {
   clock.now = at(15);
   assert.equal((await catalogue.keepUp()).past, 1);
 
+  // Moves out of and into 1 to 10 September 2027. Created before the search, unless named new.
+  const evening = (startDate: string, cancelled?: boolean) => [
+    { startDate, precision: "day" as const, startTime: "18:00", endTime: "22:00", ...(cancelled === true ? { cancelled } : {}) },
+  ];
+  const market = (start: string, end: string) => ({
+    type: "recurring" as const,
+    sessions: [],
+    recurrence: { rule: "FREQ=WEEKLY;BYDAY=SA", start, end },
+  });
+  clock.now = at(0);
+  await create("moved out", 0, { sessions: evening("2027-09-05") });
+  await create("market moved out", 0, market("2027-09-01", "2027-09-30"));
+  await create("evening cancelled", 0, { sessions: evening("2027-09-07") });
+  await create("never in", 0, { sessions: evening("2027-10-01") });
+  await create("new then moved", 11, { sessions: evening("2027-09-06") });
+  await update("moved out", 16, { sessions: evening("2027-10-20") });
+  await update("market moved out", 17, market("2027-10-01", "2027-10-31"));
+  await update("evening cancelled", 18, { sessions: evening("2027-09-07", true) });
+  await update("never in", 19, { sessions: evening("2027-10-25") });
+  await update("new then moved", 20, { sessions: evening("2027-10-21") });
+
   clock.now = at(30);
 });
 
@@ -226,5 +247,59 @@ describe("checking back on day 30", () => {
     const page = await changes({ limit: 3, offset: 3 });
     assert.deepEqual(names(page), ["removed", "cancelled", "postponed"]);
     assert.deepEqual([page.total, page.limit, page.offset], [7, 3, 3]);
+  });
+});
+
+describe("an experience that moved out of the dates searched", () => {
+  const september = { from: "2027-09-01", to: "2027-09-10" };
+
+  test("is reported with the change it got, marked moved out, with the sessions it has now", async () => {
+    const result = experienceChangesResultSchema.parse(await changes(september));
+    assert.deepEqual(names(result), ["evening cancelled", "market moved out", "moved out"]);
+    assert.deepEqual(
+      result.items.map((item) => [item.change.kind, item.movedOut]),
+      [
+        ["changed", true],
+        ["rescheduled", true],
+        ["rescheduled", true],
+      ],
+    );
+    const dates = result.items.map((item) => item.experience.sessions.map((session) => session.startDate));
+    // The cancelled evening has no scheduled session left; the others carry where they moved to.
+    assert.deepEqual(dates[0], []);
+    assert.deepEqual(dates[1], ["2027-10-02", "2027-10-09", "2027-10-16", "2027-10-23", "2027-10-30"]);
+    assert.deepEqual(dates[2], ["2027-10-20"]);
+  });
+
+  test("one that was never in the dates, or was published after the search, is not reported", async () => {
+    const reported = names(await changes(september));
+    assert.equal(reported.includes("never in"), false);
+    assert.equal(reported.includes("new then moved"), false);
+  });
+
+  test("for the dates it moved into, it is reported as search returns it, not moved out", async () => {
+    const result = await changes({ from: "2027-10-18", to: "2027-10-26" });
+    assert.deepEqual(names(result), ["new then moved", "never in", "market moved out", "moved out"]);
+    assert.deepEqual(
+      result.items.map((item) => [item.change.kind, item.movedOut]),
+      [
+        ["new", false],
+        ["rescheduled", false],
+        ["rescheduled", false],
+        ["rescheduled", false],
+      ],
+    );
+  });
+
+  test("the filters still hold, and a change before the time given does not count", async () => {
+    assert.deepEqual(names(await changes({ ...september, attributes: { category: ["sport"] } })), []);
+    assert.deepEqual(names(await changes({ ...september, status: ["postponed"] })), []);
+    // Since day 16.5 the one moved out on day 16 is not reported, and the one published on day 11 was in the
+    // dates then, so it is.
+    assert.deepEqual(names(await changes({ ...september, since: at(16.5).toISOString() })), [
+      "new then moved",
+      "evening cancelled",
+      "market moved out",
+    ]);
   });
 });
