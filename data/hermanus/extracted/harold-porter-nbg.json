@@ -1,0 +1,53 @@
+[
+  {
+    "source": "SANBI",
+    "sourceListingId": "https://www.sanbi.org/event/carols-by-candlelight-4/",
+    "url": "https://www.sanbi.org/event/carols-by-candlelight-4/",
+    "rawFile": "raw/harold-porter-nbg/carols-by-candlelight-4.txt",
+    "fetchedAt": "2026-11-23T13:43:58Z",
+    "title": "Carols by Candlelight at Harold Porter National Botanical Garden",
+    "summary": "Carols by Candlelight presented by the Hermanus Rotary Club in the concert area of Harold Porter: bring a picnic basket and sing your favourite Christmas carols.",
+    "description": "We are thrilled to announce that our Carols by Candlelight event will be presented by the Hermanus Rotary Club! Join us with your friends and family, bring along your picnic basket, and enjoy singing your favorite Christmas carols. Tickets can be purchased online via Webtickets or at the Harold Porter Entrance office. Gates open at 18:30, with music Background Christmas music will be played from 18:30 to 19:15. The concert will start at 19:30 with the Nativity Pageant, followed by the Christmas Carol performances and saxophonist. Adults: R160 Youth (age 6 to 18 ): R65 Children 0 to 6 years: free.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-17",
+        "precision": "day",
+        "startTime": "19:30",
+        "endTime": "22:15"
+      }
+    ],
+    "venue": {
+      "name": "Harold Porter National Botanical Garden, concert area",
+      "city": "Betty's Bay"
+    },
+    "price": {
+      "min": 0,
+      "max": 160,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://www.sanbi.org/wp-content/uploads/2026/11/Carols-by-Candlelight-Poster-650x463.jpg",
+    "hints": [
+      "Events",
+      "Harold Porter"
+    ],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "music",
+        "faith_and_spirituality"
+      ],
+      "format": "parade_or_ceremony",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "choral"
+    ],
+    "profile": "An evening of Christmas carols in the concert area of Harold Porter National Botanical Garden, presented by the Hermanus Rotary Club. Gates open at 6:30pm for picnics and background music, and from 7:30pm there is a Nativity pageant, carol performances and a saxophonist. It suits families, with tickets for adults and youth and free entry for children under six."
+  }
+]
