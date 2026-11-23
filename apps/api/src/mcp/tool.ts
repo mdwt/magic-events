@@ -17,17 +17,14 @@ export interface ToolDeps {
   isUnavailable: (error: unknown) => boolean;
 }
 
-interface RegisteredTool {
-  action: Action;
-  inputSchema: z.ZodObject;
-  run: (input: Record<string, unknown>) => Promise<CallToolResult>;
-}
+// A tool's whole answer to one call: the caller's right to its action, then its arguments, then the handler, then
+// the answer checked against the output schema. Every failure is a tool error, never a thrown one.
+type ToolCall = (args: unknown) => Promise<CallToolResult>;
 
-const toolsOf = new WeakMap<McpServer, Map<string, RegisteredTool>>();
+const toolsOf = new WeakMap<McpServer, Map<string, ToolCall>>();
 
-// Registers a tool. When it is called, the caller's right to the tool's action is checked first, then its arguments,
-// then the handler runs, and the answer is returned as structured content with the same JSON as text. Every failure
-// becomes a tool error in the REST API's error format: see answerToolCalls and toolError.
+// Registers a tool that only reads. Its answer is structured content with the same JSON as text, as the protocol
+// asks of a tool with an output schema; every failure is a tool error in the REST API's error format.
 export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
   server: McpServer,
   deps: ToolDeps,
@@ -36,8 +33,6 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
     action: Action;
     title: string;
     description: string;
-    // False for a tool that changes something. A client may then ask before calling it. True when left out.
-    readOnly?: boolean;
     inputSchema: I;
     outputSchema: O;
     handler: (input: z.infer<I>) => Promise<z.infer<O>>;
@@ -46,7 +41,22 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
   // Widened, because the SDK's callback type cannot be worked out for a generic schema.
   const inputSchema: z.ZodObject = tool.inputSchema;
   const outputSchema: z.ZodObject = tool.outputSchema;
-  const readOnly = tool.readOnly ?? true;
+
+  const call: ToolCall = async (args) => {
+    // Who called which tool with which arguments: the log context adds the caller, and no argument is a secret.
+    deps.logger.info({ tool: tool.name, arguments: args }, "Tool called");
+    try {
+      deps.identity.authorise(deps.caller, tool.action);
+      const parsed = inputSchema.safeParse(args ?? {});
+      if (!parsed.success) throw new AppError("invalid_input", MESSAGES.invalidArguments, zodDetails(parsed.error));
+      // Checked here, so an answer that does not fit the schema is a system error and its details stay in the logs.
+      const output: Record<string, unknown> = outputSchema.parse(await tool.handler(parsed.data as z.infer<I>));
+      return { structuredContent: output, content: [{ type: "text", text: JSON.stringify(output) }] };
+    } catch (error) {
+      return toolError(error, tool.name, deps);
+    }
+  };
+
   server.registerTool(
     tool.name,
     {
@@ -55,58 +65,47 @@ export function registerTool<I extends z.ZodObject, O extends z.ZodObject>(
       inputSchema,
       outputSchema,
       annotations: {
+        // For clients on the 2025-03-26 revision, which read the title here.
         title: tool.title,
-        readOnlyHint: readOnly,
-        // A tool that writes is taken to be destructive and not idempotent, the protocol's own defaults for it.
-        destructiveHint: !readOnly,
-        idempotentHint: readOnly,
-        openWorldHint: false,
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        // The answers carry text copied from third-party websites, so a client should treat them as from the open web.
+        openWorldHint: true,
       },
     },
-    // The SDK lists the tool; a call reaches it through answerToolCalls.
-    (input) => run(input),
+    // answerToolCalls answers tools/call. Were the SDK's own handler ever to run instead, the call still goes
+    // through the caller's right to the tool.
+    (input) => call(input),
   );
-
-  async function run(input: Record<string, unknown>): Promise<CallToolResult> {
-    try {
-      // Checked here, so an answer that does not fit the schema is a system error and its details stay in the logs.
-      const output: Record<string, unknown> = tool.outputSchema.parse(await tool.handler(input as z.infer<I>));
-      deps.logger.debug({ tool: tool.name }, "Tool answered");
-      return { structuredContent: output, content: [{ type: "text", text: JSON.stringify(output) }] };
-    } catch (error) {
-      return toolError(error, tool.name, deps);
-    }
-  }
 
   let tools = toolsOf.get(server);
   if (tools === undefined) {
     tools = new Map();
     toolsOf.set(server, tools);
   }
-  tools.set(tool.name, { action: tool.action, inputSchema, run });
+  tools.set(tool.name, call);
 }
 
-// Answers tools/call in place of the SDK, once every tool is registered. The SDK checks a tool's arguments itself and
-// words the failure its own way; here the caller's right to the tool comes first, as over REST, and arguments that
-// do not fit are invalid_input with one detail per field, so an agent can correct its call.
-export function answerToolCalls(server: McpServer, deps: ToolDeps): void {
-  const tools = toolsOf.get(server) ?? new Map<string, RegisteredTool>();
-  server.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+// Answers tools/call in place of the SDK's handler, once every tool is registered. The SDK checks a tool's arguments
+// before the caller's right to the tool, and words a failure as one line of its own; here the right comes first, as
+// over REST, and arguments that do not fit are invalid_input with one detail per field, so an agent can correct its
+// call. The tools are stateless reads that answer in one go, so the SDK's tasks, progress and cancellation have
+// nothing to act on.
+export function answerToolCalls(server: McpServer): void {
+  const tools = toolsOf.get(server) ?? new Map<string, ToolCall>();
+  server.server.setRequestHandler(CallToolRequestSchema, (request) => {
     const name = request.params.name;
-    const tool = tools.get(name);
+    const call = tools.get(name);
     // A protocol error, as the protocol has it for a tool that does not exist.
-    if (tool === undefined) throw new McpError(ErrorCode.InvalidParams, `There is no tool named "${name}". tools/list lists them.`);
-    try {
-      deps.identity.authorise(deps.caller, tool.action);
-    } catch (error) {
-      return toolError(error, name, deps);
+    if (call === undefined) {
+      throw new McpError(ErrorCode.InvalidParams, `There is no tool named "${name}". tools/list lists the tools.`);
     }
-    const parsed = tool.inputSchema.safeParse(request.params.arguments ?? {});
-    if (!parsed.success) {
-      return toolError(new AppError("invalid_input", MESSAGES.invalidArguments, zodDetails(parsed.error)), name, deps);
-    }
-    return tool.run(parsed.data);
+    return call(request.params.arguments);
   });
+  // The tools never change while a server answers its one request, and a stateless server has no stream to announce
+  // a change on, so the list is declared as not changing.
+  server.server.registerCapabilities({ tools: { listChanged: false } });
 }
 
 // One detail per problem, named by its path, as the REST API gives for a body that does not fit.

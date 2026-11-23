@@ -11,7 +11,6 @@ import {
 } from "fastify-type-provider-zod";
 import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
 import type { Identity } from "@magic-events/core/identity/ports.ts";
-import type { Organizations } from "@magic-events/core/organizations/ports.ts";
 import { AppError } from "@magic-events/core/shared/errors.ts";
 import type { ApiSettings } from "@magic-events/core/shared/settings.ts";
 import { mcpRoutes } from "../mcp/routes.ts";
@@ -20,14 +19,12 @@ import { errorBody, MESSAGES, toErrorReply } from "./errors.ts";
 import "./fastify-types.ts";
 import { addLogContextHooks, RequestLogController, requestId } from "./logging.ts";
 import { catalogueRoutes } from "./routes/catalogue.ts";
-import { identityRoutes } from "./routes/identity.ts";
-import { organizationsRoutes } from "./routes/organizations.ts";
 import { platformRoutes } from "./routes/platform.ts";
 
 export interface ServerDeps {
   settings: ApiSettings;
   logger: FastifyBaseLogger;
-  services: { identity: Identity; catalogue: Catalogue; organizations: Organizations };
+  services: { identity: Identity; catalogue: Catalogue };
   // A trivial query, for the health check.
   checkDatabase: () => Promise<void>;
   // Whether a system error means the database cannot be reached. Such a failure is answered 503, not 500.
@@ -176,14 +173,11 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
   await app.register(mcpRoutes, {
     identity: deps.services.identity,
     catalogue: deps.services.catalogue,
-    organizations: deps.services.organizations,
     allowedHosts: settings.allowedHosts,
     allowedOrigin: settings.corsOrigin,
     isUnavailable: deps.isUnavailable,
   });
   await app.register(catalogueRoutes, { prefix: "/v1", catalogue: deps.services.catalogue });
-  await app.register(organizationsRoutes, { prefix: "/v1", organizations: deps.services.organizations });
-  await app.register(identityRoutes, { prefix: "/v1", identity: deps.services.identity });
 
   return app;
 }
