@@ -10,9 +10,9 @@ same feed, over a REST API or an MCP endpoint. Version 1 covers Hermanus, South 
 
 ## Highlights
 
-- **Extensible.** Ports and adapters: swap a model, the queue, storage or a source with one adapter.
+- **Extensible.** Ports and adapters: swap a model provider, the queue, storage or a source with one adapter.
 - **LLM extraction and classification.** A language model turns raw listings into structured, categorised experiences.
-- **Semantic search.** Results are ranked with Amazon Titan embeddings, plus keyword search.
+- **Semantic search.** An embedding model ranks results by meaning, alongside keyword search.
 - **Change tracking.** Ask what's new, moved or cancelled since your last search.
 - **REST and MCP.** One feed for people and agents.
 - **Just Postgres.** No other infrastructure.
@@ -27,7 +27,7 @@ flowchart LR
   CAT --> REST[REST API]
   CAT --> MCP[MCP endpoint]
   REST --> P[Planners and their apps]
-  MCP --> A[AI agents, such as Claude]
+  MCP --> A[AI agents]
 ```
 
 1. **Discovery** fetches listings from the Hermanus sources (RSS feeds, PDF calendars and web pages) on a schedule,
