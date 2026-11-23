@@ -215,6 +215,9 @@ export const experienceSourceLink = pgTable(
       .notNull()
       .references(() => experience.id, { onDelete: "cascade" }),
     listingId: uuid("listing_id").notNull(),
+    // How many readings of the listing in a row did not yield the experience. The link is removed when it reaches
+    // the source's missed runs before removal; a reading that yields it sets it back to 0.
+    missedReadings: integer("missed_readings").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
