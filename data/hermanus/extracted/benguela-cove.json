@@ -1,0 +1,562 @@
+[
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/wildlife-sculpture-exhibition",
+    "url": "https://benguelacove.co.za/products/wildlife-sculpture-exhibition",
+    "rawFile": "raw/benguela-cove/wildlife-sculpture-exhibition.txt",
+    "fetchedAt": "2026-11-23T13:51:40Z",
+    "title": "Where the Wild Things Come to Rest: Carol Bryant Wildlife Sculpture Exhibition",
+    "summary": "Acclaimed British sculptor Carol Bryant presents a wildlife sculpture exhibition set across the vineyards and fynbos of Benguela Cove, free during estate opening hours.",
+    "description": "From 2 October 2026 to 31 March 2027, acclaimed British sculptor Carol Bryant presents Where the Wild Things Come to Rest, a remarkable exhibition of wildlife sculptures set against the breathtaking landscapes of Walker Bay. With free admission during normal estate opening hours, visitors are invited to explore this unique sculpture park at their own pace. Featuring striking bronze and resin sculptures, the collection celebrates the beauty, strength and character of some of the world's most iconic wildlife. Carefully positioned throughout the estate, each sculpture becomes part of the surrounding vineyards, indigenous fynbos and panoramic mountain and lagoon views. For collectors, all sculptures featured in the exhibition are available for purchase. Exhibition Information: Dates: 3 October 2026 to 31 March 2027. Admission: Free. Opening Hours: Daily during Benguela Cove Estate opening hours.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-10-03",
+        "end": "2027-03-31",
+        "precision": "day"
+      }
+    ],
+    "openingHours": "Daily during Benguela Cove Estate opening hours (Mon - Sun 10:00 - 18:00)",
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Wildlife-Sculpture-Exhibition-Hermanus_b0477338-b0c3-4875-b0b2-a4d3e3827c03.jpg?v=1785922508",
+    "attributes": {
+      "category": [
+        "visual_arts",
+        "nature_and_wildlife"
+      ],
+      "format": "exhibition",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "sculpture",
+      "wine"
+    ],
+    "profile": "An outdoor exhibition of bronze and resin wildlife sculptures by British sculptor Carol Bryant, placed among the vineyards, fynbos and lagoon views of Benguela Cove wine estate near Hermanus. Visitors walk the estate at their own pace, free of charge, during opening hours, and the works are for sale. It suits art lovers, collectors and families combining a wine-estate visit with an art walk.",
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/benguela-cove-park-run",
+    "url": "https://benguelacove.co.za/products/benguela-cove-park-run",
+    "rawFile": "raw/benguela-cove/benguela-cove-park-run.txt",
+    "fetchedAt": "2026-11-23T13:51:48Z",
+    "title": "Benguela Cove parkrun",
+    "summary": "Every Saturday morning at 8 AM, the free Benguela Cove parkrun 5km among the vineyards. Weather-dependent.",
+    "description": "Join us every Saturday morning at 8 AM for the Benguela Cove parkrun 5km. This is the ultimate way to start your weekend surrounded by breathtaking vineyards and stunning views. Please note the Park Run is weather-dependent. What does it cost to join in? Nothing - it's free! This community event welcomes walkers, joggers, runners, volunteers, spectators, and leashed furry friends. Bring the whole family to enjoy exercise, fresh air, and natural beauty. Reward yourself afterwards with our Breakfast Special served at Blackbeard's Diner starting at 8:30 AM, or brunch at Moody Lagoon restaurant served until 11:30 AM.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Benguela-Cove-ParkRun_711a6b54-3c3a-496e-a0c0-90653f4a338b.jpg?v=1761229858",
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "road-running"
+    ],
+    "profile": "A free, timed 5km parkrun held every Saturday at 8am on Benguela Cove wine estate near Hermanus, weather permitting. Walkers, joggers and runners take part among the vineyards, and spectators and leashed dogs are welcome; breakfast and brunch are served on the estate afterwards. It suits families and anyone wanting a scenic start to a Saturday.",
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/the-blending-table",
+    "url": "https://benguelacove.co.za/products/the-blending-table",
+    "rawFile": "raw/benguela-cove/the-blending-table.txt",
+    "fetchedAt": "2026-11-23T13:52:02Z",
+    "title": "The Blending Table: Make Your Own Wine at Benguela Cove",
+    "summary": "Once a month the winemaker opens the cellar to 20 guests to blend their own wine; every guest leaves with a labelled bottle they made themselves.",
+    "description": "Once a month, Winemaker opens the cellar to 20 guests for Benguela Cove's Blending Table. You will taste four to six component wines from the current vintage, blend your own final wine at the table using precision pourers and tasting notes, then watch the winemaker reveal his own blend and judge the results. Every guest leaves with a labelled bottle of their own creation. Sunday, 29 November & Sunday, 27 December 2026, 11:00, 2.5 hours. R895 per person, including wines and bottling. 20 Seats only.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-29",
+        "precision": "day",
+        "startTime": "11:00",
+        "endTime": "13:30"
+      },
+      {
+        "start": "2026-12-27",
+        "precision": "day",
+        "startTime": "11:00",
+        "endTime": "13:30"
+      }
+    ],
+    "price": {
+      "min": 895,
+      "max": 895,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/the-blending-table",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Blending-Table_ee8b08c1-bad5-4326-9490-5be819b3cea7.jpg?v=1785946445",
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "class_or_workshop",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "A hands-on wine-blending session in the Benguela Cove cellar for up to 20 guests. Participants taste four to six component wines, blend their own wine with the winemaker's guidance, see his blend revealed, and take home a labelled bottle of their own. It suits wine lovers looking for a small-group activity, at R895 per person.",
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/fire-on-the-lagoon-dinners",
+    "url": "https://benguelacove.co.za/products/fire-on-the-lagoon-dinners",
+    "rawFile": "raw/benguela-cove/fire-on-the-lagoon-dinners.txt",
+    "fetchedAt": "2026-11-23T13:52:05Z",
+    "title": "Fire on the Lagoon Dinners",
+    "summary": "Open-fire dining on the Moody Lagoon restaurant terrace on Fridays and Saturdays from 4 December 2026 to 20 February 2027, tables from 17:30.",
+    "description": "Join us for Fire on the Lagoon, the open fire dining experience. A feast of flavour where char, smoke and flame meet vibes, views and award-winning wines. Dates: Fridays and Saturdays, 4 December 2026 to 20 February 2027. Time: Tables from 17:30. Venue: The Moody Lagoon restaurant terrace, on the water. Menu: À la carte, from oysters eaten standing to whole cuts carved at the table. Eighteen evenings, one seating each, and December goes first.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR,SA",
+      "start": "2026-12-04",
+      "end": "2027-02-20",
+      "startTime": "17:30"
+    },
+    "venue": {
+      "name": "Moody Lagoon restaurant terrace, Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/fire-on-the-lagoon-dinners",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Dining-Hermanus-Fire-Lagoon_2b5b20ed-99f4-479b-9eb7-f488642b83cd.jpg?v=1790174108",
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine",
+      "seafood"
+    ],
+    "profile": "A summer season of open-fire dinners on the lagoon-side terrace of Benguela Cove's Moody Lagoon restaurant, on Friday and Saturday evenings from December to February. Diners order à la carte from a menu cooked entirely over coals, from oysters and line fish to lamb shoulder and tomahawk steak, with the estate's own wines. It suits couples, groups and families, with a children's menu off the same fire.",
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/swallow-series-wine-tasting-lunch-events",
+    "url": "https://benguelacove.co.za/products/swallow-series-wine-tasting-lunch-events",
+    "rawFile": "raw/benguela-cove/swallow-series-wine-tasting-lunch-events.txt",
+    "fetchedAt": "2026-11-23T13:52:07Z",
+    "title": "Swallow Series Wine Tasting Lunches",
+    "summary": "Four dishes, a Cap Classique on arrival and eight wines poured in blind pairs, two beside every dish; guests vote with corks for the wine they think won.",
+    "description": "Four dishes from our kitchen. A Cap Classique on arrival, then eight wines poured in pairs, two beside every dish. Nine in all, and none of them from our everyday range. Every round, one dish lands with two wines beside it, marked only A and B. Your host makes the case for both, then gets out of the way. You taste, you argue with your table, and you drop a cork into the glass cylinder of the wine you think won. Limited Seats. R950 per person, or R795 for wine club members. Served 12:00 to 14:50 in the Grand Winery. Five Saturdays: 5 December 2026 · 9 January 2027 · 13 March 2027 · 17 April 2027 · 4 September 2027.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "14:50"
+      },
+      {
+        "start": "2027-01-09",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "14:50"
+      },
+      {
+        "start": "2027-03-13",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "14:50"
+      },
+      {
+        "start": "2027-04-17",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "14:50"
+      },
+      {
+        "start": "2027-09-04",
+        "precision": "day",
+        "startTime": "12:00",
+        "endTime": "14:50"
+      }
+    ],
+    "venue": {
+      "name": "Grand Winery, Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 795,
+      "max": 950,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/swallow-series-wine-tasting-lunch-events",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Swallow-Series-Wine-Tasting-Events-Cape-Town_9fb9c511-d1cb-4d0b-bd0a-ed4dcd2ad173.jpg?v=1794479333",
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "A seated wine-tasting lunch in Benguela Cove's Grand Winery on five Saturdays between December 2026 and September 2027. Guests eat four dishes, each served with two wines poured blind, hear the host argue for both, and vote with corks for the better wine; nine wines are poured in all. It suits wine enthusiasts who enjoy comparative tasting, at R950 per person.",
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/that-80s-show-concert",
+    "url": "https://benguelacove.co.za/products/that-80s-show-concert",
+    "rawFile": "raw/benguela-cove/that-80s-show-concert.txt",
+    "fetchedAt": "2026-11-23T13:52:10Z",
+    "title": "That ’80s Show: 80s Tribute Concert",
+    "summary": "Mike McCullagh and The Harmonix perform an 80s tribute concert covering Queen, Tina Turner, Journey, Madonna and more, on Saturday 12 December 2026 or Saturday 27 February 2027.",
+    "description": "That ’80s Show brings the music of the 1980s to Benguela Cove Lagoon Wine Estate in Hermanus. Mike McCullagh and The Harmonix perform an 80s tribute concert covering Queen, Tina Turner, Journey, Madonna and more, with costume changes and an encore. Doors open: 18:30. Show starts: 19:30. Wine Pairing Basket for 2 + Entry: R1 550 (two tickets, a picnic for two and a bottle of wine). General Admission: R350 per person. Seating: Unreserved tables, first come, first served, in the Courtyard. Dress code: 80s, dressing up encouraged.",
+    "type": "run",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-12",
+        "precision": "day",
+        "startTime": "19:30"
+      },
+      {
+        "start": "2027-02-27",
+        "precision": "day",
+        "startTime": "19:30"
+      }
+    ],
+    "venue": {
+      "name": "Courtyard, Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 350,
+      "max": 1550,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/that-80s-show-concert",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Live-music-performance-Hermanus_cad74d48-cc46-4bc4-95c5-e547ce7d066f.jpg?v=1786014617",
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "rock-and-pop",
+      "cabaret"
+    ],
+    "profile": "An 80s tribute concert by Mike McCullagh and The Harmonix in the courtyard of Benguela Cove wine estate, with songs by Queen, Tina Turner, Journey and Madonna, costume changes and an encore. Guests sit at unreserved tables, can book a picnic basket with wine, and are encouraged to dress in 80s style and dance. It suits groups of friends and couples looking for a party night out near Hermanus.",
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/christmas-eve-dinner-2026",
+    "url": "https://benguelacove.co.za/products/christmas-eve-dinner-2026",
+    "rawFile": "raw/benguela-cove/christmas-eve-dinner-2026.txt",
+    "fetchedAt": "2026-11-23T13:52:20Z",
+    "title": "Christmas Eve Dinner 2026 at Moody Lagoon",
+    "summary": "An elegant multi-course Christmas Eve dinner at Moody Lagoon Restaurant on the water's edge, Thursday 24 December 2026, from 18:00.",
+    "description": "Join us on Thursday, 24 December 2026, for an elegant Christmas Eve Dinner at Moody Lagoon Restaurant. Set on the water's edge at Benguela Cove Wine Estate, this exclusive festive dining experience combines exceptional cuisine, award-winning wine, and breathtaking sunset views across the lagoon. Dinner service begins from 18:00. The highlight of the evening is a specially curated multi-course festive dinner at Moody Lagoon Restaurant, thoughtfully prepared by our Head Chef using seasonal, locally sourced ingredients. Our children's menu ensures younger guests can enjoy a festive meal of their own. This exclusive Christmas Eve dining experience is available for one night only, with limited seating available. A 50% deposit is required to secure your reservation.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-24",
+        "precision": "day",
+        "startTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Moody Lagoon Restaurant, Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/christmas-eve-dinner-2026",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/12209_BCSA_Moody_Lagoon_Christmas_Eve_Dinner_2026_Social_posts_no_QR_d4e24acb-73ab-478b-8b54-0ce41c4184b3.jpg?v=1787138650",
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "holidays_and_celebrations"
+      ],
+      "format": "dining_event",
+      "audience": "family",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "wine"
+    ],
+    "profile": "A one-night multi-course Christmas Eve dinner at Moody Lagoon Restaurant on Benguela Cove wine estate, with sunset views over the lagoon. Diners choose a festive main such as gammon, stuffed chicken or smoked roast beef, with a children's menu and lawn games for younger guests. It suits families and groups celebrating Christmas near Hermanus; a 50% deposit secures a table.",
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/christmas-lunch-2026",
+    "url": "https://benguelacove.co.za/products/christmas-lunch-2026",
+    "rawFile": "raw/benguela-cove/christmas-lunch-2026.txt",
+    "fetchedAt": "2026-11-23T13:52:23Z",
+    "title": "Christmas Lunch 2026 at Moody Lagoon",
+    "summary": "A multi-course summer Christmas lunch at Moody Lagoon restaurant on Friday, 25 December 2026, from 12:00.",
+    "description": "Secure your table now for Christmas Lunch at Moody Lagoon restaurant on Friday, 25 December 2026. Celebrate the holiday season at Benguela Cove Wine Estate for a vibrant, sun-drenched South African summer Christmas. Join us for brunch on 25 December, served 09:30-11:30 or a leisurely Christmas Picnic. The highlight of the day is a magnificent Christmas lunch at Moody Lagoon restaurant starting from 12:00pm. Our Head Chef has designed a spectacular multi-course summer feast using seasonal, locally sourced ingredients. Booking and payment of a 50% deposit is essential.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-25",
+        "precision": "day",
+        "startTime": "12:00"
+      }
+    ],
+    "venue": {
+      "name": "Moody Lagoon Restaurant, Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/christmas-lunch-2026",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Christmas-Day-Lunch_88f45eb8-bb66-4c2b-acfb-473890bc2858.jpg?v=1787138221",
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "holidays_and_celebrations"
+      ],
+      "format": "dining_event",
+      "audience": "family",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "wine"
+    ],
+    "profile": "A multi-course Christmas Day lunch at Moody Lagoon restaurant on Benguela Cove wine estate, served from midday by the water. Families eat a festive summer menu with a dedicated children's menu, and can add adventure golf, the splash park and wine tasting on the estate. It suits families spending Christmas near Hermanus; a 50% deposit is required.",
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/new-years-eve-2026",
+    "url": "https://benguelacove.co.za/products/new-years-eve-2026",
+    "rawFile": "raw/benguela-cove/new-years-eve-2026.txt",
+    "fetchedAt": "2026-11-23T13:52:25Z",
+    "title": "Great Gatsby New Year's Eve at Benguela Cove",
+    "summary": "A Roaring Twenties New Year's Eve party on the shores of the Bot River Lagoon, Thursday 31 December 2026, 19:30 to 01:00, capped at 180 guests.",
+    "description": "Thursday 31 December 2026 · 19:30 - 01:00 · Dress: Great Gatsby, Roaring Twenties, Black Tie Glamour. Celebrate New Year's Eve in Hermanus with a Roaring Twenties party on the shores of the Bot River Lagoon. Benguela Cove Wine Estate turns its New Year's Eve Area into a Great Gatsby scene for one night only, with a live DJ, premium sound and lighting, an unlimited 360-degree video booth, and a midnight countdown into 2027. The event caps at 180 guests, so book early to secure your spot. Standard Ticket, R850pp early bird (until 15 November), R950pp thereafter. Great Gatsby Ticket with Picnic Basket, R1,350pp early bird, R1,450pp thereafter. Children's Ticket (under 12), R450.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-31",
+        "end": "2027-01-01",
+        "precision": "day",
+        "startTime": "19:30",
+        "endTime": "01:00"
+      }
+    ],
+    "price": {
+      "min": 450,
+      "max": 1450,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/new-years-eve-2026",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/NYE-2026-Party-Benguela-Cove_63e23000-518a-449a-a558-9bc6534147c1.jpg?v=1791458270",
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations"
+      ],
+      "format": "party",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "new-years-eve",
+      "electronic"
+    ],
+    "profile": "A Great Gatsby-themed New Year's Eve party at Benguela Cove wine estate on the Bot River Lagoon, from 7:30pm to 1am, for up to 180 guests. Guests dress in Roaring Twenties or black-tie style and dance to a live DJ, with a welcome drink, a 360-degree video booth and a midnight countdown; a picnic-basket ticket is available. It suits couples, groups and families, with children's tickets for under-12s.",
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/andrew-young-live-concert",
+    "url": "https://benguelacove.co.za/products/andrew-young-live-concert",
+    "rawFile": "raw/benguela-cove/andrew-young-live-concert.txt",
+    "fetchedAt": "2026-11-23T13:52:29Z",
+    "title": "Andrew Young Live Concert",
+    "summary": "Internationally acclaimed saxophonist Andrew Young returns to Benguela Cove for an afternoon of live music, Saturday 9 January 2027, doors 16:30, show 17:30.",
+    "description": "Saturday, 9 January 2027 | Doors 16:30 | Show 17:30. After captivating Benguela Cove audiences before, internationally acclaimed saxophonist Andrew Young returns to the lagoon for another unforgettable afternoon of live music, soul, rhythm and blues, rock and timeless favourites. Expect Beatles classics, iconic movie themes, soulful favourites and songs you know by heart, transformed by Andrew's extraordinary musicianship, energy and unmistakable style. Early Bird R275, book by 30 November 2026. General Admission R300. Children 4-12 R150 | Under 4 FREE.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-01-09",
+        "precision": "day",
+        "startTime": "17:30"
+      }
+    ],
+    "price": {
+      "min": 0,
+      "max": 300,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/andrew-young-live-concert",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/Andrew-Young-Live-Concert_986d28cc-9feb-49f5-8f10-0599aa6224c4.jpg?v=1786972122",
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "jazz",
+      "rock-and-pop"
+    ],
+    "profile": "A summer afternoon concert by saxophonist Andrew Young at Benguela Cove wine estate, playing soul, rhythm and blues, rock, Beatles classics and movie themes with the lagoon as a backdrop. Visitors can make a day of it with lunch at Moody Lagoon or a picnic on the lawns before the 5:30pm show. It suits all ages, with children's tickets and free entry for under-fours.",
+    "venue": {
+      "name": "Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Upcoming Events"
+    ]
+  },
+  {
+    "source": "Benguela Cove",
+    "sourceListingId": "https://benguelacove.co.za/products/dancing-queen-ultimate-abba-experience",
+    "url": "https://benguelacove.co.za/products/dancing-queen-ultimate-abba-experience",
+    "rawFile": "raw/benguela-cove/dancing-queen-ultimate-abba-experience.txt",
+    "fetchedAt": "2026-11-23T13:52:32Z",
+    "title": "Dancing Queen: The Ultimate ABBA Experience",
+    "summary": "Mike & The Harmonix bring their full live ABBA tribute to Benguela Cove, followed by a disco under the stars, Saturday 30 January 2027.",
+    "description": "Last year's show sold out. Now Dancing Queen returns for two nights. Get ready for a night of ABBA, glitter, big choruses and dancing under the stars at Benguela Cove. Mike & The Harmonix bring their full live ABBA tribute to the estate, complete with costume, staging and all the songs you came to hear. The courtyard becomes your own little Greek island for the night, with the lagoon and mountains setting the scene. And when the show ends, the night doesn't. The disco kicks in under the stars, right on the edge of the lagoon. Saturday, 30 January 2027. Doors open 16:30, band starts at 17:30. Dancing until late. Adults: R500. Children (under 17): R325. Family bundle: R1,450 for 2 adults + 2 children under 17.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-01-30",
+        "precision": "day",
+        "startTime": "17:30"
+      }
+    ],
+    "venue": {
+      "name": "Courtyard, Benguela Cove Lagoon Wine Estate",
+      "address": "R43, Walker Bay",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 325,
+      "max": 1450,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://benguelacove.co.za/products/dancing-queen-ultimate-abba-experience",
+    "imageUrl": "http://benguelacove.co.za/cdn/shop/files/11909_BCSA_ABBA_Show-Digital_Assets-v2_IG_POST_2_EVENT_2_f9e0ea4f-f912-4762-924f-b836d8f24342.png?v=1794224460",
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "cabaret",
+      "rock-and-pop"
+    ],
+    "profile": "A live ABBA tribute show by Mike & The Harmonix in the courtyard of Benguela Cove wine estate, with costumes and staging, followed by a disco under the stars by the lagoon. Guests can pre-order picnic baskets and dance until late after the 5:30pm show. It suits families and groups of friends, with children's tickets and a family bundle.",
+    "hints": [
+      "Upcoming Events"
+    ]
+  }
+]
