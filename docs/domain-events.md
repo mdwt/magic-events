@@ -32,7 +32,6 @@ Every domain event is one row in the repo's append-only `events` table.
 | Domain event | When | Read by | Carries |
 | --- | --- | --- | --- |
 | `location.added` | The system starts covering a new location | Discovery | Location ID, name, slug, country, region, timezone, centre point |
-| `submission.created` | An organiser submits a new experience or a change to one | Data processing | Submission ID, tenant ID, experience ID (empty for a new experience), the submitted details |
 
 ## Discovery
 
@@ -44,8 +43,7 @@ Every domain event is one row in the repo's append-only `events` table.
 
 | Domain event | When | Read by | Carries |
 | --- | --- | --- | --- |
-| `experience.processed` | A listing or submission produced a new or changed experience | Catalogue | Experience ID, version, all published fields, sessions, attribute values, tags, source links, and the submission ID if a submission caused it |
-| `incoming_listing.rejected` | A listing or submission could not become an experience | Catalogue | Incoming listing ID, origin (discovery or submission), origin ID, reason |
+| `experience.processed` | A raw listing produced a new or changed experience | Catalogue | Experience ID, version, all published fields, sessions, attribute values, tags, source links |
 
 ## Organizations
 
@@ -63,12 +61,10 @@ Every domain event is one row in the repo's append-only `events` table.
 | --- | --- |
 | LocationAdded | `location.added` |
 | RawRecordCaptured | `raw_listing.captured` |
-| ExperienceSubmitted | `submission.created` |
+| ExperienceSubmitted | Removed. Organisers create experiences directly in Catalogue |
 | ExperienceProcessed | `experience.processed` |
 | TenantCreated | `tenant.created` |
 | TenantSuspended | `tenant.suspended` |
 | UserAdded | `user.added` |
 | RoleChanged | `user.role_changed` |
 | UserRemoved | `user.removed` |
-
-`incoming_listing.rejected` is new. Without it, Catalogue has no way to learn that a submission was rejected, which its Rejected status needs.

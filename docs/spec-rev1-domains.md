@@ -14,7 +14,7 @@ Version 1 is an experience feed. It holds no trip context and serves experiences
 | Process experiences | Clean, de-duplicate, categorise and tag raw data, then make it ready for the data warehouse | Data processing |
 | Search experiences | Find processed experiences by location, dates and traveller interests | Catalogue |
 | Track changes | Show what is new, changed or cancelled since a time the client gives | Catalogue |
-| Submit experiences | Let an event organiser create and maintain their own experiences | Catalogue |
+| Create experiences | Let an event organiser create and maintain their own experiences | Catalogue |
 | Authenticate and authorise | Know who is calling and decide what they may do | Identity |
 | Manage tenants | Tenant setup and configuration, users, and their roles | Organizations |
 
@@ -51,14 +51,14 @@ Finds experiences and captures the raw data as received.
 Turns raw records into clean, categorised, tagged experiences ready for the data warehouse.
 
 - **Owns:** the processing pipeline, the category and tag vocabulary, matching rules (is this the same experience as one we already have), and the processed result.
-- **Boundary:** does not fetch from sources or answer client queries. It processes experiences from Discovery and experiences submitted by organisers the same way, so every experience gets the same categories and tags.
+- **Boundary:** does not fetch from sources or answer client queries. It processes the raw listings Discovery captures.
 
 ### Catalogue
 
 The experiences as clients see them, and everything clients do with them.
 
-- **Owns:** published experiences, the locations the system covers and clients search by, search by location, dates and interests, the change history clients track, and organiser-submitted experiences.
-- **Boundary:** does not process or categorise. An organiser's new experience goes to Data processing before it is published.
+- **Owns:** published experiences, the locations the system covers and clients search by, search by location, dates and interests, the change history clients track,, and experiences organisers create.
+- **Boundary:** does not process discovered listings. An experience an organiser creates is published as entered.
 
 All experiences are discoverable by every tenant, including organiser experiences.
 
@@ -106,7 +106,6 @@ flowchart TB
   SCH --> DIS
   DIS --> DP
   DP --> CAT
-  CAT --> DP
   DIS --> SRC
   DP --> DW
   CAT --> STO
@@ -118,8 +117,8 @@ REST and MCP are two adapters on the same inbound ports, so a person and an agen
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
 | Discovery | Run discovery for a location | Fetch from a source; store raw records; announce `raw_listing.captured` |
-| Data processing | Process a raw record; process a submitted experience | Store processed experiences; load the data warehouse; announce `experience.processed` |
-| Catalogue | Search experiences; get changes since; submit an experience; manage locations | Store published experiences and their history; announce `submission.created` and `location.added` |
+| Data processing | Process a raw record | Store processed experiences; load the data warehouse; announce `experience.processed` |
+| Catalogue | Search experiences; get changes since; create an experience; manage locations | Store published experiences and their history; announce `location.added` |
 | Identity | Authenticate a caller; authorise an action | Store credentials; know each user's tenant and role |
 | Organizations | Manage tenants; manage users and roles | Store tenants and users; announce tenant and user changes |
 
@@ -131,7 +130,6 @@ Domains never reach into each other's data. One domain raises a domain event whe
 | --- | --- | --- | --- |
 | `location.added` | Catalogue | Discovery | A new place is covered; start finding experiences there |
 | `raw_listing.captured` | Discovery | Data processing | A source returned an experience record, as fetched |
-| `submission.created` | Catalogue | Data processing | An organiser created or changed one of their experiences |
 | `experience.processed` | Data processing | Catalogue | A clean, categorised, tagged experience is ready, either new or changed |
 | `tenant.created` | Organizations | Identity | A new tenant exists and can have users |
 | `user.added` | Organizations | Identity | A person joined a tenant with a role; issue credentials |
@@ -165,9 +163,7 @@ Eight months later, the agent refines the trip and books activities. They want o
 An organiser adds their festival in Hermanus so travel agents can find it.
 
 1. **Identity** authenticates the organiser and authorises experience creation for their tenant.
-2. **Catalogue** records the submission against the organiser's tenant and raises `submission.created`.
-3. **Data processing** cleans, categorises and tags it, checks it against experiences already discovered, and raises `experience.processed`.
-4. **Catalogue** publishes it, and the experience appears in searches like UC1. There is no system admin review in v1.
+2. **Catalogue** creates the experience as entered and publishes it. It appears in searches like UC1. There is no submission, processing step or review in v1.
 
 ### UC4: The system discovers experiences in a location
 
@@ -205,18 +201,18 @@ An organiser adds their festival in Hermanus so travel agents can find it.
 | Is Catalogue its own domain? | Yes |
 | Is a location a place the system covers or a tenant's site? | A place the system covers, owned by Catalogue |
 | Can every tenant see every experience? | Yes. All experiences are discoverable by every tenant, including organiser experiences |
-| Does an organiser's experience need admin review before publishing? | Not in v1. Organiser experiences publish once processed |
+| Does an organiser's experience need admin review before publishing? | Not in v1. Organisers create experiences directly in Catalogue and they publish as entered, with no submission workflow |
 | Do agents need their own role? | No. Agents can do exactly what clients can. Identity knows whether a caller is an agent or a person |
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
 
 ## Open questions
 
 - [ ] Does an agent's credential belong to a specific user or to the tenant? The MCP question was closed on roles, but this part is still unanswered, and no flow issues or revokes an agent credential.
-- [ ] The client role includes creating and maintaining experiences, so travel agencies and travel apps can submit experiences too. Is that intended, or does tenant kind limit submission to organisers?
+- [ ] The client role includes creating and maintaining experiences, so travel agencies and travel apps can create experiences too. Is that intended, or does tenant kind limit creating to organisers?
 - [ ] How does the system learn that a discovered experience was cancelled or dropped by its source? UC2 returns cancellations, but no flow produces one for discovered experiences.
-- [ ] When an organiser's experience matches an already discovered experience (UC3 step 3), which version is published, and can the organiser then edit it?
-- [ ] How does an organiser change or cancel their own experience? `submission.created` covers create and change; nothing covers cancel or delete.
-- [ ] Can an organiser submit an experience in a location the system does not cover?
+- [ ] Should an organiser's experience go straight into Catalogue (as now), or in as a raw listing so Data processing matches it against discovered ones? Created directly, it isn't checked for duplicates.
+- [ ] Who may change or cancel an experience an organiser created?
+- [ ] Can an organiser create an experience in a location the system does not cover?
 - [ ] When a tenant is suspended, do its organiser experiences stay published?
 - [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.
 - [ ] How does Catalogue get the category and tag vocabulary it searches by interest, and how does a client list it? No port or domain event shares it.

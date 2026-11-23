@@ -24,7 +24,6 @@ flowchart LR
   ORG[Organizations] -- tenant and user events --> ID[Identity]
   CAT[Catalogue] -- location.added --> DIS[Discovery]
   DIS -- raw_listing.captured --> DP[Data processing]
-  CAT -- submission.created --> DP
   DP -- experience.processed --> CAT
 ```
 
@@ -32,9 +31,8 @@ flowchart LR
 | --- | --- | --- | --- |
 | Catalogue | Location | Location repository | Places the system covers |
 | Catalogue | Experience | Experience repository | Published experiences, their sessions, attributes, tags, source links and change history |
-| Catalogue | Submission | Submission repository | An organiser's create or change request |
 | Data processing | Vocabulary | Vocabulary repository | Attributes (categories), their options, and tags |
-| Data processing | Incoming listing | Incoming listing repository | Each listing or submission received for processing |
+| Data processing | Incoming listing | Incoming listing repository | Each raw listing received for processing |
 | Data processing | Processed experience | Processed experience repository | The canonical experience and its listing links |
 | Discovery | Source | Source repository | Sources and which locations each covers |
 | Discovery | Run | Run repository | Runs and the raw listings each one captured |
@@ -56,7 +54,7 @@ A place the system covers. System-managed and shared by every tenant.
 
 ### Experience
 
-The aggregate root for everything a client searches. System-managed and visible to every tenant, organiser experiences included.
+The aggregate root for everything a client searches. System-managed and visible to every tenant, organiser experiences included. An organiser creates an experience directly in Catalogue, and it is published as entered, with no processing step.
 
 - **Holds:**
   - title, slug, summary, description
@@ -82,14 +80,6 @@ Parts of the aggregate, stored in their own tables:
 | Tag | A vocabulary tag on the experience | A tag appears once per experience |
 | Source link | A source's listing that this experience was built from | One experience can have links from many sources. A source's listing links to one experience only |
 | Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. Feeds changed-since (UC2) |
-
-### Submission
-
-An organiser's request to create or change an experience. The experience itself has no tenant. The submission records which tenant submitted it, and that is what lets the tenant maintain it.
-
-- **Holds:** tenant, experience (empty until first published), the submitted details, status, rejection reason, submitted and processed times.
-- **Status:** pending, processed, rejected. A rejection has a reason.
-- **Raises:** `submission.created`.
 
 ### Experience status
 
@@ -138,20 +128,19 @@ The single set of attributes and tags every experience is described with. System
 
 ### Incoming listing
 
-One row for each `raw_listing.captured` or `submission.created` that Data processing receives.
+One row for each `raw_listing.captured` that Data processing receives.
 
-- **Holds:** where it came from (discovery or submission) and its ID there, received time, status, attempts, error, the experience it produced.
+- **Holds:** the raw listing it came from, received time, status, attempts, error, the experience it produced.
 - **Status:** pending, processed, rejected, failed.
-- **Rules:** the origin plus its ID is unique, so a domain event delivered twice is processed once.
-- **Raises:** `incoming_listing.rejected` when a listing or submission can't become an experience.
+- **Rules:** one row per raw listing, so a domain event delivered twice is processed once.
 
 ### Processed experience
 
-The canonical experience Data processing builds, before Catalogue publishes it. Our ID for an experience is created here once, the first time a listing matches nothing. It never changes, and Catalogue publishes under the same ID.
+The canonical experience Data processing builds from discovered listings, before Catalogue publishes it. Our ID for a discovered experience is created here once, the first time a listing matches nothing. It never changes, and Catalogue publishes under the same ID. An experience an organiser creates gets its ID in Catalogue.
 
 - **Listing link:** source, the source's listing ID, the raw listing it came from, the matching rule that linked it, and when.
 - **Rules:** a source's listing ID links to one experience. If a source has no listing ID, its web address is used instead.
-- **Matching:** a listing whose source and ID are already linked updates that experience. Otherwise Data processing compares place, dates, title and venue against existing experiences, and either links the listing or creates a new experience. Organiser submissions are matched the same way.
+- **Matching:** a listing whose source and ID are already linked updates that experience. Otherwise Data processing compares place, dates, title and venue against existing experiences, and either links the listing or creates a new experience.
 - **Raises:** `experience.processed`.
 
 ## Discovery
@@ -205,7 +194,8 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Terms | "Experience" is the thing a traveller goes to; "event" means domain event only |
 | Domain event names | `resource.verb`, lowercase, verb in the past tense |
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
-| Experiences | System-managed and visible to every tenant. Organiser ownership lives on the submission |
+| Experiences | System-managed and visible to every tenant |
+| Organiser experiences | Created directly in Catalogue and published as entered. No submission or approval workflow in v1 |
 | Vocabulary | One system-managed set of attributes and tags |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
@@ -221,3 +211,5 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 - [ ] Must every experience have a position? Without one it can never match a radius search.
 - [ ] Does a raw listing's content live in Postgres or in object storage behind a reference?
 - [ ] How does Catalogue get the vocabulary it filters on, and how do clients list it?
+- [ ] Should an organiser's experience go straight into Catalogue (as now), or in as a raw listing so Data processing matches it against discovered ones? Created directly, it isn't checked for duplicates.
+- [ ] Who may change or cancel an experience an organiser created?
