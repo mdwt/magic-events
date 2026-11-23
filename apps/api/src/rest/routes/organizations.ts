@@ -11,7 +11,7 @@ import {
   userSchema,
   type Organizations,
 } from "../../core/organizations/ports.ts";
-import { errorResponses, notFoundResponse } from "../errors.ts";
+import { conflictResponse, errorResponses, notFoundResponse } from "../errors.ts";
 
 // Onboarding tenants and their users. A system admin's alone: a client is refused before anything here runs.
 
@@ -30,7 +30,7 @@ export const organizationsRoutes: FastifyPluginAsyncZod<{ organizations: Organiz
           "tenant's lasting name in addresses and must not be taken. For system admins only.",
         tags: TAGS,
         body: createTenantInputSchema,
-        response: { 201: tenantSchema.describe("The tenant, created."), ...errorResponses },
+        response: { 201: tenantSchema.describe("The tenant, created."), ...errorResponses, ...conflictResponse },
       },
     },
     async (request, reply) => {
@@ -113,7 +113,12 @@ export const organizationsRoutes: FastifyPluginAsyncZod<{ organizations: Organiz
         tags: TAGS,
         params: tenantSlugParamsSchema,
         body: addTenantUserInputSchema,
-        response: { 201: userSchema.describe("The user, created."), ...errorResponses, ...notFoundResponse },
+        response: {
+          201: userSchema.describe("The user, created."),
+          ...errorResponses,
+          ...notFoundResponse,
+          ...conflictResponse,
+        },
       },
     },
     async (request, reply) => {

@@ -18,6 +18,7 @@ test("each AppError code maps to its status, with its message and details", () =
     ["unauthenticated", 401],
     ["forbidden", 403],
     ["not_found", 404],
+    ["conflict", 409],
     ["rate_limited", 429],
     ["unavailable", 503],
   ] as const;

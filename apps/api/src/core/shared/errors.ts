@@ -3,6 +3,8 @@ export type ErrorCode =
   | "forbidden"
   | "invalid_input"
   | "not_found"
+  // What the call would create already exists, such as a taken slug or email address.
+  | "conflict"
   | "rate_limited"
   // The system cannot answer for now, such as while its database is down. The caller may try again later.
   | "unavailable";

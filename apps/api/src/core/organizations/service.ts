@@ -39,7 +39,7 @@ export class OrganizationsService implements Organizations {
   async createTenant(input: CreateTenantInput): Promise<Tenant> {
     const created = await this.#repository.insertTenant(tenantRow({ ...input, status: "active" }));
     if (created === null) {
-      throw new AppError("invalid_input", `A tenant with the slug "${input.slug}" already exists.`, [
+      throw new AppError("conflict", `A tenant with the slug "${input.slug}" already exists.`, [
         { path: "slug", message: "Already taken. Choose another slug." },
       ]);
     }
@@ -93,7 +93,7 @@ export class OrganizationsService implements Organizations {
   async createUser(input: SaveUserInput): Promise<User> {
     const created = await this.#repository.insertUser(await this.#userRow(input));
     if (created === null) {
-      throw new AppError("invalid_input", "A user with this email address already exists.", [
+      throw new AppError("conflict", "A user with this email address already exists.", [
         { path: "email", message: "Already taken. One user per email address." },
       ]);
     }

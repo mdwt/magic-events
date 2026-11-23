@@ -93,7 +93,7 @@ test("a taken slug is refused on create, while the seed's save still updates it"
   await organizations.createTenant({ name: "Blue", slug: "blue", kind: "travel_agency" });
   await assert.rejects(
     organizations.createTenant({ name: "Other", slug: "blue", kind: "travel_app" }),
-    failsWith("invalid_input", "slug"),
+    failsWith("conflict", "slug"),
   );
   const saved = await organizations.saveTenant({ name: "Blue Travel", slug: "blue", kind: "travel_agency" });
   assert.equal(saved.name, "Blue Travel");
@@ -151,7 +151,7 @@ test("a user is created in their tenant, a taken email is refused, and the seed'
 
   await assert.rejects(
     organizations.createUser({ name: "Ann", email: "ANN@blue.example.com", role: "client", tenantSlug: "blue" }),
-    failsWith("invalid_input", "email"),
+    failsWith("conflict", "email"),
   );
   const saved = await organizations.saveUser({
     name: "Ann Smith",

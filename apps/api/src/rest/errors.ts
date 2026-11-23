@@ -12,6 +12,7 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
   unauthenticated: 401,
   forbidden: 403,
   not_found: 404,
+  conflict: 409,
   rate_limited: 429,
   internal_error: 500,
   unavailable: 503,
@@ -51,6 +52,11 @@ export const errorResponses = {
   429: errorSchema("rate_limited", "Too many requests. Retry-After says how many seconds to wait."),
   500: errorSchema("internal_error", "Something went wrong on the server. Quote the request ID if you report it."),
   503: errorSchema("unavailable", "The service cannot answer for now, such as while its database is down. Retry-After says how many seconds to wait."),
+};
+
+// For a route that creates something whose name must not be taken.
+export const conflictResponse = {
+  409: errorSchema("conflict", "It already exists: the details name the field that is taken."),
 };
 
 // For a route that names something in its address, which may not exist.

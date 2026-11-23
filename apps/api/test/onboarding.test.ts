@@ -222,17 +222,17 @@ describe("over REST", () => {
     assert.equal((await call("PATCH", "/v1/tenants/nowhere", adminKey, { status: "active" })).statusCode, 404);
   });
 
-  test("a duplicate slug and a duplicate email are 400", async () => {
+  test("a duplicate slug and a duplicate email are 409 conflict", async () => {
     const slug = await call("POST", "/v1/tenants", adminKey, { name: "Copy", slug: "fynbos-journeys", kind: "travel_app" });
-    assert.equal(slug.statusCode, 400);
-    assert.equal(errorCode(slug), "invalid_input");
+    assert.equal(slug.statusCode, 409);
+    assert.equal(errorCode(slug), "conflict");
 
     const email = await call("POST", "/v1/tenants/fynbos-journeys/users", adminKey, {
       name: "Thandi again",
       email: "thandi@fynbos.example.com",
     });
-    assert.equal(email.statusCode, 400);
-    assert.equal(errorCode(email), "invalid_input");
+    assert.equal(email.statusCode, 409);
+    assert.equal(errorCode(email), "conflict");
   });
 
   test("a bad slug, a bad email and an unknown tenant are refused", async () => {
@@ -300,11 +300,11 @@ describe("over MCP", () => {
     await toolAnswer(adminKey, "create_tenant", { name: "Cliff Path", slug: "cliff-path", kind: "travel_agency" });
     assert.equal(
       toolErrorCode(await tool(adminKey, "create_tenant", { name: "Copy", slug: "cliff-path", kind: "travel_app" })),
-      "invalid_input",
+      "conflict",
     );
     const add = { slug: "cliff-path", name: "Lee", email: "lee@cliff.example.com" };
     await toolAnswer(adminKey, "add_tenant_user", add);
-    assert.equal(toolErrorCode(await tool(adminKey, "add_tenant_user", add)), "invalid_input");
+    assert.equal(toolErrorCode(await tool(adminKey, "add_tenant_user", add)), "conflict");
     assert.equal(toolErrorCode(await tool(adminKey, "get_tenant", { slug: "nowhere" })), "not_found");
   });
 
