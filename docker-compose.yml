@@ -19,6 +19,10 @@ services:
     # On port 5434 of the host, so it does not clash with a Postgres already on 5432.
     ports:
       - "5434:5432"
+    # Docker gives a container 64 MB of shared memory, which Postgres's parallel queries use. With 20 connections
+    # searching at once that ran out, and the searches failed with "could not resize shared memory segment".
+    # Takes effect when the container is created again: `pnpm db:down` then `pnpm db:up`.
+    shm_size: 256mb
     # The data is kept in a named volume, so it survives `pnpm db:down`. `docker compose down -v` deletes it.
     volumes:
       - pgdata:/var/lib/postgresql
