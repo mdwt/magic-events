@@ -197,7 +197,7 @@ export function registerOnboarding(): void {
     const after = await admin(["key", "list", "--user", SECOND]);
     c.ok(/revoked\s+person\s+planning desk/.test(after.stdout), `the list shows the person key revoked: ${after.stdout.trim()}`);
     c.ok(/enabled\s+agent\s+trip assistant/.test(after.stdout), "the list shows the agent key enabled");
-    c.saw(`key revoke: "${revoked.stdout.trim()}"; the revoked key: 401 with WWW-Authenticate, twice; the agent key: 200; key list: "planning desk" revoked, "trip assistant" enabled`);
+    c.saw(`key revoke: "${printedOf(revoked).trim()}"; the revoked key: 401 with WWW-Authenticate, twice; the agent key: 200; key list: "planning desk" revoked, "trip assistant" enabled`);
   });
 
   scenario("E2E-35", "Every tenant sees the same feed", async ({ c }) => {
