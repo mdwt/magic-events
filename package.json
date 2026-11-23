@@ -7,6 +7,7 @@
     "node": ">=24"
   },
   "scripts": {
+    "quickstart": "pnpm db:up && pnpm db:restore && pnpm db:seed",
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
@@ -17,6 +18,8 @@
     "db:generate": "pnpm --filter @magic-events/db generate",
     "db:migrate": "pnpm --filter @magic-events/db migrate",
     "db:migrate:test": "pnpm --filter @magic-events/db migrate:test",
+    "db:snapshot": "pnpm --filter @magic-events/db snapshot:save",
+    "db:restore": "pnpm --filter @magic-events/db snapshot:restore",
     "db:seed": "pnpm --filter @magic-events/cli seed",
     "db:seed:samples": "pnpm --filter @magic-events/cli seed:samples",
     "db:studio": "pnpm --filter @magic-events/db studio",

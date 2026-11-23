@@ -15,6 +15,8 @@
     "generate": "drizzle-kit generate",
     "migrate": "node --env-file-if-exists=../../.env src/cli/migrate.ts DATABASE_URL",
     "migrate:test": "node --env-file-if-exists=../../.env src/cli/migrate.ts TEST_DATABASE_URL",
+    "snapshot:save": "node --env-file-if-exists=../../.env src/cli/snapshot.ts save",
+    "snapshot:restore": "node --env-file-if-exists=../../.env src/cli/snapshot.ts restore",
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
