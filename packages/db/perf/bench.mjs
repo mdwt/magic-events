@@ -113,13 +113,13 @@ if (process.argv.includes("--trace")) {
     // Postgres logs to its standard error, which docker logs gives back on its own.
     const logs = spawnSync("docker", ["logs", "--since", since, container], { encoding: "utf8" });
     const lines = `${logs.stdout}${logs.stderr}`
-      .split("\n").filter((line) => line.includes("duration:") && line.includes("execute"));
+      .split("\n").filter((line) => line.includes("duration:") && / (execute [^:]*|statement): /.test(line));
     let sum = 0;
     console.log(`\n== ${name}: ${result.status}, ${result.ms.toFixed(1)} ms, ${lines.length} statements`);
     for (const line of lines) {
       const ms = Number(/duration: ([\d.]+) ms/.exec(line)?.[1] ?? 0);
       sum += ms;
-      const statement = line.replace(/^.*?execute [^:]*: /, "").replace(/\s+/g, " ");
+      const statement = line.replace(/^.*? (execute [^:]*|statement): /, "").replace(/\s+/g, " ");
       console.log(`${ms.toFixed(2).padStart(9)} ms  ${statement.slice(0, Number(process.env.PERF_WIDTH ?? 160))}`);
     }
     console.log(`${sum.toFixed(2).padStart(9)} ms  in the database`);

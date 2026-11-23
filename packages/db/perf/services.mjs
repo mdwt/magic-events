@@ -62,7 +62,7 @@ const container = process.env.PERF_CONTAINER;
 function statementsSince(since) {
   if (container === undefined) return "";
   const logs = spawnSync("docker", ["logs", "--since", since, container], { encoding: "utf8", maxBuffer: 1e9 });
-  const lines = `${logs.stdout}${logs.stderr}`.split("\n").filter((line) => line.includes("duration:") && line.includes("execute"));
+  const lines = `${logs.stdout}${logs.stderr}`.split("\n").filter((line) => line.includes("duration:") && / (execute [^:]*|statement): /.test(line));
   const ms = lines.reduce((sum, line) => sum + Number(/duration: ([\d.]+) ms/.exec(line)?.[1] ?? 0), 0);
   return `\t${lines.length} statements\t${ms.toFixed(1)} ms in the database`;
 }
