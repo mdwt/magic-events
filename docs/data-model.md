@@ -150,14 +150,14 @@ What each status allows:
 | --- | --- | --- | --- |
 | Expected | Yes | No | Yes |
 | Announced | Yes | No | Yes |
-| Confirmed | Yes | Yes, while booking is Open | Yes |
+| Confirmed | Yes | Yes, while booking is Open and it has a link to book through | Yes |
 | Postponed | Yes | No | Yes |
 | Cancelled | No | No | Yes, as Cancelled |
 | Removed | No | No | Yes, as Removed |
 | Past | No | No | No |
 
-- An experience is bookable only when status is Confirmed and booking is Open. Everything else is info only.
-- A client can filter search to bookable experiences. An experience whose booking is Closed or Sold out is left out of that filter, and stays in search as info only while its status allows.
+- An experience is bookable only when status is Confirmed, booking is Open, and it has a link to book through: its booking link, or failing that its own page address. Everything else is info only. One that is Confirmed and Open with neither link gives a planner nothing to act on, so it is not bookable.
+- A client can filter search and changed-since to bookable experiences. The filter and the `bookable` flag on each result follow the same rule, so the filter returns exactly the results marked bookable. An experience whose booking is Closed or Sold out, or that has no link to book through, is left out of that filter, and stays in search as info only while its status allows.
 
 | Change | Reported by changed-since as |
 | --- | --- |
@@ -256,6 +256,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Position | An experience's own position, the venue's coordinates, is optional. One with no position is searched from its location's centre |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
+| Bookable | Confirmed, booking Open, and a booking link or, failing that, the experience's own page address. The `bookable` flag and the bookable filter apply the same rule |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
 | Moved out of the dates | Changed-since matches an experience on its sessions now and on its sessions before the first change since the time given, read from that change row. One that matched only before is reported with `movedOut: true` and the sessions it has now |
 | Change kind | A change row has one kind. When one version changes several things, it is the first that applies of cancelled, removed, postponed, rescheduled, confirmed and changed |

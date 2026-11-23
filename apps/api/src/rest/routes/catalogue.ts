@@ -19,7 +19,9 @@ export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = 
         description:
           "Experiences near a place that are on during the dates given: festivals, concerts, matches, markets, " +
           "shows and exhibitions. The place is a location's slug, such as hermanus, or a point. Dates match an experience's sessions, so an experience is returned only when it " +
-          "is on inside the range, and each result carries the sessions that fall inside it. The filters decide " +
+          "is on inside the range, and each result carries the sessions that fall inside it. An experience is " +
+          "bookable when it is confirmed, its booking is open and it has a link to book through: its booking link, " +
+          "or failing that its own page. The filters decide " +
           "what is returned; the query text only orders the results.",
         tags: ["Experiences"],
         body: searchExperiencesInputSchema,

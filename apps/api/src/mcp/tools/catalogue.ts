@@ -27,8 +27,9 @@ the traveller likes, in plain words, in query, such as "quiet, romantic, somethi
 the results, best match first, and never adds or removes one.
 
 Each result has its status (expected, announced, confirmed or postponed), whether it can be booked now (bookable: \
-confirmed with booking open), its venue, distance, price, categories and other attributes, and tags. Results are \
-paged with limit and offset, and total says how many match across all pages.`;
+confirmed, booking open, and a link to book through: bookingUrl, or failing that pageUrl), its venue, distance, \
+price, categories and other attributes, and tags. bookable: true in the filters returns exactly the results marked \
+bookable. Results are paged with limit and offset, and total says how many match across all pages.`;
 
 const CHANGES_DESCRIPTION = `Find out what changed for a place and dates you searched before. Use it when you check \
 back on a trip, weeks or months after planning it, instead of searching again and comparing the results yourself.
