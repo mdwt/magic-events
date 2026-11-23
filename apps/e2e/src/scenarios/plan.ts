@@ -76,8 +76,8 @@ function searchLogs(c: Checks, call: Call): void {
   c.ok(resolved?.level === LEVEL.debug && resolved.query !== undefined, "the resolved query is logged at debug");
   const searched = lines.find((line) => line.msg === "Searched experiences");
   c.ok(
-    searched !== undefined && typeof searched.count === "number" && typeof searched.durationMs === "number",
-    "the search's count and duration are logged",
+    searched?.level === LEVEL.info && typeof searched.count === "number" && typeof searched.durationMs === "number",
+    "the search's count and duration are logged at info",
   );
 }
 
@@ -396,7 +396,7 @@ export function registerPlanning(): void {
     const title = "Kalfiefees Hermanus Kunstefees 2027";
     const fees = one(c, await searchAll({ location: "hermanus", from: "2027-08-14", to: "2027-08-15" }), title);
     if (fees) {
-      c.equal([fees.status, fees.bookable], ["announced", false], "status and bookable");
+      c.equal([fees.status, fees.bookable], ["expected", false], "status and bookable");
       c.equal(
         fees.sessions.map((s) => [s.startDate, s.endDate, s.precision, s.startTime, s.endTime]),
         [["2027-08-01", "2027-08-31", "month", null, null]],
@@ -464,16 +464,17 @@ export function registerPlanning(): void {
     const market = one(c, may, "Hermanus Country Market");
     if (market) c.equal(sessionDays(market), ["2028-05-06", "2028-05-13"], "the market's Saturdays in May 2028");
     const september = await searchAll({ location: "hermanus", from: "2027-09-01", to: "2027-09-30" });
-    for (const title of ["Hermanus Whale Festival", "Hermanus Flower and Eco Fair", "Hermanus Adventure Week"]) {
-      const festival = one(c, september, title);
-      if (festival) {
-        c.ok(festival.status === "announced", `"${title}" is announced (${festival.status})`);
-        c.ok(festival.sessions.every((s) => s.precision === "month"), `"${title}" has month precision: ${show(festival.sessions)}`);
-      }
+    // On the captured pages the one annual festival known only by its month next year is the Whale Festival, in
+    // October. The development database also has the Flower and Eco Fair and Adventure Week, from seeded sources.
+    const october = await searchAll({ location: "hermanus", from: "2027-10-01", to: "2027-10-31" });
+    const festival = one(c, october, "Hermanus Whale Festival");
+    if (festival) {
+      c.ok(festival.status === "expected", `the Whale Festival is expected (${festival.status})`);
+      c.equal(festival.sessions.map((s) => [s.startDate, s.endDate, s.precision]), [["2027-10-01", "2027-10-31", "month"]], "the Whale Festival's session");
     }
     const swallow = one(c, september, "Swallow Series Wine Tasting Lunches");
     if (swallow) c.equal(sessionDays(swallow), ["2027-09-04"], "the Swallow Series in September 2027");
-    for (const item of september) {
+    for (const item of [...september, ...october]) {
       if (item.status === "confirmed" && item.booking === "open") {
         c.ok(Boolean(item.bookingUrl ?? item.pageUrl), `"${item.title}" is confirmed with booking open and has nowhere to book`);
       }
@@ -497,14 +498,15 @@ export function registerPlanning(): void {
     c.note(`Searched ${from} to ${to}: ${items.length} items.`);
   });
 
-  scenario("E2E-44", "The most premium first", async ({ c }) => {
+  scenario("E2E-44", "The most premium comes first", async ({ c }) => {
     const boat = (item: Experience) => /whale/i.test(item.title) && /(boat|cruise|charter)/i.test(item.title);
     const plain = (item: Experience) => /parkrun|market|markie/i.test(item.title);
+    const stay: Body = { location: "hermanus", from: "2027-09-20", to: "2027-09-30" };
     const tiered = await query<{ n: number }>(state.dbUrl, "select count(*)::int as n from experience_attribute_value where attribute_key = 'tier'");
     if ((tiered[0]?.n ?? 0) === 0) c.fail("No captured experience carries a tier: the capture files have none yet");
     const session = await connect(mainServer(), client("agency agent"));
     try {
-      for (const body of [WINTER, { ...WINTER, query: "something relaxed by the sea" }, DECEMBER]) {
+      for (const body of [stay, { ...stay, query: "whales" }]) {
         const items = await searchAll(body);
         for (let index = 1; index < items.length; index += 1) {
           const before = items[index - 1];
@@ -514,6 +516,7 @@ export function registerPlanning(): void {
             break;
           }
         }
+        if (body.query === undefined) checkDateOrderWithinTier(c, items, "with no query text, the soonest first within a tier");
         const lastBoat = Math.max(-1, ...items.map((item, index) => (boat(item) ? index : -1)));
         const firstPlain = items.findIndex(plain);
         c.ok(items.some(boat), `${show(body)} has a whale-watching boat trip`);
@@ -522,14 +525,17 @@ export function registerPlanning(): void {
         }
         const page = await search({ ...body, limit: 100 });
         const answer = await session.callTool("search_experiences", { ...body, limit: 100 });
-        c.ok(isDeepStrictEqual(answer.structuredContent, page.result), `over MCP the order is the same for ${show(body)}`);
+        c.ok(isDeepStrictEqual(answer.structuredContent, page.result), `over MCP the items and order are the same for ${show(body)}`);
       }
-      const premium = await searchAll({ ...WINTER, attributes: { tier: ["luxury", "premium"] } });
-      c.ok(premium.length > 0, "something is luxury or premium in the winter stay");
+      const premium = await searchAll({ ...stay, attributes: { tier: ["luxury", "premium"] } });
+      c.ok(premium.length > 0, "something is luxury or premium from 20 to 30 September 2027");
       for (const item of premium) {
-        c.ok(!/parkrun/i.test(item.title), `"${item.title}" is returned for luxury and premium`);
-        c.ok(tierOf(item) <= 1, `"${item.title}" has tier ${show(item.attributes.tier)}`);
+        c.ok(!plain(item), `"${item.title}" is returned for luxury and premium`);
+        c.ok(item.attributes.tier?.some((tier) => tier === "luxury" || tier === "premium") === true, `"${item.title}" has tier ${show(item.attributes.tier)}`);
       }
+      const answer = await session.callTool("search_experiences", { ...stay, attributes: { tier: ["luxury", "premium"] }, limit: 100 });
+      const rest = await search({ ...stay, attributes: { tier: ["luxury", "premium"] }, limit: 100 });
+      c.ok(isDeepStrictEqual(answer.structuredContent, rest.result), "over MCP the luxury and premium answer is the same");
     } finally {
       await session.close();
     }

@@ -56,12 +56,21 @@ export function registerChanges(): void {
         "That ’80s Show: 80s Tribute Concert": "rescheduled",
         "Christmas Eve Dinner 2026 at Moody Lagoon": "changed",
         "Race2Hermanus Triathlon 2027": "confirmed",
+        // E2E-23 removed it, after T1, and its dates are in the range.
+        "Swallow Series Wine Tasting Lunches": "removed",
       },
       "the changed experiences and their kinds",
     );
-    const five = ["Dancing Queen: The Ultimate ABBA Experience", "Andrew Young Live Concert", "That ’80s Show: 80s Tribute Concert", "Christmas Eve Dinner 2026 at Moody Lagoon", "Race2Hermanus Triathlon 2027"];
+    const five = [
+      "Dancing Queen: The Ultimate ABBA Experience",
+      "Andrew Young Live Concert",
+      "That ’80s Show: 80s Tribute Concert",
+      "Christmas Eve Dinner 2026 at Moody Lagoon",
+      "Race2Hermanus Triathlon 2027",
+      "Swallow Series Wine Tasting Lunches",
+    ];
     const others = items.filter((item) => !five.includes(item.experience.title));
-    if (others.length > 0) c.note(`Reported beside the five: ${others.map((item) => `${item.experience.title} (${item.change.kind})`).join(", ")}`);
+    if (others.length > 0) c.note(`Reported beside the six: ${others.map((item) => `${item.experience.title} (${item.change.kind})`).join(", ")}`);
     for (const item of items) {
       const ats = item.changes.map((change) => change.at);
       c.ok(isDeepStrictEqual(ats, [...ats].sort().reverse()), `"${item.experience.title}" lists its changes newest first`);

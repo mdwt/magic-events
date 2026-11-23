@@ -113,6 +113,10 @@ export function registerOnboarding(): void {
       const issuedLines = lines.filter((line) => line.msg === "Credential issued");
       lc.ok(issuedLines.length >= 2, "the command logs each key issued, with the subject");
       lc.ok(issuedLines.every((line) => JSON.stringify(line).search(/mev_/) === -1), "the issued key is not in its log line");
+      for (const refused of [again, twice]) {
+        const line = logLinesOf(refused).find((one) => one.msg === "Admin command refused");
+        lc.ok(line?.level === LEVEL.warn && typeof line.reason === "string", `a refused command is logged at warn with its reason: ${refused.stderr.trim().slice(0, 80)}`);
+      }
     });
   });
 

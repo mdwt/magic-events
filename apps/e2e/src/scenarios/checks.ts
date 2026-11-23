@@ -1,9 +1,12 @@
-import { send } from "../harness/api.ts";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { send, type Call } from "../harness/api.ts";
+import { keysPrinted } from "../harness/cli.ts";
 import { show } from "../harness/checks.ts";
-import { query } from "../harness/db.ts";
+import { databaseUrl, dropDatabase, one, query } from "../harness/db.ts";
 import { addMonths, today, WINTER } from "../harness/feed.ts";
-import { lastLines, ROOT, runCommand, type CommandResult } from "../harness/process.ts";
-import { byHand, scenario } from "../harness/scenario.ts";
+import { lastLines, ROOT, runCommand, runNode, type CommandResult } from "../harness/process.ts";
+import { byHand, scenario, skipped } from "../harness/scenario.ts";
 import { until } from "../harness/server.ts";
 import { prepare, startServer, type Snapshot } from "../harness/setup.ts";
 import { client, mainServer, recall, state } from "../harness/state.ts";
@@ -110,6 +113,8 @@ export function registerChecks(): void {
     c.note(`${passed} tests passed.`);
   });
 
+  newCheckout();
+
   byHand("C-07", "The background jobs run", "Within an hour of a server starting, pgboss.job shows a completed job of each of the four queues: the suite does not wait an hour.");
 
   scenario("C-08", "Upkeep keeps the feed current", async ({ c, logs }) => {
@@ -147,6 +152,69 @@ export function registerChecks(): void {
       lc.ok(started !== undefined && finished !== undefined && typeof finished.durationMs === "number", "the job's start and finish are logged, with its duration");
       lc.ok(kept?.jobId !== undefined && kept.jobId === started?.jobId, "the job's own lines carry its ID");
     });
+  });
+}
+
+const SNAPSHOT = join(ROOT, "packages/db/snapshot/hermanus.sql.gz");
+
+// C-09: what pnpm quickstart does, restore then seed, into a database of the run's own, never magic_events.
+function newCheckout(): void {
+  if (!existsSync(SNAPSHOT)) {
+    skipped("C-09", "A new checkout starts with a full feed", "packages/db/snapshot/hermanus.sql.gz does not exist yet: it is saved after the data fixes.");
+    return;
+  }
+  scenario("C-09", "A new checkout starts with a full feed", async ({ c }) => {
+    const name = `${state.dbName}_snapshot`;
+    const url = databaseUrl(name);
+    const env = { ...state.env, DATABASE_URL: url, BETTER_AUTH_SECRET: state.secret, LOG_LEVEL: "warn", LOG_PRETTY: "false" };
+    await dropDatabase(name);
+    try {
+      const restored = await runNode(join(ROOT, "packages/db/src/cli/snapshot.ts"), ["restore"], { env, timeoutMs: 600_000 });
+      if (!c.ok(restored.code === 0, `the restore exited with ${String(restored.code)}: ${lastLines(restored.output, 5)}`)) return;
+      const seeded = await runNode(join(ROOT, "apps/cli/src/seed/run.ts"), [], { env, timeoutMs: 120_000 });
+      c.ok(seeded.code === 0 && /NEW API KEYS/.test(seeded.stdout), `the seed prints the new keys: ${lastLines(seeded.output, 3)}`);
+      const printed = keysPrinted(seeded.stdout).find((key) => key.email === "planner@agency.example.com" && key.kind === "person");
+      if (!c.ok(printed !== undefined, "the seed printed the Agency Planner's person key") || printed === undefined) return;
+      state.keys.add(printed.key);
+      const ids = await one<{ user_id: string; tenant_id: string; credential_id: string }>(
+        url,
+        `select u.id as user_id, u.tenant_id, k.id as credential_id from "user" u join apikey k on k.reference_id = u.id
+          where u.email = 'planner@agency.example.com' and k.name = 'seed person key'`,
+      );
+      const server = await startServer("snapshot", { DATABASE_URL: url });
+      let answer: Call | undefined;
+      try {
+        answer = await send(server, {
+          path: "/v1/experiences/search",
+          client: {
+            label: "snapshot agency person",
+            key: printed.key,
+            email: printed.email,
+            userId: ids.user_id,
+            tenantId: ids.tenant_id,
+            tenantSlug: "example-travel-agency",
+            kind: "person",
+            role: "client",
+            credentialId: ids.credential_id,
+          },
+          body: { location: "hermanus", from: today(), to: addMonths(today(), 24), limit: 100 },
+        });
+      } finally {
+        await server.stop();
+      }
+      const total = (answer.json as { total?: number } | undefined)?.total ?? 0;
+      const searchable = await one<{ n: number }>(url, "select count(*)::int as n from experience where status in ('expected','announced','confirmed','postponed')");
+      c.ok(answer.status === 200 && total > 0, `a search with the new key returns the snapshot's experiences: ${answer.status}, total ${total} of ${searchable.n}`);
+      const unembedded = await one<{ n: number }>(
+        url,
+        "select count(*)::int as n from experience where status in ('expected','announced','confirmed','postponed') and embedding is null",
+      );
+      c.equal(unembedded.n, 0, "searchable experiences without an embedding");
+      const again = await runNode(join(ROOT, "packages/db/src/cli/snapshot.ts"), ["restore"], { env, timeoutMs: 120_000 });
+      c.ok(again.code !== 0 && /already has tables/.test(again.output), `restore run again changes nothing and says so: ${lastLines(again.output, 2)}`);
+    } finally {
+      await dropDatabase(name);
+    }
   });
 }
 

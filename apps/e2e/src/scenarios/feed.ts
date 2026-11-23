@@ -6,7 +6,8 @@ import { show } from "../harness/checks.ts";
 import { one, query, literal } from "../harness/db.ts";
 import { DECEMBER, search, searchAll, sessionDays, titled, WINTER } from "../harness/feed.ts";
 import type { CommandResult } from "../harness/process.ts";
-import { byHand, scenario } from "../harness/scenario.ts";
+import { scenario } from "../harness/scenario.ts";
+import { failedFetchIsRetried } from "./retry.ts";
 import { recall, remember, state } from "../harness/state.ts";
 
 // The feed keeps itself current (UC3), on the end-to-end database: E2E-18 to E2E-25.
@@ -88,11 +89,9 @@ export function registerFeed(): void {
     { live: true },
   );
 
-  byHand(
-    "E2E-19",
-    "A failed fetch is tried again",
-    "Needs a source's host made unreachable and then reachable (/etc/hosts) while a server runs its schedule with DISCOVERY_FETCH_RETRY_BACKOFF_MINUTES=1, for several minutes.",
-  );
+  scenario("E2E-19", "A failed fetch is tried again", async ({ c }) => {
+    await failedFetchIsRetried(c);
+  });
 
   scenario("E2E-20", "Scraped sources load through the same pipeline", async ({ c, logs }) => {
     const loaded = recall<CommandResult>("load");
@@ -273,15 +272,15 @@ export function registerFeedChanges(): void {
 
   scenario("E2E-24", "One experience across many sources", async ({ c }) => {
     const cases: [string, string, string, number][] = [
-      ["2026-12-11", "Fleetwood Mac", "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026", 6],
-      ["2026-11-28", "Rosoberry", "Rosoberry Harvest Fest 2026", 8],
+      // On the captured pages: four and five listings. The development database adds the seeded sources' listings.
+      ["2026-12-11", "Fleetwood Mac", "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026", 4],
+      ["2026-11-28", "Rosoberry", "Rosoberry Harvest Fest 2026", 5],
     ];
     for (const [day, text, title, sources] of cases) {
       const items = await searchAll({ location: "hermanus", from: day, to: day, query: text });
       c.equal(titled(items, title).length, 1, `"${title}" returned`);
       const lookalikes = items.filter((item) => item.title !== title && item.title.toLowerCase().includes(text.toLowerCase()));
       c.equal(lookalikes.map((item) => item.title), [], `other items named like "${text}"`);
-      // The document counts the listings it was read from, on four sites for the concert.
       const linked = await one<{ listings: number; sites: number }>(
         state.dbUrl,
         `select count(distinct l.id)::int as listings, count(distinct l.source_id)::int as sites from experience e

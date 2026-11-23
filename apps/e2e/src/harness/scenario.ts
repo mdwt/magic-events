@@ -7,7 +7,7 @@ import { state } from "./state.ts";
 // A scenario of docs/end-to-end.md as a named test carrying its ID, followed by a second test that reads the lines
 // the server wrote for it. Each records its outcome for the results table.
 
-export type Outcome = "pass" | "fail" | "by hand" | "live" | "not run";
+export type Outcome = "pass" | "fail" | "by hand" | "live" | "skipped" | "not run";
 
 export interface Row {
   id: string;
@@ -96,6 +96,14 @@ export function scenario(
     record.seen.push(...c.problems.map((problem) => `log: ${problem}`));
     if (!c.passed) throw new Error(c.problems.join("\n"));
   });
+}
+
+// A scenario that cannot run yet, with the reason.
+export function skipped(id: string, title: string, reason: string): void {
+  const record = row(id, title);
+  record.result = combine(record.result, "skipped");
+  record.notes.push(reason);
+  test(`${id} ${title}`, { skip: reason }, () => undefined);
 }
 
 // A scenario that needs a person or a live service the suite cannot stand in for.

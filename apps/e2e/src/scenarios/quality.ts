@@ -308,7 +308,7 @@ export function registerQuality(): void {
       .filter(Boolean);
     const far = /cape town|johannesburg|sandton|pretoria|durban|stellenbosch|paarl|franschhoek|somerset west|george|knysna/i;
     const elsewhere = new Set<string>();
-    const seen = new Map<string, string>();
+    const seen = new Map<string, Experience[]>();
     const names = new Set((await query<{ name: string }>(state.dbUrl, "select name from season")).map((one) => one.name.toLowerCase()));
     const placeWords = new Set(towns.flatMap((town) => words(town)));
     const generic = new Set(["time", "event", "events", "calendar", "programme", "program", "tickets", "whats", "what", "on", "s"]);
@@ -317,10 +317,16 @@ export function registerQuality(): void {
       const city = `${item.venue.city ?? ""} ${item.venue.address ?? ""}`;
       if (far.test(city)) c.fail(`"${item.title}" is outside the area: ${city.trim()}`);
       else if (item.venue.city && !towns.some((town) => item.venue.city?.toLowerCase().includes(town))) elsewhere.add(item.venue.city);
+      // The same event twice: the same title, overlapping dates and the same page or booking address. A ticketed date
+      // with its own booking link is its own experience.
       const key = words(item.title).join(" ");
-      const twin = seen.get(key);
-      if (twin !== undefined) c.fail(`"${item.title}" is there twice (also "${twin}")`);
-      seen.set(key, item.title);
+      for (const twin of seen.get(key) ?? []) {
+        const overlap = item.sessions.some((one) => twin.sessions.some((other) => one.startDate <= other.endDate && other.startDate <= one.endDate));
+        const address = (one: Experience) => [one.bookingUrl, one.pageUrl].filter((value): value is string => Boolean(value));
+        const shared = address(item).some((value) => address(twin).includes(value));
+        if (overlap && shared) c.fail(`"${item.title}" is there twice (also "${twin.title}")`);
+      }
+      seen.set(key, [...(seen.get(key) ?? []), item]);
       if (names.has(item.title.toLowerCase()) || /^southern right whales/i.test(item.title)) c.fail(`"${item.title}" is a season, not an experience`);
       const left = words(item.title).filter((word) => !placeWords.has(word) && !generic.has(word));
       if (left.length === 0) c.fail(`"${item.title}" names no experience`);
