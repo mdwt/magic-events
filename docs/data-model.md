@@ -13,7 +13,7 @@ Source of truth for the resources the system stores, which domain owns each one,
 | Listing | One experience as a single source publishes it |
 | Raw listing | A listing exactly as the source returned it, before any processing |
 | Location | A place the system covers and clients search near, such as Hermanus |
-| Tenant | A client organisation: a travel agency, travel app or event organiser |
+| Tenant | A client organisation: a travel agency or travel app |
 
 ## Ownership
 
@@ -54,7 +54,7 @@ A place the system covers. System-managed and shared by every tenant.
 
 ### Experience
 
-The aggregate root for everything a client searches. System-managed and visible to every tenant, organiser experiences included. An organiser creates an experience directly in Catalogue, and it is published as entered, with no processing step.
+The aggregate root for everything a client searches. System-managed and visible to every tenant. Every experience comes from discovery; clients only read.
 
 - **Holds:**
   - title, slug, summary, description
@@ -88,10 +88,10 @@ Three separate questions get three separate fields: is it happening (status), ca
 | Status | Means | Set by | Can move to |
 | --- | --- | --- | --- |
 | Expected | Likely to happen, not yet announced (an annual festival) | Data processing only | Announced, Confirmed, Cancelled |
-| Announced | Announced; dates or details may still change | Data processing, or the organiser | Confirmed, Postponed, Cancelled |
-| Confirmed | Dates fixed and going ahead | Data processing, or the organiser | Postponed, Cancelled |
-| Postponed | Not happening on its dates; new dates unknown | Data processing, or the organiser | Announced, Confirmed (with new dates), Cancelled |
-| Cancelled | Will not happen | Data processing, or the organiser | Nothing. Final |
+| Announced | Announced; dates or details may still change | Data processing | Confirmed, Postponed, Cancelled |
+| Confirmed | Dates fixed and going ahead | Data processing | Postponed, Cancelled |
+| Postponed | Not happening on its dates; new dates unknown | Data processing | Announced, Confirmed (with new dates), Cancelled |
+| Cancelled | Will not happen | Data processing | Nothing. Final |
 
 | Booking | Means | Allowed when status is |
 | --- | --- | --- |
@@ -136,7 +136,7 @@ One row for each `raw_listing.captured` that Data processing receives.
 
 ### Processed experience
 
-The canonical experience Data processing builds from discovered listings, before Catalogue publishes it. Our ID for a discovered experience is created here once, the first time a listing matches nothing. It never changes, and Catalogue publishes under the same ID. An experience an organiser creates gets its ID in Catalogue.
+The canonical experience Data processing builds from discovered listings, before Catalogue publishes it. Our ID for a discovered experience is created here once, the first time a listing matches nothing. It never changes, and Catalogue publishes under the same ID.
 
 - **Listing link:** source, the source's listing ID, the raw listing it came from, the matching rule that linked it, and when.
 - **Rules:** a source's listing ID links to one experience. If a source has no listing ID, its web address is used instead.
@@ -174,7 +174,7 @@ Discovery's copy of a Catalogue location, built from `location.added`, so it kno
 
 ### Tenant
 
-- **Holds:** name, slug, kind (travel agency, travel app, event organiser), status (active, suspended), configuration.
+- **Holds:** name, slug, kind (travel agency, travel app), status (active, suspended), configuration.
 - **Raises:** `tenant.created`, `tenant.suspended`, `user.added`, `user.role_changed`, `user.removed`.
 
 Users, membership and roles use Better Auth's own tables in v1, with no abstraction over them.
@@ -195,13 +195,12 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Domain event names | `resource.verb`, lowercase, verb in the past tense |
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |
-| Organiser experiences | Created directly in Catalogue and published as entered. No submission or approval workflow in v1 |
+| Client access | Read only. Clients cannot create or change experiences |
 | Vocabulary | One system-managed set of attributes and tags |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status, booking and past are separate, as defined under Experience status |
 | Auth | Better Auth and its own tables in v1 |
-| Admin review | No review of organiser experiences in v1 |
 | Trip context | None. The system is an experience feed that serves results from the caller's search parameters |
 
 ## Open questions
@@ -211,5 +210,3 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 - [ ] Must every experience have a position? Without one it can never match a radius search.
 - [ ] Does a raw listing's content live in Postgres or in object storage behind a reference?
 - [ ] How does Catalogue get the vocabulary it filters on, and how do clients list it?
-- [ ] Should an organiser's experience go straight into Catalogue (as now), or in as a raw listing so Data processing matches it against discovered ones? Created directly, it isn't checked for duplicates.
-- [ ] Who may change or cancel an experience an organiser created?

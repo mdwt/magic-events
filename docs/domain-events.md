@@ -61,7 +61,7 @@ Every domain event is one row in the repo's append-only `events` table.
 | --- | --- |
 | LocationAdded | `location.added` |
 | RawRecordCaptured | `raw_listing.captured` |
-| ExperienceSubmitted | Removed. Organisers create experiences directly in Catalogue |
+| ExperienceSubmitted | Removed. Clients cannot create experiences |
 | ExperienceProcessed | `experience.processed` |
 | TenantCreated | `tenant.created` |
 | TenantSuspended | `tenant.suspended` |

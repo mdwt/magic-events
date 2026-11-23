@@ -4,7 +4,7 @@
 
 ## System overview
 
-The system is a multi-tenant platform that finds, processes and serves experiences by location. Travel businesses query it to plan trips, and event organisers add their own experiences. Clients reach it through a REST API and an MCP interface. This revision defines the domains, their boundaries and the main use cases, and makes no technology choices.
+The system is a multi-tenant platform that finds, processes and serves experiences by location. Travel businesses query it to plan trips. Clients only read; they cannot create or change experiences. Clients reach it through a REST API and an MCP interface. This revision defines the domains, their boundaries and the main use cases, and makes no technology choices.
 
 Version 1 is an experience feed. It holds no trip context and serves experiences from the search parameters the client sends.
 
@@ -14,7 +14,6 @@ Version 1 is an experience feed. It holds no trip context and serves experiences
 | Process experiences | Clean, de-duplicate, categorise and tag raw data, then make it ready for the data warehouse | Data processing |
 | Search experiences | Find processed experiences by location, dates and traveller interests | Catalogue |
 | Track changes | Show what is new, changed or cancelled since a time the client gives | Catalogue |
-| Create experiences | Let an event organiser create and maintain their own experiences | Catalogue |
 | Authenticate and authorise | Know who is calling and decide what they may do | Identity |
 | Manage tenants | Tenant setup and configuration, users, and their roles | Organizations |
 
@@ -25,19 +24,18 @@ Version 1 has two roles. Every person or agent that calls the system acts as one
 | Role | Kind | Who holds it | What they can do |
 | --- | --- | --- | --- |
 | System admin | System role | The platform operator | Onboard and configure tenants, manage users and roles, manage locations and sources, oversee discovery and processing |
-| Client | User role | Users of a client tenant | Search experiences, track changes, and create and maintain their tenant's own experiences |
+| Client | User role | Users of a client tenant | Search experiences and track changes |
 
 Client tenants come in several kinds. All of them hold the client role, and they use the system differently:
 
 - **Travel agencies and travel agents** search for experiences to plan trips for their travellers.
 - **Travel apps** search experiences on behalf of their own users.
-- **Event organisers** create and maintain experiences they run, and can search like any other client.
 
 A client can call through the REST API, or through MCP using an AI agent acting for that client. Both paths carry the same identity, tenant and role. Agents can do exactly what clients can and have no separate role. Identity knows whether a caller is an agent or a person.
 
 ## Domains
 
-There are five domains: Discovery, Data processing, Catalogue, Identity and Organizations. Catalogue owns the processed experiences that clients search, track changes on, and that organisers create. Each domain owns its own data, and no other domain changes that data directly.
+There are five domains: Discovery, Data processing, Catalogue, Identity and Organizations. Catalogue owns the processed experiences that clients search and track changes on. Each domain owns its own data, and no other domain changes that data directly.
 
 ### Discovery
 
@@ -57,10 +55,10 @@ Turns raw records into clean, categorised, tagged experiences ready for the data
 
 The experiences as clients see them, and everything clients do with them.
 
-- **Owns:** published experiences, the locations the system covers and clients search by, search by location, dates and interests, the change history clients track,, and experiences organisers create.
-- **Boundary:** does not process discovered listings. An experience an organiser creates is published as entered.
+- **Owns:** published experiences, the locations the system covers and clients search by, search by location, dates and interests, and the change history clients track.
+- **Boundary:** does not process or categorise. Every experience it publishes comes from Data processing.
 
-All experiences are discoverable by every tenant, including organiser experiences.
+All experiences are discoverable by every tenant.
 
 ### Identity
 
@@ -73,7 +71,7 @@ Knows who is calling and decides what they may do.
 
 The tenants and the people in them.
 
-- **Owns:** tenants, tenant kind (agency, travel app, event organiser), tenant configuration, users, membership and role assignment.
+- **Owns:** tenants, tenant kind (travel agency, travel app), tenant configuration, users, membership and role assignment.
 - **Boundary:** does not authenticate anyone or hold credentials. It does not hold experiences.
 
 ## Architecture
@@ -118,7 +116,7 @@ REST and MCP are two adapters on the same inbound ports, so a person and an agen
 | --- | --- | --- |
 | Discovery | Run discovery for a location | Fetch from a source; store raw records; announce `raw_listing.captured` |
 | Data processing | Process a raw record | Store processed experiences; load the data warehouse; announce `experience.processed` |
-| Catalogue | Search experiences; get changes since; create an experience; manage locations | Store published experiences and their history; announce `location.added` |
+| Catalogue | Search experiences; get changes since; manage locations | Store published experiences and their history; announce `location.added` |
 | Identity | Authenticate a caller; authorise an action | Store credentials; know each user's tenant and role |
 | Organizations | Manage tenants; manage users and roles | Store tenants and users; announce tenant and user changes |
 
@@ -158,21 +156,14 @@ Eight months later, the agent refines the trip and books activities. They want o
 2. **Catalogue** takes the same search parameters and the time of the agent's last search.
 3. **Catalogue** returns what is new, rescheduled, changed or cancelled since then.
 
-### UC3: An event organiser creates an experience
-
-An organiser adds their festival in Hermanus so travel agents can find it.
-
-1. **Identity** authenticates the organiser and authorises experience creation for their tenant.
-2. **Catalogue** creates the experience as entered and publishes it. It appears in searches like UC1. There is no submission, processing step or review in v1.
-
-### UC4: The system discovers experiences in a location
+### UC3: The system discovers experiences in a location
 
 1. **Discovery** runs on its schedule for each covered location and fetches from that location's sources.
 2. **Discovery** stores each raw record as received and raises `raw_listing.captured`.
 3. **Data processing** cleans and de-duplicates the records, categorises and tags them, prepares them for the data warehouse, and raises `experience.processed`.
 4. **Catalogue** publishes new experiences and records changes to existing ones, which feeds UC2.
 
-### UC5: A system admin onboards a travel agency
+### UC4: A system admin onboards a travel agency
 
 1. **Identity** authenticates the system admin and authorises tenant management.
 2. **Organizations** creates the tenant as a travel agency, sets its configuration, and raises `tenant.created`.
@@ -188,7 +179,7 @@ An organiser adds their festival in Hermanus so travel agents can find it.
 | Raw record | An experience as a source returned it, before any processing |
 | Source | A place Discovery finds experiences, such as a ticketing site, tourism listing or venue page |
 | Location | A place the system covers and clients search by, such as Hermanus |
-| Tenant | A client organisation: a travel agency, travel app or event organiser |
+| Tenant | A client organisation: a travel agency or travel app |
 | Client | The user role. A person, or an agent acting for them, inside a tenant |
 | System admin | The system role that operates the platform |
 | Port | A domain's own definition of what it offers (inbound) or what it needs (outbound), with no technology in it |
@@ -200,20 +191,15 @@ An organiser adds their festival in Hermanus so travel agents can find it.
 | --- | --- |
 | Is Catalogue its own domain? | Yes |
 | Is a location a place the system covers or a tenant's site? | A place the system covers, owned by Catalogue |
-| Can every tenant see every experience? | Yes. All experiences are discoverable by every tenant, including organiser experiences |
-| Does an organiser's experience need admin review before publishing? | Not in v1. Organisers create experiences directly in Catalogue and they publish as entered, with no submission workflow |
+| Can every tenant see every experience? | Yes. All experiences are discoverable by every tenant |
+| Can clients create or change experiences? | No. Clients only read. Every experience comes from discovery |
 | Do agents need their own role? | No. Agents can do exactly what clients can. Identity knows whether a caller is an agent or a person |
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
 
 ## Open questions
 
 - [ ] Does an agent's credential belong to a specific user or to the tenant? The MCP question was closed on roles, but this part is still unanswered, and no flow issues or revokes an agent credential.
-- [ ] The client role includes creating and maintaining experiences, so travel agencies and travel apps can create experiences too. Is that intended, or does tenant kind limit creating to organisers?
 - [ ] How does the system learn that a discovered experience was cancelled or dropped by its source? UC2 returns cancellations, but no flow produces one for discovered experiences.
-- [ ] Should an organiser's experience go straight into Catalogue (as now), or in as a raw listing so Data processing matches it against discovered ones? Created directly, it isn't checked for duplicates.
-- [ ] Who may change or cancel an experience an organiser created?
-- [ ] Can an organiser create an experience in a location the system does not cover?
-- [ ] When a tenant is suspended, do its organiser experiences stay published?
 - [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.
 - [ ] How does Catalogue get the category and tag vocabulary it searches by interest, and how does a client list it? No port or domain event shares it.
 - [ ] How long is change history kept? UC2 checks back eight months later.
