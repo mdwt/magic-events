@@ -33,6 +33,9 @@ A site or feed that publishes experiences for one location.
 | Name, kind | Kind picks the fetcher and the parser: ticketing API, HTML page, iCal or RSS feed |
 | Location | One location per source. A site that covers two places is entered twice, once per location |
 | Address and fetch settings | What the fetcher needs to call this source for this location |
+| Fetch interval | How often this source is fetched |
+| Missed runs before removal | How many successful runs in a row may miss a listing before it counts as gone |
+| Max processing attempts | How many times a failed raw listing is retried |
 | Active | Only active sources are fetched |
 
 ### Run (Discovery)
@@ -60,9 +63,11 @@ One version of one listing, exactly as the source returned it. A new row is save
 | Fingerprint | A hash of the content, used to skip unchanged listings |
 | Status | Pending, processed, failed |
 | Attempts, error | For failed ones |
+| Kind | Listing (fetched content) or removed (the listing is gone from the source; no content) |
+| Last seen | The last run that returned this listing. Kept on the latest version of each listing |
 | Experience | The experience it produced, once processed |
 
-The content is never changed after it is saved. Only the status fields change.
+The content is never changed after it is saved. Only the status and last-seen fields change.
 
 ### Attributes and tags (Data processing)
 
@@ -74,16 +79,27 @@ The published experience and the links from source listings to it. A source's li
 
 ## Fetching
 
-1. The schedule starts Discovery for each active source.
+1. The schedule starts Discovery for each active source, at that source's fetch interval.
 2. Discovery gets the source's location (name, centre point, timezone) from the Catalogue service and inserts a run with status running.
 3. Discovery calls the fetcher for the source's kind with the source's settings and the location.
 4. The fetcher calls the source and splits the response into listings. For each listing it returns the source's listing ID, the address, the content type and the raw content. It does not clean or interpret anything.
 5. For each listing, Discovery computes the fingerprint and compares it with the last raw listing saved for the same source and listing ID:
-   - same fingerprint: counted as unchanged, nothing saved
+   - same fingerprint: counted as unchanged; only the last-seen run is updated
    - new listing or different fingerprint: saved as a raw listing with status pending
 6. Discovery closes the run with its status, counts and any error.
+7. If the run succeeded, Discovery checks for listings that have gone missing (below).
 
-If the fetch fails part way, the listings already saved stay saved and the run is marked failed.
+If the fetch fails part way, the listings already saved stay saved and the run is marked failed. A failed run never counts as a miss.
+
+## Listings that disappear
+
+A listing that a source stops returning is checked again before anything changes:
+
+1. After each successful run, Discovery looks at every listing this source has returned before, whose latest version is not a removal.
+2. If the number of successful runs since the listing was last seen reaches the source's missed runs before removal, Discovery saves a raw listing of kind removed, with status pending.
+3. Data processing processes it like any other raw listing: the Catalogue service removes that source's link from the experience.
+4. If the experience has no source links left, Catalogue sets its status to Cancelled and booking to Closed. If another source still lists it, it stays as it is.
+5. If the listing comes back later, it is saved as a new raw listing and processed as usual.
 
 ## Processing
 
@@ -93,7 +109,7 @@ If the fetch fails part way, the listings already saved stay saved and the run i
    - the source and listing ID already have a source link: that experience is updated
    - otherwise Catalogue returns candidates in the same location with overlapping dates and a similar title, and Data processing links the listing to one of them or creates a new experience
 4. The Catalogue service saves the experience, its sessions, attribute values, tags, the source link and a change row.
-5. Data processing marks the raw listing processed with the experience, or failed with the error and one more attempt.
+5. Data processing marks the raw listing processed with the experience, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
 
 Steps 4 and 5 run in one transaction, so a raw listing is never marked processed without its experience saved.
 
@@ -103,7 +119,7 @@ Steps 4 and 5 run in one transaction, so a raw listing is never marked processed
 | --- | --- | --- |
 | Pending | Saved by a run, waiting for processing | Processed, Failed |
 | Processed | Turned into an experience | Nothing |
-| Failed | Processing failed; the error and attempts are recorded | Pending, when retried |
+| Failed | Processing failed; the error and attempts are recorded | Pending, while attempts are below the source's max processing attempts |
 
 ## Service dependencies
 
@@ -122,11 +138,11 @@ Catalogue calls neither, so the dependencies have no cycles.
 | Hand-off | The raw listing's status. No domain event or queue is needed |
 | No copies | Services call each other's services. No table holds a copy of another domain's data |
 | One location per source | A source row carries its location and settings |
+| Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source |
+| Disappeared listings | Checked again over the configured number of successful runs, then the source link is removed. An experience with no source links left is cancelled |
 | Matching | By Catalogue's source links first, then by comparing candidates |
 | Raw content | Postgres `text` column. **Later:** move to MinIO (S3) and store a key instead |
 
 ## Open questions
 
-- [ ] What happens when a listing disappears from its source without being marked cancelled?
-- [ ] How often does the schedule run each source, and how often does the processing worker look for pending raw listings?
-- [ ] After how many failed attempts does a raw listing stop being retried?
+- [ ] How often does the processing worker look for pending raw listings?

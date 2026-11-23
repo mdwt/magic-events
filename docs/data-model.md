@@ -66,6 +66,7 @@ The thing a client searches. System-managed and visible to every tenant. Every e
   - Month and year precision dates sit on month and year boundaries, and times need day precision.
   - The version goes up on every real change, including changes to its sessions, attributes, tags and source links. Re-verifying a source does not count as a change, and an update that changes nothing doesn't bump the version.
   - An experience is not deleted while a source still lists it. There is no soft delete.
+  - When its last source link is removed because the listing disappeared, the experience is set to Cancelled (see [discovery.md](discovery.md)).
 
 Stored with each experience, in their own tables:
 

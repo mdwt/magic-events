@@ -197,11 +197,11 @@ Eight months later, the agent refines the trip and books activities. They want o
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
 | How does a client search by place? | With a point and a radius the client chooses. Distance is worked out at query time |
 | Where are sources managed? | In Discovery. Each source has one location |
+| What happens when a listing disappears from its source? | After the configured number of successful runs without it, its source link is removed. An experience with no source links left is cancelled |
 | How do domains share data? | By calling each other's services. Nothing is copied or kept in sync |
 
 ## Open questions
 
 - [ ] Does an agent's credential belong to a specific user or to the tenant? The MCP question was closed on roles, but this part is still unanswered, and no flow issues or revokes an agent credential.
-- [ ] A source that marks an experience cancelled is covered: Data processing sets the status from the source. What happens when a listing disappears from its source without being marked cancelled?
 - [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.
 - [ ] How long is change history kept? UC2 checks back eight months later.
