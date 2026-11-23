@@ -10,7 +10,6 @@
     "typecheck": "tsc",
     "lint": "eslint .",
     "test": "node --env-file-if-exists=../../.env --test --test-concurrency=1 \"test/**/*.test.ts\"",
-    "worker": "node --env-file-if-exists=../../.env src/worker.ts",
     "pipeline": "node --env-file-if-exists=../../.env src/cli/pipeline.ts",
     "seed": "node --env-file-if-exists=../../.env src/seed/run.ts",
     "seed:samples": "node --env-file-if-exists=../../.env src/seed/run.ts --samples"

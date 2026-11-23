@@ -12,7 +12,6 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
-    "worker": "pnpm --filter @magic-events/api worker",
     "pipeline": "pnpm --filter @magic-events/api pipeline",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",

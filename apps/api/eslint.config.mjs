@@ -40,7 +40,7 @@ const CALLS = {
 const DOMAINS = Object.keys(CALLS);
 
 const outsideTheCore = {
-  regex: "(^|/)(adapters|rest|mcp|scheduler|seed|cli)/|(^|/)(app|server|worker)\\.ts$",
+  regex: "(^|/)(adapters|rest|mcp|scheduler|seed|cli)/|(^|/)(app|server)\\.ts$",
   message: "The core imports no adapter and nothing from the inbound sides.",
 };
 
@@ -123,7 +123,7 @@ export default defineConfig([
     rules: restrict([
       { regex: "/core/[^/]+/service(\\.ts)?$", message: "An adapter imports the port it implements, not a service." },
       {
-        regex: "(^|/)(rest|mcp|scheduler|seed|cli)/|(^|/)(app|server|worker)\\.ts$",
+        regex: "(^|/)(rest|mcp|scheduler|seed|cli)/|(^|/)(app|server)\\.ts$",
         message: "An adapter imports nothing from the inbound sides or the wiring.",
       },
     ]),
