@@ -1,0 +1,51 @@
+[
+  {
+    "source": "Lighthouse2Lighthouse",
+    "sourceListingId": "https://lighthouse2lighthouse.co.za/wednesday-walks/official-walk-2026-2/",
+    "url": "https://lighthouse2lighthouse.co.za/wednesday-walks/official-walk-2026-2/",
+    "rawFile": "raw/lighthouse2lighthouse/official-walk-2027.txt",
+    "fetchedAt": "2026-11-23T13:34:54Z",
+    "title": "Lighthouse 2 Lighthouse Ladies Official Walk 2027",
+    "summary": "A 4-day, 100 km fundraising walk for women from the lighthouse at Agulhas towards Danger Point Lighthouse, raising funds for Overstrand charities.",
+    "description": "The 4-day 100km hike can only be completed within the limited time if you are fit. You must therefore be fit enough to walk 30km on one day. The terrain varies, but is mostly on hard and sandy beaches. Walkers collect the official T-shirt and tog bag on Wednesday (Collection Day) and leave Hermanus by bus early on Thursday morning for Agulhas, the starting point. Accommodation for the 3 nights is at Die Dam. The total fee is R10,000 for the walk: R4,200 is the non-refundable registration fee and R5,800 is the minimum amount you need to raise as part of the fundraising drive.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-03-11",
+        "end": "2027-03-14",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Agulhas Lighthouse to Danger Point Lighthouse (bus departs Hermanus)",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 4200,
+      "max": 4200,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://lighthouse2lighthouse.co.za/product/main-walk-27/",
+    "hints": [
+      "Official Walk",
+      "Tickets"
+    ],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure",
+        "community_and_causes"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "hiking",
+      "charity"
+    ],
+    "profile": "The Lighthouse 2 Lighthouse Ladies Official Walk is a 4-day, 100 km hike for women from Agulhas along the coast towards Danger Point, from 11 to 14 March 2027. Walkers travel from Hermanus by bus, cover up to 30 km a day on hard and sandy beaches, and stay three nights at Die Dam. Registration is R4 200 plus a fundraising target for Overstrand charities, so it suits fit women who want a multi-day coastal challenge for a cause."
+  }
+]

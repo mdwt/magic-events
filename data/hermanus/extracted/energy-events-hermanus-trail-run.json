@@ -1,0 +1,49 @@
+[
+  {
+    "source": "Energy Events",
+    "sourceListingId": "https://energyevents.co.za/hermanus-trail-run/",
+    "url": "https://energyevents.co.za/hermanus-trail-run/",
+    "rawFile": "raw/energy-events-hermanus-trail-run/hermanus-trail-run.txt",
+    "fetchedAt": "2026-11-23T13:33:48Z",
+    "title": "Hermanus Trail Run 2027",
+    "summary": "Two days of running in Hermanus: mountain trails in Fernkloof Nature Reserve on day 1 and a beach run along Walker Bay on day 2.",
+    "description": "Scenic Trails, Sandy Toes, and Fresh air in the heart of Hermanus. Day 1: Fernkloof Nature Reserve - Day 2: Walker Bay Beach. 35km Trail (R1200), 25km Trail (R1000), 15km Trail (R650), 18km Beach (R650). Pre-registration Friday 26 February at Fernkloof Nature Reserve 16:00-18:00.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-02-27",
+        "end": "2027-02-28",
+        "precision": "day",
+        "startTime": "06:00"
+      }
+    ],
+    "venue": {
+      "name": "Fernkloof Nature Reserve (day 1); Walker Bay Beach Front (day 2)",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 650,
+      "max": 1750,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.entryninja.com/events/83918-hermanus-trail-run",
+    "hints": [
+      "Trail running",
+      "Events"
+    ],
+    "attributes": {
+      "category": [
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "setting": "outdoor",
+      "scale": "regional"
+    },
+    "tags": [
+      "trail-running"
+    ],
+    "profile": "The Hermanus Trail Run is a two-day running weekend on 27 and 28 February 2027. Day 1 has 15 km, 25 km and 35 km trails through Fernkloof Nature Reserve, and day 2 is an 18 km beach run along Walker Bay. Entries are open from R650, with combination entries up to R1 750, so it suits trail runners of most levels."
+  }
+]

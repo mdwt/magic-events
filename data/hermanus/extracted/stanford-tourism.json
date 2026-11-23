@@ -1,0 +1,53 @@
+[
+  {
+    "source": "Stanford Tourism",
+    "sourceListingId": "https://www.stanfordinfo.co.za/stmember/stanford-sunset-market/",
+    "url": "https://www.stanfordinfo.co.za/stmember/stanford-sunset-market/",
+    "rawFile": "raw/stanford-tourism/stanford-sunset-market.txt",
+    "fetchedAt": "2026-11-23T13:36:37Z",
+    "title": "Stanford Sunset Market",
+    "summary": "A local food and wine market on the historic Market Square in Stanford on the last Friday evening of each month, September to May.",
+    "description": "Come to this local food and wine market on the historic Market Square on the last Friday evening of each month (September – May). Live music, local wine farms and craft breweries, artisanal foods, and gift stalls mean there is something for everyone. Plenty of seating. Plenty of parking. Fun for all ages. If the weather has you worried, please call ahead to confirm on 082 667 0619. Free access, free parking, all welcome. Last Friday of the month from 6pm.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=-1FR;BYMONTH=1,2,3,4,5,9,10,11,12",
+      "start": "2026-11-27",
+      "startTime": "18:00"
+    },
+    "venue": {
+      "name": "Stanford Market Square (Village Green)",
+      "city": "Stanford",
+      "position": {
+        "lat": -34.44011492801233,
+        "lng": 19.455456733703613
+      }
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Stanford Market Square"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "music"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "wine",
+      "craft-beer",
+      "craft"
+    ],
+    "profile": "The Stanford Sunset Market is a free evening market on Stanford's historic Market Square, held on the last Friday of each month from September to May, from 6pm. Visitors browse artisanal food, local wines and craft beer and gift stalls to live music, with plenty of seating. It is fun for all ages and suits anyone staying in or near Stanford on a Friday evening."
+  }
+]

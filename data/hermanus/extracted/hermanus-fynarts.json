@@ -1,0 +1,132 @@
+[
+  {
+    "source": "Hermanus FynArts",
+    "sourceListingId": "https://www.hermanusfynarts.co.za/event-details-1/2027-hermanus-fynarts-festival-2027-06-24-09-00",
+    "url": "https://www.hermanusfynarts.co.za/event-details-1/2027-hermanus-fynarts-festival-2027-06-24-09-00",
+    "rawFile": "raw/hermanus-fynarts/2027-hermanus-fynarts-festival.txt",
+    "fetchedAt": "2026-11-23T13:27:49Z",
+    "title": "2027 Hermanus FynArts Festival",
+    "summary": "The 2027 Hermanus FynArts festival runs from 24 June 2027 to 4 July 2027: 11 packed days of arts and culture in Hermanus.",
+    "description": "Sign up to the FynArts newsletter or RSVP to this events to be notified about the particulars of the 2027 Hermanus FynArts festival happening from 24 June 2027 to 4 July 2027 - 11 packed days of arts and culture in Hermanus, Western Cape, South Africa.",
+    "type": "single",
+    "status": "announced",
+    "booking": "not_yet",
+    "sessions": [
+      {
+        "start": "2027-06-24",
+        "end": "2027-07-04",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "name": "Location is TBD",
+      "city": "Hermanus"
+    },
+    "imageUrl": "https://static.wixstatic.com/media/cd395f_7b17dda108ac40f38a76f1af86558379~mv2.png/v1/fill/w_680,h_576,al_c/cd395f_7b17dda108ac40f38a76f1af86558379~mv2.png",
+    "hints": [
+      "FynArts 2027",
+      "Multiple Dates"
+    ],
+    "attributes": {
+      "category": [
+        "music",
+        "performing_arts",
+        "visual_arts",
+        "food_and_drink",
+        "culture_and_heritage"
+      ],
+      "format": "festival",
+      "scale": "major"
+    },
+    "tags": [
+      "books"
+    ],
+    "profile": "The 2027 Hermanus FynArts Festival is an 11-day arts and culture festival in Hermanus from 24 June to 4 July 2027. FynArts showcases South African music, art, performance, literature and cuisine. The programme and venues are still to be announced, so it suits travellers planning a winter visit who want to follow the arts."
+  },
+  {
+    "source": "Hermanus FynArts",
+    "sourceListingId": "https://www.hermanusfynarts.co.za/event-details-1/fynarts-old-harbour-sunset-concert",
+    "url": "https://www.hermanusfynarts.co.za/event-details-1/fynarts-old-harbour-sunset-concert",
+    "rawFile": "raw/hermanus-fynarts/fynarts-old-harbour-sunset-concert.txt",
+    "fetchedAt": "2026-11-23T13:28:01Z",
+    "title": "FynArts Old Harbour Sunset Concert",
+    "summary": "A FynArts sunset concert at the Old Harbour in Hermanus on 6 March 2027.",
+    "type": "single",
+    "status": "announced",
+    "booking": "not_yet",
+    "sessions": [
+      {
+        "start": "2027-03-06",
+        "precision": "day",
+        "startTime": "18:30",
+        "endTime": "20:00"
+      }
+    ],
+    "venue": {
+      "name": "Old Harbour, Hermanus",
+      "city": "Hermanus"
+    },
+    "imageUrl": "https://static.wixstatic.com/media/cd395f_1775014dc9484b33bb4659f19c8bddbb~mv2.jpg/v1/fill/w_750,h_500,al_c,q_85/cd395f_1775014dc9484b33bb4659f19c8bddbb~mv2.jpg",
+    "hints": [
+      "FynArts 2027",
+      "Performance"
+    ],
+    "attributes": {
+      "category": [
+        "music"
+      ],
+      "format": "performance",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A sunset concert presented by Hermanus FynArts at the Old Harbour in Hermanus on the evening of 6 March 2027. Visitors listen to live music by the sea as the sun goes down. The line-up has not been published yet."
+  },
+  {
+    "source": "Hermanus FynArts",
+    "sourceListingId": "https://www.hermanusfynarts.co.za/sculpture-on-the-cliffs",
+    "url": "https://www.hermanusfynarts.co.za/sculpture-on-the-cliffs",
+    "rawFile": "raw/hermanus-fynarts/sculpture-on-the-cliffs.txt",
+    "fetchedAt": "2026-11-23T13:28:25Z",
+    "title": "Sculpture on the Cliffs",
+    "summary": "An annual outdoor exhibition of South African sculpture on the Hermanus Cliff Path at Gearing's Point, free to explore, curated by Strijdom van der Merwe.",
+    "description": "Take a walk along the spectacular Hermanus Cliff Path at Gearing’s Point and discover Sculpture on the Cliffs, an annual outdoor exhibition where South African sculpture meets the ocean. Wander among the sculptures, take in the views across Walker Bay and discover works by some of the country’s talented sculptors. The exhibition is free to explore, and the sculptures remain in place for a full year, with a new collection installed each June for the Hermanus FynArts Festival. And if you find a sculpture you love, you can take it home. All works are available for acquisition, giving collectors the opportunity to own an original sculpture that has been exhibited in this extraordinary coastal setting. Come for the walk, stay for the views - and see what you discover along the way. Sculpture on the Cliffs - art worth the walk.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-06",
+        "end": "2027-06",
+        "precision": "month",
+        "label": "Current collection; a new collection is installed each June"
+      }
+    ],
+    "venue": {
+      "name": "Hermanus Cliff Path, Gearing's Point",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "imageUrl": "https://static.wixstatic.com/media/cd395f_54b8ae5fc8d74b659d96480977f0dddd%7Emv2.png/v1/fit/w_2500,h_1330,al_c/cd395f_54b8ae5fc8d74b659d96480977f0dddd%7Emv2.png",
+    "hints": [
+      "Exhibitions"
+    ],
+    "attributes": {
+      "category": [
+        "visual_arts"
+      ],
+      "format": "exhibition",
+      "setting": "outdoor",
+      "audience": "all_ages",
+      "scale": "regional"
+    },
+    "tags": [
+      "sculpture"
+    ],
+    "profile": "Sculpture on the Cliffs is a free outdoor exhibition of South African sculpture along the Hermanus Cliff Path at Gearing's Point. Visitors walk among the works with views across Walker Bay, and every piece is for sale. The collection stays for a year and is replaced each June, so it suits anyone walking the cliff path, from casual strollers to collectors."
+  }
+]

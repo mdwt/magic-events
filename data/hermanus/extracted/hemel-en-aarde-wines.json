@@ -1,0 +1,53 @@
+[
+  {
+    "source": "Hemel-en-Aarde Wines",
+    "sourceListingId": "https://pnccelebration.co.za/",
+    "url": "https://pnccelebration.co.za/",
+    "rawFile": "raw/hemel-en-aarde-wines/pnccelebration.txt",
+    "fetchedAt": "2026-11-23T13:32:05Z",
+    "title": "Between Heaven and Earth Pinot Noir & Chardonnay Celebration 2027",
+    "summary": "The producers of the Hemel-en-Aarde host a full-day Pinot Noir and Chardonnay celebration at Nidderdale on Saturday 30 January 2027, from 11:00 till late.",
+    "description": "Each year, as harvest drew near, the winemakers of the Hemel-en-Aarde came together to taste, to talk and to awaken their senses for the vintage ahead. In 2014 they opened the doors, and the celebration became one of the most anticipated dates on the South African wine calendar. In time, Chardonnay took its place beside Pinot Noir. Now, the tradition begins a new chapter. The day includes a welcome with Chardonnay and fresh flavours of land and sea, the Discovery Tasting with all fourteen producers, a seafood lunch at the long tables, and the In-Between and Heaven, till late.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2027-01-30",
+        "precision": "day",
+        "startTime": "11:00"
+      }
+    ],
+    "venue": {
+      "name": "Nidderdale",
+      "address": "Nidderdale, Hemel-en-Aarde Valley, Hermanus",
+      "city": "Hemel-en-Aarde valley"
+    },
+    "price": {
+      "min": 6500,
+      "max": 6500,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://pnccelebration.co.za/",
+    "imageUrl": "https://pnccelebration.co.za/wp-content/themes/bhe-2027/assets/img/og-share.jpg",
+    "hints": [
+      "Events",
+      "Between Heaven and Earth 2027"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "audience": "adults",
+      "minimum_age": 18,
+      "setting": "outdoor",
+      "scale": "major"
+    },
+    "tags": [
+      "wine",
+      "seafood"
+    ],
+    "profile": "Between Heaven and Earth is the Hemel-en-Aarde wine producers' Pinot Noir and Chardonnay celebration at Nidderdale near Hermanus on 30 January 2027. Guests taste the newest releases from fourteen producers, share a seafood lunch at long tables and stay for a sunset wine bar with fire-cooked food and entertainment until late. Tickets are R6 500 and not sold to under-18s, so it suits adult wine lovers looking for a dress-up day in the valley."
+  }
+]

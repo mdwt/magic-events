@@ -1,0 +1,56 @@
+[
+  {
+    "source": "Cape Cultural Collective",
+    "sourceListingId": "https://capeculturalcollective.org.za/klik/",
+    "url": "https://capeculturalcollective.org.za/klik/",
+    "rawFile": "raw/cape-cultural-collective-klik/klik-2026.txt",
+    "fetchedAt": "2026-11-23T13:40:01Z",
+    "title": "Kleinmond inniebos Kunstefees (KliK) 2026",
+    "summary": "Three days, multiple venues, one small seaside town: KliK 2026 takes over Kleinmond from 27 to 29 November 2026 with poetry, music, theatre, storytelling and art.",
+    "description": "KliK 2026 brings together acclaimed writers, poets, storytellers, musicians, publishers, and artists for a vibrant celebration of language, culture and creativity. Across multiple venues, enjoy author talks, storytelling sessions, a writing workshop, poetry and music performances, a Writers’ Café, Sip & Paint, and a guided Strandlooper Kruie Kuier experience. Alongside the ticketed programme, a full weekend of free activity runs for the community. There’s the KliK Market, a children and youth programme at Mthimkhulu, the See en Fynbos Paradys walk along Kleinmond’s coastline, and an Open Mic. Choose a 3-day or 2-day pass for the full run, a single day pass, or tickets to individual sessions.",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-11-27",
+        "end": "2026-11-29",
+        "precision": "day"
+      }
+    ],
+    "venue": {
+      "address": "102 Main Road, Kleinmond",
+      "city": "Kleinmond",
+      "position": {
+        "lat": -34.3395748,
+        "lng": 19.0191825
+      }
+    },
+    "price": {
+      "min": 100,
+      "max": 300,
+      "currency": "ZAR"
+    },
+    "bookingUrl": "https://www.quicket.co.za/events/339579-kleinmond-inniebos-kunstefees-klik/",
+    "imageUrl": "https://capeculturalcollective.org.za/wp-content/uploads/2026/08/0947082_0.jpeg",
+    "hints": [
+      "Klik",
+      "Programmes"
+    ],
+    "attributes": {
+      "category": [
+        "culture_and_heritage",
+        "music",
+        "performing_arts",
+        "visual_arts"
+      ],
+      "format": "festival",
+      "scale": "regional"
+    },
+    "tags": [
+      "books",
+      "theatre"
+    ],
+    "profile": "KliK, the Kleinmond inniebos Kunstefees, is a three-day festival of words, music and art across venues in Kleinmond from 27 to 29 November 2026. Visitors attend author talks, storytelling, poetry and music performances, a writing workshop and a Sip & Paint, alongside a free market, coastal walk and open mic. Passes cost R100 to R300, so it suits readers, writers and anyone wanting an inspiring weekend by the sea."
+  }
+]
