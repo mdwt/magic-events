@@ -17,25 +17,27 @@ Source of truth for the resources the system stores, which domain owns each one,
 
 ## Ownership
 
-Each domain owns its resources and has one repository. Only that repository writes the domain's tables, and no domain reads another domain's tables. Domains share data only through domain events, and a domain that needs another's data keeps its own copy.
+Each domain owns its tables and has one repository. Only that repository writes the domain's tables. A domain that needs another domain's data calls that domain's service; nothing is copied or kept in sync. All tables are in one Postgres database.
 
 ```mermaid
 flowchart LR
-  ORG[Organizations] -- tenant and user events --> ID[Identity]
-  CAT[Catalogue] -- location.added --> DIS[Discovery]
-  DIS -- raw_listing.captured --> DP[Data processing]
-  DP -- experience.processed --> CAT
+  DIS[Discovery] --> CAT[Catalogue]
+  DP[Data processing] --> DIS
+  DP --> CAT
+  ID[Identity] --> ORG[Organizations]
 ```
+
+Arrows point from the service that calls to the service it calls. Catalogue and Organizations call nobody, so there are no cycles.
 
 | Domain | Repository | What it holds |
 | --- | --- | --- |
 | Catalogue | Catalogue repository | Locations; published experiences with their sessions, attribute values, tags, source links and change history |
-| Data processing | Data processing repository | Attributes and their options, tags, incoming listings, processed experiences and their listing links |
-| Discovery | Discovery repository | Sources and which locations each covers, runs, raw listings, covered locations |
+| Data processing | Data processing repository | Attribute definitions and their options, tags |
+| Discovery | Discovery repository | Sources, runs, raw listings |
 | Organizations | Organizations repository | Tenants, their kind, status and configuration |
 | Identity | Better Auth | People and agents, credentials, sessions |
 
-Every domain also has a read position on the domain event log, owned by that domain.
+How fetching and processing work end to end is in [discovery.md](discovery.md).
 
 ## Catalogue
 
@@ -45,11 +47,10 @@ A place the system covers. System-managed and shared by every tenant.
 
 - **Holds:** name, slug, country, region, timezone, centre point.
 - **Rules:** the slug is unique. A location belongs to no tenant. Moving its centre changes no experience.
-- **Raises:** `location.added`.
 
 ### Experience
 
-The thing a client searches. System-managed and visible to every tenant. Every experience comes from discovery; clients only read.
+The thing a client searches. System-managed and visible to every tenant. Every experience comes from discovery; clients only read. Catalogue creates an experience's ID when Data processing first saves it, and the ID never changes.
 
 - **Holds:**
   - title, slug, summary, description
@@ -73,7 +74,7 @@ Stored with each experience, in their own tables:
 | Session | One dated occurrence of the experience (a show night, a market day) | Has its own start, end and label. Can be cancelled or sold out on its own |
 | Attribute value | The experience's value for an attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
 | Tag | A tag on the experience | A tag appears once per experience |
-| Source link | A source's listing that this experience was built from | One experience can have links from many sources. A source's listing links to one experience only |
+| Source link | A source's listing that this experience was built from | One experience can have links from many sources. A source's listing links to one experience only. Data processing matches listings by these links |
 | Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. Feeds changed-since (UC2) |
 
 ### Experience status
@@ -121,56 +122,15 @@ A system-defined list in the database that every experience is described with.
 - **Attribute option:** an allowed value of an option attribute.
 - **Tag:** a name and slug. Not tenant-scoped, and not freeform per tenant.
 
-### Incoming listing
-
-One row for each `raw_listing.captured` that Data processing receives.
-
-- **Holds:** the raw listing it came from, received time, status, attempts, error, the experience it produced.
-- **Status:** pending, processed, rejected, failed.
-- **Rules:** one row per raw listing, so a domain event delivered twice is processed once.
-
-### Processed experience
-
-The canonical experience Data processing builds from discovered listings, before Catalogue publishes it. Our ID for a discovered experience is created here once, the first time a listing matches nothing. It never changes, and Catalogue publishes under the same ID.
-
-- **Listing link:** source, the source's listing ID, the raw listing it came from, the matching rule that linked it, and when.
-- **Rules:** a source's listing ID links to one experience. If a source has no listing ID, its web address is used instead.
-- **Matching:** a listing whose source and ID are already linked updates that experience. Otherwise Data processing compares place, dates, title and venue against existing experiences, and either links the listing or creates a new experience.
-- **Raises:** `experience.processed`.
-
 ## Discovery
 
-### Source
-
-A site or feed that publishes experiences: a ticketing site, a tourism listing, a venue page, an API.
-
-- **Holds:** name, kind, base address, fetch settings, status.
-- **Source coverage:** which locations a source covers, with settings for each location.
-
-### Run
-
-One visit to one source for one location, on the schedule.
-
-- **Holds:** source, location, start and finish times, status, number of listings found, error.
-
-### Raw listing
-
-A listing exactly as the source returned it on a run: a JSON response, an HTML page, or a feed item.
-
-- **Holds:** run, source, location, the source's listing ID, address, fetched time, content type, the content itself, a fingerprint of the content.
-- **Rules:** never changed after it is saved. If the fingerprint matches the last copy of the same listing, nothing is passed on.
-- **Raises:** `raw_listing.captured`, in the same transaction as the save.
-
-### Covered location
-
-Discovery's copy of a Catalogue location, built from `location.added`, so it knows where to look.
+Sources, runs and raw listings are defined in [discovery.md](discovery.md).
 
 ## Organizations
 
 ### Tenant
 
 - **Holds:** name, slug, kind (travel agency, travel app), status (active, suspended), configuration.
-- **Raises:** `tenant.created`, `tenant.suspended`, `user.added`, `user.role_changed`, `user.removed`.
 
 Users, membership and roles use Better Auth's own tables in v1, with no abstraction over them.
 
@@ -180,7 +140,7 @@ Better Auth's tables hold users, sessions and accounts. Identity also records wh
 
 ## Domain event log
 
-The repo's append-only `events` table, ordered by global position. Each domain records how far it has read the log, so it can stop and resume without missing or repeating a domain event. Names, payloads and the envelope are defined in [domain-events.md](domain-events.md).
+Nothing in the prototype depends on domain events: domains call each other's services. Naming and the envelope for domain events are in [domain-events.md](domain-events.md).
 
 ## Decisions
 
@@ -196,12 +156,13 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status, booking and past are separate, as defined under Experience status |
 | Auth | Better Auth and its own tables in v1 |
-| Domain event log | The repo's `events` table carries every domain event. Experience change history stays in its own table |
-| Raw content | Stored in Postgres in a `text` column, so JSON and HTML both fit and the copy stays exact. `raw_listing.captured` carries the content. Discovery reads and writes it through its own raw content store, so only that store changes when it moves. **Later:** move raw content to MinIO (S3) and pass a key instead |
+| Domain dependencies | Services call each other's services. No table holds a copy of another domain's data, and no domain event is needed for the hand-off between domains |
+| Raw content | Stored in Postgres in a `text` column, so JSON and HTML both fit and the copy stays exact. **Later:** move raw content to MinIO (S3) and store a key instead |
 | Trip context | None. The system is an experience feed that serves results from the caller's search parameters |
 
 ## Open questions
 
-- [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant? Users and membership already live in Better Auth's tables, so does Organizations still raise `user.added`, `user.role_changed` and `user.removed`, or does Better Auth make them unnecessary?
-- [ ] Only `location.added` exists. If a location's details change, Discovery's copy goes stale. Is a `location.changed` domain event needed?
+- [ ] Does the prototype append domain events to the `events` table as an audit trail? Nothing reads them.
+
+- [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?

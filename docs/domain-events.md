@@ -1,6 +1,6 @@
 # Domain events
 
-Source of truth for the domain events the system raises: their names, who raises and reads each one, and what each one carries. Resources are defined in [data-model.md](data-model.md).
+Source of truth for how domain events are named and stored, and which ones the system defines. Resources are defined in [data-model.md](data-model.md).
 
 2026-11-23 · Meiring
 
@@ -27,44 +27,14 @@ Every domain event is one row in the repo's append-only `events` table.
 | `metadata` | Who or what caused it: the user or agent, the tenant, the request or run, and the domain event that led to it, if any |
 | `recorded_at` | When it was appended |
 
-## Catalogue
+## Domain events in the prototype
 
-| Domain event | When | Read by | Carries |
+Nothing in the prototype reads domain events. Domains call each other's services, and the hand-off from fetching to processing is the raw listing's status (see [discovery.md](discovery.md)). Whether these are appended to `events` as an audit trail is an open question in [data-model.md](data-model.md).
+
+| Domain event | Raised by | When | Carries |
 | --- | --- | --- | --- |
-| `location.added` | The system starts covering a new location | Discovery | Location ID, name, slug, country, region, timezone, centre point |
-
-## Discovery
-
-| Domain event | When | Read by | Carries |
-| --- | --- | --- | --- |
-| `raw_listing.captured` | A run saves a listing that is new or has changed since the last copy | Data processing | Raw listing ID, run ID, source, location ID, the source's listing ID, address, fetched time, content type, the content |
-
-## Data processing
-
-| Domain event | When | Read by | Carries |
-| --- | --- | --- | --- |
-| `experience.processed` | A raw listing produced a new or changed experience | Catalogue | Experience ID, version, all published fields, sessions, attribute values (each with its attribute's key, name and type), tags, source links |
-
-## Organizations
-
-| Domain event | When | Read by | Carries |
-| --- | --- | --- | --- |
-| `tenant.created` | A tenant is set up | Identity | Tenant ID, name, slug, kind |
-| `tenant.suspended` | A tenant loses access | Identity | Tenant ID, reason |
-| `user.added` | A person joins a tenant with a role | Identity | User ID, tenant ID, role |
-| `user.role_changed` | A user's role changes | Identity | User ID, tenant ID, old role, new role |
-| `user.removed` | A user leaves a tenant | Identity | User ID, tenant ID |
-
-## Renamed from spec Rev 1
-
-| Spec Rev 1 | Now |
-| --- | --- |
-| LocationAdded | `location.added` |
-| RawRecordCaptured | `raw_listing.captured` |
-| ExperienceSubmitted | Removed. Clients cannot create experiences |
-| ExperienceProcessed | `experience.processed` |
-| TenantCreated | `tenant.created` |
-| TenantSuspended | `tenant.suspended` |
-| UserAdded | `user.added` |
-| RoleChanged | `user.role_changed` |
-| UserRemoved | `user.removed` |
+| `location.added` | Catalogue | The system starts covering a new location | Location ID, name, slug, country, region, timezone, centre point |
+| `raw_listing.captured` | Discovery | A run saves a listing that is new or has changed | Raw listing ID, run ID, source, the source's listing ID, address, fetched time, content type |
+| `experience.processed` | Data processing | A raw listing produced a new or changed experience | Experience ID, version, raw listing ID |
+| `tenant.created` | Organizations | A tenant is set up | Tenant ID, name, slug, kind |
+| `tenant.suspended` | Organizations | A tenant loses access | Tenant ID, reason |
