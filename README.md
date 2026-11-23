@@ -11,7 +11,7 @@ same feed, over a REST API or an MCP endpoint. Version 1 covers Hermanus, South 
 ## Highlights
 
 - **Extensible.** Ports and adapters: swap a model, the queue, storage or a source with one adapter.
-- **LLM extraction and classification.** Claude turns raw listings into structured, categorised experiences.
+- **LLM extraction and classification.** A language model turns raw listings into structured, categorised experiences.
 - **Semantic search.** Results are ranked with Amazon Titan embeddings, plus keyword search.
 - **Change tracking.** Ask what's new, moved or cancelled since your last search.
 - **REST and MCP.** One feed for people and agents.
