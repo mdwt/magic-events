@@ -485,7 +485,26 @@ describe("MCP", () => {
   test("a host or origin that is not allowed is refused", async () => {
     const host = await mcp({ jsonrpc: "2.0", id: 1, method: "tools/list" }, { ...bearer(key), host: "evil.example.com" });
     assert.equal(host.statusCode, 403);
+    assert.equal(errorOf(host).code, "forbidden");
     const origin = await mcp({ jsonrpc: "2.0", id: 1, method: "tools/list" }, { ...bearer(key), origin: "https://evil.example.com" });
     assert.equal(origin.statusCode, 403);
+    assert.equal(errorOf(origin).code, "forbidden");
+  });
+
+  test("the transport's refusals are in the error format: 406 without the right Accept, 400 for a bad version", async () => {
+    const accept = await mcp({ jsonrpc: "2.0", id: 1, method: "tools/list" }, { ...bearer(key), accept: "application/json" });
+    assert.equal(accept.statusCode, 406);
+    const notAcceptable = errorOf(accept);
+    assert.equal(notAcceptable.code, "not_acceptable");
+    assert.match(notAcceptable.message, /text\/event-stream/);
+
+    const version = await mcp(
+      { jsonrpc: "2.0", id: 1, method: "tools/list" },
+      { ...bearer(key), "mcp-protocol-version": "1999-01-01" },
+    );
+    assert.equal(version.statusCode, 400);
+    const invalid = errorOf(version);
+    assert.equal(invalid.code, "invalid_input");
+    assert.match(invalid.message, /protocol version/i);
   });
 });

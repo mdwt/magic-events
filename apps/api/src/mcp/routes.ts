@@ -6,11 +6,18 @@ import type { Catalogue } from "@magic-events/core/catalogue/ports.ts";
 import type { Identity } from "@magic-events/core/identity/ports.ts";
 import type { Organizations } from "@magic-events/core/organizations/ports.ts";
 import { AppError } from "@magic-events/core/shared/errors.ts";
-import { errorResponses, methodNotAllowedResponse } from "../rest/errors.ts";
+import {
+  bodyErrorResponses,
+  errorResponses,
+  methodNotAllowedResponse,
+  notAcceptableResponse,
+} from "../rest/errors.ts";
 import { createMcpServer } from "./server.ts";
 
 // The MCP endpoint: Streamable HTTP, stateless. Every POST gets a fresh server and transport, answered as JSON.
-// The global hook has authenticated the caller and authorised mcp.use before anything here runs.
+// The global hook has authenticated the caller and authorised mcp.use before anything here runs. A refusal at the
+// HTTP level, the transport's included, is in the API's one error format; JSON-RPC answers, errors among them, come
+// with 200.
 
 const jsonRpcMessage = z.looseObject({
   jsonrpc: z.literal("2.0"),
@@ -18,27 +25,35 @@ const jsonRpcMessage = z.looseObject({
   method: z.string().optional(),
 });
 
-const jsonRpcError = z
-  .object({
-    jsonrpc: z.literal("2.0"),
-    error: z.object({ code: z.number().int(), message: z.string() }),
-    id: z.union([z.string(), z.number(), z.null()]),
-  })
-  .describe("A JSON-RPC error.");
-
 // What the transport answers: a JSON-RPC message or a batch, an error included.
 const jsonRpcAnswer = z.union([jsonRpcMessage, z.array(jsonRpcMessage)]);
 
 const TAGS = ["MCP"];
 
-function sendJsonRpcError(reply: FastifyReply, status: number, message: string): FastifyReply {
-  return reply.code(status).type("application/json").send({ jsonrpc: "2.0", error: { code: -32000, message }, id: null });
+// The transport refuses a request it cannot take with an HTTP error and a JSON-RPC error body, which the protocol
+// allows but does not require. It becomes the API's own error: the transport's message says what is wrong with the
+// request in the protocol's terms, and no more. Any other failure of the transport's is a system error.
+function transportRefusal(status: number, text: string): Error {
+  let message = "";
+  try {
+    const body = JSON.parse(text) as { error?: { message?: unknown } };
+    if (typeof body.error?.message === "string") message = body.error.message;
+  } catch {
+    message = "";
+  }
+  if (status === 406) {
+    return new AppError("not_acceptable", "Send an Accept header that names both application/json and text/event-stream.");
+  }
+  if (status === 415) return new AppError("unsupported_media_type", "Send the body as JSON, with Content-Type: application/json.");
+  if (status === 413) return new AppError("content_too_large", "The request body is too large. Send a smaller one.");
+  if (status === 400) return new AppError("invalid_input", `The MCP request is not valid: ${message || "the transport refused it"}.`);
+  return new Error(`The MCP transport answered ${status}: ${message}`);
 }
 
 // The DNS rebinding protection the MCP SDK describes: the Host must be one this server answers to, and a browser's
 // Origin must be the one allowed origin. The SDK leaves this check to the HTTP framework.
 function guardHostAndOrigin(allowedHosts: string[], allowedOrigin: string) {
-  return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+  return async (request: FastifyRequest): Promise<void> => {
     let hostname: string | undefined;
     try {
       hostname = request.headers.host === undefined ? undefined : new URL(`http://${request.headers.host}`).hostname;
@@ -47,14 +62,14 @@ function guardHostAndOrigin(allowedHosts: string[], allowedOrigin: string) {
     }
     if (hostname === undefined || !allowedHosts.includes(hostname)) {
       request.log.warn({ host: request.headers.host }, "MCP request refused: host not allowed");
-      await sendJsonRpcError(reply, 403, "This host is not allowed.");
-      return;
+      throw new AppError("forbidden", "This host is not allowed. Call the MCP endpoint at the server's own address.");
     }
     const origin = request.headers.origin;
     if (origin !== undefined && origin !== allowedOrigin) {
       request.log.warn({ origin }, "MCP request refused: origin not allowed");
-      await sendJsonRpcError(reply, 403, "This origin is not allowed.");
+      throw new AppError("forbidden", "This origin is not allowed to call the MCP endpoint.");
     }
+    return Promise.resolve();
   };
 }
 
@@ -94,13 +109,9 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
         response: {
           200: jsonRpcAnswer.describe("The JSON-RPC answer."),
           202: z.undefined().describe("A notification or response was accepted. There is no body."),
-          406: jsonRpcError.describe("The Accept header must name both application/json and text/event-stream."),
-          415: jsonRpcError.describe("The body must be application/json."),
           ...errorResponses,
-          // The transport answers a message it cannot handle, and its own failures, in JSON-RPC form.
-          400: z.union([errorResponses[400], jsonRpcError]).describe("The request is not valid."),
-          403: z.union([errorResponses[403], jsonRpcError]).describe("Not allowed: the caller, the host or the origin."),
-          500: z.union([errorResponses[500], jsonRpcError]).describe("Something went wrong on the server."),
+          ...bodyErrorResponses,
+          ...notAcceptableResponse,
         },
       },
     },
@@ -118,6 +129,7 @@ export const mcpRoutes: FastifyPluginAsyncZod<{
         // With JSON answers the response is complete here, so the server and transport can be closed after it.
         const response = await transport.handleRequest(toWebRequest(request), { parsedBody: request.body });
         const text = await response.text();
+        if (response.status >= 400) throw transportRefusal(response.status, text);
         reply.code(response.status);
         return text === "" ? undefined : jsonRpcAnswer.parse(JSON.parse(text));
       } finally {

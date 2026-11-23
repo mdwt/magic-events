@@ -13,6 +13,7 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
   forbidden: 403,
   not_found: 404,
   method_not_allowed: 405,
+  not_acceptable: 406,
   conflict: 409,
   content_too_large: 413,
   unsupported_media_type: 415,
@@ -72,6 +73,11 @@ export const conflictResponse = {
 // For a route that exists only to refuse a method. Allow names the methods the address answers.
 export const methodNotAllowedResponse = {
   405: errorSchema("method_not_allowed", "The address does not answer this method. Allow names the ones it does."),
+};
+
+// For the MCP endpoint, whose transport needs the caller to accept both JSON and an event stream.
+export const notAcceptableResponse = {
+  406: errorSchema("not_acceptable", "The Accept header must name both application/json and text/event-stream."),
 };
 
 // For a route that names something in its address, which may not exist.
