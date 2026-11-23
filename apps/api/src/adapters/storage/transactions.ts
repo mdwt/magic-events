@@ -33,10 +33,14 @@ export function createTransactionalDb(db: Db): TransactionalDb {
 
   const transactions: Transactions = {
     async run(work) {
-      if (open.getStore()) return work();
+      const outer = open.getStore();
       const afterCommit: (() => void)[] = [];
-      const result = await db.transaction((tx) => open.run({ tx, afterCommit }, work));
-      for (const callback of afterCommit) callback();
+      // Inside a transaction the work runs in a savepoint: when it throws, only its own writes roll back, and the
+      // row locks taken before it are still held.
+      const result = await (outer ? outer.tx : db).transaction((tx) => open.run({ tx, afterCommit }, work));
+      // A savepoint's callbacks wait for the outer transaction, and go with it if it rolls back.
+      if (outer) outer.afterCommit.push(...afterCommit);
+      else for (const callback of afterCommit) callback();
       return result;
     },
   };

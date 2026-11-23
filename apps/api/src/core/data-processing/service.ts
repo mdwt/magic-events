@@ -132,6 +132,7 @@ function saveInput(input: {
     bookingClosesAt: experience.bookingClosesAt,
     bookingUrl: experience.bookingUrl,
     imageUrl: experience.imageUrl,
+    pageUrl: experience.url,
     sessions: experience.sessions.map((session) => ({
       startDate: session.start,
       endDate: session.end,
@@ -201,20 +202,18 @@ export class DataProcessingService implements DataProcessing {
   }
 
   async processNext(): Promise<ProcessingOutcome | null> {
-    // Held outside the transaction, so a failure can be marked once the transaction has rolled back.
-    const claim: { raw?: ClaimedRawListing } = {};
-    try {
-      return await this.#transactions.run(async () => {
-        const raw = await this.#discovery.claimPendingRawListing();
-        if (raw === null) return null;
-        claim.raw = raw;
-        return this.#process(raw);
-      });
-    } catch (error) {
-      // A failure before anything was claimed is the system's, not a raw listing's.
-      if (claim.raw === undefined) throw error;
-      return this.#fail(claim.raw, error);
-    }
+    // The claim locks the raw listing until the transaction ends. The work runs in a savepoint, so a failure rolls
+    // back only the work and is marked while the lock is held: no other worker can claim the raw listing before
+    // its attempt is counted. A failure of the claim or of the mark rolls back everything and is thrown on.
+    return this.#transactions.run(async () => {
+      const raw = await this.#discovery.claimPendingRawListing();
+      if (raw === null) return null;
+      try {
+        return await this.#transactions.run(() => this.#process(raw));
+      } catch (error) {
+        return this.#fail(raw, error);
+      }
+    });
   }
 
   async processPending(options: { limit?: number } = {}): Promise<ProcessingOutcome[]> {
@@ -452,7 +451,7 @@ export class DataProcessingService implements DataProcessing {
     return pickedCandidate(answer, candidates);
   }
 
-  // Outside the transaction, which has rolled back: nothing from the raw listing is saved, and the claim is free.
+  // In the claim's transaction, after the work has rolled back: nothing from the raw listing is saved.
   async #fail(raw: ClaimedRawListing, error: unknown): Promise<ProcessingOutcome> {
     const text = errorText(error);
     const marked = await this.#discovery.markRawListingFailed(raw.id, text);

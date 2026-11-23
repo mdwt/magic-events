@@ -3,6 +3,7 @@
 // the warehouse rows and the mark.
 export interface Transactions {
   // Runs the work in one transaction. When the work throws, everything it wrote is rolled back and the error is
-  // thrown on. Work that is already inside a transaction joins it.
+  // thrown on. Work that is already inside a transaction runs in a savepoint of it: when it throws, only what it
+  // wrote is rolled back, and the transaction goes on with the locks it took before.
   run<T>(work: () => Promise<T>): Promise<T>;
 }
