@@ -41,7 +41,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Annual Art Exhibition 2026",
+    "title": "Annual Art Exhibition",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -148,7 +148,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Christof van der Berg: Stories & Sterre",
+    "title": "Christof van der Berg: Stories en Sterre",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -371,7 +371,7 @@
     ],
     "openingHours": "All day",
     "venue": {
-      "name": "Harbour on deck",
+      "name": "Harbour on Deck",
       "city": "Gansbaai"
     },
     "hints": [],
@@ -504,19 +504,13 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "The Sunset Market",
-    "type": "single",
+    "title": "Stanford Sunset Market",
+    "type": "recurring",
     "status": "confirmed",
     "booking": "none",
-    "sessions": [
-      {
-        "start": "2026-11-27",
-        "precision": "day",
-        "startTime": "18:00"
-      }
-    ],
+    "sessions": [],
     "venue": {
-      "name": "The Village Green",
+      "name": "Stanford Village Green",
       "city": "Stanford"
     },
     "hints": [],
@@ -530,7 +524,13 @@
       "scale": "local"
     },
     "tags": [],
-    "profile": "The Sunset Market on the Village Green in Stanford from 18:00 on 27 November 2026. Visitors stroll the stalls in the early evening. It suits anyone in Stanford looking for a relaxed evening market."
+    "profile": "The Sunset Market on the Village Green in Stanford from 18:00 on 27 November 2026. Visitors stroll the stalls in the early evening. It suits anyone in Stanford looking for a relaxed evening market.",
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=-1FR;BYMONTH=1,2,3,4,5,9,10,11,12",
+      "start": "2026-11-27",
+      "startTime": "18:00",
+      "endTime": "20:00"
+    }
   },
   {
     "source": "Cape Whale Coast Tourism",
@@ -551,7 +551,7 @@
       }
     ],
     "venue": {
-      "name": "Jukskei Hall",
+      "name": "Groenberg Jukskei Klub",
       "city": "Sandbaai"
     },
     "hints": [],
@@ -575,7 +575,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Universals RFC presents Miss Drag",
+    "title": "Universals RFC Miss Drag",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -695,7 +695,7 @@
       }
     ],
     "venue": {
-      "name": "Hangklip Hotel",
+      "name": "The Hangklip Hotel",
       "city": "Pringle Bay"
     },
     "hints": [],
@@ -716,7 +716,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Kleinmond Inniebos Kunstefees (KliK)",
+    "title": "Kleinmond inniebos Kunstefees (KliK)",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -728,7 +728,6 @@
       }
     ],
     "venue": {
-      "name": "Various venues across Kleinmond",
       "city": "Kleinmond"
     },
     "hints": [],
@@ -762,7 +761,7 @@
       }
     ],
     "venue": {
-      "name": "Bodhi Khaya",
+      "name": "Bodhi Khaya Nature Retreat",
       "city": "Gansbaai"
     },
     "hints": [],
@@ -784,7 +783,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Art Exhibition",
+    "title": "Hangklip Art Collective Exhibition",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -797,7 +796,7 @@
     ],
     "openingHours": "09:00–16:00",
     "venue": {
-      "name": "Harold Porter Botanical Gardens",
+      "name": "Harold Porter National Botanical Garden",
       "city": "Betty's Bay"
     },
     "hints": [],
@@ -820,7 +819,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Season Opener: Secret Sunrise",
+    "title": "Summer Opener Secret Sunrise",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -851,7 +850,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Food,Fun & Family Festival",
+    "title": "Food, Fun & Family Festival",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1058,7 +1057,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Rosoberry Harvest Festival",
+    "title": "Rosoberry Harvest Fest",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1131,7 +1130,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Stanford Stumble",
+    "title": "The Stanford Stumble",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1260,7 +1259,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Open Air Cinema: Raiders of the Lost Ark",
+    "title": "Raiders of the Lost Ark: Open-Air Cinema",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1272,7 +1271,7 @@
       }
     ],
     "venue": {
-      "name": "The Amphitheatre @ Landskein Wines",
+      "name": "Landskein",
       "city": "Stanford"
     },
     "hints": [],
@@ -1308,8 +1307,8 @@
       }
     ],
     "venue": {
-      "name": "Sandbaai Saal",
-      "city": "Hermanus"
+      "name": "Sandbaai Hall",
+      "city": "Sandbaai"
     },
     "hints": [],
     "attributes": {
@@ -1442,7 +1441,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/Tourism-November-Events-181126.pdf",
     "rawFile": "raw/whalecoast/november-events-181126.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "The Blending Table: Create your own wine",
+    "title": "The Blending Table: Create Your Own Wine",
     "type": "single",
     "status": "confirmed",
     "booking": "none",
@@ -1455,7 +1454,7 @@
       }
     ],
     "venue": {
-      "name": "Benguela Cove",
+      "name": "Benguela Cove Lagoon Wine Estate",
       "city": "Hermanus"
     },
     "hints": [],
@@ -1490,7 +1489,7 @@
       }
     ],
     "venue": {
-      "name": "The Parlour Landskein Wines",
+      "name": "Landskein",
       "city": "Stanford"
     },
     "hints": [],
@@ -1526,7 +1525,7 @@
       }
     ],
     "venue": {
-      "name": "Ficks",
+      "name": "Fick's Pool Restaurant",
       "city": "Hermanus"
     },
     "hints": [],
@@ -1762,7 +1761,9 @@
       "format": "festival",
       "setting": "outdoor"
     },
-    "tags": [],
+    "tags": [
+      "seafood"
+    ],
     "profile": "The Hawston Sea Festival at the Hawston Campsite on 5 December 2026. Visitors spend the day at a seaside community festival. It suits families and anyone near Hermanus that weekend."
   },
   {
@@ -1771,7 +1772,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Ubumnandi Summer Picnic",
+    "title": "Ubumnandi Festival Summer Picnic",
     "type": "single",
     "status": "announced",
     "booking": "none",
@@ -1782,7 +1783,7 @@
       }
     ],
     "venue": {
-      "name": "Mount Pleasant Sport Field",
+      "name": "Mount Pleasant Sports Field",
       "city": "Hermanus"
     },
     "hints": [],
@@ -1818,7 +1819,7 @@
     },
     "hints": [],
     "attributes": {
-      "tier": "premium",
+      "tier": "standard",
       "category": []
     },
     "tags": [],
@@ -1830,7 +1831,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Sixth Cricket",
+    "title": "Buildit Gansbaai Cricket Day",
     "type": "single",
     "status": "announced",
     "booking": "none",
@@ -1894,7 +1895,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "ParkRun Groeneweide Gansbaai",
+    "title": "Groeneweide Parkrun",
     "type": "recurring",
     "status": "confirmed",
     "booking": "none",
@@ -1905,7 +1906,7 @@
       "startTime": "08:00"
     },
     "venue": {
-      "name": "Groeneweide",
+      "name": "Groeneweide Farm",
       "city": "Gansbaai"
     },
     "hints": [],
@@ -1930,7 +1931,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "ParkRun Harold Porter Betty's Bay",
+    "title": "Betty’s Bay Parkrun",
     "type": "recurring",
     "status": "confirmed",
     "booking": "none",
@@ -1941,7 +1942,7 @@
       "startTime": "08:00"
     },
     "venue": {
-      "name": "Harold Porter",
+      "name": "Harold Porter National Botanical Garden",
       "city": "Betty's Bay"
     },
     "hints": [],
@@ -1966,7 +1967,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "ParkRun Hemel-en-Aarde",
+    "title": "Hermanus parkrun",
     "type": "recurring",
     "status": "confirmed",
     "booking": "none",
@@ -1977,8 +1978,7 @@
       "startTime": "08:00"
     },
     "venue": {
-      "name": "Hemel-en-Aarde",
-      "city": "Hemel-en-Aarde"
+      "city": "Hermanus"
     },
     "hints": [],
     "attributes": {
@@ -2002,7 +2002,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "ParkRun Benguela Cove Hermanus",
+    "title": "Benguela Cove parkrun",
     "type": "recurring",
     "status": "confirmed",
     "booking": "none",
@@ -2013,7 +2013,7 @@
       "startTime": "08:00"
     },
     "venue": {
-      "name": "Benguela Cove",
+      "name": "Benguela Cove Lagoon Wine Estate",
       "city": "Hermanus"
     },
     "hints": [],
@@ -2038,7 +2038,7 @@
     "url": "https://whalecoast.info/wp-content/uploads/2022/06/OM-Cape-Whale-Coast-Events-070826-1-1.pdf",
     "rawFile": "raw/whalecoast/annual-events-070826.pdf",
     "fetchedAt": "2026-11-23T13:25:14Z",
-    "title": "Hermanus First Friday Artwalk",
+    "title": "Hermanus First Friday Art Walk",
     "type": "recurring",
     "status": "confirmed",
     "booking": "none",
@@ -2203,7 +2203,7 @@
       "endTime": "20:00"
     },
     "venue": {
-      "name": "Old Village Green",
+      "name": "Stanford Village Green",
       "city": "Stanford"
     },
     "imageUrl": "https://whalecoast.info/wp-content/uploads/2022/07/countrysmall.jpg",

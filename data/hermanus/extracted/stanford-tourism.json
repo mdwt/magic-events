@@ -18,7 +18,7 @@
       "startTime": "18:00"
     },
     "venue": {
-      "name": "Stanford Market Square (Village Green)",
+      "name": "Stanford Village Green",
       "city": "Stanford",
       "position": {
         "lat": -34.44011492801233,
@@ -50,5 +50,53 @@
       "craft"
     ],
     "profile": "The Stanford Sunset Market is a free evening market on Stanford's historic Market Square, held on the last Friday of each month from September to May, from 6pm. Visitors browse artisanal food, local wines and craft beer and gift stalls to live music, with plenty of seating. It is fun for all ages and suits anyone staying in or near Stanford on a Friday evening."
+  },
+  {
+    "source": "Stanford Tourism",
+    "sourceListingId": "https://stanfordinbloom.co.za/event/stanford-sunset-market/",
+    "url": "https://stanfordinbloom.co.za/event/stanford-sunset-market/",
+    "rawFile": "raw/stanford-tourism/stanford-sunset-market-stanfordinbloom.txt",
+    "fetchedAt": "2026-11-23T13:37:13Z",
+    "title": "Stanford Sunset Market",
+    "summary": "A monthly open-air market on the heritage green in the middle of Stanford village, on the last Friday of the month from 6pm.",
+    "description": "Stanford Sunset Market is a monthly open air market featuring artisanal food, craft drinks, loaves, pickles, relishes, food trucks, coffee, local produce, plants and gifts that takes place on the central heritage green in the middle of Stanford village under the setting sun. Free access, free parking, all welcome. Loads of lovely people, great vibes, local rhythms and musicians, and a downright old-fashioned good time to be had by all. Last Friday of the month from 6pm.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=-1FR;BYMONTH=1,2,3,4,5,9,10,11,12",
+      "start": "2026-11-27",
+      "startTime": "18:00"
+    },
+    "venue": {
+      "name": "Stanford Village Green",
+      "city": "Stanford"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Live Music",
+      "Market"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "food_and_drink",
+        "music"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft-beer",
+      "craft"
+    ],
+    "profile": "The Stanford Sunset Market is a free monthly open-air market on the village green in the middle of Stanford, on the last Friday of the month from 6pm. Stalls sell artisanal food, craft drinks, local produce, plants and gifts, with food trucks and local musicians. It suits anyone staying in or near Stanford on a Friday evening."
   }
 ]
