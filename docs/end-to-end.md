@@ -448,7 +448,7 @@ The status Expected exists, but version 1 sets it nowhere: an annual festival kn
 | --- | --- | --- |
 | `"from": "2027-13-01"` | `from` | It is not a date |
 | `"to": "2027-06-01"` | `to` | It is before `from` |
-| An extra field `"date": "2027-06-20"` | `date` | Unknown field |
+| An extra field `"date": "2027-06-20"` | `date` | It is not a field the search takes |
 | `"attributes": { "colour": "red" }` | `attributes.colour` | It is not an attribute, and which attributes can be used |
 | `"attributes": { "category": ["opera"] }` | `attributes.category` | It is not an option, and which options there are |
 | `"attributes": { "minimum_age": "ten" }` | `attributes.minimum_age` | It is the wrong type |
@@ -456,7 +456,10 @@ The status Expected exists, but version 1 sets it nowhere: an annual festival kn
 | `"limit": 500` | `limit` | The largest allowed |
 | A body that is not JSON | | The body is not valid JSON |
 
-- **Passes when:** each REST answer is 400 `invalid_input` in the one error format (`code`, `message`, `details` with `path` and `message`, `requestId`), with the detail above. Each MCP answer is a tool error that names the same field.
+- **Passes when:**
+  - Each REST answer is 400 `invalid_input` in the one error format (`code`, `message`, `details` with `path` and `message`, `requestId`), with the detail above. Each MCP answer is a tool error that names the same field.
+  - Each detail's message is a plain sentence that says what to give instead, with an example where there is a form to follow, such as a date like 2027-06-20. No message holds a library's wording, such as `Invalid input`, `expected number` or `Too big`.
+  - A planner told the REST `message` alone would know what to change.
 
 #### E2E-39 · No system detail reaches a caller
 
