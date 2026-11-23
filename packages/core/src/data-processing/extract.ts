@@ -481,6 +481,67 @@ export function titleProblem(title: string, places: string[]): string | undefine
   return left.length === 0 ? `the title "${title}" names no experience, only a place, a date or a label` : undefined;
 }
 
+// Short words a title in title case keeps in lower case, after its first word.
+const MINOR_WORDS = new Set("a an and at by for in of on or the to with".split(" "));
+// All-capital words of a title in capitals that are acronyms and stay so: those with no vowel, such as DJ, BMX or
+// RFC, and these.
+const ACRONYMS = new Set("SA NYE VIP AGM USA UK EU ABSA SANBI UCT".split(" "));
+
+// A word of a title in capitals, in title case. A word with a digit, such as 10KM, and an acronym are kept.
+function titleCaseWord(word: string, first: boolean): string {
+  if (/\d/.test(word)) return word;
+  const letters = word.replace(/[^\p{L}]/gu, "");
+  if (letters.length > 1 && (ACRONYMS.has(letters) || !/[AEIOUY]/.test(letters))) return word;
+  const lower = word.toLowerCase();
+  if (!first && MINOR_WORDS.has(lower)) return lower;
+  // The first letter of the word and of each part after a hyphen, a slash or an opening bracket, as in "Pop-Up".
+  return lower.replace(/(^|[-/(“"])(\p{L})/gu, (_, before: string, letter: string) => before + letter.toUpperCase());
+}
+
+// A title tidied in the ways that need no judgement: the segments of a title joined by pipes that are only the
+// place, a date, a label or the site's name are taken off and the rest joined with spaces ("Hermanus | Solstice |
+// Secret Sunset" is "Solstice Secret Sunset"); a title wholly in capitals is put in title case; spaces before a
+// comma, doubled spaces and punctuation at either end are taken off. What else a title needs is the model's.
+export function tidyTitle(title: string, places: string[], site: string | undefined): string {
+  let tidied = title.replace(/\s+/g, " ").trim();
+  if (tidied.includes("|")) {
+    const siteWord = site === undefined ? undefined : plainWords(site).replace(/ /g, "");
+    const segments = tidied.split("|").map((segment) => segment.trim());
+    const kept = segments.filter(
+      (segment) =>
+        segment !== "" &&
+        titleProblem(segment, places) === undefined &&
+        (siteWord === undefined || plainWords(segment).replace(/ /g, "") !== siteWord),
+    );
+    tidied = (kept.length > 0 ? kept : segments).join(" ");
+  }
+  const letters = tidied.replace(/[^\p{L}]/gu, "");
+  if (letters.length > 3 && letters === letters.toUpperCase() && letters !== letters.toLowerCase()) {
+    tidied = tidied
+      .split(" ")
+      .map((word, index) => titleCaseWord(word, index === 0))
+      .join(" ");
+  }
+  return tidied
+    .replace(/\s+([,;:])/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s,;:|\-–—/.]+|[\s,;:|\-–—/]+$/gu, "")
+    .trim();
+}
+
+// The site's own name, from an item's address: quicket from www.quicket.co.za, allevents from allevents.in.
+function siteName(url: string | undefined): string | undefined {
+  if (url === undefined) return undefined;
+  try {
+    const labels = new URL(url).hostname.replace(/^www\./, "").split(".");
+    // Under a second-level domain such as co.za or com.au, the name is the label before it.
+    const secondLevel = labels.length > 2 && /^(co|com|org|net|gov|ac)$/.test(labels[labels.length - 2] ?? "");
+    return secondLevel ? labels[labels.length - 3] : labels[0];
+  } catch {
+    return undefined;
+  }
+}
+
 // How far from the source's location a venue may be. Sources list what is within about half an hour's drive, so
 // a position further than this is a misreading, such as a swapped sign or another venue's coordinates.
 export const MAX_VENUE_DISTANCE_KM = 100;
@@ -844,12 +905,9 @@ class LanguageModelExtractor implements Extractor {
         continue;
       }
       const { location } = input;
-      const titled = titleProblem(settled.experience.title, [
-        location.name,
-        location.region,
-        location.country,
-        settled.experience.venue?.city ?? "",
-      ]);
+      const places = [location.name, location.region, location.country, settled.experience.venue?.city ?? ""];
+      settled.experience.title = tidyTitle(settled.experience.title, places, siteName(input.url));
+      const titled = titleProblem(settled.experience.title, places);
       if (titled !== undefined) {
         this.#logger.warn({ title: answered.title, problem: titled }, "Extracted experience dropped");
         continue;

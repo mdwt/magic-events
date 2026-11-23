@@ -7,6 +7,7 @@ import {
   freeInWords,
   settleExperience,
   sourcingWindow,
+  tidyTitle,
   UnreadableListing,
 } from "../src/data-processing/extract.ts";
 import { EXTRACTION_INSTRUCTIONS } from "../src/data-processing/instructions.ts";
@@ -340,6 +341,39 @@ describe("The checks on each extracted experience", () => {
 
   test("an experience with no title is dropped", () => {
     assert.match(problemOf({ title: "  " }), /no title/);
+  });
+});
+
+describe("A title is tidied", () => {
+  // The titles the data audit of 23 November 2026 lists.
+  const places = ["Hermanus", "Western Cape", "South Africa"];
+  const cases: [string, string, string | undefined][] = [
+    ["Hermanus | Solstice | Secret Sunset", "Solstice Secret Sunset", "quicket"],
+    ["Hermanus | Summer Opener | Secret Sunrise Cape Town", "Summer Opener Secret Sunrise Cape Town", "quicket"],
+    ["ALBERT FROST TRIO", "Albert Frost Trio", undefined],
+    ["HARCOURTS 10KM ROAD RACE", "Harcourts 10KM Road Race", undefined],
+    ["PRIDE FUN WALK", "Pride Fun Walk", undefined],
+    ["TWO COOKIES | MAKE ONE. GIVE ONE.", "Two Cookies Make One. Give One.", undefined],
+    ["NYE PARTY WITH DJ MILKY AT THE BMX TRACK", "NYE Party with DJ Milky at the BMX Track", undefined],
+    ["The Gecko , Hermanus", "The Gecko, Hermanus", undefined],
+    ["Kaufmann SA Tour | Quicket", "Kaufmann SA Tour", "quicket"],
+    ["  Jingle Bell Rock  with The Family Band -", "Jingle Bell Rock with The Family Band", undefined],
+    // Not wholly in capitals: left as it is.
+    ["JINGLE BELL ROCK with The Family Band", "JINGLE BELL ROCK with The Family Band", undefined],
+    ["Kleinmond inniebos Kunstefees (KliK)", "Kleinmond inniebos Kunstefees (KliK)", undefined],
+  ];
+  for (const [title, tidied, site] of cases) {
+    test(`"${title}" is "${tidied}"`, () => {
+      assert.equal(tidyTitle(title, places, site), tidied);
+    });
+  }
+
+  test("before it is checked, and the instructions ask for the event's own name as a planner would say it", async () => {
+    const { extractor } = extractorFor("web_page", extraction(answered({ title: "Hermanus | 2026" })));
+    assert.deepEqual(await extractor.extract(input()), []);
+    assert.match(EXTRACTION_INSTRUCTIONS, /as a planner would say it to a client/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /"Arabella Open", not "Arabella Open 7"/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /"Stanford", not "Standford"/);
   });
 });
 
