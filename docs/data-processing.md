@@ -297,6 +297,7 @@ The same experience appears on many sources, and they do not always agree. The W
 - Each source has a priority number.
 - An experience's fields come from its highest-priority linked listing.
 - A lower-priority listing only fills fields that are empty.
+- On a tie in priority, the listing linked to the experience first keeps the lead, and the others only fill. A listing not linked yet comes after every linked one, so a new source of the same priority only fills. Two sources of the same priority therefore never take the lead from each other each time one is processed again. Catalogue gives an experience's listings in the order they were linked, the oldest first.
 - When the highest-priority link is removed, the experience keeps the values it has. The next source taking over is for phase 2.
 - Sessions and the recurrence are taken whole from the highest-priority listing that gives dates. Dates from two listings are never merged, so an experience never gets a date that only a lower-priority source lists.
 
@@ -501,7 +502,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Adapters in version 1 | Language model: Claude, through the Anthropic API. Embedding model: Amazon Titan Text Embeddings V2, through Amazon Bedrock |
 | Definitions | Configurable rows with a default set, not enums. Improving classification means adding or rewording definitions |
 | Matching | By the listing's existing source links first, then by comparing candidates. The same normalised title and dates that fit is a match in code. Otherwise the language model picks one candidate or none. Day dates on both sides fit when they overlap. When either side is known only to the month or year, they fit when they are in the same year or within three months across a year boundary |
-| Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty |
+| Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. On a tie in priority, the listing linked first keeps the lead |
 | Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
 | Processing again | Processed is not final. A listing's latest version can be processed again at any time. A system admin sends listings back with `pipeline reprocess`: one listing, the listings an experience was built from, a source's or a location's |
 | Status and booking from a listing | Set by the rules under Status and booking from a listing. Expected is set for a recurring event whose coming edition has only a month or a year and is not announced yet |
