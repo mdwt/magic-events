@@ -8,6 +8,28 @@ same feed, over a REST API or an MCP endpoint. Version 1 covers Hermanus, South 
 > [docs/architecture.md](docs/architecture.md) for how the system is built, and [AGENTS.md](AGENTS.md) for the brief
 > and the principles behind it. The rest is listed under [Documentation](#documentation).
 
+## Highlights
+
+- **Built to be extended.** The system is ports and adapters all the way through. The language model, the embedding
+  model, the job queue, storage and every kind of source sit behind a port, so swapping one is a single new adapter
+  and a setting, with no change to the domains. A new kind of source is one adapter and one extractor. ESLint enforces
+  the boundaries.
+- **A language model reads the listings.** Claude extracts the experiences from whatever a source publishes, be it a
+  web page, an RSS feed or a PDF calendar, then classifies each one with categories, attributes and tags. Those are
+  configurable definitions, so classification improves by adding a definition, not by changing code.
+- **Search ranked by meaning.** Every experience is embedded with Amazon Titan Text Embeddings V2, and so is the
+  traveller's query, such as "quiet, romantic, something to do with art". Results are ordered by how close they are in
+  meaning, combined with Postgres full-text search for names like "FynArts". Filters stay exact, and if the embedding
+  model is down, search carries on by keyword.
+- **Built for checking back.** A luxury trip is planned months ahead and refined later. Every change to an experience
+  is recorded, so a planner can run the same search again and ask only for what's new, moved or cancelled.
+- **One feed for people and agents.** REST and MCP are two doors to the same services, with the same API keys and the
+  same answers.
+- **Dates that match real events.** A one-night concert, a show with 81 dates, a weekly market, a festival that has a
+  month but no day yet, and a season like whale season are all stored and searched properly.
+- **Light to run.** Postgres is the only infrastructure. It holds the data, the embeddings (pgvector) and the job
+  queue.
+
 ## How it works
 
 ```mermaid
