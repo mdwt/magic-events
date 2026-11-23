@@ -39,8 +39,8 @@ export class OrganizationsService implements Organizations {
   async createTenant(input: CreateTenantInput): Promise<Tenant> {
     const created = await this.#repository.insertTenant(tenantRow({ ...input, status: "active" }));
     if (created === null) {
-      throw new AppError("conflict", `A tenant with the slug "${input.slug}" already exists.`, [
-        { path: "slug", message: "Already taken. Choose another slug." },
+      throw new AppError("conflict", `There is already a tenant with the slug ${input.slug}. Choose another slug.`, [
+        { path: "slug", message: `${input.slug} is taken by another tenant. Choose another slug.` },
       ]);
     }
     // Under its own key, so the caller's tenantId and userId on the line still say who did it.
@@ -86,7 +86,9 @@ export class OrganizationsService implements Organizations {
 
   async getUserByEmail(email: string): Promise<User> {
     const found = await this.#repository.findUserByEmail(email.trim().toLowerCase());
-    if (found === null) throw new AppError("not_found", `There is no user with the email address "${email}".`);
+    if (found === null) {
+      throw new AppError("not_found", `There is no user with the email address ${email}. Check the address, or add the user.`);
+    }
     return found;
   }
 
@@ -99,8 +101,8 @@ export class OrganizationsService implements Organizations {
   async createUser(input: SaveUserInput): Promise<User> {
     const created = await this.#repository.insertUser(await this.#userRow(input));
     if (created === null) {
-      throw new AppError("conflict", "A user with this email address already exists.", [
-        { path: "email", message: "Already taken. One user per email address." },
+      throw new AppError("conflict", "There is already a user with this email address. Each user needs their own.", [
+        { path: "email", message: "This email address belongs to another user. Each user needs their own." },
       ]);
     }
     this.#logger.info({ user: { id: created.id, role: created.role, tenantId: created.tenantId } }, "User created");
@@ -132,7 +134,7 @@ export class OrganizationsService implements Organizations {
 
 function tenantRow(input: SaveTenantInput): Required<SaveTenantInput> {
   if (input.slug.length > SLUG_MAX_LENGTH || !SLUG.test(input.slug)) {
-    throw new AppError("invalid_input", "The tenant's slug is not valid.", [
+    throw new AppError("invalid_input", "That slug cannot be used. Use lowercase letters, digits and single hyphens, such as blue-travel.", [
       {
         path: "slug",
         message:
@@ -153,8 +155,8 @@ function tenantRow(input: SaveTenantInput): Required<SaveTenantInput> {
 function validName(name: string): string {
   const trimmed = name.trim();
   if (trimmed.length === 0 || trimmed.length > NAME_MAX_LENGTH) {
-    throw new AppError("invalid_input", "The name is not valid.", [
-      { path: "name", message: `Must be 1 to ${NAME_MAX_LENGTH} characters.` },
+    throw new AppError("invalid_input", `Give a name of 1 to ${NAME_MAX_LENGTH} characters.`, [
+      { path: "name", message: `Give a name of 1 to ${NAME_MAX_LENGTH} characters, not only spaces.` },
     ]);
   }
   return trimmed;
@@ -164,7 +166,7 @@ function validName(name: string): string {
 function validEmail(email: string): string {
   const normalised = email.trim().toLowerCase();
   if (normalised.length > EMAIL_MAX_LENGTH || !EMAIL.test(normalised)) {
-    throw new AppError("invalid_input", "The email address is not valid.", [
+    throw new AppError("invalid_input", "That is not an email address. Give one such as ann@agency.example.com.", [
       { path: "email", message: "Give an address such as ann@agency.example.com." },
     ]);
   }
@@ -172,5 +174,5 @@ function validEmail(email: string): string {
 }
 
 function tenantNotFound(slug: string): AppError {
-  return new AppError("not_found", `There is no tenant with the slug "${slug}".`);
+  return new AppError("not_found", `There is no tenant with the slug ${slug}. List the tenants to find its slug.`);
 }

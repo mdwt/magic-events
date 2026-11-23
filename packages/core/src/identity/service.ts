@@ -33,7 +33,9 @@ const ALLOWED: Record<Action, Record<Role, boolean>> = {
 };
 
 // One message for a missing, unknown, disabled or expired key, so a caller cannot tell which.
-export const UNAUTHENTICATED_MESSAGE = "A valid API key is required. Send it as: Authorization: Bearer <key>.";
+export const UNAUTHENTICATED_MESSAGE =
+  "This needs a valid API key, sent as Authorization: Bearer <key>. If your key was revoked or has expired, ask for a " +
+  "new one.";
 
 
 export class IdentityService implements Identity {
@@ -100,9 +102,8 @@ export class IdentityService implements Identity {
   async issueCredential(input: { userId: string; kind: CallerKind; name: string }): Promise<IssuedCredential> {
     const name = input.name.trim();
     if (name.length === 0 || name.length > CREDENTIAL_NAME_MAX_LENGTH) {
-      throw new AppError("invalid_input", "The credential's name is not valid.", [
-        { path: "name", message: `Must be 1 to ${CREDENTIAL_NAME_MAX_LENGTH} characters.` },
-      ]);
+      const message = `Give the API key a name of 1 to ${CREDENTIAL_NAME_MAX_LENGTH} characters, such as planning desk.`;
+      throw new AppError("invalid_input", message, [{ path: "name", message }]);
     }
     await this.#requireUser(input.userId);
 
@@ -143,7 +144,7 @@ export class IdentityService implements Identity {
     // Only this user's credentials are searched, so another user's credential ID is not_found too.
     const credentials = await this.listCredentials(userId);
     if (!credentials.some((credential) => credential.id === credentialId)) {
-      throw new AppError("not_found", "This user has no credential with this ID.");
+      throw new AppError("not_found", "This user has no API key with this ID. List their keys to see the IDs.");
     }
     // Disabled rather than deleted: the plugin deletes a key only for a signed-in session, verifyApiKey refuses a
     // disabled key just the same, and the user's list still shows the key was revoked.

@@ -25,7 +25,7 @@ import { AppError } from "@magic-events/core/shared/errors.ts";
 //   pnpm cli:admin user add --tenant SLUG --name NAME --email EMAIL     a client user of that tenant
 //   pnpm cli:admin key issue --user EMAIL --name NAME --kind person|agent   prints the key, once
 //   pnpm cli:admin key list --user EMAIL                         the user's keys, never the keys themselves
-//   pnpm cli:admin key revoke --user EMAIL --key CREDENTIAL_ID
+//   pnpm cli:admin key revoke --user EMAIL --key KEY_ID
 //
 // A user is named by their email address. --configuration is a JSON object, and replaces the whole configuration.
 
@@ -37,7 +37,7 @@ export const USAGE = [
   "admin user add --tenant SLUG --name NAME --email EMAIL",
   "admin key issue --user EMAIL --name NAME --kind person|agent",
   "admin key list --user EMAIL",
-  "admin key revoke --user EMAIL --key CREDENTIAL_ID",
+  "admin key revoke --user EMAIL --key KEY_ID",
 ];
 
 // A command line that does not say one command with what it needs. Nothing has been asked of the services.
@@ -260,7 +260,7 @@ export async function runAdmin(
       print(rule);
       print("NEW API KEY, SHOWN ONCE. It is stored only as a hash and cannot be shown again.");
       print(rule);
-      print(`${person(user)}, ${command.kind} key "${command.name.trim()}", credential ID ${issued.id}`);
+      print(`${person(user)}, ${command.kind} key "${command.name.trim()}", key ID ${issued.id}`);
       print(`  ${issued.key}`);
       print(rule);
       return;

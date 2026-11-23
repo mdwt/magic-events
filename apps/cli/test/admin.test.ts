@@ -42,7 +42,7 @@ function keyIn(lines: string[]): string {
 }
 
 function credentialIdIn(lines: string[]): string {
-  const match = /credential ID (\S+)$/.exec(lines.find((one) => one.includes("credential ID")) ?? "");
+  const match = /key ID (\S+)$/.exec(lines.find((one) => one.includes("key ID")) ?? "");
   assert.ok(match?.[1], lines.join("\n"));
   return match[1];
 }
