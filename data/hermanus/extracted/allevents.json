@@ -34,6 +34,7 @@
       "Kids"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -92,6 +93,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music",
@@ -145,6 +147,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -184,6 +187,7 @@
       "Exhibition"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -231,6 +235,7 @@
       "Art"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -277,6 +282,7 @@
       "Rock Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -328,6 +334,7 @@
       "Meditation"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "wellness"
       ],
@@ -381,6 +388,7 @@
       "Parties"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "music"
@@ -431,6 +439,7 @@
       "Food Drinks"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "food_and_drink"
@@ -485,6 +494,7 @@
       "Crafts"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "food_and_drink"
@@ -532,6 +542,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "performing_arts"
@@ -583,6 +594,7 @@
       "Meeting"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -630,6 +642,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -673,6 +686,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -720,6 +734,7 @@
       "Medical"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "business_and_professional"
       ],
@@ -768,6 +783,7 @@
       "Exhibition"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -819,6 +835,7 @@
       "Environment"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "wellness",
         "faith_and_spirituality"
@@ -868,6 +885,7 @@
       "Air Show"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -915,6 +933,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "music",
@@ -968,6 +987,7 @@
       "Shopping"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -1019,6 +1039,7 @@
       "Food Drinks"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes",
         "music"
@@ -1067,6 +1088,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes",
         "music"
@@ -1117,6 +1139,7 @@
       "Meditation"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "wellness",
         "music"
@@ -1172,6 +1195,7 @@
       "Exercise"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "wellness",
         "music"
@@ -1230,6 +1254,7 @@
       "Food Drinks"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -1282,6 +1307,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "sport"
       ],
@@ -1326,6 +1352,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1371,6 +1398,7 @@
       "Festivals"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1414,6 +1442,7 @@
       "Live Music"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1467,6 +1496,7 @@
       "Golf"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -1522,6 +1552,7 @@
       "Pottery"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "visual_arts",
         "hobbies_and_lifestyle"
@@ -1573,6 +1604,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts"
       ],
@@ -1619,6 +1651,7 @@
       "Kids"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1669,6 +1702,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport"
       ],
@@ -1715,6 +1749,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "hobbies_and_lifestyle"
@@ -1766,6 +1801,7 @@
       "Food Drinks"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -1814,6 +1850,7 @@
       "Lgbt Pride"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -1860,6 +1897,7 @@
       "Music Festivals"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "music",
         "community_and_causes"
@@ -1915,6 +1953,7 @@
       "Camping"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music",
@@ -1974,6 +2013,7 @@
       "Golf"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2025,6 +2065,7 @@
       "Crafts"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -2076,6 +2117,7 @@
       "Lifestyle"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle",
         "food_and_drink"
@@ -2127,6 +2169,7 @@
       "Lifestyle"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "food_and_drink"
@@ -2175,6 +2218,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -2220,6 +2264,7 @@
       "Christmas Markets And Fairs"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations"
       ],
@@ -2265,6 +2310,7 @@
       "Education"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "sport"
@@ -2314,6 +2360,7 @@
       "Kids"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "sport"
@@ -2365,6 +2412,7 @@
       "Lifestyle"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes"
       ],
@@ -2414,6 +2462,7 @@
       "Christmas"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "hobbies_and_lifestyle"
@@ -2461,6 +2510,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events9/banners/70edab0315bca6709656fb90c5b189e4686a97487c9eafb7a75d451978d40ab2-rimg-w1200-h675-dc080808-gmir?v=1793091135",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2506,6 +2556,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events3/banners/c5f13b9b96b57a0b7b16937b31492bd10bafabb05f84fc7d62db0a5981da1494-rimg-w1200-h675-dc080808-gmir?v=1793091134",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2552,6 +2603,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events8/banners/aa198917d5bfbdbac9931f9921b26c43e39909fa391d45b57ac00a4d8f3d7d57-rimg-w1200-h675-dc080808-gmir?v=1793091137",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2602,6 +2654,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events8/banners/3a0dd286db971cda2cec9eecad2f78917536d5c29db36f13bf88b88c7f98fb0a-rimg-w1200-h675-dc080808-gmir?v=1793091140",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2654,6 +2707,7 @@
       "Orchestra"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2702,6 +2756,7 @@
       "Meditation"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2750,6 +2805,7 @@
       "Music"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2795,6 +2851,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events5/banners/d69438610f9a1391cb86b3afaac81d92908e157cc879fcabbcf4a30aeb9caf3b-rimg-w1200-h675-dc080808-gmir?v=1793091131",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2840,6 +2897,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events10/banners/b01bfc79f462b8f30edbc102779371a0034f291b6a9c26e648b5ade90de3c0ec-rimg-w1200-h675-dc080808-gmir?v=1793091138",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2890,6 +2948,7 @@
     "imageUrl": "https://cdn-az.allevents.in/events6/banners/edb869fc641f2479c4898cd9c883e41e0d873efe212e9968a2cb63485d0f61cd-rimg-w1200-h675-dc080808-gmir?v=1793091136",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "music"
@@ -2939,6 +2998,7 @@
       "Motivational"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "faith_and_spirituality"
       ],
@@ -2988,6 +3048,7 @@
       "Crafts"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "community_and_causes"
@@ -3031,6 +3092,7 @@
       "Summer Camps"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [],
       "format": "festival",
       "setting": "outdoor",
@@ -3071,6 +3133,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -3117,6 +3180,7 @@
       "Performances"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -3162,6 +3226,7 @@
       "Parties"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -3210,6 +3275,7 @@
       "Parties"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -3261,6 +3327,7 @@
       "Food Drinks"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -3307,6 +3374,7 @@
       "Live Music"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -3351,6 +3419,7 @@
       "Holiday"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
