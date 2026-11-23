@@ -61,7 +61,7 @@ The thing a client searches. System-managed and visible to every tenant. Every e
   - status and booking (below)
   - when: its sessions, its recurrence if it is recurring, timezone, opening hours (see Dates and sessions)
   - where: location, venue name and address, city, position
-  - price range, currency, on-sale time, booking close time, booking link, image
+  - price range, currency, on-sale time, booking close time, booking link, image, its own page address if it has one
   - version
 - **Rules:**
   - Belongs to one location. Stores no distance; distance comes from the caller's point and radius at query time.
@@ -172,13 +172,20 @@ What each status allows:
 
 Dates changed means a session was added, moved or removed, or the recurrence changed.
 
+Changed-since takes the same search parameters as a search, without the query text, and the time of the client's last search. It returns one entry for each experience with a change since then, the most recent change first. Each entry carries:
+
+- **The change that matters most to a planner:** the first that applies of cancelled, removed, postponed, rescheduled, confirmed, new and changed. An experience first published since then is New, unless it has since been cancelled or removed.
+- **Every change since then,** newest first.
+
+Status and bookable narrow only the experiences that are going ahead. A Cancelled or Removed experience that matches the place, dates, attributes and tags is always reported. It is matched on its sessions in the dates, whatever each session's status.
+
 ### Catalogue settings
 
 System settings are environment variables, read through the settings provider (see [architecture.md](architecture.md)).
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `CATALOGUE_PAST_CHECK_INTERVAL_MINUTES` | 60 | How often Catalogue moves finished experiences to Past, closes bookings whose close time has passed, and generates the sessions of open-ended recurring experiences further ahead |
+| `CATALOGUE_UPKEEP_CRON` | `0 * * * *` | When Catalogue's upkeep runs, as a cron expression in UTC: every hour. The upkeep moves finished experiences to Past, closes bookings whose close time has passed, and generates the sessions of open-ended recurring experiences further ahead |
 | `CATALOGUE_SESSION_HORIZON_MONTHS` | 24 | How far ahead Catalogue generates the sessions of an open-ended recurring experience. Trips are booked up to 18 months ahead |
 | `SEARCH_DEFAULT_RADIUS_KM` | 25 | The radius used when a client's search gives none |
 | `SEARCH_MAX_RADIUS_KM` | 200 | The largest radius a client may ask for |
@@ -247,7 +254,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
 | Change kind | A change row has one kind. When one version changes several things, it is the first that applies of cancelled, removed, postponed, rescheduled, confirmed and changed |
 | Auth | Better Auth and its own tables in v1 |
-| Tenant | Our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's user table, and its organization plugin is not used. The seed creates the tenants, their users and their API keys. There is no sign-up |
+| Tenant | Our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's user table, and its organization plugin is not used. The seed creates the tenants, their users and their API keys. There is no sign-up. A system admin can also onboard a tenant through the API (UC4 in [architecture.md](architecture.md)) |
 | Domain dependencies | Services call each other's services. No table holds a copy of another domain's data, and no domain event is needed for the hand-off between domains |
 | Raw content | Stored in Postgres in a `text` column, so JSON and HTML both fit and the copy stays exact. **Later:** move raw content to MinIO (S3) and store a key instead |
 | Trip context | None. The system is an experience feed that serves results from the caller's search parameters |
