@@ -204,7 +204,7 @@ The run and the weekly class are never returned for a day between their dates. T
 - **Passes when:**
   - The answer includes the 2027 Hermanus FynArts Festival.
   - The FynArts Festival carries `whale-season` and `winter`. "Hermanus Whale Cruises boat-based whale watching" (June to November) carries `whale-season` and `whales`. "Christmas Eve Dinner 2026 at Moody Lagoon" carries `summer`, `high-season` and `south-african-school-holidays`, and not `whale-season`.
-  - No search returns an experience that is a season. "Southern Right Whales in Walker Bay" must not be an experience. Depends on issue 48.
+  - No search returns an experience that is a season. "Southern Right Whales in Walker Bay" must not be an experience.
 
 A season tag is on the experience, not on each session, so an experience carries a season only when all of its dates fall inside it. A market that runs all year carries no season.
 
@@ -217,7 +217,7 @@ A season tag is on the experience, not on each session, so an experience carries
 - **Steps:** search 1 to 14 May 2028, 17 months ahead. Then 1 to 30 September 2027.
 - **Passes when:**
   - The May 2028 answer has the open-ended recurring experiences with their sessions in those dates: Hermanus Country Market on Saturdays 6 and 13 May 2028.
-  - The September 2027 answer has the festivals announced for next year with month precision and status announced: Hermanus Whale Festival, Hermanus Flower and Eco Fair and Hermanus Adventure Week. It has "Swallow Series Wine Tasting Lunches" with its one session on 4 September 2027.
+  - The September 2027 answer has the annual festivals expected next year, with month precision and status expected: Hermanus Whale Festival, Hermanus Flower and Eco Fair and Hermanus Adventure Week. It has "Swallow Series Wine Tasting Lunches" with its one session on 4 September 2027.
   - No item that far ahead is confirmed with booking open unless its source sells tickets now.
 
 #### E2E-17 · Nothing beyond what is known
@@ -227,7 +227,7 @@ A season tag is on the experience, not on each session, so an experience carries
 - **Steps:** search a week that starts more than 24 months after today, such as 1 to 14 December 2028 for a run on 23 November 2026.
 - **Passes when:** no open-ended recurring experience is returned, because none has sessions past the 24 month horizon yet (`CATALOGUE_SESSION_HORIZON_MONTHS`), and every item returned has a session a source listed inside those dates.
 
-The status Expected exists, but version 1 sets it nowhere: an annual festival known only by its month comes in as Announced.
+An annual festival known only by its month, with no announcement yet for the coming edition, is Expected: its dates are likely, not promised. Once a source announces the edition it becomes Announced, and it never goes back.
 
 ### The feed keeps itself current (UC3)
 
@@ -536,6 +536,18 @@ This is what the owner cares about most.
 | Bookable means it can be booked | Every bookable item has a booking link or its own page address where it can be booked | Fails: 17 bookable items have neither, such as "Sourdough Baking Class" |
 | One session per date for Quicket | No experience from Quicket covers days its page does not list | To check against each page: "Sip & Solve: Blind Wine & Whisky Tasting" is one session from 19 to 30 December 2026. Issue 36 |
 
+#### E2E-44 · The most premium comes first
+
+- **Goal:** "This is a luxury trip. Show me the best of what is on, not the parkrun."
+- **Who and how:** Agency Planner over REST, and Agency Assistant over MCP.
+- **Steps:** search 20 to 30 September 2027 with no query text, then with `"query": "whales"`, then with `"attributes": { "tier": ["luxury", "premium"] }`.
+- **Passes when:**
+  - No item of a lower tier comes before an item of a higher tier, in either of the first two answers. The order of tiers is luxury, premium, standard, everyday, and an experience with no tier counts as standard.
+  - Every whale-watching boat trip comes before every parkrun and every town market, with and without the query text.
+  - Within a tier, with no query text the soonest comes first.
+  - The third answer has no parkrun and no market, and every item's `attributes.tier` is luxury or premium.
+  - REST and MCP give the same items in the same order.
+
 ## The checks around the scenarios
 
 These hold before the scenarios are run and again after any fix made during the run.
@@ -550,6 +562,7 @@ These hold before the scenarios are run and again after any fix made during the 
 | C-06 | The server starts and stops cleanly | It logs that it is listening and that the jobs started, `/health` is 200, and on SIGTERM it logs "Stopping" then "Stopped" and exits with code 0, finishing the request or job in hand |
 | C-07 | The background jobs run | Within an hour of starting, `pgboss.job` shows a completed job for each of `discovery.find-due-sources`, `processing.process-pending`, `catalogue.embed-experiences` and `catalogue.keep-up`, and no job given up |
 | C-08 | Upkeep keeps the feed current | After the upkeep has run, no experience that search can return has its last session before today, and open-ended recurring experiences have sessions up to 24 months from today |
+| C-09 | A new checkout starts with a full feed | On a server with no `magic_events` database, `pnpm quickstart` restores the snapshot and seeds, printing the new keys. A search with one of them then returns the experiences of the snapshot, every one with an embedding, and `pnpm db:restore` run again changes nothing and says the database already has tables |
 
 ## Results
 
@@ -563,6 +576,7 @@ These hold before the scenarios are run and again after any fix made during the 
 | C-06 | | | |
 | C-07 | | | |
 | C-08 | | | |
+| C-09 | | | |
 | E2E-01 | | | |
 | E2E-02 | | | |
 | E2E-03 | | | |
@@ -606,3 +620,4 @@ These hold before the scenarios are run and again after any fix made during the 
 | E2E-41 | | | |
 | E2E-42 | | | |
 | E2E-43 | | | |
+| E2E-44 | | | |
