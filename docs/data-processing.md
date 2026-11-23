@@ -46,7 +46,24 @@ A listing can change twice before it is processed, so two of its versions can be
 
 ### Processing again
 
-Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions. A system admin sends listings back to pending with `pipeline reprocess`.
+Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions.
+
+A system admin sends listings back from the command line, with `pipeline reprocess` and one of:
+
+- `--listing ID`: one listing.
+- `--experience ID`: every listing the experience is linked to. The experience is named by its ID or its slug.
+- `--source NAME`: every listing of a source, by its name.
+- `--location SLUG`: every listing of a location, by its slug.
+
+Data processing works out what to send back, through the Catalogue service for an experience or a location and through the Discovery service for a source, and asks the Discovery service to send those listings back. For each selected listing that is still listed, Discovery sets its latest version back to pending, with its attempts at 0 and its error cleared.
+
+- An older version is never sent back.
+- A latest version that is already pending is left as it is, and a removed listing is skipped.
+- An experience with no links has nothing to process again.
+- Sending back raises no domain event. Processing raises `raw_listing.processed` as usual.
+- It only sends listings back. The processing job picks them up, or `--now` processes them straight away.
+
+Matching starts from the listing's own links, so processing again updates the experiences it is linked to and creates none twice. When nothing changed, an experience gets no new version.
 
 ## Extractors
 
@@ -293,7 +310,7 @@ A search takes filters and, optionally, a query text: what the traveller likes, 
 flowchart LR
   DP[Data processing] -- save with title and profile --> CAT[Catalogue service]
   CAT -- stores profile, clears embedding --> EXP[(experience)]
-  EW[Embedding worker] -- title and profile --> V[Embedding model]
+  EW[Embedding job] -- title and profile --> V[Embedding model]
   EW -- embedding and model --> EXP
   S[Search with a query text] -- query text --> V
   S -- filters, then ranks --> EXP
@@ -307,10 +324,11 @@ An embedding is a list of 1024 numbers that stands for a text's meaning. Texts t
 - **What is embedded:** the experience's title and profile as one text, with the title on the first line.
 - **Stored on the experience:** the embedding and the name of the model that made it, in Postgres with the pgvector extension.
 - **Save makes no call.** When Data processing saves an experience whose title or profile changed, Catalogue clears the embedding. It does not call the embedding model, so saving never waits on it or fails because of it.
-- **The embedding worker makes the call.** It is part of Catalogue and is started by the scheduler. Each round it takes the experiences search can return (Expected, Announced, Confirmed, Postponed) whose embedding is empty or was made by a model other than the current one. It sends their texts to the embedding model, marked as documents, and stores the results.
-- **Failure:** a text that fails is left as it is and taken again on the next round. Until then the experience has no embedding, and search still returns it, ranked by keyword alone.
+- **The embedding job makes the call.** Embedding is the job `catalogue.embed-experiences`, which calls Catalogue's service (see Background jobs in [architecture.md](architecture.md)). It is queued after a processing job that processed anything, and every 15 minutes. It runs round after round until nothing is left to embed. Each round takes the experiences search can return (Expected, Announced, Confirmed, Postponed) whose embedding is empty or was made by a model other than the current one. It sends their texts to the embedding model, marked as documents, and stores the results.
+- **Stored only if still current.** An embedding is stored only if the experience's title and profile are unchanged since its text was read. Otherwise the experience stays due and is embedded again.
+- **Failure:** when a whole round fails, each text is tried alone, so one text the model fails on does not hold back the others. A text that fails is left as it is and taken again in a later round. Until then the experience has no embedding, and search still returns it, ranked by keyword alone. When a round embeds nothing because the model failed, the job fails and the queue runs it again.
 - **Not a change:** storing or clearing an embedding never bumps the experience's version or writes a change row.
-- **Changing the model or the provider:** change the embedding settings. Every stored embedding is then from another model, so the worker makes them all again from the stored profiles. Nothing is fetched or processed again, and the language model is not called. An embedding from another model is never compared with a query; until it is replaced, its experience is ranked by keyword alone. A model with a different number of dimensions also needs a schema change, because the column's size is fixed.
+- **Changing the model or the provider:** change the embedding settings. Every stored embedding is then from another model, so the embedding job makes them all again from the stored profiles. Nothing is fetched or processed again, and the language model is not called. An embedding from another model is never compared with a query; until it is replaced, its experience is ranked by keyword alone. A model with a different number of dimensions also needs a schema change, because the column's size is fixed.
 
 ### Search text
 
@@ -331,7 +349,7 @@ For the keyword side, each experience has a search text: a Postgres `tsvector` c
 3. **Semantic list:** the candidates that have an embedding from the current model, nearest to the query's embedding first, by cosine distance.
 4. **Keyword list:** the candidates whose search text contains any word of the query text, best full-text rank first.
 5. **Combined** by reciprocal rank fusion: a candidate's score is 1 / (60 + its place) in each list it is in, added up. A candidate near the top of both lists scores highest, and a distance never has to be compared with a full-text rank.
-6. **Order:** highest score first, then start date. A candidate in neither list scores 0 and comes last.
+6. **Order:** highest score first, then the start of its first session in the dates, then title, then ID. A candidate in neither list scores 0 and comes last.
 
 The distance is worked out exactly, over the candidates only, with no vector index. The filters leave a small set, so this is fast. An approximate index (HNSW) searches before the filters are applied and can return too few results after them.
 
@@ -363,6 +381,8 @@ LEFT JOIN semantic s USING (id)
 LEFT JOIN keyword k USING (id)
 ORDER BY score DESC, c.start_date;
 ```
+
+The SQL above shows the ranking as separate steps. As built, the two places are window functions in the ordering, over the rows the filters leave, and ties are broken by start date, title and ID. The result is the same.
 
 ## Ports
 
@@ -404,11 +424,11 @@ interface LanguageModel {
 
 ### Embedding port
 
-Owned by Catalogue, which stores embeddings and ranks searches. Catalogue still calls no other domain.
+Owned by Catalogue, which stores embeddings and ranks searches. Using it makes Catalogue depend on no other domain.
 
 ```ts
 interface EmbeddingModel {
-  model: string;        // saved with every embedding; a different name makes the worker embed again
+  model: string;        // saved with every embedding; a different name makes the embedding job embed again
   dimensions: number;   // must be 1024, the size of the column
   embed(texts: string[], purpose: "document" | "query"): Promise<number[][]>;   // one embedding per text, in the same order
 }
@@ -416,7 +436,7 @@ interface EmbeddingModel {
 
 - **Purpose.** A profile is a document and a search's query text is a query. An adapter whose model treats the two differently uses it; the others ignore it.
 - **One kind of failure.** `embed` fails with `EmbeddingFailed`. A text too long for the model is a failure and is never cut.
-- **Batching is the adapter's.** The worker hands over a round's texts. Whether they go in one request or one at a time is up to the adapter.
+- **Batching is the adapter's.** Catalogue hands over a round's texts. Whether they go in one request or one at a time is up to the adapter.
 
 ## Settings
 
@@ -435,9 +455,10 @@ Catalogue's embedding settings:
 | --- | --- | --- |
 | `EMBEDDING_PROVIDER` | `bedrock` | Which embedding adapter is used |
 | `EMBEDDING_MODEL` | `amazon.titan-embed-text-v2:0` | The model name handed to that adapter, for profiles and query texts alike |
-| `EMBEDDING_INTERVAL_SECONDS` | 60 | How often the embedding worker looks for experiences to embed |
-| `EMBEDDING_BATCH_SIZE` | 100 | How many experiences the embedding worker takes in one round |
+| `EMBEDDING_BATCH_SIZE` | 100 | How many experiences the embedding job takes in one round |
 | `EMBEDDING_QUERY_TIMEOUT_SECONDS` | 5 | How long a search waits for the query's embedding before ranking by keyword alone |
+
+When embedding runs is not a setting: the job `catalogue.embed-experiences` is queued after a processing job that processed anything, and every 15 minutes (see Embedding).
 
 The attribute, option and tag definitions are not settings. They are rows (see Classification).
 
@@ -445,8 +466,8 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 
 | Service | Calls | For |
 | --- | --- | --- |
-| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed |
-| Data processing | Catalogue | Getting a location, matching by source link or candidates, saving experiences, removing source links |
+| Data processing | Discovery | Claiming pending raw listings, marking them processed or failed, the priority of each listing's source, finding a source by its name, sending listings back to be processed again |
+| Data processing | Catalogue | Getting a location, matching by source link or candidates, saving experiences, removing source links, the listings an experience is linked to |
 
 ## Decisions
 
@@ -459,7 +480,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Category and format | Separate attributes. Category is what an experience is about, format is the form it takes. Festival, market and talk are formats |
 | Audience | One attribute with Family, All ages and Adults. There is no family category |
 | Profile | A short text the language model writes for every experience, from its extracted fields and assigned values only. Saved beside the source's description, never in place of it. Written again on every processing, so it always reflects the latest version of the source |
-| Embeddings | Catalogue embeds each experience's title and profile, in a worker of its own. Saving an experience never calls the embedding model |
+| Embeddings | Catalogue embeds each experience's title and profile, in a job of its own, `catalogue.embed-experiences`. Saving an experience never calls the embedding model |
 | Ranking | A query text orders the results and never filters them. The order is by meaning and by keyword, combined by reciprocal rank fusion |
 | Ports and adapters | The language model and the embedding model are each reached through a port. The domain names no provider. A provider is changed by writing an adapter and changing a setting |
 | Adapters in version 1 | Language model: Claude, through the Anthropic API. Embedding model: Amazon Titan Text Embeddings V2, through Amazon Bedrock |
@@ -541,17 +562,17 @@ The adapter is `adapters/language-model/anthropic.ts`. Measured on real sources 
 
 ### Bedrock adapter (embedding model)
 
-- **SDK:** the AWS SDK for JavaScript, `@aws-sdk/client-bedrock-runtime`, calling `InvokeModel`.
+- **SDK:** the AWS SDK for JavaScript, `@aws-sdk/client-bedrock-runtime`, calling `InvokeModel`. The SDK speaks HTTP/2. The client is made on the first call, so a process that never embeds starts without a region or credentials.
 - **Model:** `EMBEDDING_MODEL`, by default `amazon.titan-embed-text-v2:0`.
 - **Request:** `inputText`, with `dimensions` set to 1024 to match the column and `normalize` set to true. The embedding is the `embedding` field of the response.
-- **One text per request.** Titan takes a single text, so the adapter sends a round's texts one after another, a few at a time, and returns the embeddings in the order it was given the texts.
+- **One text per request.** Titan takes a single text, so the adapter sends a round's texts one after another, four at a time, and returns the embeddings in the order it was given the texts.
 - **Purpose is ignored.** Titan embeds documents and queries the same way.
 - **Length:** Titan accepts up to 8,192 tokens. A title and profile are a few sentences.
 - **Credentials:** the AWS SDK's default credential chain, in the region from `AWS_REGION`. The AWS account needs access to the model in that region.
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `AWS_REGION` | None; required | The AWS region Bedrock is called in |
+| `AWS_REGION` | None; needed only where embeddings are made | The AWS region Bedrock is called in |
 | AWS credentials | From the environment | Whatever the AWS SDK's default credential chain finds: access keys, a profile or a role |
 
 ```ts
@@ -569,3 +590,5 @@ async function embedOne(text: string): Promise<number[]> {
   return JSON.parse(new TextDecoder().decode(response.body)).embedding;
 }
 ```
+
+The adapter is `adapters/embedding/bedrock.ts`, the only code that imports the AWS SDK. Measured on 23 Nov 2026: one text took about 1.3 to 2.0 seconds, so a search with a query text takes that much longer, inside the 5 second limit.
