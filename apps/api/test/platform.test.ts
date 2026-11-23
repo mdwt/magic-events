@@ -157,11 +157,16 @@ describe("the error format", () => {
     assert.equal(error.details.find((detail) => detail.path === "colour")?.message, "Unknown field.");
   });
 
-  test("a wrong content type, an empty body and a body that is too large are invalid_input", async () => {
+  test("a wrong content type is 415, a body that is too large 413, and an empty body invalid_input", async () => {
     const cases = [
-      { headers: { "content-type": "text/plain" }, payload: "hello" },
-      { headers: { "content-type": "application/json" }, payload: "" },
-      { headers: { "content-type": "application/json" }, payload: JSON.stringify({ ...SEARCH, query: "x".repeat(70_000) }) },
+      { headers: { "content-type": "text/plain" }, payload: "hello", status: 415, code: "unsupported_media_type" },
+      { headers: { "content-type": "application/json" }, payload: "", status: 400, code: "invalid_input" },
+      {
+        headers: { "content-type": "application/json" },
+        payload: JSON.stringify({ ...SEARCH, query: "x".repeat(70_000) }),
+        status: 413,
+        code: "content_too_large",
+      },
     ];
     for (const one of cases) {
       const response = await harness.app.inject({
@@ -170,8 +175,8 @@ describe("the error format", () => {
         headers: { ...bearer(key), ...one.headers },
         payload: one.payload,
       });
-      assert.equal(response.statusCode, 400);
-      assert.equal(errorOf(response).code, "invalid_input");
+      assert.equal(response.statusCode, one.status);
+      assert.equal(errorOf(response).code, one.code);
       assert.doesNotMatch(response.body, /FST_|fastify/i);
     }
   });
@@ -349,6 +354,21 @@ describe("the OpenAPI document", () => {
       ["/v1/users/{userId}/credentials/{credentialId}", "delete"],
     ] as const) {
       assert.ok(document.paths[path]?.[method]?.responses["404"], `${method} ${path} does not document 404`);
+    }
+    for (const [path, method] of [
+      ["/v1/experiences/search", "post"],
+      ["/v1/experiences/changes", "post"],
+      ["/v1/tenants", "post"],
+      ["/v1/tenants/{slug}", "patch"],
+      ["/v1/tenants/{slug}/users", "post"],
+      ["/v1/users/{userId}/credentials", "post"],
+    ] as const) {
+      for (const status of ["413", "415"]) {
+        assert.ok(document.paths[path]?.[method]?.responses[status], `${method} ${path} does not document ${status}`);
+      }
+    }
+    for (const path of ["/v1/tenants", "/v1/tenants/{slug}/users"] as const) {
+      assert.ok(document.paths[path]?.post?.responses["409"], `post ${path} does not document 409`);
     }
     assert.ok(document.paths["/v1/tenants"]?.post?.responses["201"]);
     assert.ok(document.paths["/v1/tenants"].post.requestBody);

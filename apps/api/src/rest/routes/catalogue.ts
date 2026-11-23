@@ -6,7 +6,7 @@ import {
   searchExperiencesResultSchema,
   type Catalogue,
 } from "@magic-events/core/catalogue/ports.ts";
-import { errorResponses } from "../errors.ts";
+import { bodyErrorResponses, errorResponses } from "../errors.ts";
 
 export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = (app, { catalogue }) => {
   app.post(
@@ -23,7 +23,7 @@ export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = 
           "what is returned; the query text only orders the results.",
         tags: ["Experiences"],
         body: searchExperiencesInputSchema,
-        response: { 200: searchExperiencesResultSchema, ...errorResponses },
+        response: { 200: searchExperiencesResultSchema, ...errorResponses, ...bodyErrorResponses },
       },
     },
     (request) => catalogue.searchExperiences(request.body),
@@ -45,7 +45,7 @@ export const catalogueRoutes: FastifyPluginAsyncZod<{ catalogue: Catalogue }> = 
           "comes first.",
         tags: ["Experiences"],
         body: experienceChangesInputSchema,
-        response: { 200: experienceChangesResultSchema, ...errorResponses },
+        response: { 200: experienceChangesResultSchema, ...errorResponses, ...bodyErrorResponses },
       },
     },
     (request) => catalogue.getChangesSince(request.body),

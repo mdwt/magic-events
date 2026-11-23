@@ -13,6 +13,8 @@ export const STATUS_BY_CODE: Record<ResponseErrorCode, number> = {
   forbidden: 403,
   not_found: 404,
   conflict: 409,
+  content_too_large: 413,
+  unsupported_media_type: 415,
   rate_limited: 429,
   internal_error: 500,
   unavailable: 503,
@@ -54,6 +56,12 @@ export const errorResponses = {
   503: errorSchema("unavailable", "The service cannot answer for now, such as while its database is down. Retry-After says how many seconds to wait."),
 };
 
+// For a route that takes a body.
+export const bodyErrorResponses = {
+  413: errorSchema("content_too_large", "The request body is larger than the server takes."),
+  415: errorSchema("unsupported_media_type", "The request body is not JSON. Send it with Content-Type: application/json."),
+};
+
 // For a route that creates something whose name must not be taken.
 export const conflictResponse = {
   409: errorSchema("conflict", "It already exists: the details name the field that is taken."),
@@ -82,14 +90,20 @@ export interface ErrorReply {
 
 // Fastify's own errors about a request it could not read. Their messages are replaced with ours, so no library
 // wording reaches the caller.
-const UNREADABLE_REQUEST: Record<string, string> = {
-  FST_ERR_CTP_INVALID_MEDIA_TYPE: "The content type is not supported. Send application/json.",
-  FST_ERR_CTP_BODY_TOO_LARGE: "The request body is too large.",
-  FST_ERR_CTP_EMPTY_JSON_BODY: "The request body is empty. Send a JSON object.",
-  FST_ERR_CTP_INVALID_JSON_BODY: "The request body is not valid JSON.",
-  FST_ERR_CTP_INVALID_CONTENT_LENGTH: "The Content-Length header does not match the body.",
-  FST_ERR_BAD_URL: "The address is not valid.",
-  FST_ERR_MAX_PARAM_LENGTH: "The address is too long.",
+const UNREADABLE_REQUEST: Record<string, { code: ErrorCode; message: string }> = {
+  FST_ERR_CTP_INVALID_MEDIA_TYPE: {
+    code: "unsupported_media_type",
+    message: "The content type is not supported. Send the body as JSON, with Content-Type: application/json.",
+  },
+  FST_ERR_CTP_BODY_TOO_LARGE: { code: "content_too_large", message: "The request body is too large. Send a smaller one." },
+  FST_ERR_CTP_EMPTY_JSON_BODY: { code: "invalid_input", message: "The request body is empty. Send a JSON object." },
+  FST_ERR_CTP_INVALID_JSON_BODY: { code: "invalid_input", message: "The request body is not valid JSON." },
+  FST_ERR_CTP_INVALID_CONTENT_LENGTH: {
+    code: "invalid_input",
+    message: "The Content-Length header does not match the body.",
+  },
+  FST_ERR_BAD_URL: { code: "invalid_input", message: "The address is not valid." },
+  FST_ERR_MAX_PARAM_LENGTH: { code: "invalid_input", message: "A part of the address is too long." },
 };
 
 // Turns anything thrown while answering a request into the status and body the caller gets. isUnavailable says
@@ -118,9 +132,17 @@ export function toErrorReply(error: unknown, isUnavailable: (error: unknown) => 
     };
   }
 
-  const unreadable = UNREADABLE_REQUEST[fastifyCode(error)];
+  const code = fastifyCode(error);
+  const unreadable = UNREADABLE_REQUEST[code] ?? (code.startsWith("FST_ERR_") && isClientError(error) ? UNREADABLE : undefined);
   if (unreadable !== undefined) {
-    return { status: 400, code: "invalid_input", message: unreadable, details: [], retryAfterSeconds: undefined, system: false };
+    return {
+      status: STATUS_BY_CODE[unreadable.code],
+      code: unreadable.code,
+      message: unreadable.message,
+      details: [],
+      retryAfterSeconds: undefined,
+      system: false,
+    };
   }
 
   return {
@@ -149,6 +171,14 @@ function validationDetails(issue: {
     return keys.map((key) => ({ path: path ? `${path}.${String(key)}` : String(key), message: "Unknown field." }));
   }
   return [{ path, message: issue.message ?? "Not valid." }];
+}
+
+// Any other error of Fastify's that it raises with a 4xx status: something about the request it could not read.
+const UNREADABLE = { code: "invalid_input", message: "The request could not be read." } as const;
+
+function isClientError(error: unknown): boolean {
+  if (typeof error !== "object" || error === null || !("statusCode" in error)) return false;
+  return typeof error.statusCode === "number" && error.statusCode >= 400 && error.statusCode < 500;
 }
 
 function fastifyCode(error: unknown): string {

@@ -9,7 +9,7 @@ import {
   userIdParamsSchema,
   type Identity,
 } from "@magic-events/core/identity/ports.ts";
-import { errorResponses, notFoundResponse } from "../errors.ts";
+import { bodyErrorResponses, errorResponses, notFoundResponse } from "../errors.ts";
 
 // Issuing, listing and revoking a user's API keys. A system admin's alone: a client is refused before anything here
 // runs. The key itself is in the answer of the call that issues it, and nowhere else.
@@ -34,6 +34,7 @@ export const identityRoutes: FastifyPluginAsyncZod<{ identity: Identity }> = (ap
         response: {
           201: issuedCredentialSchema.describe("The credential, with its API key."),
           ...errorResponses,
+          ...bodyErrorResponses,
           ...notFoundResponse,
         },
       },

@@ -19,6 +19,8 @@ test("each AppError code maps to its status, with its message and details", () =
     ["forbidden", 403],
     ["not_found", 404],
     ["conflict", 409],
+    ["content_too_large", 413],
+    ["unsupported_media_type", 415],
     ["rate_limited", 429],
     ["unavailable", 503],
   ] as const;
@@ -80,13 +82,22 @@ test("a Zod validation failure is invalid_input with one readable detail per pro
   );
 });
 
-test("Fastify's errors about an unreadable request become invalid_input in our words", () => {
-  for (const code of ["FST_ERR_CTP_INVALID_MEDIA_TYPE", "FST_ERR_CTP_BODY_TOO_LARGE", "FST_ERR_CTP_INVALID_JSON_BODY"]) {
-    const reply = toErrorReply(Object.assign(new Error("Fastify's own wording"), { code, statusCode: 415 }));
-    assert.equal(reply.status, 400);
-    assert.equal(reply.code, "invalid_input");
+test("Fastify's errors about an unreadable request get their own status, in our words", () => {
+  for (const [code, statusCode, status, answer] of [
+    ["FST_ERR_CTP_INVALID_MEDIA_TYPE", 415, 415, "unsupported_media_type"],
+    ["FST_ERR_CTP_BODY_TOO_LARGE", 413, 413, "content_too_large"],
+    ["FST_ERR_CTP_INVALID_JSON_BODY", 400, 400, "invalid_input"],
+    // One we do not list, raised with a 4xx status: the request could not be read.
+    ["FST_ERR_SOMETHING_NEW", 400, 400, "invalid_input"],
+  ] as const) {
+    const reply = toErrorReply(Object.assign(new Error("Fastify's own wording"), { code, statusCode }));
+    assert.equal(reply.status, status, code);
+    assert.equal(reply.code, answer, code);
+    assert.equal(reply.system, false, code);
     assert.doesNotMatch(reply.message, /Fastify/);
   }
+  // Another library's error that carries a 4xx status is still a system error: the request was not at fault.
+  assert.equal(toErrorReply(Object.assign(new Error("Bad request"), { statusCode: 400, code: "BAD_REQUEST" })).status, 500);
 });
 
 test("anything else is a system error with a general message", () => {

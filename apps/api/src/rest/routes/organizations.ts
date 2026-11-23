@@ -11,7 +11,7 @@ import {
   userSchema,
   type Organizations,
 } from "@magic-events/core/organizations/ports.ts";
-import { conflictResponse, errorResponses, notFoundResponse } from "../errors.ts";
+import { bodyErrorResponses, conflictResponse, errorResponses, notFoundResponse } from "../errors.ts";
 
 // Onboarding tenants and their users. A system admin's alone: a client is refused before anything here runs.
 
@@ -30,7 +30,12 @@ export const organizationsRoutes: FastifyPluginAsyncZod<{ organizations: Organiz
           "tenant's lasting name in addresses and must not be taken. For system admins only.",
         tags: TAGS,
         body: createTenantInputSchema,
-        response: { 201: tenantSchema.describe("The tenant, created."), ...errorResponses, ...conflictResponse },
+        response: {
+          201: tenantSchema.describe("The tenant, created."),
+          ...errorResponses,
+          ...bodyErrorResponses,
+          ...conflictResponse,
+        },
       },
     },
     async (request, reply) => {
@@ -94,7 +99,12 @@ export const organizationsRoutes: FastifyPluginAsyncZod<{ organizations: Organiz
         tags: TAGS,
         params: tenantSlugParamsSchema,
         body: updateTenantInputSchema,
-        response: { 200: tenantSchema.describe("The tenant, changed."), ...errorResponses, ...notFoundResponse },
+        response: {
+          200: tenantSchema.describe("The tenant, changed."),
+          ...errorResponses,
+          ...bodyErrorResponses,
+          ...notFoundResponse,
+        },
       },
     },
     (request) => organizations.updateTenant(request.params.slug, request.body),
@@ -116,6 +126,7 @@ export const organizationsRoutes: FastifyPluginAsyncZod<{ organizations: Organiz
         response: {
           201: userSchema.describe("The user, created."),
           ...errorResponses,
+          ...bodyErrorResponses,
           ...notFoundResponse,
           ...conflictResponse,
         },

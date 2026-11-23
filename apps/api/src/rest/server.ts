@@ -84,6 +84,8 @@ export async function createServer(deps: ServerDeps): Promise<FastifyInstance> {
 
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
+  // Every body is JSON. Without Fastify's plain-text parser, any other content type is answered 415.
+  app.removeContentTypeParser("text/plain");
 
   // Before anything else, so every later hook and route runs inside the request's log context.
   addLogContextHooks(app);

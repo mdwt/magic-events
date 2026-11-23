@@ -6,6 +6,10 @@ export type ErrorCode =
   // What the call would create already exists, such as a taken slug or email address.
   | "conflict"
   | "rate_limited"
+  // The request's body is larger than the server takes.
+  | "content_too_large"
+  // The request's body is not in a format the server takes. The API takes JSON.
+  | "unsupported_media_type"
   // The system cannot answer for now, such as while its database is down. The caller may try again later.
   | "unavailable";
 
