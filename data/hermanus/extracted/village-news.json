@@ -5,7 +5,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/the-metropolitan-opera-carmen-bizet-encore-at-road-house-cinema-whale-coast/",
     "rawFile": "raw/village-news/the-metropolitan-opera-carmen-bizet-encore-at-road-house-cinema-whale-.txt",
     "fetchedAt": "2026-11-23T14:13:48Z",
-    "title": "The Metropolitan Opera: Carmen (Bizet) Encore at Road House Cinema Whale Coast",
+    "title": "The Met Opera: Carmen (Bizet) Encore",
     "summary": "EXPERIENCE CARMEN ON THE BIG SCREEN! An unforgettable tale of passion, obsession and betrayal awaits!",
     "description": "EXPERIENCE CARMEN ON THE BIG SCREEN!\nAn unforgettable tale of passion, obsession and betrayal awaits! Experience Bizet’s iconic opera, Carmen, in this spectacular Met Opera production, featuring mezzo-soprano Clémentine Margaine and tenor Roberto Alagna.\nRoad House Cinema Whale Coast\n\n23 November – ONE DAY ONLY!\n\nTwo shows: 12:30 PM & 6:00 PM\nTwo showtimes. One extraordinary opera. Don’t miss your chance to experience the magic of the Met Opera on the big screen!\nBook your tickets now!",
     "type": "run",
@@ -24,7 +24,7 @@
       }
     ],
     "venue": {
-      "name": "Road House Cinema Whale Coast",
+      "name": "Road House Cinema",
       "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
       "city": "Hermanus"
     },
@@ -74,7 +74,6 @@
       "endTime": "17:00"
     },
     "venue": {
-      "name": "Location will be provided, Hermanus",
       "city": "Hermanus"
     },
     "price": {
@@ -92,7 +91,6 @@
         "community_and_causes",
         "nature_and_wildlife"
       ],
-      "format": "class_or_workshop",
       "setting": "outdoor",
       "scale": "local"
     },
@@ -118,7 +116,7 @@
       "startTime": "17:00"
     },
     "venue": {
-      "name": "Onrus Beach parking area (meet 17:00 for 17:15)",
+      "name": "Onrus Beach",
       "city": "Onrus"
     },
     "price": {
@@ -178,7 +176,7 @@
         "community_and_causes"
       ],
       "format": "tour_or_excursion",
-      "audience": "family",
+      "audience": "all_ages",
       "setting": "outdoor",
       "scale": "local"
     },
@@ -206,7 +204,7 @@
       "startTime": "09:30"
     },
     "venue": {
-      "name": "Bossa Restaurant, Hermanus Sports Club",
+      "name": "Bossa Hermanus",
       "city": "Hermanus"
     },
     "price": {
@@ -314,7 +312,6 @@
       "category": [
         "hobbies_and_lifestyle"
       ],
-      "format": "class_or_workshop",
       "audience": "all_ages",
       "setting": "indoor",
       "scale": "local"
@@ -328,7 +325,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/focker-in-law-sneak-peak-premiere-screening-at-road-house-cinema-whale-coast/",
     "rawFile": "raw/village-news/focker-in-law-sneak-peak-premiere-screening-at-road-house-cinema-whale.txt",
     "fetchedAt": "2026-11-23T14:14:22Z",
-    "title": "Focker-In-Law Sneak Peak Premiere screening at Road House Cinema Whale Coast",
+    "title": "Focker In-Law Premiere Night",
     "summary": "Get ready for a night of laughs, fun and a little family chaos! Join us at Road House Cinema Whale Coast on 26 November for an exclusive sneak peek screening of Focker-In-Law.",
     "description": "Get ready for a night of laughs, fun and a little family chaos! Join us at Road House Cinema Whale Coast on 26 November for an exclusive sneak peek screening of Focker-In-Law.\nBring your partner, friends or even the in-laws and enjoy welcome drinks on arrival, courtesy of Walker Bay Estate, home to Birkenhead Brewery, plus loads of exciting prizes up for grabs!\nArrive from 6:30 PM to enjoy a drink, mingle and soak up the atmosphere before the screening kicks off at 8:00 PM. You won’t want to miss this one!",
     "type": "single",
@@ -338,12 +335,11 @@
       {
         "start": "2026-11-26",
         "precision": "day",
-        "startTime": "20:00",
-        "endTime": "23:00"
+        "startTime": "18:30"
       }
     ],
     "venue": {
-      "name": "Road House Cinema Whale Coast",
+      "name": "Road House Cinema",
       "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
       "city": "Hermanus"
     },
@@ -440,7 +436,7 @@
       "endTime": "11:30"
     },
     "venue": {
-      "name": "Pretorius Hall, Gansbaai Main Rd",
+      "name": "Pretorius Hall",
       "city": "Gansbaai"
     },
     "price": {
@@ -501,7 +497,7 @@
       "category": [
         "food_and_drink"
       ],
-      "format": "dining_event",
+      "format": "attraction",
       "scale": "local"
     },
     "tags": [],
@@ -526,7 +522,7 @@
       "startTime": "12:50"
     },
     "venue": {
-      "name": "De Wet Hall, Onrus",
+      "name": "De Wet Hall",
       "city": "Onrus"
     },
     "price": {
@@ -550,6 +546,49 @@
     },
     "tags": [],
     "profile": "Hermanus Duplicate Bridge Club plays duplicate bridge every Friday afternoon at De Wet Hall in Onrus, and also on Mondays and Wednesdays in Fernkloof Hall. Players bring a partner for an afternoon of bridge. It suits bridge players visiting the area."
+  },
+  {
+    "source": "The Village NEWS",
+    "sourceListingId": "1629",
+    "url": "https://www.thevillagenews.co.za/whats-on/hermanus-duplicate-bridge-club-8/",
+    "rawFile": "raw/village-news/hermanus-duplicate-bridge-club.txt",
+    "fetchedAt": "2026-11-23T14:14:38Z",
+    "title": "Hermanus Duplicate Bridge Club",
+    "summary": "Duplicate bridge on Mondays and Wednesdays in Fernkloof Hall.",
+    "description": "Every Friday. Take a partner for an enjoyable afternoon of duplicate bridge. Also on Mondays and Wednesdays in Fernkloof Hall. For information, phone the secretary, Neil Archibald, at 081 092 4868.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=MO,WE",
+      "start": "2026-11-25"
+    },
+    "venue": {
+      "name": "Fernkloof Hall",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Every week",
+      "Free"
+    ],
+    "attributes": {
+      "tier": "everyday",
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "match_or_tournament",
+      "audience": "adults",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Hermanus Duplicate Bridge Club also plays duplicate bridge on Mondays and Wednesdays in Fernkloof Hall, besides its Friday afternoons at De Wet Hall in Onrus. Players bring a partner. It suits bridge players visiting the area."
   },
   {
     "source": "The Village NEWS",
@@ -663,7 +702,7 @@
       "startTime": "08:00"
     },
     "venue": {
-      "name": "Benguela Cove",
+      "name": "Benguela Cove Lagoon Wine Estate",
       "city": "Hermanus"
     },
     "price": {
@@ -761,7 +800,7 @@
       "endTime": "14:00"
     },
     "venue": {
-      "name": "Lemm’s Corner, Hermanus",
+      "name": "Lemm’s Corner",
       "city": "Hermanus"
     },
     "price": {
@@ -904,7 +943,7 @@
       "endTime": "14:00"
     },
     "venue": {
-      "name": "Next to Hermanus Cricket Field",
+      "name": "Hermanus Cricket Club",
       "city": "Hermanus"
     },
     "price": {
@@ -954,7 +993,7 @@
       "endTime": "14:00"
     },
     "venue": {
-      "name": "Stanford Village Square",
+      "name": "Stanford Village Green",
       "city": "Stanford"
     },
     "price": {
@@ -1001,7 +1040,7 @@
       "endTime": "13:00"
     },
     "venue": {
-      "name": "De Wet Hall, Roos St, Onrus",
+      "name": "De Wet Hall",
       "city": "Onrus"
     },
     "price": {
@@ -1037,7 +1076,7 @@
     "url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1216",
     "rawFile": "raw/village-news/rosoberry-harvest-fest-2026.txt",
     "fetchedAt": "2026-11-23T14:16:48Z",
-    "title": "Rosoberry Harvest Fest 2026",
+    "title": "Rosoberry Harvest Fest",
     "summary": "Celebrate berry season at Rosoberry Harvest Fest with pick-your-own berries, live music, delicious local food, wine, craft beer, coffee, ice cream and family fun. Hosted by Rosoberry Nursery on Hermanus River Farm, this relaxed summer festival celebrates peak berry season, with strawberries, blackberries, youngberries, blueberries, raspberries and pepinos to enjoy straight from the bushes.",
     "description": "Celebrate berry season at Rosoberry Harvest Fest with pick-your-own berries, live music, delicious local food, wine, craft beer, coffee, ice cream and family fun. Hosted by Rosoberry Nursery on Hermanus River Farm, this relaxed summer festival celebrates peak berry season, with strawberries, blackberries, youngberries, blueberries, raspberries and pepinos to enjoy straight from the bushes. Your ticket includes a punnet to take home, plus an empty punnet for picking and tasting berries throughout the day. Discover local vendors serving grass-fed beef boeries, brisket bowls, poke bowls, Belgian ales and local wines. Enjoy tractor rides, face painting, lawn games, nursery plants and fresh farm produce, or take a scenic 2.5km walk to the waterfall. Bring a picnic blanket and enjoy a summer day on the farm!",
     "type": "single",
@@ -1091,7 +1130,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/the-cat-in-the-hat-3d-pre-release-screening-at-whale-coast-mall/",
     "rawFile": "raw/village-news/the-cat-in-the-hat-3d-pre-release-screening-at-whale-coast-mall.txt",
     "fetchedAt": "2026-11-23T14:15:39Z",
-    "title": "The Cat in the Hat (3D) – Pre-release screening at Whale Coast Mall",
+    "title": "The Cat in the Hat (3D) Pre-release Screening",
     "summary": "BE THE FIRST TO SEE THE CAT IN THE HAT! One day only!",
     "description": "BE THE FIRST TO SEE THE CAT IN THE HAT!\nOne day only! Join us at Road House Cinema Whale Coast Mall on 28 November for an exclusive 3D pre-release screening of The Cat in the Hat!\nMiss it, and you’ll have to wait with the rest of the world until the official release on 4 December.\nDon’t wait around – book your tickets now and be first in line for the fun!\nONE DAY ONLY. ONE SHOW ONLY. ONE VERY MISCHIEVOUS CAT.",
     "type": "single",
@@ -1106,7 +1145,7 @@
       }
     ],
     "venue": {
-      "name": "Road House Cinema Whale Coast Mall",
+      "name": "Road House Cinema",
       "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
       "city": "Hermanus"
     },
@@ -1166,7 +1205,7 @@
       "R490"
     ],
     "attributes": {
-      "tier": "standard",
+      "tier": "premium",
       "category": [
         "nature_and_wildlife"
       ],
@@ -1199,7 +1238,7 @@
       }
     ],
     "venue": {
-      "name": "Road House Cinema, Whale Coast Mall",
+      "name": "Road House Cinema",
       "address": "Shop G57, Whale Coast Mall, R43, Sandbaai, Hermanus",
       "city": "Hermanus"
     },
@@ -1248,7 +1287,7 @@
       }
     ],
     "venue": {
-      "name": "De Wet Hall, Onrus",
+      "name": "De Wet Hall",
       "city": "Onrus"
     },
     "price": {
@@ -1282,7 +1321,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/jingle-bell-rock-at-hermanus-golf-club/",
     "rawFile": "raw/village-news/jingle-bell-rock-at-hermanus-golf-club.txt",
     "fetchedAt": "2026-11-23T14:15:54Z",
-    "title": "Jingle Bell Rock at Hermanus Golf Club",
+    "title": "Jingle Bell Rock with The Family Band",
     "summary": "🎄🔴𝐅𝐞𝐬𝐭𝐢𝐯𝐞 𝐅𝐮𝐧 𝐟𝐨𝐫 𝐭𝐡𝐞 𝐰𝐡𝐨𝐥𝐞 𝐟𝐚𝐦𝐢𝐥𝐲‼️🎄🎄🎄\n🎄Catch Jingle Bell Rock with The Family Band on 3 December at Hermanus Golf Club\nJingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season. Featuring a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists 🎤🎹🎸🥁🎼🎸🎺🎷",
     "description": "🎄🔴𝐅𝐞𝐬𝐭𝐢𝐯𝐞 𝐅𝐮𝐧 𝐟𝐨𝐫 𝐭𝐡𝐞 𝐰𝐡𝐨𝐥𝐞 𝐟𝐚𝐦𝐢𝐥𝐲‼️🎄🎄🎄\n🎄Catch Jingle Bell Rock with The Family Band on 3 December at Hermanus Golf Club\nJingle Bell Rock is a spectacular Christmas variety show guaranteed to get audiences singing, dancing, and celebrating the spirit of the season.\nFeaturing a powerhouse 8-piece live band, Jingle Bell Rock brings together the greatest Christmas hits and timeless classics from some of the world’s most beloved artists 🎤🎹🎸🥁🎼🎸🎺🎷",
     "type": "single",
@@ -1384,7 +1423,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/the-4th-annual-most-influential-icons-gala-dinner/",
     "rawFile": "raw/village-news/the-4th-annual-most-influential-icons-gala-dinner.txt",
     "fetchedAt": "2026-11-23T14:16:03Z",
-    "title": "The 4th Annual Most Influential Icons Gala Dinner",
+    "title": "Most Influential Icons Gala Dinner",
     "summary": "Most Influential Icons Gala (MIIGD) is an annual celebration that honours individuals and organisations whose leadership, service, innovation, and dedication have made a meaningful impact within their communities and beyond. The gala recognises icons from diverse sectors, including business, education, arts and culture, community development, youth empowerment, sports, health, and public service.",
     "description": "Most Influential Icons Gala (MIIGD) is an annual celebration that honours individuals and organisations whose leadership, service, innovation, and dedication have made a meaningful impact within their communities and beyond. The gala recognises icons from diverse sectors, including business, education, arts and culture, community development, youth empowerment, sports, health, and public service.\nMore than an awards event, the Most Influential Icons Gala is a platform for inspiration, networking, and collaboration. Through keynote addresses, powerful performances, and the recognition of outstanding changemakers, the evening encourages others to lead with purpose.",
     "type": "single",
@@ -1399,7 +1438,7 @@
       }
     ],
     "venue": {
-      "name": "Municipal Auditorium, Hermanus",
+      "name": "Hermanus Municipal Auditorium",
       "city": "Hermanus"
     },
     "price": {
@@ -1430,7 +1469,7 @@
     "url": "https://www.thevillagenews.co.za/wp-json/tribe/events/v1/events/1444",
     "rawFile": "raw/village-news/creedence-a-clearwater-revival-tribute-at-hermanus-golf-club.txt",
     "fetchedAt": "2026-11-23T14:16:48Z",
-    "title": "Creedence – A Clearwater Revival Tribute at Hermanus Golf Club",
+    "title": "Creedence - A Clearwater Revival",
     "summary": "A tribute show to CCR at Hermanus Golf Club. Your ticket is for the show; dinner will be ordered from an a la carte menu.",
     "description": "Read what audiences are saying…🎸🎵🎤🎹🥁🎶\n🔴5* “Just absolutely incredible. My husband and I are huge CCR fans. If I closed my eyes, that was John Fogerty singing and playing (and we’ve seen him live.) All 4 musicians gave a brilliant performance.”\n🟠5* “It was the best rock band I have seen in a very long time. They captured CCR excellently! Thank you so much!”\n🔴5* “Excellent show. Band were very professional and the music was as wonderful as we expected from CCR. one of the best shows we have enjoyed.”\n🔴5* “What an amazing evening we experienced at the CCR show. ”\n🟠5* “Thoroughly enjoyed the performance. All 4 members of the band are great musicians!”\nYour ticket is for the show. Dinner will be ordered from an a la carte menu. Full bar service available.",
     "type": "single",
@@ -1479,7 +1518,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/local-is-lekker-at-the-fabled-table/",
     "rawFile": "raw/village-news/local-is-lekker-at-the-fabled-table.txt",
     "fetchedAt": "2026-11-23T14:16:09Z",
-    "title": "Local is Lekker at The Fabled Table",
+    "title": "Local is Lekker",
     "summary": "📍 Local is Lekker @ The Fabled Table, La Vierge Hermanus\n\nHemel-en-Aarde Valley Rd\n📅 Saturday 5 December · 12:00 – 17:00\n\n💛 Kiddies welcome! Bring the whole family.",
     "description": "📍 Local is Lekker @ The Fabled Table, La Vierge Hermanus\n\nHemel-en-Aarde Valley Rd\n📅 Saturday 5 December · 12:00 – 17:00\n\n💛 Kiddies welcome! Bring the whole family.\nSpend a laid-back afternoon among our vineyards on the Hemel-en-Aarde Ridge with freshly made pizza, delicious wine and live music by Edian Barnard. There’s plenty of lawn for little ones to run around while you relax.\nYour R500 ticket for two includes:\n\n• Two pizzas of your choice\n\n• One bottle from our Story Teller range\n\n• Live music by Edian Barnard\n\n• Entry for two guests\nOnly 50 tickets available. Swipe through, then book your spot before they’re gone. 👉",
     "type": "single",
@@ -1499,8 +1538,8 @@
       "city": "Hermanus"
     },
     "price": {
-      "min": 500,
-      "max": 500,
+      "min": 0,
+      "max": 250,
       "currency": "ZAR"
     },
     "bookingUrl": "https://lavierge.co.za/product/local-is-lekker-at-the-fabled-table-5-december-2026/",
@@ -1545,7 +1584,7 @@
       "endTime": "12:00"
     },
     "venue": {
-      "name": "De Wet Hall, Roos St, Onrus",
+      "name": "De Wet Hall",
       "city": "Onrus"
     },
     "price": {
@@ -1579,7 +1618,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/nadine-live-in-hermanus/",
     "rawFile": "raw/village-news/nadine-live-in-hermanus.txt",
     "fetchedAt": "2026-11-23T14:16:16Z",
-    "title": "Nadine Live in Hermanus",
+    "title": "Nádine live in Hermanus",
     "summary": "Music with purpose! Beloved South African singer and television presenter Nádine officially celebrated her 30-year milestone in the music industry.",
     "description": "Music with purpose! Beloved South African singer and television presenter Nádine officially celebrated her 30-year milestone in the music industry.\n\nShe received the prestigious 30 Year Contribution Honorary Award at the Afri-Indie Music Awards. All proceeds raised on the evening will be gifted to Camphill Farm Community Hermanus.",
     "type": "single",
@@ -1644,7 +1683,7 @@
       "endTime": "14:00"
     },
     "venue": {
-      "name": "Landskein Wines Amphitheatre",
+      "name": "Landskein",
       "address": "R43, Stanford",
       "city": "Stanford"
     },
@@ -1727,7 +1766,7 @@
     "url": "https://www.thevillagenews.co.za/whats-on/rumours-of-fleetwood-mac-at-hermanus-golf-club/",
     "rawFile": "raw/village-news/rumours-of-fleetwood-mac-at-hermanus-golf-club.txt",
     "fetchedAt": "2026-11-23T14:16:32Z",
-    "title": "Rumours of Fleetwood Mac at Hermanus Golf Club",
+    "title": "Rumours of Fleetwood Mac",
     "summary": "Rave reviews from audiences across the Western Cape (since 2021)… 🎤🎹🎸🎵🥁🎶🎸\n🔷”Wow! We loved every moment.",
     "description": "Rave reviews from audiences across the Western Cape (since 2021)… 🎤🎹🎸🎵🥁🎶🎸\n🔷”Wow! We loved every moment. The show was incredible. Hugely talented musicians, with vocals that were spot on. A performance so faultless, I believe Stevie would have been proud!”\n🔷“This was an epic experience&#8230;.cannot wait to experience it again.”\n🔷”Brilliant show again !! Loved it . If my calculations are correct my 8th time seeing them. Just cant get enough”\n🔷”Absolutely amazing! I had the time of my life! What a fantastic group of musicians and the voice of the lead singer &#8230; incredible! In fact, the entire band was superb!”\n🔷”Excellent harmonies. Well balanced (v good sound engineer). Superb instrumentals. Brilliant vocals. Very professional. Well done !!”",
     "type": "single",
