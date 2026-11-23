@@ -100,9 +100,16 @@ pnpm db:seed       # Hermanus, its sources, two example tenants, their users and
 ```
 
 The seed prints five API keys, each starting with `mev_`. **Copy them somewhere now.** They are stored only as a hash
-and can't be shown again, and running the seed a second time won't issue new ones. To issue more keys, revoke one,
-or onboard another tenant and its users, use `pnpm cli:admin`, described in [apps/cli](apps/cli/README.md#commands).
-The API itself has no admin endpoints.
+and can't be shown again, and running the seed a second time won't issue new ones.
+
+Lost one? Issue a fresh key to the same user:
+
+```sh
+pnpm cli:admin key issue --user planner@agency.example.com --name "my key" --kind agent
+```
+
+`pnpm cli:admin` is also how you onboard a tenant, add its users and revoke a key. The API has no admin endpoints, so
+it all happens here. The commands are in [apps/cli](apps/cli/README.md#commands).
 
 **5. Load some events**
 
@@ -156,8 +163,7 @@ docker compose down -v             # stop it and delete the data
 ```
 
 The Compose project has a fixed name, `magic-events`, so the main checkout and every git worktree share one container
-and one database. After `docker compose down -v`, run steps 3 to 5 again to get back to a working setup. That is also
-the way out if you lose your API keys.
+and one database. After `docker compose down -v`, run steps 3 to 5 again to get back to a working setup.
 
 ## Connect Claude
 
