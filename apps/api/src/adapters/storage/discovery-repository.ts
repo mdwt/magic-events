@@ -6,6 +6,8 @@ import type { DomainEvent, DomainEventType } from "../../core/shared/domain-even
 
 type SourceRow = typeof source.$inferSelect;
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 function toSource(row: SourceRow): Source {
   return {
     id: row.id,
@@ -270,6 +272,55 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
         const stored = await appendEvents(tx, captured);
         return captured.map((event) => ({ ...stored(event.resourceId), ...event }));
       });
+    },
+
+    async findListing(listingId) {
+      // The ID column is a UUID, so anything else names no listing.
+      if (!UUID.test(listingId)) return null;
+      const [row] = await db
+        .select({
+          id: listing.id,
+          sourceId: listing.sourceId,
+          sourceName: source.name,
+          url: listing.url,
+          state: listing.state,
+        })
+        .from(listing)
+        .innerJoin(source, eq(source.id, listing.sourceId))
+        .where(eq(listing.id, listingId));
+      return row ?? null;
+    },
+
+    async findListingIds(listingIds) {
+      const ids = listingIds.filter((id) => UUID.test(id));
+      if (ids.length === 0) return [];
+      const rows = await db.select({ id: listing.id }).from(listing).where(inArray(listing.id, ids));
+      return rows.map((row) => row.id);
+    },
+
+    async requeueLatestVersions(selection) {
+      if ("listingIds" in selection && selection.listingIds.length === 0) return [];
+      const selected =
+        "listingIds" in selection
+          ? inArray(listing.id, selection.listingIds)
+          : "sourceId" in selection
+            ? eq(listing.sourceId, selection.sourceId)
+            : eq(source.locationId, selection.locationId);
+      // Each selected listing's latest version, by the same order a claim uses. The status and kind are checked on
+      // that version only, so an older version is never the one sent back.
+      const latest = db
+        .selectDistinctOn([rawListing.listingId], { id: rawListing.id })
+        .from(rawListing)
+        .innerJoin(listing, eq(listing.id, rawListing.listingId))
+        .innerJoin(source, eq(source.id, listing.sourceId))
+        .where(and(selected, eq(listing.state, "listed")))
+        .orderBy(rawListing.listingId, desc(rawListing.fetchedAt), desc(rawListing.id));
+      const requeued = await db
+        .update(rawListing)
+        .set({ status: "pending", attempts: 0, error: null })
+        .where(and(inArray(rawListing.id, latest), ne(rawListing.status, "pending"), eq(rawListing.kind, "listing")))
+        .returning({ listingId: rawListing.listingId });
+      return requeued.map((row) => row.listingId);
     },
 
     async lockOldestPendingRawListing() {

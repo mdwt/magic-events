@@ -117,6 +117,26 @@ export interface ClaimedRawListing {
   attempts: number;
 }
 
+// ---- Processing again ----
+
+// The listings to send back for processing: some by ID, every listing of a source, or every listing of a location.
+export type ListingSelection = { listingIds: string[] } | { sourceId: string } | { locationId: string };
+
+export interface RequeueResult {
+  // How many listings had their latest version set back to pending.
+  requeued: number;
+  listingIds: string[];
+}
+
+// A listing with the source it belongs to.
+export interface ListingSummary {
+  id: string;
+  sourceId: string;
+  sourceName: string;
+  url: string | null;
+  state: "listed" | "removed";
+}
+
 // ---- Ports ----
 
 // Inbound port: what Discovery offers.
@@ -129,6 +149,14 @@ export interface Discovery {
   findDueSources(): Promise<Source[]>;
   // Fetches one source now, whether or not it is due. A fetch that fails is a failed run, not a thrown error.
   runSource(sourceId: string): Promise<RunSummary>;
+  // Fetches every active source of the location now, one after another, whether or not it is due.
+  runLocation(locationSlug: string): Promise<RunSummary[]>;
+  // A listing with its source, or null when there is none with this ID. A listing is fetched by fetching its source.
+  getListing(listingId: string): Promise<ListingSummary | null>;
+  // Sends listings back for processing: the latest version of each selected listing that is listed goes back to
+  // pending, with its attempts at 0 and its error cleared. A latest version that is already pending is left as it
+  // is and not counted. A listing that is removed, or whose latest version is of kind removed, is skipped.
+  requeueListings(selection: ListingSelection): Promise<RequeueResult>;
   // Claims the next pending raw listing, or returns null when none is pending. Only the latest version of a
   // listing is claimed; older pending or failed versions are set to superseded. It must be called inside a
   // transaction, which holds the claim until it ends, so two workers never get the same one.
@@ -221,6 +249,12 @@ export interface DiscoveryRepository {
   findMissedListings(sourceId: string, missedRuns: number): Promise<string[]>;
   // Sets the listings to removed, each with a pending raw listing of kind removed, all in one transaction.
   removeListings(listingIds: string[], runId: string, removedAt: Date): Promise<Captured[]>;
+  findListing(listingId: string): Promise<ListingSummary | null>;
+  // The IDs among these that name a listing.
+  findListingIds(listingIds: string[]): Promise<string[]>;
+  // In one statement: sets the latest version of every selected listing that is listed back to pending, attempts 0
+  // and no error, unless that version is already pending or of kind removed. Returns the IDs of those listings.
+  requeueLatestVersions(selection: ListingSelection): Promise<string[]>;
 
   // Must be called inside a transaction, which holds the lock until it ends. Locked rows are skipped.
   lockOldestPendingRawListing(): Promise<LockedRawListing | null>;

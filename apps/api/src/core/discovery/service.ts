@@ -12,7 +12,10 @@ import type {
   DiscoveryRepository,
   FetchedListing,
   FetchResult,
+  ListingSelection,
+  ListingSummary,
   RawListingForMark,
+  RequeueResult,
   RunSummary,
   SaveSourceInput,
   Source,
@@ -207,6 +210,49 @@ export class DiscoveryService implements Discovery {
       "Run finished",
     );
     return summary;
+  }
+
+  async runLocation(locationSlug: string): Promise<RunSummary[]> {
+    const location = await this.#catalogue.getLocation({ slug: locationSlug });
+    if (!location) throw new AppError("not_found", `No location with the slug "${locationSlug}".`);
+    const sources = (await this.#repository.listSources()).filter(
+      (source) => source.active && source.locationId === location.id,
+    );
+    this.#logger.info({ location: location.slug, sources: sources.length }, "Fetching every source of a location");
+    // One after another, so a location's sources are never all fetched at once.
+    const runs: RunSummary[] = [];
+    for (const source of sources) runs.push(await this.runSource(source.id));
+    return runs;
+  }
+
+  getListing(listingId: string): Promise<ListingSummary | null> {
+    return this.#repository.findListing(listingId);
+  }
+
+  async requeueListings(selection: ListingSelection): Promise<RequeueResult> {
+    let resolved = selection;
+    if ("listingIds" in selection) {
+      // Storage gives IDs back in lowercase, so they are compared that way.
+      const asked = [...new Set(selection.listingIds.map((id) => id.toLowerCase()))];
+      if (asked.length === 0) return { requeued: 0, listingIds: [] };
+      const known = new Set(await this.#repository.findListingIds(asked));
+      const unknown = asked.filter((id) => !known.has(id));
+      if (unknown.length > 0) {
+        throw new AppError("not_found", `No listing with the ID ${unknown.map((id) => `"${id}"`).join(", ")}.`);
+      }
+      resolved = { listingIds: asked };
+    } else if ("sourceId" in selection) {
+      if (!(await this.#repository.findSource(selection.sourceId))) {
+        throw new AppError("not_found", `No source with the ID "${selection.sourceId}".`);
+      }
+    } else if (!(await this.#catalogue.getLocation({ id: selection.locationId }))) {
+      throw new AppError("not_found", `No location with the ID "${selection.locationId}".`);
+    }
+
+    const listingIds = await this.#repository.requeueLatestVersions(resolved);
+    const selected = "listingIds" in resolved ? { listings: resolved.listingIds.length } : resolved;
+    this.#logger.info({ ...selected, requeued: listingIds.length }, "Listings sent back for processing");
+    return { requeued: listingIds.length, listingIds };
   }
 
   async claimPendingRawListing(): Promise<ClaimedRawListing | null> {

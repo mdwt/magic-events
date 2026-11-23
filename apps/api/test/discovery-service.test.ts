@@ -44,19 +44,32 @@ const hermanus: Location = {
   longitude: 19.2345,
 };
 
+// A second location, so a test can tell one location's sources from another's.
+const stanford: Location = {
+  ...hermanus,
+  id: "00000000-0000-4000-8000-000000000002",
+  name: "Stanford",
+  slug: "stanford",
+};
+
 const notUsed = () => Promise.reject(new Error("not used"));
 
-// A Catalogue that knows only Hermanus. Discovery uses nothing but getLocation.
+// A Catalogue that knows Hermanus and Stanford. Discovery uses nothing but getLocation.
 const catalogue: Catalogue = {
   searchExperiences: notUsed,
   saveLocation: notUsed,
-  getLocation: (by) => Promise.resolve(("slug" in by ? by.slug === "hermanus" : by.id === hermanus.id) ? hermanus : null),
+  getLocation: (by) => {
+    const found = [hermanus, stanford].find((one) => ("slug" in by ? one.slug === by.slug : one.id === by.id));
+    return Promise.resolve(found ?? null);
+  },
+  getExperience: notUsed,
   findExperiencesByListing: notUsed,
   findMatchCandidates: notUsed,
   saveExperience: notUsed,
   removeSourceLink: notUsed,
   getChangesSince: notUsed,
   keepUp: notUsed,
+  embedExperiences: notUsed,
 };
 
 const settings: DiscoverySettings = {
@@ -93,6 +106,8 @@ interface FakeRawListing {
   kind: "listing" | "removed";
   content: string | null;
   status: "pending" | "processed" | "failed" | "superseded";
+  attempts?: number;
+  error?: string | null;
 }
 
 // Storage as the Discovery repository keeps it, in memory, with the same rules for missed listings.
@@ -293,6 +308,31 @@ function memoryRepository() {
         }),
       ),
     findListingPriorities: (ids) => Promise.resolve(Object.fromEntries(ids.map((id) => [id, 10]))),
+    findListing(listingId) {
+      const found = listings.find((one) => one.id === listingId);
+      const source = found && sources.get(found.sourceId);
+      if (!found || !source) return Promise.resolve(null);
+      const { id, state } = found;
+      return Promise.resolve({ id, sourceId: source.id, sourceName: source.name, url: null, state });
+    },
+    findListingIds: (ids) => Promise.resolve(listings.filter((one) => ids.includes(one.id)).map((one) => one.id)),
+    // The repository's rules: each selected, listed listing's latest version, unless it is pending or removed.
+    requeueLatestVersions(selection) {
+      const selected = listings.filter((one) => {
+        if (one.state !== "listed") return false;
+        if ("listingIds" in selection) return selection.listingIds.includes(one.id);
+        if ("sourceId" in selection) return one.sourceId === selection.sourceId;
+        return sources.get(one.sourceId)?.locationId === selection.locationId;
+      });
+      const requeued: string[] = [];
+      for (const one of selected) {
+        const latest = rawListings.filter((raw) => raw.listingId === one.id).at(-1);
+        if (!latest || latest.status === "pending" || latest.kind === "removed") continue;
+        Object.assign(latest, { status: "pending", attempts: 0, error: null });
+        requeued.push(one.id);
+      }
+      return Promise.resolve(requeued);
+    },
   };
 
   return {
@@ -846,5 +886,173 @@ describe("DiscoveryService: claiming and marking raw listings", () => {
     const { service } = setup();
     assert.deepEqual(await service.getListingPriorities([]), {});
     assert.deepEqual(await service.getListingPriorities(["a", "a"]), { a: 10 });
+  });
+});
+
+describe("DiscoveryService.runLocation", () => {
+  test("fetches every active source of the location, one after another, and no other location's", async () => {
+    const { service, adapter, source } = setup();
+    const pages = await source({ name: "Organiser pages" });
+    const festival = await source({ name: "Whale festival" });
+    await source({ name: "Old pages", active: false });
+    await source({ name: "Stanford pages", locationSlug: "stanford" });
+    adapter.returns([page("a", "<p>A</p>")]);
+
+    const runs = await service.runLocation("hermanus");
+
+    assert.deepEqual(
+      runs.map((run) => [run.sourceName, run.status, run.listingsNewOrChanged]),
+      [
+        ["Organiser pages", "succeeded", 1],
+        ["Whale festival", "succeeded", 1],
+      ],
+    );
+    assert.deepEqual(
+      runs.map((run) => run.sourceId),
+      [pages.id, festival.id],
+    );
+    assert.equal(adapter.calls.length, 2);
+  });
+
+  test("refuses an unknown location with not_found and fetches nothing", async () => {
+    const { service, adapter, source } = setup();
+    await source();
+    await assert.rejects(
+      service.runLocation("atlantis"),
+      (error) => error instanceof AppError && error.code === "not_found",
+    );
+    assert.equal(adapter.calls.length, 0);
+  });
+});
+
+// Two listings of a Hermanus source and one of a Stanford source, each fetched once and processed.
+async function processedListings() {
+  const context = setup();
+  const { service, memory, adapter, source } = context;
+  const pages = await source();
+  adapter.returns([page("a", "<p>A</p>"), page("b", "<p>B</p>")]);
+  await service.runSource(pages.id);
+  const stanfordPages = await source({ name: "Stanford pages", locationSlug: "stanford" });
+  adapter.returns([page("c", "<p>C</p>")]);
+  await service.runSource(stanfordPages.id);
+  for (const raw of memory.rawListings) raw.status = "processed";
+  const [a, b, c] = memory.listings;
+  assert.ok(a && b && c);
+  context.published.length = 0;
+  // The latest version of a listing: the fake keeps them in the order they were saved.
+  const latest = (listingId: string) => memory.rawListings.filter((raw) => raw.listingId === listingId).at(-1);
+  return { ...context, pages, stanfordPages, a, b, c, latest };
+}
+
+describe("DiscoveryService.requeueListings", () => {
+  test("sends chosen listings back: the latest version is pending again, with no attempts and no error", async () => {
+    const { service, a, b, latest } = await processedListings();
+    Object.assign(latest(a.id) ?? {}, { status: "failed", attempts: 3, error: "wrong shape" });
+
+    assert.deepEqual(await service.requeueListings({ listingIds: [a.id] }), { requeued: 1, listingIds: [a.id] });
+
+    const again = latest(a.id);
+    assert.deepEqual(
+      { status: again?.status, attempts: again?.attempts, error: again?.error },
+      { status: "pending", attempts: 0, error: null },
+    );
+    assert.equal(latest(b.id)?.status, "processed");
+  });
+
+  test("sends back every listing of a source, and not another source's", async () => {
+    const { service, pages, a, b, c, latest } = await processedListings();
+    const result = await service.requeueListings({ sourceId: pages.id });
+    assert.equal(result.requeued, 2);
+    assert.deepEqual([...result.listingIds].sort(), [a.id, b.id].sort());
+    assert.equal(latest(c.id)?.status, "processed");
+  });
+
+  test("sends back every listing of a location, and not another location's", async () => {
+    const { service, a, c, latest } = await processedListings();
+    assert.deepEqual(await service.requeueListings({ locationId: stanford.id }), { requeued: 1, listingIds: [c.id] });
+    assert.equal(latest(a.id)?.status, "processed");
+  });
+
+  test("leaves a latest version that is already pending as it is, and does not count it", async () => {
+    const { service, pages, a, b, latest } = await processedListings();
+    Object.assign(latest(a.id) ?? {}, { status: "pending", attempts: 1, error: "timed out" });
+
+    assert.deepEqual(await service.requeueListings({ sourceId: pages.id }), { requeued: 1, listingIds: [b.id] });
+    const left = latest(a.id);
+    assert.deepEqual(
+      { status: left?.status, attempts: left?.attempts, error: left?.error },
+      { status: "pending", attempts: 1, error: "timed out" },
+    );
+  });
+
+  test("skips a removed listing and a listing whose latest version is of kind removed", async () => {
+    const { service, memory, pages, a, b } = await processedListings();
+    a.state = "removed";
+    memory.rawListings.push({
+      id: randomUUID(),
+      listingId: b.id,
+      runId: randomUUID(),
+      kind: "removed",
+      content: null,
+      status: "processed",
+    });
+
+    assert.deepEqual(await service.requeueListings({ sourceId: pages.id }), { requeued: 0, listingIds: [] });
+    assert.deepEqual(await service.requeueListings({ listingIds: [a.id, b.id] }), { requeued: 0, listingIds: [] });
+  });
+
+  test("sends back only the latest version, never an older one", async () => {
+    const { service, memory, a, latest } = await processedListings();
+    const older = latest(a.id);
+    assert.ok(older);
+    older.status = "failed";
+    memory.rawListings.push({
+      id: randomUUID(),
+      listingId: a.id,
+      runId: randomUUID(),
+      kind: "listing",
+      content: "<p>A, changed</p>",
+      status: "processed",
+    });
+
+    await service.requeueListings({ listingIds: [a.id] });
+
+    assert.equal(older.status, "failed");
+    assert.equal(latest(a.id)?.status, "pending");
+  });
+
+  test("counts a listing named twice once, and sends nothing back for no listings", async () => {
+    const { service, a } = await processedListings();
+    assert.deepEqual(await service.requeueListings({ listingIds: [a.id, a.id] }), { requeued: 1, listingIds: [a.id] });
+    assert.deepEqual(await service.requeueListings({ listingIds: [] }), { requeued: 0, listingIds: [] });
+  });
+
+  test("refuses unknown listings, sources and locations with not_found, and sends nothing back", async () => {
+    const { service, memory, a } = await processedListings();
+    const notFound = (error: unknown) => error instanceof AppError && error.code === "not_found";
+    await assert.rejects(service.requeueListings({ listingIds: [a.id, randomUUID()] }), notFound);
+    await assert.rejects(service.requeueListings({ sourceId: randomUUID() }), notFound);
+    await assert.rejects(service.requeueListings({ locationId: randomUUID() }), notFound);
+    assert.ok(memory.rawListings.every((raw) => raw.status === "processed"));
+  });
+
+  test("publishes no domain event", async () => {
+    const { service, pages, published } = await processedListings();
+    await service.requeueListings({ sourceId: pages.id });
+    assert.deepEqual(published, []);
+  });
+});
+
+describe("DiscoveryService.getListing", () => {
+  test("gives a listing with its source, and null for an unknown one", async () => {
+    const { service, pages, a } = await processedListings();
+    assert.deepEqual(await service.getListing(a.id), {
+      id: a.id,
+      sourceId: pages.id,
+      sourceName: "Organiser pages",
+      url: null,
+      state: "listed",
+    });
+    assert.equal(await service.getListing(randomUUID()), null);
   });
 });
