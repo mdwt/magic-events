@@ -1,0 +1,102 @@
+[
+  {
+    "source": "Hermanus Whale Cruises",
+    "url": "https://www.hermanus-whale-cruises.co.za/trip.php",
+    "rawFile": "raw/hermanus-whale-cruises/trip.txt",
+    "fetchedAt": "2026-11-23T13:58:10Z",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "venue": {
+      "name": "New Harbour",
+      "address": "148 Westcliff Road, Hermanus",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.43389,
+        "lng": 19.21889
+      }
+    },
+    "hints": [
+      "The Boat Trip"
+    ],
+    "sourceListingId": "https://www.hermanus-whale-cruises.co.za/trip.php#Whale Watching",
+    "title": "Hermanus Whale Cruises boat-based whale watching",
+    "summary": "Two-hour whale watching trips from the New Harbour in Hermanus aboard the 87-seat Whale Cruiser, from 1 June till 30 November.",
+    "description": "The Hermanus Whale Cruises Whale Watching Trips depart from the New Harbour in Hermanus and last two hours. Rates: Adults - R 1500.00pp (Rack rate); Students - R 1400.00pp (Rack rate); Children between 4 to 12 - R 750.00pp (Rack rate); Children 3 and under - Free. Our whale watching is from 1 June till 30 November. Departure times: 07:00, 09:00, 12:00, 14:00, 16:00. Weather permitting. As a permit holder for Sub-area 3, Hermanus Whale Cruises is permitted to approach whales up to 50 metres. Our whale watching boat seats 87 passengers and takes a crew of 5. The Whale Cruiser is wheelchair-friendly! Snacks and mineral water and soft drinks are served during the trip.",
+    "type": "recurring",
+    "recurrence": {
+      "rule": "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+      "start": "2026-11-23"
+    },
+    "openingHours": "Departures 07:00, 09:00, 12:00, 14:00, 16:00, weather permitting",
+    "price": {
+      "min": 0,
+      "max": 1500,
+      "currency": "ZAR"
+    },
+    "attributes": {
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "major",
+      "wheelchair_accessible": true
+    },
+    "tags": [
+      "whales"
+    ],
+    "profile": "A two-hour boat trip from Hermanus New Harbour to watch whales in Walker Bay, run daily from 1 June to 30 November with five departures a day, weather permitting. Passengers ride the wheelchair-friendly 87-seat Whale Cruiser, which may approach whales to 50 metres, with snacks and soft drinks served on board. It suits visitors of all ages during whale season, with free travel for children three and under."
+  },
+  {
+    "source": "Hermanus Whale Cruises",
+    "url": "https://www.hermanus-whale-cruises.co.za/trip.php",
+    "rawFile": "raw/hermanus-whale-cruises/trip.txt",
+    "fetchedAt": "2026-11-23T13:58:10Z",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "venue": {
+      "name": "New Harbour",
+      "address": "148 Westcliff Road, Hermanus",
+      "city": "Hermanus",
+      "position": {
+        "lat": -34.43389,
+        "lng": 19.21889
+      }
+    },
+    "hints": [
+      "The Boat Trip"
+    ],
+    "sourceListingId": "https://www.hermanus-whale-cruises.co.za/trip.php#Eco Cruises",
+    "title": "Hermanus Whale Cruises Eco Marine cruise",
+    "summary": "Eco Marine trips from the New Harbour in Hermanus, outside whale season, lasting 1 to 1.5 hours.",
+    "description": "Eco Cruises: Adults - R 1200.00pp (Rack rate); Students - R 1100.00pp (Rack rate); Children between 4 to 12 - R 550.00pp (Rack rate). The tour lasts 1 to 1.5 hours and operates from January to May. Our whale watching is from 1 June till 30 November and our Eco Marine trips are from 1 December till 31 May. We also offer Eco-Tours, a sight-seeing experience where you can interact with dolphins, seals, clawless otters and a variety of sea bird life.",
+    "type": "recurring",
+    "recurrence": {
+      "rule": "FREQ=DAILY;BYMONTH=12,1,2,3,4,5",
+      "start": "2026-12-01"
+    },
+    "openingHours": "Departures 07:00, 09:00, 12:00, 14:00, 16:00, weather permitting",
+    "price": {
+      "min": 550,
+      "max": 1200,
+      "currency": "ZAR"
+    },
+    "attributes": {
+      "category": [
+        "nature_and_wildlife"
+      ],
+      "format": "tour_or_excursion",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local",
+      "wheelchair_accessible": true
+    },
+    "tags": [
+      "birding"
+    ],
+    "profile": "A short marine sightseeing cruise from Hermanus New Harbour, run outside whale season from December to May, lasting one to one and a half hours. Passengers look for dolphins, seals, otters and seabirds in Walker Bay. It suits families and nature lovers visiting Hermanus in summer and autumn."
+  }
+]
