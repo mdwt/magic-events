@@ -47,6 +47,24 @@ try {
   process.once("SIGTERM", (signal) => void stop(signal));
 
   await app.listen({ host: settings.api.host, port: settings.api.port });
+  // The settings that are safe to show: no secret, no key and no database address.
+  logger.info(
+    {
+      host: settings.api.host,
+      port: settings.api.port,
+      allowedHosts: settings.api.allowedHosts,
+      corsOrigin: settings.api.corsOrigin,
+      logLevel: settings.api.logLevel,
+      rateLimitMax: settings.api.rateLimitMax,
+      rateLimitWindowSeconds: settings.api.rateLimitWindowSeconds,
+      bodyLimitBytes: settings.api.bodyLimitBytes,
+      languageModel: settings.languageModel.anthropicApiKey === undefined ? null : settings.languageModel.model,
+      embeddingModel: settings.embedding.awsRegion === undefined ? null : settings.embedding.model,
+      scheduleCron: settings.discovery.scheduleCron,
+      upkeepCron: settings.catalogue.upkeepCron,
+    },
+    "Server started",
+  );
   try {
     running.jobs = await startJobs({
       queue: createJobQueue({ databaseUrl: settings.database.url, logger }),
