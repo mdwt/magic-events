@@ -40,7 +40,7 @@ Each captured experience carries a tier among its attributes. The tiers were dec
 
 ### Loading the captures
 
-`pnpm cli:captures` loads every source in `data/hermanus/sources.json`. `pnpm cli:captures -- --source <slug>` loads one.
+`pnpm cli:captures` loads every source in `data/hermanus/sources.json`. `pnpm cli:captures --source <slug>` loads one.
 
 For each source it saves the source row, runs it through Discovery with the captured pages standing in for the fetch adapter, and processes the raw listings through Data processing with the captured experiences standing in for the language model's extraction and classification. Runs, listings, fingerprints, the checks on what was extracted, seasons, matching, precedence and saving are the pipeline's own.
 

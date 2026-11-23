@@ -7,12 +7,12 @@ import type { RunSummary } from "@magic-events/core/discovery/ports.ts";
 
 // Runs the pipeline once, by hand, without waiting for the schedule.
 //
-//   pnpm cli:pipeline -- discover                fetch every active source now
-//   pnpm cli:pipeline -- discover --due          fetch only the sources that are due
-//   pnpm cli:pipeline -- discover --source NAME  fetch one source by its name
-//   pnpm cli:pipeline -- process [--limit N]     process pending raw listings
-//   pnpm cli:pipeline -- embed                   embed the experiences that need it
-//   pnpm cli:pipeline -- run                     discover, process, then embed
+//   pnpm cli:pipeline discover                fetch every active source now
+//   pnpm cli:pipeline discover --due          fetch only the sources that are due
+//   pnpm cli:pipeline discover --source NAME  fetch one source by its name
+//   pnpm cli:pipeline process [--limit N]     process pending raw listings
+//   pnpm cli:pipeline embed                   embed the experiences that need it
+//   pnpm cli:pipeline run                     discover, process, then embed
 //
 // Fetching again and processing again, on demand. Each takes exactly one selector.
 //

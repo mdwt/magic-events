@@ -18,8 +18,8 @@ import { matchPlainly, readMatchQuestion } from "./plain-match.ts";
 // Loads pages captured by a browser scrape through the pipeline, as if the sources had just been fetched.
 //
 //   pnpm cli:captures                    load every source in data/hermanus/sources.json
-//   pnpm cli:captures -- --source SLUG   load one source by its slug
-//   pnpm cli:captures -- --no-model      never ask the language model: an unsure match is left as two experiences
+//   pnpm cli:captures --source SLUG   load one source by its slug
+//   pnpm cli:captures --no-model      never ask the language model: an unsure match is left as two experiences
 //
 // A capture directory holds sources.json, raw/<slug>/ with one file per captured page (its first line is
 // "URL: <address>"), and extracted/<slug>.json with the experiences read from those pages.
