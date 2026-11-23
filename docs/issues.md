@@ -20,7 +20,7 @@ the subject.
 | 7 | Semantic ranking is not built | Catalogue | To do |
 | 8 | Search takes a point, not a location | Catalogue | Open |
 | 9 | Sample experiences are inserted straight into Catalogue's tables | Catalogue | To do |
-| 10 | PDF calendar and web page sources have no addresses | Discovery | Open |
+| 10 | PDF calendar and web page sources have no addresses | Discovery | Closed |
 | 11 | The health check needs an API key | API | Open |
 | 12 | The per-address rate limit is kept in memory | API | Open |
 | 13 | One change row has one kind | Catalogue | Open |
@@ -38,6 +38,10 @@ the subject.
 | 25 | A database outage during a key check answers 401, not 500 | Identity | Open |
 | 26 | A key's rate limit is fixed when the key is issued | Identity | Open |
 | 27 | Seed values the documents do not give | Seed | Provisional |
+| 28 | The Quicket and Ticketmaster API adapters are not built | Discovery | Open |
+| 29 | A newsletter archive fits no source kind | Discovery | Open |
+| 30 | The terms of AllEvents.in and Quicket were not checked | Discovery | Open |
+| 31 | Pages that only fill in with JavaScript cannot be fetched | Discovery | Open |
 
 ## 1. The Docker engine was down, and port 5432 belongs to another project
 
@@ -122,9 +126,13 @@ They write no change rows and no domain events. This goes when save-experience e
 
 ## 10. PDF calendar and web page sources have no addresses
 
-**Open.** The seed creates the three sources that [discovery.md](discovery.md) gives enough to fetch: Quicket,
-Ticketmaster and the Hermanus Times feed. The PDF calendars (whalecoast.info annual and monthly, the Overstrand weekly
-diary) and the web page sources need their page addresses before they can be rows.
+**Closed, 2026-11-23.** Every source named in [discovery.md](discovery.md) was looked up and fetched once. The
+addresses, what each returns and what is not usable are in [hermanus-sources.md](hermanus-sources.md). Thirteen sources
+return dated, upcoming events to a plain request with no key. What the check changed:
+
+- The Overstrand weekly diary is a web page on overstrand.gov.za, not a PDF.
+- Quicket's public search pages return its Hermanus events with no key, as structured data in the page.
+- Ticketmaster and Computicket hold no Hermanus events. SA-Venues has none for the Overstrand.
 
 ## 11. The health check needs an API key
 
@@ -164,6 +172,30 @@ a caller with a good key is told it is not authenticated. `GET /health` is the o
 | School holidays 2028 | The Department of Basic Education's proposed 2028 calendar. 2026 and 2027 are from the gazetted calendars |
 | Source priority | 20 for Quicket and Ticketmaster, 10 for the Hermanus Times |
 | Season slugs | `whale-season` and `south-african-school-holidays`, so they do not collide with the tags `whales` and `school-holidays` |
+
+## 28. The Quicket and Ticketmaster API adapters are not built
+
+**Open.** Neither has a key. Quicket's events come in through its public search pages, fetched as web pages.
+Ticketmaster's public site returns no events for Hermanus or the Overstrand, so its adapter would return nothing today.
+
+- **Decide:** whether the two API kinds are still wanted for version 1.
+
+## 29. A newsletter archive fits no source kind
+
+**Open.** The Hermanus Scoop is a weekly newsletter with a "What's On" section and no feed. Each issue has a new
+address, so it is fetched like a PDF calendar: the archive page first, then the newest issue. No kind does that for a
+web page.
+
+## 30. The terms of AllEvents.in and Quicket were not checked
+
+**Open.** Their `robots.txt` files allow the pages that are fetched. Whether their terms of use allow automated
+fetching was not read.
+
+## 31. Pages that only fill in with JavaScript cannot be fetched
+
+**Open.** The web page adapter makes a plain request. Every source in use answers one. A page that only fills in with
+JavaScript, such as Webtickets' search, would need a headless browser inside the adapter. None of the sources checked
+needs it today.
 
 ## 13 to 23. Carried over from the documents
 

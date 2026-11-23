@@ -83,19 +83,23 @@ A raw listing's content is never changed after it is saved. Only its status chan
 
 ## Source kinds
 
-Version 1 has five kinds. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research (23 Nov 2026).
+Version 1 has five kinds. Each source has a kind, and each kind has one adapter in Discovery and one extractor in Data processing. The sources come from the Hermanus source research, and each address was checked on 23 Nov 2026 (see [hermanus-sources.md](hermanus-sources.md)).
 
 | Kind | Sources it covers | How it is fetched | One listing is | Listing ID | Extracted by |
 | --- | --- | --- | --- | --- | --- |
 | Quicket | Quicket | API with a free key. Returns all public events with no location filter, incremental by last-modified | One event, as JSON | Quicket's event ID | Field mapping |
 | Ticketmaster | Ticketmaster Discovery | API with a free key. Filters by point | One event, as JSON | Ticketmaster's event ID | Field mapping |
 | RSS feed | Hermanus Times | Fetches the feed address in the source's settings | One post: its item in the feed, as XML, with the post's full text | The item's GUID | Language model |
-| PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
-| Web page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model |
+| PDF calendar | whalecoast.info annual and monthly events PDFs. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
+| Web page | The Overstrand weekly diary, Quicket's public search pages, organiser sites (FynArts, the Whale Festival), Wesgro, AllEvents.in, Xplorio | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model, given the page's visible text and its structured data |
 
 A kind is named for how a source is fetched, never for the software its site runs on. Two kinds have an API: Quicket and Ticketmaster. RSS feeds, PDF calendars and web pages are fetched as feeds, files and pages.
 
 Adding another RSS feed, web page or PDF calendar is adding a source row with its address in the settings. It needs no new code.
+
+A web page's content is what it says: its visible text and its structured data (JSON-LD). Many listing sites put their events in structured data, and Quicket's public search pages put them nowhere else. Both are used for the page's fingerprint and both are given to the language model.
+
+Quicket is covered twice. Its public search pages need no key and are fetched as web pages. The Quicket kind, which uses its API, waits for a key.
 
 The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown) and the sources it found closed (Facebook events, Eventbrite search) have no kind.
 
@@ -118,10 +122,10 @@ Checked on 23 Nov 2026 by calling each one without a key.
 | Kind | What is needed | Result of the check |
 | --- | --- | --- |
 | Quicket | An API key. Sign up at developer.quicket.co.za and get a key there | The API answers 401 without a key. Not yet tested with one |
-| Ticketmaster | An API key. Sign up at developer.ticketmaster.com. 5000 calls a day, 5 a second | The API answers 401 without a key. Its documentation lists South Africa. Whether it holds any Hermanus events is not yet known |
+| Ticketmaster | An API key. Sign up at developer.ticketmaster.com. 5000 calls a day, 5 a second | The API answers 401 without a key. Its public site returns no events for Hermanus or the Overstrand |
 | RSS feed | Nothing | The Hermanus Times feed at novanews.co.za/hermanustimes/feed/ answers a plain request: 10 posts a page with their full text, and `?paged=N` reaches older posts. Its article pages are open too. Its posts API, category pages and sitemaps answer 403 behind a Cloudflare browser check, which a headless browser did not pass either. Most posts are national news and sport. The site's own events calendar has listed nothing since November 2025 |
-| PDF calendar | Nothing | whalecoast.info is reachable. Its site has no events API, so the PDFs remain the source |
-| Web page | Nothing | Public pages. Not checked one by one |
+| PDF calendar | Nothing | whalecoast.info is reachable. The annual and monthly PDFs are linked from the site menu and have a text layer. Its weekly diary is an image there, and the same diary is a web page on overstrand.gov.za |
+| Web page | Nothing | Checked one by one: the Overstrand diary, Quicket search, AllEvents.in, Wesgro, FynArts and Xplorio answer a plain request with their events. SA-Venues has no Overstrand events, Webtickets has no page that lists a place's events, and Computicket shows none for Hermanus and guards its API |
 
 ## Fetch port and adapters
 
