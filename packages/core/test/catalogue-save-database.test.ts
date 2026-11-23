@@ -110,6 +110,25 @@ describe("saving an experience", () => {
     assert.deepEqual(again.experience, result.experience);
   });
 
+  test("a free experience keeps its price of 0 and 0 through a save and a search", async () => {
+    const free = { min: 0, max: 0, currency: "ZAR" };
+    const result = await catalogue.saveExperience(input({ price: free }));
+    assert.deepEqual(result.experience.price, free);
+
+    const found = await catalogue.searchExperiences({
+      near: { lat: -34.4187, lng: 19.2345 },
+      from: "2027-03-10",
+      to: "2027-03-20",
+      limit: 20,
+      offset: 0,
+    });
+    assert.deepEqual(found.items[0]?.price, free);
+
+    // Saving it again is no change: the 0 read back equals the 0 saved.
+    const again = await catalogue.saveExperience(input({ experienceId: result.experience.id, price: free }));
+    assert.equal(again.changed, false);
+  });
+
   test("an update bumps the version once, with one change row and one domain event", async () => {
     const { experience: saved } = await catalogue.saveExperience(input());
     const result = await catalogue.saveExperience(
