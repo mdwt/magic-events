@@ -51,41 +51,9 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
   return {
     async searchExperiences(query) {
       const where = searchConditions(db, query);
-      const distance = distanceKm(query.near);
 
       const [page, [counted]] = await Promise.all([
-        db
-          .select({
-            id: experience.id,
-            title: experience.title,
-            slug: experience.slug,
-            summary: experience.summary,
-            description: experience.description,
-            type: experience.type,
-            status: experience.status,
-            booking: experience.booking,
-            locationSlug: location.slug,
-            locationName: location.name,
-            venueName: experience.venueName,
-            venueAddress: experience.venueAddress,
-            city: experience.city,
-            latitude: experience.latitude,
-            longitude: experience.longitude,
-            distanceKm: distance,
-            timezone: experience.timezone,
-            openingHours: experience.openingHours,
-            priceMin: experience.priceMin,
-            priceMax: experience.priceMax,
-            currency: experience.currency,
-            onSaleAt: experience.onSaleAt,
-            bookingClosesAt: experience.bookingClosesAt,
-            bookingUrl: experience.bookingUrl,
-            imageUrl: experience.imageUrl,
-            version: experience.version,
-            updatedAt: experience.updatedAt,
-          })
-          .from(experience)
-          .innerJoin(location, eq(location.id, experience.locationId))
+        selectRecords(db, query.near)
           .where(where)
           .orderBy(...searchOrder(db, query))
           .limit(query.limit)
@@ -98,92 +66,7 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       ]);
       const total = counted?.total ?? 0;
       if (page.length === 0) return { items: [], total };
-
-      const ids = page.map((row) => row.id);
-      const [sessions, attributeValues, tags] = await Promise.all([
-        db
-          .select({
-            experienceId: experienceSession.experienceId,
-            startDate: experienceSession.startDate,
-            endDate: experienceSession.endDate,
-            precision: experienceSession.precision,
-            startTime: experienceSession.startTime,
-            endTime: experienceSession.endTime,
-            label: experienceSession.label,
-            soldOut: experienceSession.soldOut,
-          })
-          .from(experienceSession)
-          .where(and(inArray(experienceSession.experienceId, ids), sessionInRange(query)))
-          .orderBy(
-            asc(experienceSession.startDate),
-            sql`${experienceSession.startTime} asc nulls first`,
-            asc(experienceSession.endDate),
-            asc(experienceSession.id),
-          ),
-        db
-          .select({
-            experienceId: experienceAttributeValue.experienceId,
-            key: experienceAttributeValue.attributeKey,
-            value: experienceAttributeValue.value,
-          })
-          .from(experienceAttributeValue)
-          .where(inArray(experienceAttributeValue.experienceId, ids))
-          .orderBy(asc(experienceAttributeValue.attributeKey), asc(experienceAttributeValue.value)),
-        db
-          .select({ experienceId: experienceTag.experienceId, tag: experienceTag.tag })
-          .from(experienceTag)
-          .where(inArray(experienceTag.experienceId, ids))
-          .orderBy(asc(experienceTag.tag)),
-      ]);
-
-      const sessionsOf = groupBy(sessions, (row) => row.experienceId);
-      const attributesOf = groupBy(attributeValues, (row) => row.experienceId);
-      const tagsOf = groupBy(tags, (row) => row.experienceId);
-
-      const items = page.map((row): ExperienceRecord => {
-        const attributes: ExperienceRecord["attributes"] = {};
-        for (const { key, value } of attributesOf.get(row.id) ?? []) {
-          (attributes[key] ??= []).push(value);
-        }
-        return {
-          id: row.id,
-          title: row.title,
-          slug: row.slug,
-          summary: row.summary,
-          description: row.description,
-          type: row.type,
-          status: searchable(row.status),
-          booking: row.booking,
-          location: { slug: row.locationSlug, name: row.locationName },
-          venue: {
-            name: row.venueName,
-            address: row.venueAddress,
-            city: row.city,
-            position: row.latitude !== null && row.longitude !== null ? { lat: row.latitude, lng: row.longitude } : null,
-          },
-          distanceKm: Math.round(row.distanceKm * 10) / 10,
-          timezone: row.timezone,
-          openingHours: row.openingHours,
-          price: { min: row.priceMin, max: row.priceMax, currency: row.currency },
-          onSaleAt: row.onSaleAt?.toISOString() ?? null,
-          bookingClosesAt: row.bookingClosesAt?.toISOString() ?? null,
-          bookingUrl: row.bookingUrl,
-          imageUrl: row.imageUrl,
-          attributes,
-          tags: (tagsOf.get(row.id) ?? []).map((tag) => tag.tag),
-          sessions: (sessionsOf.get(row.id) ?? []).map((session) => ({
-            startDate: session.startDate,
-            endDate: session.endDate,
-            precision: session.precision,
-            startTime: session.startTime,
-            endTime: session.endTime,
-            label: session.label,
-            soldOut: session.soldOut,
-          })),
-          version: row.version,
-          updatedAt: row.updatedAt.toISOString(),
-        };
-      });
+      const items = await toRecords(db, page, sessionInRange(query), searchable);
       return { items, total };
     },
 
@@ -550,23 +433,167 @@ function chunks<T>(rows: T[]): T[][] {
   return result;
 }
 
+// Experiences as search and changed-since return them, joined to their location, with the distance from the point.
+function selectRecords(db: Db, near: { lat: number; lng: number }) {
+  return db
+    .select({
+      id: experience.id,
+      title: experience.title,
+      slug: experience.slug,
+      summary: experience.summary,
+      description: experience.description,
+      type: experience.type,
+      status: experience.status,
+      booking: experience.booking,
+      locationSlug: location.slug,
+      locationName: location.name,
+      venueName: experience.venueName,
+      venueAddress: experience.venueAddress,
+      city: experience.city,
+      latitude: experience.latitude,
+      longitude: experience.longitude,
+      distanceKm: distanceKm(near),
+      timezone: experience.timezone,
+      openingHours: experience.openingHours,
+      priceMin: experience.priceMin,
+      priceMax: experience.priceMax,
+      currency: experience.currency,
+      onSaleAt: experience.onSaleAt,
+      bookingClosesAt: experience.bookingClosesAt,
+      bookingUrl: experience.bookingUrl,
+      imageUrl: experience.imageUrl,
+      version: experience.version,
+      updatedAt: experience.updatedAt,
+    })
+    .from(experience)
+    .innerJoin(location, eq(location.id, experience.locationId));
+}
+
+type RecordRow = Awaited<ReturnType<typeof selectRecords>>[number];
+
+// A page of experiences as records: each with the sessions the condition picks, its attribute values and tags.
+async function toRecords<S extends string>(
+  db: Db,
+  page: RecordRow[],
+  sessionCondition: SQL | undefined,
+  status: (value: string) => S,
+): Promise<(Omit<ExperienceRecord, "status"> & { status: S })[]> {
+  const ids = page.map((row) => row.id);
+  const [sessions, attributeValues, tags] = await Promise.all([
+    db
+      .select({
+        experienceId: experienceSession.experienceId,
+        startDate: experienceSession.startDate,
+        endDate: experienceSession.endDate,
+        precision: experienceSession.precision,
+        startTime: experienceSession.startTime,
+        endTime: experienceSession.endTime,
+        label: experienceSession.label,
+        soldOut: experienceSession.soldOut,
+      })
+      .from(experienceSession)
+      .where(and(inArray(experienceSession.experienceId, ids), sessionCondition))
+      .orderBy(
+        asc(experienceSession.startDate),
+        sql`${experienceSession.startTime} asc nulls first`,
+        asc(experienceSession.endDate),
+        asc(experienceSession.id),
+      ),
+    db
+      .select({
+        experienceId: experienceAttributeValue.experienceId,
+        key: experienceAttributeValue.attributeKey,
+        value: experienceAttributeValue.value,
+      })
+      .from(experienceAttributeValue)
+      .where(inArray(experienceAttributeValue.experienceId, ids))
+      .orderBy(asc(experienceAttributeValue.attributeKey), asc(experienceAttributeValue.value)),
+    db
+      .select({ experienceId: experienceTag.experienceId, tag: experienceTag.tag })
+      .from(experienceTag)
+      .where(inArray(experienceTag.experienceId, ids))
+      .orderBy(asc(experienceTag.tag)),
+  ]);
+
+  const sessionsOf = groupBy(sessions, (row) => row.experienceId);
+  const attributesOf = groupBy(attributeValues, (row) => row.experienceId);
+  const tagsOf = groupBy(tags, (row) => row.experienceId);
+
+  return page.map((row) => {
+    const attributes: ExperienceRecord["attributes"] = {};
+    for (const { key, value } of attributesOf.get(row.id) ?? []) {
+      (attributes[key] ??= []).push(value);
+    }
+    return {
+      id: row.id,
+      title: row.title,
+      slug: row.slug,
+      summary: row.summary,
+      description: row.description,
+      type: row.type,
+      status: status(row.status),
+      booking: row.booking,
+      location: { slug: row.locationSlug, name: row.locationName },
+      venue: {
+        name: row.venueName,
+        address: row.venueAddress,
+        city: row.city,
+        position: row.latitude !== null && row.longitude !== null ? { lat: row.latitude, lng: row.longitude } : null,
+      },
+      distanceKm: Math.round(row.distanceKm * 10) / 10,
+      timezone: row.timezone,
+      openingHours: row.openingHours,
+      price: { min: row.priceMin, max: row.priceMax, currency: row.currency },
+      onSaleAt: row.onSaleAt?.toISOString() ?? null,
+      bookingClosesAt: row.bookingClosesAt?.toISOString() ?? null,
+      bookingUrl: row.bookingUrl,
+      imageUrl: row.imageUrl,
+      attributes,
+      tags: (tagsOf.get(row.id) ?? []).map((tag) => tag.tag),
+      sessions: (sessionsOf.get(row.id) ?? []).map((session) => ({
+        startDate: session.startDate,
+        endDate: session.endDate,
+        precision: session.precision,
+        startTime: session.startTime,
+        endTime: session.endTime,
+        label: session.label,
+        soldOut: session.soldOut,
+      })),
+      version: row.version,
+      updatedAt: row.updatedAt.toISOString(),
+    };
+  });
+}
+
 // A session that is on during the dates asked for. Cancelled sessions never match.
 function sessionInRange(query: ExperienceSearchQuery): SQL | undefined {
-  return and(
-    eq(experienceSession.status, "scheduled"),
-    lte(experienceSession.startDate, query.to),
-    gte(experienceSession.endDate, query.from),
-  );
+  return and(eq(experienceSession.status, "scheduled"), sessionOverlaps(query));
+}
+
+// A session that overlaps the dates asked for, whatever its status.
+function sessionOverlaps(query: ExperienceSearchQuery): SQL | undefined {
+  return and(lte(experienceSession.startDate, query.to), gte(experienceSession.endDate, query.from));
 }
 
 // Every filter of the search, on the experience joined to its location.
 function searchConditions(db: Db, query: ExperienceSearchQuery): SQL | undefined {
+  return and(searchableNow(db, query), ...placeAndClassification(db, query));
+}
+
+// What search returns: the statuses and bookings asked for, with a session on during the dates.
+function searchableNow(db: Db, query: ExperienceSearchQuery): SQL | undefined {
   const matchingSession = and(eq(experienceSession.experienceId, experience.id), sessionInRange(query));
   return and(
     inArray(experience.status, query.statuses),
     query.bookings === undefined ? undefined : inArray(experience.booking, query.bookings),
-    lte(distanceKm(query.near), sql`${query.radiusKm}::double precision`),
     exists(db.select({ one: sql`1` }).from(experienceSession).where(matchingSession)),
+  );
+}
+
+// The filters search and changed-since share: the place and radius, the attributes and the tags.
+function placeAndClassification(db: Db, query: ExperienceSearchQuery): (SQL | undefined)[] {
+  return [
+    lte(distanceKm(query.near), sql`${query.radiusKm}::double precision`),
     ...Object.entries(query.attributes).map(([key, filter]) =>
       exists(
         db
@@ -589,7 +616,7 @@ function searchConditions(db: Db, query: ExperienceSearchQuery): SQL | undefined
             .from(experienceTag)
             .where(and(eq(experienceTag.experienceId, experience.id), inArray(experienceTag.tag, query.tags))),
         ),
-  );
+  ];
 }
 
 // One stored value against one attribute's filter. Values are jsonb, one row per value.
