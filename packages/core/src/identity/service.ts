@@ -59,8 +59,9 @@ export class IdentityService implements Identity {
       if (code === "RATE_LIMITED" || code === "USAGE_EXCEEDED") {
         const retryAfterSeconds = retryAfter(result.error);
         this.#logger.warn({ reason: code, retryAfterSeconds }, "API key over its rate limit");
+        const wait = retryAfterSeconds === undefined ? "a moment" : `${retryAfterSeconds} seconds`;
         throw new CredentialRateLimitedError(
-          "This API key has made too many requests. Wait before trying again.",
+          `This API key has made too many requests. Try again in ${wait}.`,
           retryAfterSeconds,
         );
       }
@@ -88,7 +89,8 @@ export class IdentityService implements Identity {
   authorise(caller: Caller, action: Action): void {
     if (!ALLOWED[action][caller.role]) {
       this.#logger.warn({ action, reason: "role" }, "Action refused");
-      throw new AppError("forbidden", "You may not do this.");
+      // Every action a client is refused is a system admin's alone.
+      throw new AppError("forbidden", "Only a system admin may do this.");
     }
     if (caller.role === "client" && caller.tenant?.status !== "active") {
       this.#logger.warn({ action, reason: "tenant not active" }, "Action refused");
