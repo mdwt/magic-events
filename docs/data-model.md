@@ -68,6 +68,7 @@ The thing a client searches. System-managed and visible to every tenant. Every e
   - Its dates are its sessions, and it is on no other date (see Dates and sessions).
   - A price of 0 and 0 means it is free. An empty price means the source states none. A lowest price of 0 beside a higher one means some get in free, such as children (see Price in [data-processing.md](data-processing.md)).
   - The version goes up on every real change, including changes to its sessions, attributes, tags and source links. Re-verifying a source does not count as a change, and an update that changes nothing doesn't bump the version. Sessions that Catalogue generates further ahead for an open-ended recurring experience do not count as a change either.
+  - Its fields come from its highest-priority listing where it states them, and from its other listings where it does not, as "When sources disagree" in [data-processing.md](data-processing.md) says. Processing a listing again with unchanged content is no change and writes no version.
   - An experience is not deleted while a source still lists it. There is no soft delete.
   - When its last source link is removed because no source lists it any more, the experience is set to Removed, unless it is already Past or Cancelled (see [discovery.md](discovery.md)).
 
