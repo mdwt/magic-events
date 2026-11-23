@@ -26,6 +26,8 @@
     "cli:pipeline": "pnpm --filter @magic-events/cli run pipeline",
     "cli:admin": "pnpm --filter @magic-events/cli run admin",
     "cli:captures": "pnpm --filter @magic-events/cli run captures",
+    "e2e": "pnpm --filter @magic-events/e2e e2e",
+    "e2e:live": "pnpm --filter @magic-events/e2e e2e:live",
     "openapi": "pnpm --filter @magic-events/api openapi",
     "openapi:check": "pnpm --filter @magic-events/api openapi:check",
     "tunnel": "cloudflared tunnel --url http://localhost:4000"
