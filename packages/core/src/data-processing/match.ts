@@ -101,14 +101,19 @@ export const matchAnswerSchema = z.object({
 });
 export type MatchAnswer = z.infer<typeof matchAnswerSchema>;
 
+// Said after dates known only to the month or year, so the model, and the captures command reading the question
+// back, can tell a series or an announced month from a dated event.
+export const ONLY_MONTH_OR_YEAR = " (only the month or year is known)";
+
 export function matchText(experience: ExtractedExperience, span: Span, candidates: ExperienceMatch[]): string {
   const venue = [experience.venue?.name, experience.venue?.city].filter((part) => part !== undefined).join(", ");
+  const coarse = onlyMonthOrYear(experience) ? ONLY_MONTH_OR_YEAR : "";
   const lines = [
     "The experience a source describes:",
     `Title: ${experience.title}`,
     `Summary: ${experience.summary ?? ""}`,
     `Venue: ${venue}`,
-    `Dates: ${span.start} to ${span.end}${experience.recurrence ? `, repeating ${experience.recurrence.rule}` : ""}`,
+    `Dates: ${span.start} to ${span.end}${coarse}${experience.recurrence ? `, repeating ${experience.recurrence.rule}` : ""}`,
     "",
     "The known experiences:",
   ];
@@ -116,7 +121,8 @@ export function matchText(experience: ExtractedExperience, span: Span, candidate
     const place = [candidate.venueName, candidate.city].filter((part) => part !== null).join(", ");
     lines.push(
       `- ID ${candidate.id}: ${candidate.title}; venue: ${place}; dates: ${candidate.firstDate ?? "?"} to ` +
-        `${candidate.lastDate ?? "open-ended"}${candidate.recurrenceRule ? `, repeating ${candidate.recurrenceRule}` : ""}`,
+        `${candidate.lastDate ?? "open-ended"}${candidate.onlyMonthOrYear ? ONLY_MONTH_OR_YEAR : ""}` +
+        (candidate.recurrenceRule ? `, repeating ${candidate.recurrenceRule}` : ""),
     );
   }
   return lines.join("\n");

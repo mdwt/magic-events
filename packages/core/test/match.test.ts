@@ -116,6 +116,85 @@ describe("Matching in code", () => {
     assert.match(MATCH_INSTRUCTIONS, /different operator or organiser/);
   });
 
+  test("a series known by its month takes no dated concert by an act in it, in code", () => {
+    // From data/hermanus/extracted: the Whale Coast calendar's "Sunset Sessions" for December 2026, and AllEvents'
+    // dated concerts of the series.
+    const sunsetSessions = stored({
+      title: "Sunset Sessions",
+      venueName: "Stanford Hills Estate",
+      city: "Stanford",
+      firstDate: "2026-12-01",
+      lastDate: "2026-12-31",
+      sessions: [{ startDate: "2026-12-01", endDate: "2026-12-31" }],
+      onlyMonthOrYear: true,
+    });
+    for (const [title, day] of [
+      ["Jeremy Loops Live at Stanford Hills Sunset Sessions", "2026-12-23"],
+      ["Jesse Clegg and Ross Learmonth Live at Stanford Hills Sunset Sessions", "2026-12-30"],
+      ["Matthew Mole at Stanford Hills Sunset Sessions", "2026-12-26"],
+      ["Will Linley Live at Stanford Hills Sunset Sessions", "2026-12-28"],
+    ] as const) {
+      const concert: ExtractedExperience = {
+        ...fynArts,
+        title,
+        sessions: [{ start: day, precision: "day", startTime: "15:00" }],
+        venue: { name: "Stanford Hills Estate", city: "Stanford" },
+      };
+      const days = { start: day, end: day };
+      assert.ok(datesFit(concert, days, sunsetSessions));
+      assert.equal(matchInCode(concert, days, [sunsetSessions]), undefined);
+      // The model is shown that the series is known only by its month.
+      assert.match(matchText(concert, days, [sunsetSessions]), /dates: 2026-12-01 to 2026-12-31 \(only the month or year is known\)/);
+    }
+  });
+
+  test("a festival announced by its month is still one experience with its days, or with another source's month", () => {
+    const kalfiefees = stored({
+      title: "Kalfiefees Hermanus Kunstefees 2027",
+      firstDate: "2027-08-01",
+      lastDate: "2027-08-31",
+      sessions: [{ startDate: "2027-08-01", endDate: "2027-08-31" }],
+      onlyMonthOrYear: true,
+    });
+    // The days, when a source gives them (the dates here are made up; the capture has only August).
+    const withDays: ExtractedExperience = {
+      ...fynArts,
+      title: "Kalfiefees Hermanus Kunstefees",
+      sessions: [{ start: "2027-08-12", end: "2027-08-15", precision: "day" }],
+    };
+    assert.equal(matchInCode(withDays, { start: "2027-08-12", end: "2027-08-15" }, [kalfiefees]), kalfiefees);
+    // SA-Venues' Hermanus Whale Festival in October 2027, against another source's September.
+    const october: ExtractedExperience = {
+      ...fynArts,
+      title: "Hermanus Whale Festival",
+      sessions: [{ start: "2027-10-01", precision: "month" }],
+    };
+    const september = stored({
+      title: "Hermanus Whale Festival",
+      firstDate: "2027-09-01",
+      lastDate: "2027-09-30",
+      onlyMonthOrYear: true,
+    });
+    assert.equal(matchInCode(october, { start: "2027-10-01", end: "2027-10-31" }, [september]), september);
+    assert.match(matchText(october, { start: "2027-10-01", end: "2027-10-31" }, []), /Dates: 2027-10-01 to 2027-10-31 \(only the month or year is known\)/);
+  });
+
+  test("a title naming only the kind of event is never matched in code to a particular one", () => {
+    const parkrun: ExtractedExperience = {
+      ...fynArts,
+      title: "ParkRun",
+      type: "recurring",
+      sessions: [],
+      recurrence: { rule: "FREQ=WEEKLY;BYDAY=SA", start: "2026-11-28" },
+      venue: { name: "Hemel-en-Aarde and Benguela Cove", city: "Hermanus" },
+    };
+    const weekly = { firstDate: "2026-11-28", lastDate: null, recurrenceRule: "FREQ=WEEKLY;BYDAY=SA", type: "recurring" as const };
+    const saturdays = { start: "2026-11-28", end: "2028-11-23" };
+    for (const title of ["Hermanus parkrun", "Groeneweide Parkrun", "Benguela Cove parkrun"]) {
+      assert.equal(matchInCode(parkrun, saturdays, [stored({ ...weekly, title })]), undefined);
+    }
+  });
+
   test("among the listing's own links only the title is compared, since the listing moves their dates", () => {
     const moved = stored({ title: "Hermanus FynArts Festival", firstDate: "2027-05-01", lastDate: "2027-05-10" });
     assert.equal(matchLinked(fynArts, [moved]), moved);
