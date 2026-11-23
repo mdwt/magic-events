@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { readdirSync } from "node:fs";
 import { after, before, describe, test } from "node:test";
 import type { Location } from "../src/catalogue/ports.ts";
 import type { FetchInput, FetchedListing } from "../src/discovery/ports.ts";
 import type { Logger } from "../src/shared/logger.ts";
 import { createHttp } from "../src/adapters/sources/http.ts";
 import { createWebPageFetcher } from "../src/adapters/sources/web-page.ts";
-import { pageContent } from "../src/shared/html.ts";
+import { pageContent, sharedLines } from "../src/shared/html.ts";
 import { fixture, startFixtureServer, type FixtureServer } from "./fixtures/sources/server.ts";
 
 // The web page adapter against a local server serving recorded pages.
@@ -44,6 +45,13 @@ function ticketPage(price: string): string {
   );
 }
 
+const villageNews = readdirSync(new URL("fixtures/sources/village-news/first/", import.meta.url)).sort();
+
+// The Village NEWS pages of one run, the first from another run when it is given.
+function villageNewsRun(run: string, firstFrom = run): string[] {
+  return villageNews.map((name, index) => server.url(`/village-news/${index === 0 ? firstFrom : run}/${name}`));
+}
+
 let server: FixtureServer;
 const fetcher = createWebPageFetcher({
   http: createHttp({ timeoutSeconds: 5, userAgent: "magic-events-test/1.0" }),
@@ -66,6 +74,13 @@ before(async () => {
   server.route("/wix-rerendered", { body: fixture("wix-event-list-rerendered.html") });
   server.route("/ticket-footer", { body: ticketPage("R150") });
   server.route("/ticket-footer-changed", { body: ticketPage("R180") });
+  // Ten of The Village NEWS's event pages, fetched twice three minutes apart, cut down: the ticker of today's
+  // weather and tides at the top of every page changed its wind between the fetches.
+  for (const run of ["first", "second"]) {
+    for (const name of villageNews) server.route(`/village-news/${run}/${name}`, { body: fixture(`village-news/${run}/${name}`) });
+  }
+  const moved = fixture(`village-news/second/${villageNews[0] ?? ""}`).toString("utf8").replaceAll("3 December", "4 December");
+  server.route(`/village-news/moved/${villageNews[0] ?? ""}`, { body: moved });
   server.route("/old-address", { redirectTo: "/weekend" });
   server.route("/gone", { status: 410, body: "Gone" });
   server.route("/broken", { status: 500, body: "Internal error" });
@@ -147,6 +162,34 @@ describe("web_page adapter", () => {
     assert.match(page?.fingerprintOf ?? "", /Tickets R150/);
     assert.doesNotMatch(page?.fingerprintOf ?? "", /© Example/);
     assert.notEqual(print(page), print(changed));
+  });
+
+  test("keeps the fingerprints when only the lines every page of the site shows change", async () => {
+    const first = await fetcher.fetch(input({ urls: villageNewsRun("first") }));
+    const second = await fetcher.fetch(input({ urls: villageNewsRun("second") }));
+
+    assert.equal(first.listings.length, 10);
+    assert.notEqual(pageContent(first.listings[0]?.content ?? ""), pageContent(second.listings[0]?.content ?? ""));
+    assert.deepEqual(first.listings.map(print), second.listings.map(print));
+    assert.doesNotMatch(first.listings[0]?.fingerprintOf ?? "", /High tide/);
+    assert.match(first.listings[0]?.fingerprintOf ?? "", /Jingle Bell Rock/);
+  });
+
+  test("a page whose own date changes changes its fingerprint, and the other pages keep theirs", async () => {
+    const before = await fetcher.fetch(input({ urls: villageNewsRun("second") }));
+    const after = await fetcher.fetch(input({ urls: villageNewsRun("second", "moved") }));
+    const [moved, ...rest] = after.listings;
+    const [original, ...others] = before.listings;
+
+    assert.notEqual(print(moved), print(original));
+    assert.deepEqual(rest.map(print), others.map(print));
+  });
+
+  test("fewer than ten pages fetched together share no lines, so a line on all of them still counts", () => {
+    const pages = villageNews.map((name) => fixture(`village-news/first/${name}`).toString("utf8"));
+
+    assert.ok(sharedLines(pages).size > 0);
+    assert.equal(sharedLines(pages.slice(0, 9)).size, 0);
   });
 
   test("follows a redirect and keeps the address it was given", async () => {

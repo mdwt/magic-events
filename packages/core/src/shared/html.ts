@@ -70,14 +70,31 @@ export function pageContent(html: string): string {
 }
 
 // What a page's fingerprint is taken from: its content without the site's frame, so a frame that changes on every
-// fetch does not make the page look changed. The model is still given the frame, which can name an event the page
-// itself does not.
-export function fingerprintContent(html: string): string {
-  return content(html, true);
+// fetch does not make the page look changed, and without the lines its site shows on every page (sharedLines).
+// The model is still given both, which can name an event the page itself does not.
+export function fingerprintContent(html: string, siteLines: ReadonlySet<string> = new Set()): string {
+  return content(html, true, siteLines);
 }
 
-function content(html: string, withoutFrame: boolean): string {
-  const text = visibleText(html, { withoutFrame });
+// The fewest pages fetched together whose shared lines are taken to be the site's. Among a few pages, such as a
+// festival's home, programme and booking pages, a line on all of them can be the festival's own dates.
+const PAGES_FOR_SHARED_LINES = 10;
+
+// The lines of visible text that every one of a site's pages fetched together shows: its banner, menus, tickers and
+// footer, whatever its markup. A site can mark none of them as its frame, and a ticker of today's weather and tides,
+// such as The Village NEWS's, changes from one fetch to the next. A line only some of the pages show is kept, so a
+// page whose own date, time or price changes still changes its fingerprint.
+export function sharedLines(pages: readonly string[]): Set<string> {
+  if (pages.length < PAGES_FOR_SHARED_LINES) return new Set();
+  const [first, ...rest] = pages.map((html) => new Set(visibleText(html, { withoutFrame: true }).split("\n")));
+  return new Set([...(first ?? [])].filter((line) => rest.every((lines) => lines.has(line))));
+}
+
+function content(html: string, withoutFrame: boolean, siteLines: ReadonlySet<string> = new Set()): string {
+  const text = visibleText(html, { withoutFrame })
+    .split("\n")
+    .filter((line) => !siteLines.has(line))
+    .join("\n");
   const data = structuredData(html);
   const maps = mapLinks(html);
   const parts = [text];

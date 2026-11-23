@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { FetchedListing, SourceFetcher } from "../../discovery/ports.ts";
-import { fingerprintContent } from "../../shared/html.ts";
+import { fingerprintContent, sharedLines } from "../../shared/html.ts";
 import type { Logger } from "../../shared/logger.ts";
 import { HttpStatusError, MAX_PAGE_BYTES, parseSettings, textOf, type Http } from "./http.ts";
 
@@ -20,7 +20,7 @@ export function createWebPageFetcher(deps: { http: Http; logger: Logger }): Sour
 
     async fetch(input) {
       const settings = parseSettings("web_page", settingsSchema, input.settings);
-      const listings: FetchedListing[] = [];
+      const pages: { url: string; html: string }[] = [];
 
       // One page after another, so a site is never sent several requests at once.
       for (const url of new Set(settings.urls)) {
@@ -38,17 +38,20 @@ export function createWebPageFetcher(deps: { http: Http; logger: Logger }): Sour
           throw error;
         }
 
-        const html = textOf(response);
-        listings.push({
-          sourceListingId: url,
-          url,
-          contentType: "text/html",
-          content: html,
-          // Markup, tokens, adverts and the site's frame change on every fetch; what the page says does not.
-          fingerprintOf: fingerprintContent(html),
-        });
+        pages.push({ url, html: textOf(response) });
         logger.debug({ url, bytes: response.body.byteLength }, "Fetched a page");
       }
+
+      // Markup, tokens, adverts, the site's frame and the lines all its pages show change on every fetch; what each
+      // page says does not.
+      const siteLines = sharedLines(pages.map((page) => page.html));
+      const listings: FetchedListing[] = pages.map(({ url, html }) => ({
+        sourceListingId: url,
+        url,
+        contentType: "text/html",
+        content: html,
+        fingerprintOf: fingerprintContent(html, siteLines),
+      }));
 
       return { listings, complete: true, syncState: {} };
     },
