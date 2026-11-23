@@ -222,8 +222,8 @@ Removed is not Cancelled. Cancelled means a source said the organisers cancelled
 
 Data processing never reads Discovery's tables. It uses three calls on the Discovery service:
 
-- **Claim** pending raw listings. Two workers never get the same one: Discovery's repository claims them with `FOR UPDATE SKIP LOCKED`. Each comes with its source's kind and location.
-- **Mark** a raw listing processed, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
+- **Claim** pending raw listings. Two workers never get the same one: Discovery's repository claims them with `FOR UPDATE SKIP LOCKED`, and the lock is held until Data processing's transaction ends. Each comes with its source's kind and location.
+- **Mark** a raw listing processed, or failed with the error and one more attempt. Both marks are made in the claim's transaction, so a failed raw listing cannot be claimed again until its attempt is counted. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
 - **Send back** listings to be processed again: the latest version of each listing that is still listed goes back to pending, with its attempts at 0 and its error cleared. One that is already pending is left as it is, and a removed listing is skipped (see Processing again in [data-processing.md](data-processing.md)).
 
 | Status | Means | Moves to |

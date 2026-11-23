@@ -22,7 +22,7 @@ Data processing owns the extractors, the classifier, the matching decision, and 
 
 ## Steps
 
-One raw listing is processed in one transaction, from claim to mark. If the server stops part way, the transaction rolls back and the raw listing is pending again.
+One raw listing is processed in one transaction, from claim to mark. The claim locks the raw listing until the transaction ends, so no other worker, in this server or another, can claim it meanwhile. The work after the claim runs in a savepoint of that transaction. If the server stops part way, the transaction rolls back and the raw listing is pending again, with no attempt counted.
 
 Processing runs as a job (see Background jobs in [architecture.md](architecture.md)). The job is added after a fetch that found something new, changed or gone, and once an hour as a safety net. It processes pending raw listings until none is left. When a raw listing fails, the job stops and the queue runs it again later, so a failing raw listing is not tried again at once.
 
@@ -38,7 +38,7 @@ Three cases need no extraction or end early:
 
 - **Removed raw listing** (kind removed, no content). The Catalogue service removes that listing's link from every experience it was linked to. An experience left with no links is set to Removed by Catalogue.
 - **Nothing extracted.** A post or page that describes no experience is marked processed. Any links the listing had are removed, as below.
-- **Failure.** If any step fails, including a language model answer that does not fit the expected shape, nothing from that raw listing is saved to Catalogue. It is marked failed with the error and one more attempt, and goes back to pending until it reaches the source's max processing attempts.
+- **Failure.** If any step fails, including a language model answer that does not fit the expected shape, the work rolls back to the savepoint, so nothing from that raw listing is saved to Catalogue and none of its domain events go out. It is then marked failed with the error and one more attempt in the same transaction, while the claim's lock is still held, so another worker cannot claim it before the attempt is counted, and each attempt is counted once. It goes back to pending until it reaches the source's max processing attempts.
 
 ### Versions of a listing
 
@@ -473,7 +473,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 
 | Decision | |
 | --- | --- |
-| Steps | Extract, classify, match, save, then append to the data warehouse. One raw listing is one transaction, from claim to mark, including while the language model answers |
+| Steps | Extract, classify, match, save, then append to the data warehouse. One raw listing is one transaction, from claim to mark, including while the language model answers. The work after the claim is a savepoint |
 | Extraction | One extractor per source kind. Field mapping in code for Quicket and Ticketmaster. The language model for RSS feed, PDF calendar and web page |
 | Several experiences per listing | An extractor returns zero or more experiences. A post, page or calendar is never forced into one |
 | Classification | One step for every kind: the language model picks attribute values and tags from the definitions and their descriptions, and writes the profile |
@@ -499,7 +499,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Festival programmes | A festival is one experience. Its programme items are not extracted separately |
 | Undefined values | An attribute, option or tag that is not defined is not put on the experience. It is saved for review with as much detail as possible, and version 1 does nothing more with it |
 | Data warehouse | A table in the same Postgres database. After saving, Data processing appends each experience it saved |
-| Failure | Nothing is saved from a raw listing that fails. It is retried up to the source's max processing attempts |
+| Failure | Nothing is saved from a raw listing that fails. Its failed attempt is counted in the claim's transaction, before another worker can claim it. It is retried up to the source's max processing attempts |
 
 ## Open questions
 
