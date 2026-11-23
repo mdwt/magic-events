@@ -114,7 +114,7 @@ REST and MCP are two adapters on the same inbound ports, so a person and an agen
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
-| Discovery | Run discovery for a location | Fetch from a source; store raw records; announce `raw_listing.captured` |
+| Discovery | Run discovery for a location; manage sources and which locations each covers | Fetch from a source; store raw records; announce `raw_listing.captured` |
 | Data processing | Process a raw record | Store processed experiences; load the data warehouse; announce `experience.processed` |
 | Catalogue | Search experiences; get changes since; manage locations | Store published experiences and their history; announce `location.added` |
 | Identity | Authenticate a caller; authorise an action | Store credentials; know each user's tenant and role |
@@ -195,13 +195,14 @@ Eight months later, the agent refines the trip and books activities. They want o
 | Can clients create or change experiences? | No. Clients only read. Every experience comes from discovery |
 | Do agents need their own role? | No. Agents can do exactly what clients can. Identity knows whether a caller is an agent or a person |
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
+| How does a client search by place? | With a point and a radius the client chooses. Distance is worked out at query time |
+| Where are sources managed? | In Discovery, which owns sources and which locations each covers |
 
 ## Open questions
 
+Category and tag vocabulary is tracked in data-model.md.
+
 - [ ] Does an agent's credential belong to a specific user or to the tenant? The MCP question was closed on roles, but this part is still unanswered, and no flow issues or revokes an agent credential.
-- [ ] How does the system learn that a discovered experience was cancelled or dropped by its source? UC2 returns cancellations, but no flow produces one for discovered experiences.
+- [ ] A source that marks an experience cancelled is covered: Data processing sets the status from the source. What happens when a listing disappears from its source without being marked cancelled?
 - [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.
-- [ ] How does Catalogue get the category and tag vocabulary it searches by interest, and how does a client list it? No port or domain event shares it.
 - [ ] How long is change history kept? UC2 checks back eight months later.
-- [ ] Discovery's inbound ports have only "run discovery for a location". Where does the system admin manage sources and which sources cover which location?
-- [ ] How does a client's location parameter map to a covered location: by name, by slug, or by coordinates and radius?

@@ -201,12 +201,12 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status, booking and past are separate, as defined under Experience status |
 | Auth | Better Auth and its own tables in v1 |
+| Domain event log | The repo's `events` table carries every domain event. Experience change history stays in its own table |
 | Raw content | Stored in Postgres in a `text` column, so JSON and HTML both fit and the copy stays exact. `raw_listing.captured` carries the content. Discovery reads and writes it through its own raw content store, so only that store changes when it moves. **Later:** move raw content to MinIO (S3) and pass a key instead |
 | Trip context | None. The system is an experience feed that serves results from the caller's search parameters |
 
 ## Open questions
 
-- [ ] Does the `events` log carry the domain events above, and could the experience change history be read from it instead of its own table?
 - [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
 - [ ] How does Catalogue get the vocabulary it filters on, and how do clients list it?
