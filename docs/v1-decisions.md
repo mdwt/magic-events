@@ -11,6 +11,7 @@ What version 1 leaves out, and why. Each of these is described somewhere in the 
 | 3 | The next source taking over when the leading listing goes | None. UC3 keeps slightly stale values in one case | [37](issues.md) |
 | 4 | MCP sign-in with OAuth | None. UC1, UC2 and UC4 use API keys | [4](issues.md) |
 | 5 | A reader for the data warehouse | None | [15](issues.md) |
+| 6 | Checking again the experiences of sources that only a browser can read | UC2 and UC3: an experience known only from such a source is not checked again until a new scrape | [74](issues.md) |
 
 Sending a listing back to be processed again was on this list on the morning of 23 November. It was decided the same day and is built, as command-line commands (see Processing again in [data-processing.md](data-processing.md)).
 
@@ -92,6 +93,18 @@ UC1 as written, a search within a radius around Hermanus, works. It is exact for
 **What building it needs.** A decision on what the warehouse is for: reporting, an export for a tenant, a history a planner can look at, or training data for classification.
 
 **To decide.** Who reads it, or whether version 1 should write it at all.
+
+## 6. Checking again the experiences of sources that only a browser can read
+
+**The situation.** An experience booked around 6 to 18 months ahead has to be checked again as its date comes closer, so that the feed does not serve what is no longer true. For a source the system can fetch, the schedule does that: it fetches every listing again each week, and a changed, cancelled or vanished listing changes its experiences. Some sources cannot be fetched by a plain request. Facebook needs a logged-in browser, and Benguela Cove's pages only fill in with JavaScript. Their pages were read by a browser scrape and loaded as captures, and their sources are saved inactive.
+
+**What version 1 does.** An inactive source is never fetched by the schedule. Its experiences stay as they were captured. They are refreshed only by a new scrape and load, and they become Past when their dates pass. An experience that is also listed by a source the schedule can fetch is checked through that source.
+
+**What it costs.** On 23 Nov 2026, 28 experiences are known only from inactive sources: 25 from Facebook events and 8 from Benguela Cove, some from both. If one of them is moved or cancelled, the feed does not hear of it until someone scrapes again. Changed-since cannot report what the system never saw.
+
+**What building it needs.** A headless browser inside the web page adapter, for pages that need JavaScript ([issue 31](issues.md)), and a way to read Facebook that its terms allow. Or a scheduled scrape that runs the capture and load on its own.
+
+**Decided.** Not in version 1. Sources that only a browser can read are refreshed by hand, with a new scrape and load.
 
 ## Also left out
 

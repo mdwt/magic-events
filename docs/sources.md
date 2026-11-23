@@ -18,8 +18,8 @@ A source row comes from one of two places.
 
 | | Seeded sources | Scraped sources |
 | --- | --- | --- |
-| Defined in | `apps/api/src/seed/data/sources.ts` | `data/hermanus/sources.json` |
-| Saved by | `pnpm --filter @magic-events/api seed` | `pnpm --filter @magic-events/api captures` |
+| Defined in | `apps/cli/src/seed/data/sources.ts` | `data/hermanus/sources.json` |
+| Saved by | `pnpm db:seed` | `pnpm cli:captures` |
 | Listings come from | The pipeline's own fetch of a listing page, feed or PDF | Pages a browser scrape captured, one listing per page |
 | Experiences come from | The language model's extraction | The experiences the scrape read from each page |
 | Fetched again | By the schedule, weekly | By the schedule, weekly, when the source is active. An inactive source is refreshed by a new scrape and load |
@@ -40,13 +40,15 @@ Each captured experience carries a tier among its attributes. The tiers were dec
 
 ### Loading the captures
 
-`pnpm --filter @magic-events/api captures` loads every source in `data/hermanus/sources.json`. `--source <slug>` loads one.
+`pnpm cli:captures` loads every source in `data/hermanus/sources.json`. `pnpm cli:captures -- --source <slug>` loads one.
 
 For each source it saves the source row, runs it through Discovery with the captured pages standing in for the fetch adapter, and processes the raw listings through Data processing with the captured experiences standing in for the language model's extraction and classification. Runs, listings, fingerprints, the checks on what was extracted, seasons, matching, precedence and saving are the pipeline's own.
 
 - **Matching across sources:** an experience with the same title and overlapping dates is matched in code, as always. Where the titles differ, a plain rule matches the clear cases and the language model is asked about the unsure ones. On 23 Nov 2026 that was 58 plain matches and 41 questions to the model.
 - **Running it again** saves nothing new for a page whose capture has not changed.
 - **A source is active** when a plain fetch of its pages returns their content, so the schedule can fetch it again. A site that needs a browser or a login is saved inactive.
+- **The first scheduled fetch after a load reads every page again.** A capture is a page's visible text as a browser read it, and its fingerprint is not the fingerprint of the page as the adapter fetches it. So the first time the schedule fetches an active captured source, every one of its pages looks changed and goes through the language model once, about 250 pages across the sources. From then on a page is processed only when it changes. Nothing smaller is right: taking the first fetched page as unchanged would hide a real change made since the capture.
+- **An inactive source is never checked again by the schedule.** Its experiences stay as they were captured until a new scrape and load, or until their dates pass and they become Past. On 23 Nov 2026 that is 28 experiences known only from inactive sources, Facebook events and Benguela Cove. See [v1-decisions.md](v1-decisions.md).
 - **Map positions:** the coordinates the scrape read from a page (AllEvents.in's structured data, the map links on Quicket's and Webtickets' event pages, a few others) are passed on as the venue's position, and the extractor's checks apply to them as to the model's: a position that is not a real one, or is more than 100 km from the location, is dropped.
 
 ## Seeded sources
