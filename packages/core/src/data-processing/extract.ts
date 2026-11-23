@@ -531,6 +531,33 @@ export function tidyTitle(title: string, places: string[], site: string | undefi
     .trim();
 }
 
+// The years of an experience's own dates. For the next edition of a yearly event, the year it was last held too,
+// since that is the year its listing names.
+function editionYears(experience: ExtractedExperience, next: boolean): Set<string> {
+  const years = new Set<string>();
+  const dates = [...experience.sessions.flatMap((session) => [session.start, session.end]), experience.recurrence?.start];
+  for (const date of dates) {
+    if (date === undefined) continue;
+    const year = date.slice(0, 4);
+    years.add(year);
+    if (next) years.add(String(Number(year) - 1));
+  }
+  return years;
+}
+
+// A title without the year of its own edition at its start or its end: "Hermanus FynArts Festival 2027" and "2027
+// Hermanus FynArts Festival" are "Hermanus FynArts Festival". The year is in the dates, and a planner does not say
+// it. A year in the middle of a title, or one that is not a year of the experience's dates, is part of the name and
+// stays, and so does a year that is all the title has beside it.
+export function withoutEditionYear(title: string, years: Set<string>): string {
+  const off = (whole: string, year: string) => (years.has(year) ? "" : whole);
+  const stripped = title
+    .replace(/^[([]?((?:19|20)\d{2})[)\]]?[\s:,\-–—]+/u, off)
+    .replace(/[\s:,\-–—]+[([]?((?:19|20)\d{2})[)\]]?$/u, off)
+    .trim();
+  return /\p{L}/u.test(stripped) ? stripped : title;
+}
+
 // The site's own name, from an item's address: quicket from www.quicket.co.za, allevents from allevents.in.
 function siteName(url: string | undefined): string | undefined {
   if (url === undefined) return undefined;
@@ -936,6 +963,11 @@ class LanguageModelExtractor implements Extractor {
         }
         settled.experience = next.experience;
       }
+      // Once its dates are settled, so the year taken off the title is the year of those dates.
+      settled.experience.title = withoutEditionYear(
+        settled.experience.title,
+        editionYears(settled.experience, answered.nextEdition),
+      );
       const span = experienceSpan(settled.experience);
       if (span.last !== null && span.last < bounds.overBefore) {
         this.#logger.debug({ title: answered.title, last: span.last }, "Extracted experience is already over");

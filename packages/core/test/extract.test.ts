@@ -8,6 +8,7 @@ import {
   settleExperience,
   sourcingWindow,
   tidyTitle,
+  withoutEditionYear,
   UnreadableListing,
 } from "../src/data-processing/extract.ts";
 import { EXTRACTION_INSTRUCTIONS } from "../src/data-processing/instructions.ts";
@@ -341,6 +342,35 @@ describe("The checks on each extracted experience", () => {
 
   test("an experience with no title is dropped", () => {
     assert.match(problemOf({ title: "  " }), /no title/);
+  });
+});
+
+describe("A title loses the year of its own edition", () => {
+  const years = new Set(["2027"]);
+  const cases: [string, string][] = [
+    ["Hermanus FynArts Festival 2027", "Hermanus FynArts Festival"],
+    ["2027 Hermanus FynArts Festival", "Hermanus FynArts Festival"],
+    ["Hermanus FynArts Festival (2027)", "Hermanus FynArts Festival"],
+    ["Race2Hermanus Triathlon - 2027", "Race2Hermanus Triathlon"],
+    ["2027: Kalfiefees", "Kalfiefees"],
+    // Not a year of its dates: part of the name, or another edition's.
+    ["Hermanus FynArts Festival 2026", "Hermanus FynArts Festival 2026"],
+    // In the middle of the title.
+    ["The 2027 BizNews Conference in Hermanus", "The 2027 BizNews Conference in Hermanus"],
+    // Not a year: a number that is part of the name.
+    ["Cape 1000", "Cape 1000"],
+    ["Stanford 100 Miler", "Stanford 100 Miler"],
+    // All the title has.
+    ["2027", "2027"],
+  ];
+  for (const [title, expected] of cases) {
+    test(`"${title}" is "${expected}"`, () => {
+      assert.equal(withoutEditionYear(title, years), expected);
+    });
+  }
+
+  test("the next edition of a yearly event loses the year it was last held", () => {
+    assert.equal(withoutEditionYear("Stanford in Bloom 2026", new Set(["2027", "2026"])), "Stanford in Bloom");
   });
 });
 
