@@ -16,6 +16,12 @@ export function dateIn(instant: Date, timezone: string): string {
     .format(instant);
 }
 
+// The time of day of an instant in a timezone, as HH:MM on a 24-hour clock.
+export function timeIn(instant: Date, timezone: string): string {
+  return new Intl.DateTimeFormat("en-GB", { timeZone: timezone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+    .format(instant);
+}
+
 // The date some months later. A day that does not exist in the target month becomes that month's last day.
 export function addMonths(date: string, months: number): string {
   const [year, month, day] = date.split("-").map(Number) as [number, number, number];

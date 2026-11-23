@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, test } from "node:test";
 import {
   createExtractors,
@@ -318,6 +319,88 @@ describe("The checks on each extracted experience", () => {
 
   test("an experience with no title is dropped", () => {
     assert.match(problemOf({ title: "  " }), /no title/);
+  });
+});
+
+describe("An event that structured data gives one start and one end", () => {
+  // Quicket's search page for Hermanus as fetched on 23 November 2026, cut to four of its events. Its visible text
+  // is empty: the events are in its structured data and nowhere else.
+  const searchPage = readFileSync(new URL("./fixtures/sources/quicket-search.html", import.meta.url), "utf8");
+  const quicket = (id: string) => `https://www.quicket.co.za/events/${id}/`;
+
+  // What a model that copies the structured data's start and end into one session answers.
+  const copied = extraction(
+    answered({
+      title: "Sip & Solve: Blind Wine & Whisky Tasting",
+      sessions: [session({ start: "2026-12-19", end: "2026-12-30", startTime: "18:30", endTime: "21:00" })],
+      url: quicket("408111-sip-solve-blind-wine-whisky-tasting"),
+    }),
+    answered({
+      title: "BNC#10 - The 2027 BizNews Conference in Hermanus",
+      sessions: [session({ start: "2027-03-08", end: "2027-03-12", startTime: "15:00", endTime: "13:00" })],
+      url: quicket("405764-bnc10-the-2027-biznews-conference-in-hermanus"),
+    }),
+    answered({
+      title: "Grip Gymnastics and Dance Concert",
+      sessions: [session({ start: "2026-11-28", end: "2026-11-29", startTime: "10:00", endTime: "16:45" })],
+      url: quicket("380987-grip-gymnastics-and-dance-concert-2026"),
+    }),
+    answered({
+      title: "Hidden Gems Wine Festival",
+      sessions: [session({ start: "2026-12-20", end: "", startTime: "11:00", endTime: "17:00" })],
+      url: quicket("401916-hidden-gems-wine-festival"),
+    }),
+  );
+
+  test("is on only the first and the last day when nothing else gives its dates", async () => {
+    const { extractor } = extractorFor("web_page", copied);
+    const experiences = await extractor.extract(
+      input({ content: searchPage, url: "https://www.quicket.co.za/events/south-africa?search=hermanus" }),
+    );
+    assert.deepEqual(
+      experiences.map((experience) => [experience.title, experience.type, experience.sessions]),
+      [
+        [
+          "Sip & Solve: Blind Wine & Whisky Tasting",
+          "run",
+          [
+            { start: "2026-12-19", precision: "day", startTime: "18:30" },
+            { start: "2026-12-30", precision: "day", endTime: "21:00" },
+          ],
+        ],
+        // It ends at an earlier time of day than it starts, so it runs through.
+        [
+          "BNC#10 - The 2027 BizNews Conference in Hermanus",
+          "single",
+          [{ start: "2027-03-08", end: "2027-03-12", precision: "day", startTime: "15:00", endTime: "13:00" }],
+        ],
+        // Matched by its page, though the model left the year out of the title.
+        [
+          "Grip Gymnastics and Dance Concert",
+          "run",
+          [
+            { start: "2026-11-28", precision: "day", startTime: "10:00" },
+            { start: "2026-11-29", precision: "day", endTime: "16:45" },
+          ],
+        ],
+        [
+          "Hidden Gems Wine Festival",
+          "single",
+          [{ start: "2026-12-20", precision: "day", startTime: "11:00", endTime: "17:00" }],
+        ],
+      ],
+    );
+  });
+
+  test("is left as the model read it when the page's text speaks of the event", async () => {
+    const page = searchPage.replace(
+      "<main",
+      "<p>Sip & Solve: Blind Wine & Whisky Tasting, every evening from 19 to 30 December.</p><main",
+    );
+    const { extractor } = extractorFor("web_page", copied);
+    const [sipAndSolve] = await extractor.extract(input({ content: page }));
+    assert.equal(sipAndSolve?.type, "single");
+    assert.deepEqual(sipAndSolve.sessions.map((one) => [one.start, one.end]), [["2026-12-19", "2026-12-30"]]);
   });
 });
 

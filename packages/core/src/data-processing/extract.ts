@@ -2,10 +2,10 @@ import { XMLParser } from "fast-xml-parser";
 import rrule from "rrule";
 import { z } from "zod";
 import type { Location } from "../catalogue/ports.ts";
-import { pageContent, visibleText } from "../shared/html.ts";
+import { pageContent, structuredData, visibleText } from "../shared/html.ts";
 import type { LanguageModel } from "../shared/language-model.ts";
 import type { Logger } from "../shared/logger.ts";
-import { addMonths, dateIn, isIsoDate, lastDayOfMonth } from "./dates.ts";
+import { addMonths, dateIn, isIsoDate, lastDayOfMonth, timeIn } from "./dates.ts";
 import { EXTRACTION_INSTRUCTIONS } from "./instructions.ts";
 
 // Extraction: one raw listing's content becomes zero or more extracted experiences. It does not classify, match
@@ -439,6 +439,17 @@ export function sourcingWindow(input: { fetchedAt: Date; now: Date; timezone: st
 interface Prepared {
   text: string;
   document?: { mediaType: string; base64: string };
+  // For a web page: its visible text, and the events its structured data gives one start and one end.
+  visible?: string;
+  statedSpans?: StatedSpan[];
+}
+
+// An event as structured data gives it: a name, its page, and one start and one end as ISO date-times.
+interface StatedSpan {
+  name: string;
+  url?: string;
+  start: string;
+  end: string;
 }
 
 const xml = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@", textNodeName: "#text" });
@@ -499,9 +510,94 @@ function prepareFeedItem(content: string): Prepared {
   return { text: lines.join("\n") };
 }
 
+// Every object in a JSON-LD block, nested ones and those in a @graph included.
+function jsonLdObjects(value: unknown): Record<string, unknown>[] {
+  if (Array.isArray(value)) return value.flatMap(jsonLdObjects);
+  if (!isRecord(value)) return [];
+  return [value, ...Object.values(value).flatMap(jsonLdObjects)];
+}
+
+const DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
+
+// The events of a page's structured data that have a name and a start and an end with times.
+export function statedSpans(html: string): StatedSpan[] {
+  const spans: StatedSpan[] = [];
+  for (const block of structuredData(html)) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(block);
+    } catch {
+      continue;
+    }
+    for (const object of jsonLdObjects(parsed)) {
+      const type = object["@type"];
+      const isEvent = Array.isArray(type) ? type.some((one) => /Event$/.test(String(one))) : /Event$/.test(String(type));
+      const { name, url, startDate, endDate } = object;
+      if (!isEvent || typeof name !== "string" || typeof startDate !== "string" || typeof endDate !== "string") continue;
+      if (!DATE_TIME.test(startDate) || !DATE_TIME.test(endDate)) continue;
+      spans.push({ name, ...(typeof url === "string" ? { url } : {}), start: startDate, end: endDate });
+    }
+  }
+  return spans;
+}
+
+function plainWords(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+}
+
+// Structured data often gives an event on several separate dates only its first start and its last end, so a
+// session copied from it would cover the days between, which the listing never says it is on. When nothing else
+// on the page speaks of the event, its visible text not even naming it, the session is cut to the days stated:
+// the first and the last. A span that ends at an earlier time of day than it starts, such as a conference from
+// Monday 15:00 to Friday 13:00 or a party until 04:00, cannot be the same hours on separate days, so it runs
+// through and is left whole. Returns the experience as it is when none of this applies.
+export function onlyStatedDays(
+  experience: ExtractedExperience,
+  page: { visible: string; spans: StatedSpan[] },
+  timezone: string,
+): ExtractedExperience {
+  const [session, ...others] = experience.sessions;
+  if (session === undefined || others.length > 0 || experience.recurrence !== undefined) return experience;
+  if (session.precision !== "day" || session.end === undefined) return experience;
+
+  const visible = plainWords(page.visible);
+  const title = plainWords(experience.title);
+  for (const span of page.spans) {
+    const start = new Date(span.start);
+    const end = new Date(span.end);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) continue;
+    const local = {
+      startDate: dateIn(start, timezone),
+      endDate: dateIn(end, timezone),
+      startTime: timeIn(start, timezone),
+      endTime: timeIn(end, timezone),
+    };
+    if (local.startDate !== session.start || local.endDate !== session.end) continue;
+    const name = plainWords(span.name);
+    const sameEvent =
+      (span.url !== undefined && experience.url === settleUrl(span.url, undefined)) || (name !== "" && name === title);
+    if (!sameEvent) continue;
+    if (name !== "" && visible.includes(name)) return experience;
+    if (local.endTime <= local.startTime) return experience;
+
+    const flags = { ...(session.soldOut ? { soldOut: true } : {}), ...(session.cancelled ? { cancelled: true } : {}) };
+    const first: ExtractedSession = { start: session.start, precision: "day", ...flags };
+    if (session.startTime !== undefined) first.startTime = session.startTime;
+    const last: ExtractedSession = { start: session.end, precision: "day", ...flags };
+    if (session.endTime !== undefined) last.endTime = session.endTime;
+    return { ...experience, type: "run", sessions: [first, last] };
+  }
+  return experience;
+}
+
 const PREPARE: Record<string, (content: string) => Prepared> = {
   rss_feed: prepareFeedItem,
-  web_page: (content) => ({ text: pageContent(content) }),
+  web_page: (content) => ({ text: pageContent(content), visible: visibleText(content), statedSpans: statedSpans(content) }),
   pdf_calendar: (content) => ({
     text: "The content is the attached PDF calendar.",
     document: { mediaType: "application/pdf", base64: content },
@@ -584,6 +680,20 @@ class LanguageModelExtractor implements Extractor {
       if ("problem" in settled) {
         this.#logger.warn({ title: answered.title, problem: settled.problem }, "Extracted experience dropped");
         continue;
+      }
+      if (prepared.statedSpans !== undefined && prepared.statedSpans.length > 0) {
+        const cut = onlyStatedDays(
+          settled.experience,
+          { visible: prepared.visible ?? "", spans: prepared.statedSpans },
+          input.location.timezone,
+        );
+        if (cut !== settled.experience) {
+          this.#logger.info(
+            { title: answered.title, sessions: cut.sessions.map((one) => one.start) },
+            "Session cut to the days the structured data states",
+          );
+          settled.experience = cut;
+        }
       }
       const span = experienceSpan(settled.experience);
       if (span.last !== null && span.last < bounds.overBefore) {
