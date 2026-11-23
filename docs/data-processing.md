@@ -168,7 +168,7 @@ What every extractor leaves out:
 
 One step, shared by every source kind. The language model assigns each extracted experience its attribute values and tags, and writes its profile.
 
-- **Given:** the extracted experience (title, summary, description, venue, hints) and the definitions: every attribute with its options, and every tag, each with its description.
+- **Given:** the extracted experience (title, summary, description, venue, price, hints) and the definitions: every attribute with its options, and every tag, each with its description.
 - **Returns:** a value for each attribute it can decide, the tags that apply, and the profile (see Profile).
 - **Checked against the definitions:** an attribute, option or tag that is not defined is not put on the experience and is saved for review (see Undefined values). A value must fit the attribute's type, and a single-valued attribute gets one value. An attribute with no value gets its default, if it has one.
 
@@ -332,7 +332,7 @@ Nobody reads the warehouse in version 1. It is loaded for the next version.
 
 What happens to the profile after it is saved. This part belongs to Catalogue, which stores experiences and answers searches. It is described here because it starts with the profile.
 
-A search takes filters and, optionally, a query text: what the traveller likes, in plain words, such as "romantic, quiet, something to do with art". The filters decide which experiences come back. The query text decides their order. Catalogue orders them by meaning, using embeddings, and by keyword, using Postgres full-text search, and combines the two.
+A search takes filters and, optionally, a query text: what the traveller likes, in plain words, such as "romantic, quiet, something to do with art". The filters decide which experiences come back. They come back most premium first, by tier, and the query text decides their order within a tier. Catalogue orders them by meaning, using embeddings, and by keyword, using Postgres full-text search, and combines the two.
 
 ```mermaid
 flowchart LR
@@ -366,9 +366,9 @@ For the keyword side, each experience has a search text: a Postgres `tsvector` c
 
 ### Search with a query text
 
-- **Optional.** Without a query text, search applies the filters and returns the results in date order.
+- **Optional.** Without a query text, search applies the filters and returns the results by tier, most premium first, and in date order within a tier.
 - **Filters stay exact.** Place and radius, dates, status, bookable, and every attribute and tag filter are applied first and are never loosened. An embedding cannot tell 10 June from 10 July, or a minimum age of 18 from 16, so anything that must hold is a filter. The dates filter matches an experience's sessions, never the span from its first date to its last (see [data-model.md](data-model.md)).
-- **The query text only orders.** It never adds or removes a result. Every experience that passes the filters is returned, best match first, and paging applies after ordering.
+- **The query text only orders.** It never adds or removes a result. Every experience that passes the filters is returned, by tier and then best match first, and paging applies after ordering.
 - **Changed-since (UC2) takes no query text.** It reports changes to the experiences the filters select.
 - **REST and MCP are the same.** Both pass the query text to the same search port. The MCP tool's description tells an agent to put what must hold (dates, place, audience, minimum age) in the filters and what the traveller likes in the query text.
 
@@ -379,7 +379,9 @@ For the keyword side, each experience has a search text: a Postgres `tsvector` c
 3. **Semantic list:** the candidates that have an embedding from the current model, nearest to the query's embedding first, by cosine distance.
 4. **Keyword list:** the candidates whose search text contains any word of the query text, best full-text rank first.
 5. **Combined** by reciprocal rank fusion: a candidate's score is 1 / (60 + its place) in each list it is in, added up. A candidate near the top of both lists scores highest, and a distance never has to be compared with a full-text rank.
-6. **Order:** highest score first, then the start of its first session in the dates, then title, then ID. A candidate in neither list scores 0 and comes last.
+6. **Order:** by tier first, most premium first, then highest score, then the start of its first session in the dates, then title, then ID. A candidate in neither list scores 0 and comes last in its tier.
+
+**Tier first, always.** With or without a query text, the results are ordered by the tier attribute before anything else, in the order of its options: Luxury, Premium, Standard, Everyday. An experience with no tier counts as the attribute's default, Standard. Catalogue reads the options and the default from Data processing's definitions on each search and hands them to the repository; nothing is copied into Catalogue's tables. When no tier attribute is defined, the order is as above without it. Changed-since keeps its own order, most recent change first.
 
 The distance is worked out exactly, over the candidates only, with no vector index. The filters leave a small set, so this is fast. An approximate index (HNSW) searches before the filters are applied and can return too few results after them.
 
@@ -513,7 +515,7 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 | Profile | A short text the language model writes for every experience, from its extracted fields and assigned values only. Saved beside the source's description, never in place of it. Written again on every processing, so it always reflects the latest version of the source |
 | Embeddings | Catalogue embeds each experience's title and profile, in a job of its own, `catalogue.embed-experiences`. Saving an experience never calls the embedding model |
 | A text the model refuses | Counted on the experience, which is set aside after `EMBEDDING_MAX_ATTEMPTS` failures until its title or profile changes. A failure is counted only while the model answers a test text, so an outage sets nothing aside |
-| Ranking | A query text orders the results and never filters them. The order is by meaning and by keyword, combined by reciprocal rank fusion |
+| Ranking | Results are ordered by tier first, most premium first. A query text then orders them within a tier and never filters them. That order is by meaning and by keyword, combined by reciprocal rank fusion |
 | Ports and adapters | The language model and the embedding model are each reached through a port. The domain names no provider. A provider is changed by writing an adapter and changing a setting |
 | Adapters in version 1 | Language model: Claude, through the Anthropic API. Embedding model: Amazon Titan Text Embeddings V2, through Amazon Bedrock |
 | Definitions | Configurable rows with a default set, not enums. Improving classification means adding or rewording definitions |

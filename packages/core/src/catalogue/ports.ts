@@ -124,11 +124,12 @@ export const searchExperiencesInputSchema = z.strictObject({
     })
     .optional()
     .describe(
-      "Filters by attribute key, such as category, format, audience, setting, scale or minimum_age. " +
+      "Filters by attribute key, such as category, format, audience, setting, scale, tier or minimum_age. " +
         "Every attribute given must match. A list matches any of its values, and { min, max } is a number range. " +
         "A range with only a max, such as minimum_age: { max: 12 }, also matches experiences with no value " +
         "recorded. A key that is not an attribute, or a value that is not one of its options, is refused, and the " +
-        "error lists what can be used.",
+        "error lists what can be used. tier is how premium an experience is: luxury, premium, standard or " +
+        "everyday; tier: [\"luxury\", \"premium\"] keeps only the premium end.",
     ),
   tags: z
     .array(z.string({ error: "Give each tag as its slug, such as jazz." }).min(1).max(64), {
@@ -152,8 +153,9 @@ export const searchExperiencesInputSchema = z.strictObject({
     .max(500)
     .optional()
     .describe(
-      "What the traveller likes, in plain words. It only orders the results, best match first, " +
-        "and never adds or removes one. Put anything that must hold in the filters.",
+      "What the traveller likes, in plain words. It only orders the results, best match first within each tier, " +
+        "and never adds or removes one. Results are always most premium first, by tier. Put anything that must " +
+        "hold in the filters.",
     ),
   limit: limitSchema.default(20).describe("How many experiences to return."),
   offset: offsetSchema.default(0).describe("How many experiences to skip, for paging."),
@@ -264,7 +266,10 @@ export const experienceRecordSchema = z.object({
   pageUrl: z.string().nullable().describe("The experience's own page, when it has one."),
   attributes: z
     .record(z.string(), z.array(attributeValueSchema))
-    .describe("The experience's values by attribute key, such as its categories."),
+    .describe(
+      "The experience's values by attribute key, such as its categories and its tier: luxury, premium, standard " +
+        "or everyday. One with no tier counts as standard.",
+    ),
   tags: z
     .array(z.string())
     .describe(
