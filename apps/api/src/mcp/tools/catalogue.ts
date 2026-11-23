@@ -25,7 +25,7 @@ Dates: from and to are the first and last day of the stay. An experience comes b
 falls inside them, so a show on Thursdays only is not returned for a stay with no Thursday.
 
 Filters are exact and never loosened: put in them only what must hold. Put what the traveller likes in query, in \
-plain words: it only orders the results, best match first. Examples:
+plain words: it only orders the results, best match first within each tier. Examples:
 - A family with a child of 10: {"location": "hermanus", "from": "2027-06-20", "to": "2027-06-30", "attributes": \
 {"minimum_age": {"max": 10}}, "query": "fun for a family with a ten-year-old"}
 - Only what can be booked now: {"location": "hermanus", "from": "2027-06-20", "to": "2027-06-30", "bookable": true}
