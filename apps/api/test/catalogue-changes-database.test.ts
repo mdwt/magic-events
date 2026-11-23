@@ -113,7 +113,7 @@ before(async () => {
   await update("price", 10, { price });
   await create("new", 11);
   for (const name of ["far", "december", "this month"]) await update(name, 12, { price });
-  await update("december cancelled", 12, { status: "cancelled" });
+  await update("december cancelled", 12.5, { status: "cancelled" });
   await update("confirmed", 13, { price });
   // The evening on 10 December is over by now.
   clock.now = at(15);
@@ -151,7 +151,7 @@ describe("checking back on day 30", () => {
       { kind: "changed", at: at(13).toISOString() },
       { kind: "confirmed", at: at(5).toISOString() },
     ]);
-    assert.deepEqual([confirmed?.experience.status, confirmed?.experience.bookable], ["confirmed", true]);
+    assert.deepEqual([confirmed.experience.status, confirmed.experience.bookable], ["confirmed", true]);
   });
 
   test("each experience is as search returns it, with its sessions inside the dates", async () => {
@@ -188,7 +188,8 @@ describe("checking back on day 30", () => {
   });
 
   test("a filter holds: outside the radius or the dates nothing is reported, cancelled or not", async () => {
-    assert.deepEqual(names(await changes({ radiusKm: 200 })).includes("far"), true);
+    // Within the default radius nothing in Cape Town is reported; within 200 km it is.
+    assert.ok(names(await changes({ radiusKm: 200 })).includes("far"));
     assert.deepEqual(names(await changes({ from: "2027-12-01", to: "2027-12-31" })), [
       "december cancelled",
       "december",

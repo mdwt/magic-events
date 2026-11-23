@@ -258,6 +258,7 @@ describe("the OpenAPI document", () => {
       "/openapi.json": ["get"],
       "/mcp": ["post", "get", "delete"],
       "/v1/experiences/search": ["post"],
+      "/v1/experiences/changes": ["post"],
       "/v1/tenants": ["post", "get"],
       "/v1/tenants/{slug}": ["get", "patch"],
       "/v1/tenants/{slug}/users": ["post"],

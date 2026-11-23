@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
 import { insertExperienceFixture } from "../src/seed/experience-fixture.ts";
+import { input as listing } from "./helpers/catalogue-fake.ts";
 import { createHarness, type Harness } from "./helpers/harness.ts";
 
 let harness: Harness;
@@ -20,6 +21,9 @@ interface ToolResult {
   content: { type: string; text: string }[];
   structuredContent?: unknown;
 }
+
+// A change of the jazz evening saved below, on 13 March 2027, from a minute before it was saved.
+const changes = { near: { lat: -34.4187, lng: 19.2345 }, from: "2027-03-01", to: "2027-03-31", since: "" };
 
 let nextId = 1;
 
@@ -66,6 +70,8 @@ before(async () => {
       tags: ["whales"],
     });
   }
+  changes.since = new Date(Date.now() - 60_000).toISOString();
+  await harness.services.catalogue.saveExperience(listing({ locationId: hermanus.id }));
   ({ key } = await harness.createCaller({ kind: "agent" }));
 });
 
@@ -134,5 +140,49 @@ describe("MCP search_experiences", () => {
   test("returns 401 without a key", async () => {
     const response = await mcp("tools/list", {}, {});
     assert.equal(response.statusCode, 401);
+  });
+});
+
+describe("MCP get_experience_changes", () => {
+  test("tools/list shows the tool, written for an agent, without a query text", async () => {
+    const { tools } = await result<{ tools: Tool[] }>("tools/list", {});
+    const tool = tools.find((one) => one.name === "get_experience_changes");
+    assert.ok(tool, "get_experience_changes is listed");
+    assert.ok("since" in tool.inputSchema.properties);
+    assert.equal("query" in tool.inputSchema.properties, false);
+    assert.deepEqual([...(tool.inputSchema.required ?? [])].sort(), ["from", "near", "since", "to"]);
+    for (const field of ["items", "total", "limit", "offset"]) {
+      assert.ok(tool.outputSchema && field in tool.outputSchema.properties, `output has ${field}`);
+    }
+    for (const kind of ["new", "confirmed", "rescheduled", "postponed", "cancelled", "removed", "changed"]) {
+      assert.match(tool.description, new RegExp(`${kind}:`));
+    }
+    assert.match(tool.description, /search_experiences no longer returns them/);
+  });
+
+  test("tools/call answers with the same content as REST", async () => {
+    const called = await result<ToolResult>("tools/call", { name: "get_experience_changes", arguments: changes });
+    assert.notEqual(called.isError, true, JSON.stringify(called.content));
+
+    const rest = await harness.app.inject({
+      method: "POST",
+      url: "/v1/experiences/changes",
+      headers: { authorization: `Bearer ${key}` },
+      payload: changes,
+    });
+    assert.equal(rest.statusCode, 200);
+    assert.deepEqual(called.structuredContent, rest.json());
+    assert.equal(rest.json<{ total: number }>().total, 1);
+  });
+
+  test("a time in the future comes back as a tool error that names since", async () => {
+    const called = await result<ToolResult>("tools/call", {
+      name: "get_experience_changes",
+      arguments: { ...changes, since: new Date(Date.now() + 3_600_000).toISOString() },
+    });
+    assert.equal(called.isError, true);
+    const text = called.content.map((part) => part.text).join(" ");
+    assert.match(text, /invalid_input/);
+    assert.match(text, /since/);
   });
 });

@@ -1,13 +1,23 @@
 import assert from "node:assert/strict";
 import { after, before, describe, test } from "node:test";
-import { searchExperiencesResultSchema } from "../src/core/catalogue/ports.ts";
+import { experienceChangesResultSchema, searchExperiencesResultSchema } from "../src/core/catalogue/ports.ts";
 import { insertExperienceFixture } from "../src/seed/experience-fixture.ts";
+import { input as listing } from "./helpers/catalogue-fake.ts";
 import { createHarness, type Harness } from "./helpers/harness.ts";
 
 let harness: Harness;
 let key: string;
 
 const valid = { near: { lat: -34.4187, lng: 19.2345 }, from: "2027-06-10", to: "2027-06-20" };
+
+// The jazz evening saved below is on 13 March 2027, apart from the search's dates.
+const march = { near: { lat: -34.4187, lng: 19.2345 }, from: "2027-03-01", to: "2027-03-31" };
+// A minute before the jazz evening was saved.
+let since: string;
+
+function changesWith(body: object, headers: Record<string, string> = { authorization: `Bearer ${key}` }) {
+  return harness.app.inject({ method: "POST", url: "/v1/experiences/changes", headers, payload: body });
+}
 
 function searchWith(body: object, headers: Record<string, string> = { authorization: `Bearer ${key}` }) {
   return harness.app.inject({ method: "POST", url: "/v1/experiences/search", headers, payload: body });
@@ -43,6 +53,8 @@ before(async () => {
     attributes: { category: ["nature_and_wildlife"] },
     tags: ["whales"],
   });
+  since = new Date(Date.now() - 60_000).toISOString();
+  await harness.services.catalogue.saveExperience(listing({ locationId: hermanus.id }));
   ({ key } = await harness.createCaller());
 });
 
@@ -121,5 +133,65 @@ describe("POST /v1/experiences/search", () => {
     const response = await searchWith(valid, { authorization: `Bearer ${suspended.key}` });
     assert.equal(response.statusCode, 403);
     assert.equal(errorOf(response).code, "forbidden");
+  });
+});
+
+describe("POST /v1/experiences/changes", () => {
+  test("returns 200 in the documented shape", async () => {
+    const response = await changesWith({ ...march, since });
+    assert.equal(response.statusCode, 200);
+    const result = experienceChangesResultSchema.parse(response.json());
+    assert.deepEqual([result.total, result.limit, result.offset], [1, 20, 0]);
+    assert.equal(result.items[0]?.experience.title, "Jazz on the Cliffs");
+    assert.equal(result.items[0].change.kind, "new");
+    assert.deepEqual(
+      result.items[0].changes.map((change) => change.kind),
+      ["new"],
+    );
+  });
+
+  test("refuses a time in the future and names since", async () => {
+    const response = await changesWith({ ...march, since: new Date(Date.now() + 3_600_000).toISOString() });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.deepEqual(
+      error.details.map((detail) => detail.path),
+      ["since"],
+    );
+  });
+
+  test("refuses a time that is not a timestamp", async () => {
+    const response = await changesWith({ ...march, since: "last month" });
+    assert.equal(response.statusCode, 400);
+    assert.ok(errorOf(response).details.some((detail) => detail.path === "since"));
+  });
+
+  test("refuses a query text, naming it", async () => {
+    const response = await changesWith({ ...march, since, query: "jazz" });
+    assert.equal(response.statusCode, 400);
+    const error = errorOf(response);
+    assert.equal(error.code, "invalid_input");
+    assert.ok(error.details.some((detail) => detail.path === "query"), JSON.stringify(error.details));
+  });
+
+  test("returns 401 without a key", async () => {
+    const response = await changesWith({ ...march, since }, {});
+    assert.equal(response.statusCode, 401);
+    assert.equal(errorOf(response).code, "unauthenticated");
+  });
+
+  test("is in the OpenAPI document with its schemas", async () => {
+    const response = await harness.app.inject({
+      method: "GET",
+      url: "/openapi.json",
+      headers: { authorization: `Bearer ${key}` },
+    });
+    const operation = response.json<{
+      paths: Record<string, Record<string, { operationId: string; requestBody?: unknown; responses: object }>>;
+    }>().paths["/v1/experiences/changes"]?.post;
+    assert.equal(operation?.operationId, "getExperienceChanges");
+    assert.ok(operation.requestBody);
+    assert.ok("200" in operation.responses && "400" in operation.responses);
   });
 });

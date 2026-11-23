@@ -34,7 +34,7 @@ describe("moving finished experiences to Past", () => {
 
     const write = lastWrite(catalogue, id);
     assert.equal(write?.change?.kind, "past");
-    assert.deepEqual(write?.change?.previous, { status: "confirmed", booking: "open" });
+    assert.deepEqual(write.change.previous, { status: "confirmed", booking: "open" });
     assert.deepEqual(catalogue.publishedEvents().at(-1), {
       type: "experience.changed",
       resourceId: id,
@@ -169,8 +169,8 @@ describe("generating sessions further ahead", () => {
 
     const stored = catalogue.experiences.get(id);
     assert.equal(stored?.sessions.at(-1)?.startDate, "2029-01-20");
-    assert.equal(stored?.version, 1);
-    assert.equal(stored?.status, "confirmed");
+    assert.equal(stored.version, 1);
+    assert.equal(stored.status, "confirmed");
     const write = lastWrite(catalogue, id);
     assert.deepEqual([write?.change, write?.event, write?.replace.sessions], [null, null, true]);
     assert.equal(catalogue.published.length, events);

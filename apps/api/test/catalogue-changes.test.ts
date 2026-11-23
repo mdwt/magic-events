@@ -146,8 +146,8 @@ describe("the change reported", () => {
     catalogue.changes.answer = { items: [record("a", "confirmed", changes)], total: 1 };
     const result = await catalogue.service.getChangesSince(changesInput());
     assert.deepEqual(result.items[0]?.change, change("rescheduled", "11-10"));
-    assert.deepEqual(result.items[0]?.changes, changes);
-    assert.equal(result.items[0]?.experience.bookable, true);
+    assert.deepEqual(result.items[0].changes, changes);
+    assert.equal(result.items[0].experience.bookable, true);
   });
 
   test("first published since then is New, though it was postponed after", async () => {
@@ -156,7 +156,7 @@ describe("the change reported", () => {
     catalogue.changes.answer = { items: [record("a", "postponed", changes)], total: 1 };
     const [item] = (await catalogue.service.getChangesSince(changesInput())).items;
     assert.deepEqual(item?.change, change("new", "10-05"));
-    assert.equal(item?.experience.bookable, false);
+    assert.equal(item.experience.bookable, false);
   });
 
   test("published and then cancelled since then is Cancelled, and removed is Removed", async () => {
