@@ -47,8 +47,21 @@ async function main(): Promise<void> {
   }
 }
 
+// An error's message, with its code when it has one: a refused connection has a code and an empty message.
+function describe(error: unknown): string {
+  if (!(error instanceof Error)) return String(error);
+  const code = "code" in error && typeof error.code === "string" ? error.code : "";
+  return [code, error.message].filter((part) => part.length > 0).join(": ");
+}
+
 main().catch((error: unknown) => {
-  console.error(`Seeding failed: ${error instanceof Error ? error.message : String(error)}`);
-  if (error instanceof Error && error.stack) console.error(error.stack);
+  console.error(`Seeding failed: ${describe(error)}`);
+  // A failed query wraps what went wrong, such as a refused connection, so the causes are printed too.
+  let cause: unknown = error;
+  while (cause instanceof Error && cause.cause !== undefined) {
+    cause = cause.cause;
+    console.error(`Caused by: ${describe(cause)}`);
+  }
+  if (cause instanceof Error && cause.stack) console.error(cause.stack);
   process.exitCode = 1;
 });
