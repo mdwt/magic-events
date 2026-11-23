@@ -615,9 +615,9 @@ export interface CatalogueRepository {
   // Stores each embedding with the model's name, on an experience whose title and profile are still the ones it was
   // made from. The version, the update time, the change rows and the domain events are left as they are. Returns
   // how many it stored.
-  storeEmbeddings(input: { model: string; embeddings: (ExperienceToEmbed & { vector: number[] })[] }): Promise<number>;
-}
   // A stored embedding clears the failure count.
+  storeEmbeddings(input: { model: string; embeddings: (ExperienceToEmbed & { vector: number[] })[] }): Promise<number>;
   // Counts one more failure of the model on each experience's text, if its title and profile are still the ones the
   // text was made from. Returns the IDs of those whose count has now reached `maxAttempts`, which are set aside.
   recordEmbeddingFailures(input: { experiences: ExperienceToEmbed[]; maxAttempts: number }): Promise<string[]>;
+}

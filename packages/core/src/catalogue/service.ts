@@ -58,9 +58,9 @@ const MAX_CANDIDATES = 10;
 const MATCH_SESSIONS = 50;
 // How many experiences the upkeep loads at a time.
 const UPKEEP_BATCH = 200;
-
 // What the embedding model is asked to embed, after it failed on every text of a round, to tell whether it answers.
 const TEST_TEXT = "Hermanus";
+
 export class CatalogueService implements Catalogue {
   readonly #repository: CatalogueRepository;
   readonly #settings: CatalogueSettings;
@@ -364,29 +364,29 @@ export class CatalogueService implements Catalogue {
       if (ids.length < UPKEEP_BATCH) break;
     }
     return result;
-    const { maxAttempts } = this.#embeddingSettings;
   }
 
   async embedExperiences(): Promise<EmbedExperiencesResult> {
-      maxAttempts,
     const model = this.#embeddings.model;
+    const { maxAttempts } = this.#embeddingSettings;
     const { items: due, total } = await this.#repository.findExperiencesToEmbed({
       model,
       limit: this.#embeddingSettings.batchSize,
+      maxAttempts,
     });
     if (due.length === 0) return { embedded: 0, failed: 0, setAside: 0, remaining: 0 };
 
     const started = performance.now();
     const vectors = await this.#embedDocuments(due);
+    const embeddings = due.flatMap((one, index) => {
+      const vector = vectors[index];
+      return vector === undefined || vector === null ? [] : [{ ...one, vector }];
+    });
     const failed = due.filter((_, index) => (vectors[index] ?? null) === null);
     // A model that failed on every text may be down rather than failing on the texts. Then nothing is counted against
     // them, and the round fails so the job is tried again later.
     if (embeddings.length === 0) await this.#checkAnswering(failed.length);
 
-    const embeddings = due.flatMap((one, index) => {
-      const vector = vectors[index];
-      return vector === undefined || vector === null ? [] : [{ ...one, vector }];
-    });
     // An experience whose title or profile changed while it was embedded is not stored, and stays due.
     const embedded = embeddings.length === 0 ? 0 : await this.#repository.storeEmbeddings({ model, embeddings });
     // Each failure is counted. One the model has failed on too often is set aside, so it stops failing the rounds,

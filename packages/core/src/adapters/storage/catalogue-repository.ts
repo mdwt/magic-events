@@ -472,6 +472,8 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       const due = and(
         inArray(experience.status, [...SEARCHABLE_STATUSES]),
         or(isNull(experience.embedding), sql`${experience.embeddingModel} is distinct from ${query.model}`),
+        // One the model kept failing on is set aside until its title or profile changes.
+        lt(experience.embeddingFailures, query.maxAttempts),
       );
       const [items, [counted]] = await Promise.all([
         db
@@ -485,8 +487,6 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       return { items, total: counted?.total ?? 0 };
     },
 
-        // One the model kept failing on is set aside until its title or profile changes.
-        lt(experience.embeddingFailures, query.maxAttempts),
     async storeEmbeddings(input) {
       if (input.embeddings.length === 0) return 0;
       const rows = sql.join(
@@ -512,19 +512,6 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
         .returning({ id: experience.id });
       return stored.length;
     },
-  };
-}
-
-// The domain event row a save appends, with its ID and time set here so the row and what is returned agree.
-function domainEvent(write: ExperienceWrite, event: NonNullable<ExperienceWrite["event"]>): DomainEvent {
-  const row = { id: randomUUID(), resourceId: write.experience.id, recordedAt: write.at.toISOString() };
-  return event.type === "experience.published"
-    ? { ...row, type: event.type, data: event.data }
-    : { ...row, type: event.type, data: event.data };
-}
-
-// Every column a stored experience is read from. The embedding and the search text are left out: they are
-// large, and the save rules never read them.
 
     async recordEmbeddingFailures(input) {
       if (input.experiences.length === 0) return [];
@@ -547,6 +534,19 @@ function domainEvent(write: ExperienceWrite, event: NonNullable<ExperienceWrite[
         .returning({ id: experience.id, failures: experience.embeddingFailures });
       return counted.filter((row) => row.failures >= input.maxAttempts).map((row) => row.id);
     },
+  };
+}
+
+// The domain event row a save appends, with its ID and time set here so the row and what is returned agree.
+function domainEvent(write: ExperienceWrite, event: NonNullable<ExperienceWrite["event"]>): DomainEvent {
+  const row = { id: randomUUID(), resourceId: write.experience.id, recordedAt: write.at.toISOString() };
+  return event.type === "experience.published"
+    ? { ...row, type: event.type, data: event.data }
+    : { ...row, type: event.type, data: event.data };
+}
+
+// Every column a stored experience is read from. The embedding and the search text are left out: they are
+// large, and the save rules never read them.
 const storedColumns = {
   id: experience.id,
   version: experience.version,
