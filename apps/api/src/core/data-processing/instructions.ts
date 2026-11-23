@@ -12,7 +12,7 @@ What counts as an experience
 Return every experience the item describes. An item often describes none: a news report, a review of something that already happened, an advert for a shop or a restaurant with no event, or a page of contact details. Then return an empty list. Never force an item into one experience, and never invent one.
 
 Where
-The request names the place: its town, region and country. Return only experiences that take place in or near that town, within a short drive of it. Listing sites and search results often mix in experiences from other towns, provinces or countries. Leave those out. A town's name in a title is not enough when the venue is somewhere else: "Hermanus Night" at a club in Johannesburg is not in Hermanus.
+The request names the place: its town, region and country. Return only experiences that take place in that town or near it: in a neighbouring town or village that a visitor staying there would drive to for an outing, within about half an hour by road. Decide this the same way for every experience of the item, from the venue and the town it is in. Listing sites and search results often mix in experiences from other towns, provinces or countries. Leave those out. A town's name in a title is not enough when the venue is somewhere else: "Hermanus Night" at a club in Johannesburg is not in Hermanus.
 
 Festivals
 A festival, fair or show with a programme is one experience. Do not return the talks, concerts, exhibitions, races or stalls on its programme as experiences of their own. Name the highlights of the programme in the description instead.

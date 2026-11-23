@@ -9,7 +9,9 @@ import type {
 } from "../src/core/data-processing/ports.ts";
 import { DataProcessingService } from "../src/core/data-processing/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
+import type { Discovery } from "../src/core/discovery/ports.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
+import { fakeLanguageModel } from "./helpers/fake-language-model.ts";
 
 const silent: Logger = {
   debug: () => {},
@@ -30,10 +32,27 @@ const hermanus: Location = {
   longitude: 19.2345,
 };
 
+const notUsed = () => Promise.reject(new Error("not used"));
+
 const catalogue: Catalogue = {
-  searchExperiences: () => Promise.reject(new Error("not used")),
-  saveLocation: () => Promise.reject(new Error("not used")),
+  searchExperiences: notUsed,
+  saveLocation: notUsed,
   getLocation: (by) => Promise.resolve(("slug" in by ? by.slug : by.id) === "hermanus" ? hermanus : null),
+  findExperiencesByListing: notUsed,
+  findMatchCandidates: notUsed,
+  saveExperience: notUsed,
+  removeSourceLink: notUsed,
+};
+
+const discovery: Discovery = {
+  saveSource: notUsed,
+  listSources: notUsed,
+  findDueSources: notUsed,
+  runSource: notUsed,
+  claimPendingRawListing: notUsed,
+  markRawListingProcessed: notUsed,
+  markRawListingFailed: notUsed,
+  getListingPriorities: notUsed,
 };
 
 function setup() {
@@ -49,8 +68,20 @@ function setup() {
       seasons.push(input);
       return Promise.resolve({ id: "00000000-0000-4000-8000-000000000003", ...input });
     },
+    listDefinitions: notUsed,
+    listSeasons: notUsed,
+    appendWarehouseRows: notUsed,
+    saveUndefinedValues: notUsed,
   };
-  const service = new DataProcessingService({ repository, catalogue, logger: silent });
+  const service = new DataProcessingService({
+    repository,
+    catalogue,
+    discovery,
+    languageModel: fakeLanguageModel(),
+    transactions: { run: (work) => work() },
+    settings: { horizonMonths: 24, workers: 1 },
+    logger: silent,
+  });
   return { service, attributes, seasons };
 }
 
