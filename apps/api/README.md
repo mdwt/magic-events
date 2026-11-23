@@ -15,6 +15,7 @@ Fastify 5 with Zod schemas and the MCP TypeScript SDK.
 | `src/scheduler/` | The job handlers (`handlers.ts`) and their schedules (`jobs.ts`) |
 | `src/app.ts` | Builds the server on the core's services |
 | `src/server.ts` | The entry point: settings, logger, database, the server, then the jobs |
+| `src/openapi.ts` | Writes the OpenAPI document to `openapi.json` |
 | `test/` | `node:test` tests, with `test/helpers/harness.ts` |
 
 ESLint (`eslint.config.mjs`) keeps REST, MCP and the scheduler to the core's ports: they import no adapter, no service,
@@ -35,6 +36,7 @@ pnpm --filter @magic-events/api dev
 | `build`, `typecheck` | Checks the types |
 | `lint` | Runs ESLint, with the rules above |
 | `test` | Runs every test, one file at a time |
+| `openapi`, `openapi:check` | Writes `openapi.json`, and fails when it is out of date. See [OpenAPI](#openapi) |
 
 The server stops cleanly on SIGINT and SIGTERM: the jobs in hand finish, then the requests in flight, then the database
 pool closes.
@@ -58,6 +60,13 @@ pool closes.
 | `POST` | `/mcp` | The MCP endpoint. `GET` and `DELETE` answer 405 | Client, system admin |
 
 A client may act only while their tenant is active. The request and answer schemas are in `/openapi.json`.
+
+## OpenAPI
+
+The OpenAPI 3.1 document is built from the route schemas. The server serves it at `GET /openapi.json`, and
+`apps/api/openapi.json` is the same document as a file. After a route or a schema changes, run `pnpm openapi` from the
+repository root to write the file again, and commit it. `pnpm openapi:check` fails when the file is out of date, and CI
+runs it. Neither needs a running database.
 
 ## MCP tools
 

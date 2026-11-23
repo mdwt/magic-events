@@ -22,6 +22,8 @@
     "db:studio": "pnpm --filter @magic-events/db studio",
     "cli:pipeline": "pnpm --filter @magic-events/cli run pipeline",
     "cli:captures": "pnpm --filter @magic-events/cli run captures",
+    "openapi": "pnpm --filter @magic-events/api openapi",
+    "openapi:check": "pnpm --filter @magic-events/api openapi:check",
     "tunnel": "cloudflared tunnel --url http://localhost:4000"
   },
   "devDependencies": {

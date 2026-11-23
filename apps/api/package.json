@@ -9,7 +9,9 @@
     "build": "tsc",
     "typecheck": "tsc",
     "lint": "eslint .",
-    "test": "node --env-file-if-exists=../../.env --test --test-concurrency=1 \"test/**/*.test.ts\""
+    "test": "node --env-file-if-exists=../../.env --test --test-concurrency=1 \"test/**/*.test.ts\"",
+    "openapi": "node --env-file-if-exists=../../.env src/openapi.ts",
+    "openapi:check": "node --env-file-if-exists=../../.env src/openapi.ts --check"
   },
   "dependencies": {
     "@fastify/cors": "^11.4.3",

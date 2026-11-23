@@ -76,6 +76,7 @@ websites and the language model with no one asking. The commands are in [apps/cl
 | `pnpm db:studio` | Opens Drizzle Studio |
 | `pnpm cli:pipeline <command>` | Runs the pipeline by hand: `discover`, `process`, `embed`, `run`, `refetch` or `reprocess` |
 | `pnpm cli:captures` | Loads the captured pages in `data/hermanus` through the pipeline |
+| `pnpm openapi`, `pnpm openapi:check` | Writes the API's OpenAPI document to `apps/api/openapi.json`, and fails when that file is out of date |
 | `pnpm tunnel` | Opens a Cloudflare quick tunnel to the API on port 4000, for Claude to reach it |
 
 The arguments go straight after the script name, with no `--`: `pnpm cli:pipeline discover --source "Hermanus Times"`.

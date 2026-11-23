@@ -62,5 +62,9 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
+      # The committed apps/api/openapi.json must match the document the routes build. Needs no database.
+      - name: OpenAPI document
+        run: pnpm openapi:check
+
       - name: Test
         run: pnpm test
