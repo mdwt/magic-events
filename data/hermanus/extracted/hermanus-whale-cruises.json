@@ -78,7 +78,6 @@
       "rule": "FREQ=DAILY;BYMONTH=12,1,2,3,4,5",
       "start": "2026-12-01"
     },
-    "openingHours": "Departures 07:00, 09:00, 12:00, 14:00, 16:00, weather permitting",
     "price": {
       "min": 550,
       "max": 1200,
