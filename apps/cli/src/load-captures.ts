@@ -152,9 +152,13 @@ function readSources(dir: string, only: string | undefined): { sources: SourceTo
       }
       const found = byFile.get(rawFile) ?? [];
       byFile.delete(rawFile);
+      // The fingerprint leaves out the address and the time the page was read, so a page captured again unchanged
+      // keeps its fingerprint.
+      const fingerprintOf = content.replace(/^URL:[^\n]*\n(Fetched:[^\n]*\n)?/, "");
+      const listing: FetchedListing = { sourceListingId: url, url, contentType: "text/plain", content, fingerprintOf };
       const page = pages.get(url);
       if (page) page.experiences.push(...found);
-      else pages.set(url, { listing: { sourceListingId: url, url, contentType: "text/plain", content }, experiences: found });
+      else pages.set(url, { listing, experiences: found });
     }
     for (const [rawFile, lost] of byFile) {
       notes.push(`${entry.slug}: ${lost.length} experiences name ${rawFile}, which is not a captured page.`);
