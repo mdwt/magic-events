@@ -69,6 +69,7 @@ function fakeRepository(items: ExperienceRecord[] = []) {
       const found = [...locations.values()].find((one) => ("id" in by ? one.id === by.id : one.slug === by.slug));
       return Promise.resolve(found ?? null);
     },
+    listLocationSlugs: () => Promise.resolve([...locations.keys()].sort()),
     // Search never saves; the save side has its own tests.
     loadExperiences: () => Promise.resolve([]),
     findExperienceId: () => Promise.resolve(null),
@@ -274,12 +275,34 @@ describe("CatalogueService.searchExperiences", () => {
 
   test("refuses a location that does not exist, a search with no place, and one with both", async () => {
     const { repository, queries } = fakeRepository();
-    const unknown = await refusal(service(repository).searchExperiences({ ...placeless, location: "atlantis" }));
+    const none = await refusal(service(repository).searchExperiences({ ...placeless, location: "atlantis" }));
+    assert.deepEqual(none.details, [
+      {
+        path: "location",
+        message:
+          "The feed does not cover a place called atlantis. It covers no place yet, so give a point with near.",
+      },
+    ]);
+
+    // With places saved, the refusal names them.
+    const catalogue = service(repository);
+    for (const slug of ["stanford", "hermanus"]) {
+      await catalogue.saveLocation({
+        name: slug,
+        slug,
+        country: "ZA",
+        region: "Western Cape",
+        timezone: "Africa/Johannesburg",
+        latitude: -34.4,
+        longitude: 19.2,
+      });
+    }
+    const unknown = await refusal(catalogue.searchExperiences({ ...placeless, location: "atlantis" }));
     assert.deepEqual(unknown.details, [
       {
         path: "location",
         message:
-          "The feed does not cover a place called atlantis. Give a place it covers, such as hermanus, or a point with near.",
+          "The feed does not cover a place called atlantis. It covers: hermanus, stanford. Give one of them, or a point with near.",
       },
     ]);
 

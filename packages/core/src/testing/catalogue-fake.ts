@@ -53,6 +53,7 @@ export function fakeCatalogue(options: { now?: string; locations?: Location[] } 
     },
     findLocation: (by) =>
       Promise.resolve([...locations.values()].find((one) => ("id" in by ? one.id === by.id : one.slug === by.slug)) ?? null),
+    listLocationSlugs: () => Promise.resolve([...locations.values()].map((one) => one.slug).sort()),
     loadExperiences: (by) => {
       const found =
         "ids" in by

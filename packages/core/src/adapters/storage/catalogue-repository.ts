@@ -220,6 +220,11 @@ export function createCatalogueRepository(db: Db): CatalogueRepository {
       return found === undefined ? null : toLocation(found);
     },
 
+    async listLocationSlugs() {
+      const rows = await db.select({ slug: location.slug }).from(location).orderBy(asc(location.slug));
+      return rows.map((row) => row.slug);
+    },
+
     async findExperienceId(by) {
       // The ID column is a UUID, so anything else names no experience.
       if ("id" in by && !EXPERIENCE_ID.test(by.id)) return null;

@@ -61,6 +61,7 @@ function fakeRepository(due: ExperienceToEmbed[] = []) {
     },
     upsertLocation: notUsed,
     findLocation: notUsed,
+    listLocationSlugs: notUsed,
     loadExperiences: notUsed,
     findExperienceId: notUsed,
     findMatchCandidateIds: notUsed,

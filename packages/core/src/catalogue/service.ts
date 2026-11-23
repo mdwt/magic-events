@@ -618,8 +618,8 @@ export class CatalogueService implements Catalogue {
       details.push({
         path: "location",
         message:
-          `The feed does not cover a place called ${input.location}. Give a place it covers, such as hermanus, ` +
-          "or a point with near.",
+          `The feed does not cover a place called ${input.location}. ` +
+          covered(await this.#repository.listLocationSlugs()),
       });
       return null;
     }
@@ -717,6 +717,16 @@ function tierOrder(definitions: AttributeDefinition[]): NonNullable<ExperienceSe
   const options = tier.options.map((option) => option.key);
   const fallback = typeof tier.defaultValue === "string" && options.includes(tier.defaultValue) ? tier.defaultValue : null;
   return { attribute: TIER, options, fallback };
+}
+
+// The places the feed covers and what to give instead, as a caller is told. The first few when there are many.
+const PLACES_NAMED = 20;
+function covered(slugs: string[]): string {
+  if (slugs.length === 0) return "It covers no place yet, so give a point with near.";
+  const named = slugs.slice(0, PLACES_NAMED).join(", ");
+  const places =
+    slugs.length > PLACES_NAMED ? `It covers ${slugs.length} places, among them: ${named}.` : `It covers: ${named}.`;
+  return `${places} Give one of them, or a point with near.`;
 }
 
 // What Data processing is shown to decide whether an extracted experience is this one.

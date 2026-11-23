@@ -750,6 +750,8 @@ export interface CatalogueRepository {
   searchExperiences(query: ExperienceSearchQuery): Promise<{ items: ExperienceRecord[]; total: number }>;
   upsertLocation(input: SaveLocationInput): Promise<Location>;
   findLocation(by: { id: string } | { slug: string }): Promise<Location | null>;
+  // The slug of every location, in order, for telling a caller which places are covered.
+  listLocationSlugs(): Promise<string[]>;
   // Experiences whole, by ID or by a listing they are linked to.
   loadExperiences(by: { ids: string[] } | { listingId: string }): Promise<StoredExperience[]>;
   // The ID of the experience with this ID or this slug, or null when there is none.
