@@ -45,7 +45,7 @@ For each source it saves the source row, runs it through Discovery with the capt
 - **Matching across sources:** an experience with the same title and overlapping dates is matched in code, as always. Where the titles differ, a plain rule matches the clear cases and the language model is asked about the unsure ones. On 23 Nov 2026 that was 58 plain matches and 41 questions to the model.
 - **Running it again** saves nothing new for a page whose capture has not changed.
 - **A source is active** when a plain fetch of its pages returns their content, so the schedule can fetch it again. A site that needs a browser or a login is saved inactive.
-- **No map positions:** the extracted experience shape has no position, so the coordinates the scrape read from Quicket, Webtickets and AllEvents.in pages are in the extracted files but not on the experiences.
+- **Map positions:** the coordinates the scrape read from a page (AllEvents.in's structured data, the map links on Quicket's and Webtickets' event pages, a few others) are passed on as the venue's position, and the extractor's checks apply to them as to the model's: a position that is not a real one, or is more than 100 km from the location, is dropped.
 
 ## Seeded sources
 
