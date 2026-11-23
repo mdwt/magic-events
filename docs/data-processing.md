@@ -422,7 +422,7 @@ System settings are environment variables, read through the settings provider (s
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `PROCESSING_IDLE_INTERVAL_SECONDS` | 30 | How long the processing worker waits before looking again when nothing is pending |
+| `PROCESSING_IDLE_INTERVAL_SECONDS` | 300 | How long the processing worker waits before looking again when nothing is pending: 5 minutes |
 | `PROCESSING_WORKERS` | 1 | How many processing workers run at once |
 | `LANGUAGE_MODEL_PROVIDER` | `anthropic` | Which language model adapter is used, by Data processing and Discovery |
 | `LANGUAGE_MODEL` | `claude-opus-5-5` | The model name handed to that adapter |

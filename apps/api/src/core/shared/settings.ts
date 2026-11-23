@@ -45,6 +45,10 @@ export interface DiscoverySettings {
   defaultMaxProcessingAttempts: number;
   // How often the schedule looks for sources that are due a fetch.
   scheduleIntervalSeconds: number;
+  // How many times a failed fetch is tried again before the source waits for its next regular fetch.
+  fetchRetries: number;
+  // How long after a failed fetch the first retry comes. The wait doubles with each retry.
+  fetchRetryBackoffMinutes: number;
   // How long an adapter waits for a source to answer.
   fetchTimeoutSeconds: number;
   // The User-Agent every adapter sends, so a source can see who is fetching.

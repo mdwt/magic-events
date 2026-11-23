@@ -162,7 +162,7 @@ An adapter that filters by place does it here. Quicket has no location filter, s
 
 ## Fetching
 
-1. The schedule starts Discovery for each active source, at that source's fetch interval. A source is fetched once a week unless its row says otherwise, and each fetch is a full update of everything the source lists. How often the schedule looks for sources that are due is a setting (see Settings).
+1. The schedule starts Discovery for each active source, at that source's fetch interval. A source is fetched once a week unless its row says otherwise, and each fetch is a full update of everything the source lists. Each source keeps its own time: it is due one interval after its last fetch started. The schedule looks for sources that are due every 15 minutes (see Settings).
 2. Discovery gets the source's location (name, centre point, timezone) from the Catalogue service and inserts a run with status running.
 3. Discovery calls the adapter for the source's kind with the source's settings, credentials, sync state and the location.
 4. The adapter calls the source and returns the listings whole: one per API event, page, post or calendar. For each listing it returns the source's listing ID, the web address, the content type and the raw content. It does not clean, split or interpret anything.
@@ -174,6 +174,17 @@ An adapter that filters by place does it here. Quicket has no location filter, s
 7. If the run succeeded and the adapter reported it complete, Discovery checks for listings that have gone missing (below). An incremental run only returns what changed, so it never counts as a miss.
 
 If the fetch fails part way, the listings already saved stay saved and the run is marked failed. A failed run never counts as a miss.
+
+### When a fetch fails
+
+A failed fetch is tried again, with a longer wait each time. It does not wait for the next weekly fetch.
+
+- **Five retries.** The first comes 15 minutes after the failed run finished, and the wait doubles each time: 15, 30, 60, 120 and 240 minutes.
+- **When the retries are used up,** the source waits one fetch interval and starts again with a fresh set of retries.
+- **A success ends it.** The next fetch is one interval after the run that succeeded.
+- **Worked out from the runs.** How many runs in a row have failed, and when the last one finished, say when the source is due. There is no retry queue.
+
+**Later:** the schedule, the retries and the processing workers move to a durable workflow engine in the next version. Version 1 runs them inside the server, from the `run` table.
 
 ### How far ahead
 
@@ -229,7 +240,10 @@ System settings are environment variables, read through the settings provider (s
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `DISCOVERY_SCHEDULE_INTERVAL_SECONDS` | 60 | How often the schedule looks for sources that are due a fetch |
+| `DISCOVERY_SCHEDULE_INTERVAL_SECONDS` | 900 | How often the schedule looks for sources that are due a fetch: every 15 minutes |
+| `DISCOVERY_FETCH_RETRIES` | 5 | How many times a failed fetch is tried again before the source waits for its next regular fetch |
+| `DISCOVERY_FETCH_RETRY_BACKOFF_MINUTES` | 15 | How long after a failed fetch the first retry comes. The wait doubles with each retry |
+| `DISCOVERY_USER_AGENT` | `Mozilla/5.0 (compatible; magic-events/1.0)` | The User-Agent every adapter sends |
 | `DISCOVERY_FETCH_TIMEOUT_SECONDS` | 30 | How long an adapter waits for a source to answer |
 | `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 168 | Fetch interval given to a new source: once a week |
 | `DISCOVERY_HORIZON_MONTHS` | 24 | How far ahead experiences are sourced |
@@ -257,7 +271,8 @@ Catalogue calls neither, so the dependencies have no cycles.
 | No copies | Services call each other's services. No table holds a copy of another domain's data |
 | One location per source | A source row carries its location and settings |
 | Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source. System settings, such as how often the schedule runs and the defaults a new source gets, are environment variables listed under Settings |
-| Schedule | Every source is fetched once a week by default, as a full update of everything it lists. The interval is set per source |
+| Schedule | Every source is fetched once a week by default, as a full update of everything it lists. The interval is set per source, and each source keeps its own time. The schedule runs inside the server and looks for due sources every 15 minutes. **Later:** a durable workflow engine |
+| Failed fetches | Tried again five times with a doubling wait, starting at 15 minutes. Then the source waits one interval and starts again |
 | Horizon | Experiences are sourced from today to 24 months ahead. An experience that starts later is left out until a later run |
 | Language model | Discovery uses the language model port to find the current calendar file. PDFs are stored whole and read by the language model in processing, so no PDF text is extracted here |
 | Source kinds | Five in version 1: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |

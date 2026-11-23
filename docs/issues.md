@@ -42,8 +42,8 @@ the subject.
 | 29 | A newsletter archive fits no source kind | Discovery | Open |
 | 30 | The terms of AllEvents.in and Quicket were not checked | Discovery | Open |
 | 31 | Pages that only fill in with JavaScript cannot be fetched | Discovery | Open |
-| 32 | A failed fetch is not tried again until the source is next due | Discovery | Open |
-| 33 | Sources are due on their own clocks, not at a fixed time of the week | Discovery | Open |
+| 32 | A failed fetch is not tried again until the source is next due | Discovery | Closed |
+| 33 | Sources are due on their own clocks, not at a fixed time of the week | Discovery | Closed |
 
 ## 1. The Docker engine was down, and port 5432 belongs to another project
 
@@ -201,19 +201,15 @@ needs it today.
 
 ## 32. A failed fetch is not tried again until the source is next due
 
-**Open.** A source is due when its fetch interval has passed since its last run started, whether that run succeeded
-or failed. With a weekly interval, a source that fails once, because its site was down for a minute, is not fetched
-again for a week.
-
-- **Decide:** whether a failed run is tried again sooner, and how soon.
+**Closed, 2026-11-23.** Decided: a failed fetch is tried again five times with a doubling wait, starting at 15
+minutes. When the retries are used up the source waits one fetch interval and starts again. The rule is in
+[discovery.md](discovery.md), under "When a fetch fails".
 
 ## 33. Sources are due on their own clocks, not at a fixed time of the week
 
-**Open.** There is no weekly run. Each source is due one fetch interval after its last run started, so the week is
-counted from whenever the source first ran. Sources seeded together stay roughly together. Nothing ties a fetch to a
-day or an hour, such as Monday at 02:00.
-
-- **Decide:** whether fetching should happen at a fixed time of the week.
+**Closed, 2026-11-23.** Decided: a schedule per source is right. Each source is due one fetch interval after its last
+run started. The schedule looks for due sources every 15 minutes, not every minute. The schedule, the retries and the
+processing workers move to a durable workflow engine in the next version.
 
 ## 13 to 23. Carried over from the documents
 
