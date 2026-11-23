@@ -164,6 +164,22 @@ describe("Discovery repository: saving a source", () => {
     assert.deepEqual(rows[0]?.syncState, { lastModified: "2026-11-20T08:00:00Z" });
   });
 
+  test("saving a source as it is stored changes no column, and saving a change updates it and updated_at", async () => {
+    await harness.services.discovery.saveSource(quicket);
+    const [before] = await harness.db.select().from(source);
+    assert.ok(before);
+
+    const again = await harness.services.discovery.saveSource(quicket);
+    assert.equal(again.id, before.id);
+    assert.deepEqual(await harness.db.select().from(source), [before]);
+
+    await harness.services.discovery.saveSource({ ...quicket, settings: { city: "Hermanus" } });
+    const [after] = await harness.db.select().from(source);
+    assert.ok(after);
+    assert.deepEqual({ ...after, updatedAt: before.updatedAt }, { ...before, settings: { city: "Hermanus" } });
+    assert.ok(after.updatedAt > before.updatedAt);
+  });
+
   test("keeps a source of the same name in another location apart", async () => {
     await harness.services.catalogue.saveLocation({
       name: "Stanford",
