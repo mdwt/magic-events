@@ -141,12 +141,7 @@ export function registerFeed(): void {
     for (const line of lines) c.ok(line.newOrChanged === 0, `${line.name}: ${line.newOrChanged} new or changed on the second load`);
     c.ok(/: \d+ saved, 0 new, 0 changed, 0 failed\./.test(again.stdout), "the second load's summary is 0 new and 0 changed");
     c.equal(await versions(), before, "no experience has a new version");
-    if (state.live) {
-      const { liveRefetchUnchanged } = await import("./live.ts");
-      await liveRefetchUnchanged(c);
-    } else {
-      c.note('pipeline refetch --source "Wesgro Cape Overberg events" fetches the live site: it runs with pnpm e2e:live.');
-    }
+    c.note('pipeline refetch --source "Wesgro Cape Overberg events" fetches the live site: it runs with pnpm e2e:live, after every scenario that reads the captured feed.');
     logs((lc) => {
       lc.ok(logLinesOf(again).every((line) => (line.level ?? 0) < 50), "the second load logged no error");
     });
@@ -328,12 +323,7 @@ export function registerFeedChanges(): void {
     const pending = await one<{ n: number }>(state.dbUrl, "select count(*)::int as n from raw_listing where status <> 'processed'");
     c.equal(pending.n, 0, "raw listings left unprocessed");
     c.note("The suite processes the listings sent back with the captures command, which answers from the captured files; pipeline process and --now need the language model and run with pnpm e2e:live.");
-    if (state.live) {
-      const { liveRefetch } = await import("./live.ts");
-      await liveRefetch(c);
-    } else {
-      c.note("pipeline refetch fetches live sites: it runs with pnpm e2e:live.");
-    }
+    c.note("pipeline refetch fetches live sites: it runs with pnpm e2e:live, after every scenario that reads the captured feed.");
   });
 }
 
@@ -341,3 +331,25 @@ function ids(items: { id: string }[]): string[] {
   return items.map((item) => item.id);
 }
 
+// The parts of E2E-21 and E2E-25 that fetch live sites. They run after every scenario that reads the captured feed,
+// as what a live source says now changes the feed those scenarios count.
+export function registerLiveRefetch(): void {
+  scenario(
+    "E2E-21",
+    "An unchanged listing changes nothing, on a live site",
+    async ({ c }) => {
+      const { liveRefetchUnchanged } = await import("./live.ts");
+      await liveRefetchUnchanged(c);
+    },
+    { live: true },
+  );
+  scenario(
+    "E2E-25",
+    "The operator fetches again and processes again, on live sites",
+    async ({ c }) => {
+      const { liveRefetch } = await import("./live.ts");
+      await liveRefetch(c);
+    },
+    { live: true },
+  );
+}

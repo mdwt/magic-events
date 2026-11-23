@@ -90,6 +90,9 @@ export async function liveRefetchUnchanged(c: Checks): Promise<void> {
   c.ok(/: \d+ found, 0 new or changed/.test(second.stdout), `the second refetch reports 0 new or changed: ${printedOf(second).trim()}`);
   const after = await query<{ id: string; version: number }>(state.dbUrl, "select id, version from experience order by id");
   c.equal(after, before, "no experience has a new version");
+  // What the first refetch found is processed by the language model, so no page of it is left pending.
+  const processed = await pipeline(["process"]);
+  c.ok(processed.code === 0 && !/FAILED/.test(processed.stdout), `pipeline process: ${printedOf(processed).trim().slice(-300)}`);
 }
 
 // E2E-25, live part: refetch by location, source and listing, and reprocess processed straight away.
