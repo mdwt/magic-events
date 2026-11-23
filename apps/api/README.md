@@ -73,7 +73,7 @@ message that names the variable.
 | `API_KEY_RATE_LIMIT_WINDOW_SECONDS` | `60` | That window |
 | `SEARCH_DEFAULT_RADIUS_KM` | `25` | The radius of a search that gives none |
 | `SEARCH_MAX_RADIUS_KM` | `200` | The largest radius a search may ask for |
-| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | `24` | A new source's fetch interval, when it gives none |
+| `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | `168` | A new source's fetch interval, when it gives none: once a week |
 | `DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL` | `3` | Complete runs without a listing before its source link is removed |
 | `DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS` | `3` | Tries at processing a raw listing before it fails |
 

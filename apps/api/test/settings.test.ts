@@ -26,7 +26,7 @@ test("the defaults apply when only the required variables are set", () => {
     database: { url: REQUIRED.DATABASE_URL },
     identity: { authSecret: REQUIRED.BETTER_AUTH_SECRET, apiKeyRateLimitMax: 120, apiKeyRateLimitWindowSeconds: 60 },
     catalogue: { searchDefaultRadiusKm: 25, searchMaxRadiusKm: 200 },
-    discovery: { defaultFetchIntervalHours: 24, defaultMissedRunsBeforeRemoval: 3, defaultMaxProcessingAttempts: 3 },
+    discovery: { defaultFetchIntervalHours: 168, defaultMissedRunsBeforeRemoval: 3, defaultMaxProcessingAttempts: 3 },
   });
 });
 

@@ -32,7 +32,7 @@ const environmentSchema = z.object({
   API_KEY_RATE_LIMIT_WINDOW_SECONDS: whole(1).max(2_073_600, "Must be at most 24 days, in seconds.").default(60),
   SEARCH_DEFAULT_RADIUS_KM: z.coerce.number().positive().default(25),
   SEARCH_MAX_RADIUS_KM: z.coerce.number().positive().default(200),
-  DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS: whole(1).default(24),
+  DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS: whole(1).default(168),
   DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL: whole(1).default(3),
   DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS: whole(1).default(3),
 });
