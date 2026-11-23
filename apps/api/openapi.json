@@ -2702,7 +2702,8 @@
                               "max",
                               "currency"
                             ],
-                            "additionalProperties": false
+                            "additionalProperties": false,
+                            "description": "The lowest and highest price. A min and max of 0 mean it is free; empty means the source states no price."
                           },
                           "onSaleAt": {
                             "anyOf": [
@@ -3762,7 +3763,8 @@
                                   "max",
                                   "currency"
                                 ],
-                                "additionalProperties": false
+                                "additionalProperties": false,
+                                "description": "The lowest and highest price. A min and max of 0 mean it is free; empty means the source states no price."
                               },
                               "onSaleAt": {
                                 "anyOf": [

@@ -157,7 +157,9 @@ export const experienceRecordSchema = z.object({
   distanceKm: z.number().describe("The distance from the search point, in kilometres."),
   timezone: z.string(),
   openingHours: z.string().nullable(),
-  price: z.object({ min: z.number().nullable(), max: z.number().nullable(), currency: z.string().nullable() }),
+  price: z
+    .object({ min: z.number().nullable(), max: z.number().nullable(), currency: z.string().nullable() })
+    .describe("The lowest and highest price. A min and max of 0 mean it is free; empty means the source states no price."),
   onSaleAt: z.iso.datetime().nullable(),
   bookingClosesAt: z.iso.datetime().nullable(),
   bookingUrl: z.string().nullable(),
