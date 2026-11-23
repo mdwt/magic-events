@@ -26,6 +26,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-carmen-bizet-encore",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -67,6 +68,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-the-magic-flute-recorded",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -116,6 +118,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-la-fanciulla-del-west",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -157,6 +160,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-silent-night",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -205,6 +209,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-manon",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -253,6 +258,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-otello",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -301,6 +307,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera--puccini-tosca",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -342,6 +349,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/met-opera-2026-27-parsifal",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts",
         "film"
@@ -388,6 +396,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/andre-rieus-2026-christmas-concert-let-it-snow",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "film",
@@ -431,6 +440,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/focker-in-law",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -471,6 +481,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/alan-c-av-a-laugh-ta",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "performing_arts"
       ],
@@ -511,6 +522,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/the-debut",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -549,6 +561,7 @@
     "bookingUrl": "https://www.roadhousecinema.co.za/whalecoast/movie/ballyhoo-the-50-year-celebration",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -589,6 +602,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "culture_and_heritage"
       ],
@@ -632,6 +646,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -678,6 +693,7 @@
       "Foods"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "food_and_drink"
@@ -721,6 +737,7 @@
     "bookingUrl": "https://www.quicket.co.za/events/406758-hermanus-pride-party",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes",
         "music"
@@ -761,6 +778,7 @@
       "Foods"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -807,6 +825,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -851,6 +870,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "sport"
       ],
@@ -887,6 +907,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "community_and_causes"
@@ -933,6 +954,7 @@
       "Fitness & workouts"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -972,6 +994,7 @@
     "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx",
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "faith_and_spirituality",
@@ -1017,6 +1040,7 @@
     "bookingUrl": "https://tickets.tixsa.co.za/event/gian-groen-skybar-hermanus-dec",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1061,6 +1085,7 @@
     "bookingUrl": "https://qkt.io/v3dqgQ",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1103,6 +1128,7 @@
     "bookingUrl": "https://qkt.io/rySVD8",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1144,6 +1170,7 @@
     "bookingUrl": "https://qkt.io/NYyjL7",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -1192,6 +1219,7 @@
     "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1598631600",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "community_and_causes"
       ],
@@ -1237,6 +1265,7 @@
     "bookingUrl": "https://twocookies.online",
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -1283,6 +1312,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "community_and_causes"
@@ -1325,6 +1355,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -1370,6 +1401,7 @@
       "Fitness & workouts"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -1407,6 +1439,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "music",
         "holidays_and_celebrations",
@@ -1456,6 +1489,7 @@
       "Crafts"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "hobbies_and_lifestyle",
         "holidays_and_celebrations"
@@ -1501,6 +1535,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -1539,6 +1574,7 @@
     "bookingUrl": "https://www.quicket.co.za/events/407250-arno-carstens-african-sunrise-hermanus",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1579,6 +1615,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "community_and_causes"
@@ -1621,6 +1658,7 @@
     "bookingUrl": "https://qkt.io/F8LYse",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -1662,6 +1700,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "hobbies_and_lifestyle"
@@ -1718,6 +1757,7 @@
       "Dance"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1762,6 +1802,7 @@
       "Foods"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
@@ -1806,6 +1847,7 @@
       "Foods"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink",
         "holidays_and_celebrations"
@@ -1856,6 +1898,7 @@
       "Parties"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "holidays_and_celebrations",
         "music"
@@ -1905,6 +1948,7 @@
       "Music & audio"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -1954,6 +1998,7 @@
       "Classics"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -2003,6 +2048,7 @@
       "Drinks"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "food_and_drink"
       ],
@@ -2051,6 +2097,7 @@
       "Foods"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -2090,6 +2137,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes",
         "hobbies_and_lifestyle",
@@ -2133,6 +2181,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "holidays_and_celebrations",
         "music"
@@ -2175,6 +2224,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film",
         "holidays_and_celebrations"
@@ -2217,6 +2267,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music",
         "holidays_and_celebrations",
@@ -2259,6 +2310,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "music",
         "community_and_causes"
@@ -2299,6 +2351,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -2338,6 +2391,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2377,6 +2431,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -2417,6 +2472,7 @@
     "bookingUrl": "https://www.thestanford100miler.co.za",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -2454,6 +2510,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "community_and_causes"
@@ -2494,6 +2551,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -2534,6 +2592,7 @@
     "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607498579",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "film"
       ],
@@ -2574,6 +2633,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "food_and_drink",
@@ -2624,6 +2684,7 @@
     "bookingUrl": "https://www.quicket.co.za/events/406446-watershed-live-at-stanford-hills",
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -2669,6 +2730,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music",
         "holidays_and_celebrations"
@@ -2714,6 +2776,7 @@
     "bookingUrl": "https://www.webtickets.co.za/v2/event.aspx?itemid=1607764459",
     "hints": [],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -2754,6 +2817,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "community_and_causes"
       ],
@@ -2800,6 +2864,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink"
       ],
@@ -2848,6 +2913,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "holidays_and_celebrations",
         "hobbies_and_lifestyle"
@@ -2891,6 +2957,7 @@
       "Music & audio"
     ],
     "attributes": {
+      "tier": "premium",
       "category": [
         "music"
       ],
@@ -2943,6 +3010,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -2987,6 +3055,7 @@
       "Shopping"
     ],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink",
         "community_and_causes"
@@ -3038,6 +3107,7 @@
       "Foods"
     ],
     "attributes": {
+      "tier": "standard",
       "category": [
         "food_and_drink",
         "music",
@@ -3081,6 +3151,7 @@
     "bookingUrl": "https://www.christofvanderberg.com/copy-of-bordienghuis",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3128,6 +3199,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "culture_and_heritage",
         "music",
@@ -3173,6 +3245,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "hobbies_and_lifestyle"
       ],
@@ -3215,6 +3288,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "format": "market",
       "audience": "all_ages",
       "setting": "indoor",
@@ -3247,6 +3321,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "food_and_drink"
       ],
@@ -3286,6 +3361,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "nature_and_wildlife"
       ],
@@ -3324,6 +3400,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "nature_and_wildlife",
         "outdoor_and_adventure"
@@ -3370,6 +3447,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3415,6 +3493,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "culture_and_heritage"
       ],
@@ -3454,6 +3533,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "visual_arts"
       ],
@@ -3492,6 +3572,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "music"
       ],
@@ -3531,6 +3612,7 @@
     "bookingUrl": "https://entrytickets.co.za/hangklip10km",
     "hints": [],
     "attributes": {
+      "tier": "standard",
       "category": [
         "outdoor_and_adventure"
       ],
@@ -3570,6 +3652,7 @@
     },
     "hints": [],
     "attributes": {
+      "tier": "everyday",
       "category": [
         "faith_and_spirituality",
         "holidays_and_celebrations",
