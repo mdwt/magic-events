@@ -453,6 +453,71 @@ export function positionProblem(position: { lat: number; lng: number }, location
   return undefined;
 }
 
+// A price of 0 says the experience is free, and an empty price says the listing states none. Structured data
+// often gives a ticket a price of 0 that is not entry, such as Quicket's donation tickets, so a 0 stands only
+// when the item says in words that it is free. These are the words, in English and Afrikaans, read one
+// sentence at a time. A "free" that is about something else, such as free parking, a free welcome drink or
+// sugar-free, is not among them.
+const FREE = String.raw`(?<![\w-])(?:free|gratis|verniet)(?![\w-])`;
+const FREE_FOR_SOME = [
+  // "Children under 12 free", "kids are free", "0–4 jaar: gratis", "no charge for children".
+  new RegExp(String.raw`\b(?:children|child|kids|kiddies|babies|toddlers|infants|under[- ]?\d+s?|pensioners|seniors|students|scholars|kinders|kleuters|pensioenarisse|onder \d+|\d+\s*(?:[-–]\s*\d+\s*)?(?:jaar|years?|yrs))\b(?:(?!parking|parkering)[^.!?;\n]){0,40}${FREE}`),
+  new RegExp(String.raw`${FREE} (?:for|vir) (?:children|kids|kiddies|babies|toddlers|infants|under|pensioners|seniors|students|kinders|kleuters)\b`),
+  /\bno charge for (?:children|kids|under)\b/,
+];
+const FREE_FOR_ALL = [
+  // "Free entry", "free admission", "a free tour", "free tickets available".
+  new RegExp(String.raw`${FREE} (?:\w+ )?(?:entry|entrance|admission|access|event|events|tickets?|concert|show|market|tours?|walks?|run|exhibition|expo|festival|workshop|talk|lecture|screening|performance|evening|activity|activities|programme|toegang|ingang|toegangsfooi)\b`),
+  // "Free, fun and friendly" at the start of a sentence.
+  new RegExp(String.raw`^ ?${FREE}, `),
+  new RegExp(String.raw`${FREE} (?:to (?:attend|enter|join|explore|visit|watch|all|everyone|the public)|for (?:all|everyone|everybody|the public|the whole family))\b`),
+  // "Admission: free", "entrance is free", "cost: free", "toegang is gratis".
+  new RegExp(String.raw`\b(?:entry|entrance|admission|access|cost|costs|price|prices|tickets?|fee|fees|toegang|ingang|koste|prys|pryse|kaartjies)\b["\s]*(?:is|are|:|-|–)?["\s]*(?:completely |totally |always |absolutely )?${FREE}`),
+  // "It's free", "the parkrun is free", "dit is gratis".
+  new RegExp(String.raw`\b(?:it's|it is|dit is|event|market|exhibition|seminar|show|walk|run|parkrun|tour|concert|talk|evening|festival|expo) (?:all |completely |totally |always )?${FREE}(?! (?:parking|wi-?fi))`),
+  /\b(?:free of charge|no charge|at no cost|no cost|no entry fee|no entrance fee|no admission fee|no cover charge|geen toegangsfooi|kosteloos)\b(?! for parking)/,
+];
+
+// Whether the item says in words that the experience is free for everyone, free for some (children under 12,
+// beside a price for adults), or neither.
+export function freeInWords(text: string): "all" | "some" | undefined {
+  let found: "some" | undefined;
+  const sentences = text
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/[^\S\n]+/g, " ")
+    // A label on one line and its value on the next, as in "Cost:" then "Free", is one sentence.
+    .replace(/: ?\n[\s-]*/g, ": ")
+    .split(/[.!?;\n]/);
+  for (const sentence of sentences) {
+    if (FREE_FOR_SOME.some((words) => words.test(sentence))) found = "some";
+    else if (FREE_FOR_ALL.some((words) => words.test(sentence))) return "all";
+  }
+  return found;
+}
+
+// The price with every 0 the item's words do not bear out taken off: 0 and 0 needs the item to say it is free,
+// and a lowest price of 0 beside a higher one needs it to say entry is free for someone. Returns the experience
+// as it is when nothing is taken off.
+export function onlyFreeInWords(experience: ExtractedExperience, text: string): ExtractedExperience {
+  const price = experience.price;
+  if (price === undefined || (price.min !== 0 && price.max !== 0)) return experience;
+  const free = freeInWords(text);
+  const everyBoundZero = (price.min ?? 0) === 0 && (price.max ?? 0) === 0;
+  if (free === "all" || (free === "some" && !everyBoundZero)) return experience;
+
+  const kept: NonNullable<ExtractedExperience["price"]> = {};
+  if (price.min !== undefined && price.min !== 0) kept.min = price.min;
+  if (price.max !== undefined && price.max !== 0) kept.max = price.max;
+  if (kept.min === undefined && kept.max === undefined) {
+    const unpriced = { ...experience };
+    delete unpriced.price;
+    return unpriced;
+  }
+  if (price.currency !== undefined) kept.currency = price.currency;
+  return { ...experience, price: kept };
+}
+
 // The window an experience must fall in: not over by the later of the fetch day and today, and starting no later
 // than the horizon counted from the fetch day. Days are the location's.
 export function sourcingWindow(input: { fetchedAt: Date; now: Date; timezone: string; horizonMonths: number }): {
@@ -749,6 +814,17 @@ class LanguageModelExtractor implements Extractor {
       if (span.first > bounds.horizonEnd) {
         this.#logger.debug({ title: answered.title, first: span.first }, "Extracted experience is beyond the horizon");
         continue;
+      }
+      // A PDF's text is not read here; it has no structured data, so a 0 in it is what the calendar prints.
+      if (prepared.document === undefined) {
+        const priced = onlyFreeInWords(settled.experience, prepared.text);
+        if (priced !== settled.experience) {
+          this.#logger.info(
+            { title: answered.title, price: settled.experience.price },
+            "Price of 0 dropped: the item does not say in words that it is free",
+          );
+          settled.experience = priced;
+        }
       }
       const position = settled.experience.venue?.position;
       const problem = position === undefined ? undefined : positionProblem(position, input.location);

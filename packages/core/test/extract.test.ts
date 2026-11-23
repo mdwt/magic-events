@@ -4,6 +4,7 @@ import { describe, test } from "node:test";
 import {
   createExtractors,
   type ExtractInput,
+  freeInWords,
   settleExperience,
   sourcingWindow,
   UnreadableListing,
@@ -516,5 +517,67 @@ describe("The sourcing window", () => {
       }),
       { overBefore: "2026-11-23", fetchDay: "2026-11-23", horizonEnd: "2028-11-23" },
     );
+  });
+});
+
+describe("A price of 0", () => {
+  // Cut from pages captured in Hermanus, as the captures loader passes them.
+  const captured = (name: string) =>
+    readFileSync(new URL(`./fixtures/processing/prices/${name}`, import.meta.url), "utf8");
+
+  async function priceOf(content: string, price: { priceMin: number | null; priceMax: number | null; currency: string }) {
+    const { extractor } = extractorFor("web_page", extraction(answered({ title: "The experience", ...price })));
+    const [experience] = await extractor.extract(input({ content, contentType: "text/plain" }));
+    assert.ok(experience);
+    return experience.price;
+  }
+
+  test("is kept as free when the page says in words that entry is free, beside a structured 0", async () => {
+    const page = captured("quicket-pride-market.txt");
+    assert.deepEqual(await priceOf(page, { priceMin: 0, priceMax: 0, currency: "ZAR" }), { min: 0, max: 0, currency: "ZAR" });
+    // The currency is left empty when the page names none.
+    assert.deepEqual(await priceOf(page, { priceMin: 0, priceMax: 0, currency: "" }), { min: 0, max: 0 });
+  });
+
+  test("from structured data alone, with nothing in words, leaves the price empty", async () => {
+    // The 0 is a donation ticket beside the paid ones; the page's words give only R200 and R80.
+    const page = captured("quicket-secret-sunset.txt");
+    assert.equal(await priceOf(page, { priceMin: 0, priceMax: 0, currency: "ZAR" }), undefined);
+    assert.deepEqual(await priceOf(page, { priceMin: 0, priceMax: 200, currency: "ZAR" }), { max: 200, currency: "ZAR" });
+    assert.deepEqual(await priceOf(page, { priceMin: 80, priceMax: 200, currency: "ZAR" }), {
+      min: 80,
+      max: 200,
+      currency: "ZAR",
+    });
+    // A market page that says nothing of a price.
+    const market = captured("stanford-tourism-sunset-market.txt");
+    assert.equal(await priceOf(market, { priceMin: 0, priceMax: 0, currency: "ZAR" }), undefined);
+  });
+
+  test("is not free when the only free is about something else, such as free parking", async () => {
+    const page = "URL: https://example.com/market\n\nSaturday market on the green. Plenty of free parking. Sugar-free treats.";
+    assert.equal(await priceOf(page, { priceMin: 0, priceMax: 0, currency: "ZAR" }), undefined);
+  });
+
+  test("is the lowest price when children get in free beside a price for adults, and is not free for all", async () => {
+    const page = captured("allevents-watershed.txt");
+    assert.deepEqual(await priceOf(page, { priceMin: 0, priceMax: 360, currency: "ZAR" }), {
+      min: 0,
+      max: 360,
+      currency: "ZAR",
+    });
+    assert.equal(await priceOf(page, { priceMin: 0, priceMax: 0, currency: "ZAR" }), undefined);
+  });
+
+  test("is read from the words of the languages the sources use", () => {
+    assert.equal(freeInWords("Admission: Free"), "all");
+    assert.equal(freeInWords("Cost:\nFree"), "all");
+    assert.equal(freeInWords("What does it cost to join? Nothing – it’s free!"), "all");
+    assert.equal(freeInWords("Guests are welcome, free of charge."), "all");
+    assert.equal(freeInWords("Toegang is gratis."), "all");
+    assert.equal(freeInWords("Kinders onder 5 jaar kan gratis inkom."), "some");
+    assert.equal(freeInWords("KAARTJIES:\n0–4 jaar: GRATIS\n5–15 jaar: R200"), "some");
+    assert.equal(freeInWords("Free every Thursday, all over the Whale Coast. A free weekly newspaper."), undefined);
+    assert.equal(freeInWords("Feel free to contact us. Free flow wine and a free welcome drink. Free State."), undefined);
   });
 });
