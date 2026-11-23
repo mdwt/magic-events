@@ -563,12 +563,17 @@ Extraction reads what a listing says and sets the experience's status and bookin
 | --- | --- | --- |
 | The organisers cancelled it | Cancelled | Closed |
 | Postponed, with no new date | Postponed | Closed |
-| Tickets are on sale | Confirmed | Open |
 | Sold out | Confirmed | Sold out |
+| "Save the date", or bookings, tickets or an RSVP open later | Announced | Not yet |
+| Tickets are on sale | Confirmed | Open |
+| Asks for an RSVP or a booking now, and says how: a link, an e-mail address, a phone number | Confirmed | Open |
 | Exact dates, and tickets go on sale later | Announced | Not yet |
-| Exact dates, and nothing to book | Confirmed | None |
+| Exact dates, and nothing to book or reserve: a market, a free concert, an exhibition you walk into. A free event that needs no booking is None, not Open | Confirmed | None |
 | An event that comes round again, with only a month or a year for its coming edition and nothing that announces it: "usually", "every year in", "dates to be confirmed", or an annual event described with no dates for the next one | Expected | Not yet when tickets will go on sale, otherwise None |
 | Only a month or a year, for an edition the listing announces | Announced | Not set by this |
+| A yearly event whose latest edition is over: its next edition (see Extractors) | Expected | None |
+
+The extractor checks in code what must hold whatever the model said: Open or Sold out on an Announced or Expected experience makes it Confirmed, Postponed and Cancelled close booking unless it is None, Expected with a day or a recurrence is Announced, and a yearly event's next edition is Expected with booking None. Catalogue then keeps booking to what the status allows (see Experience status in [data-model.md](data-model.md)).
 
 ## Adapters
 

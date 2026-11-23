@@ -43,11 +43,13 @@ Set them from what the item says or shows, by these rules, the first that applie
 - The organisers cancelled it: status cancelled, booking closed.
 - It is postponed and no new date is given: status postponed, booking closed.
 - It is sold out: status confirmed, booking sold_out.
+- "Save the date", or it says bookings, tickets or an RSVP will open later: status announced, booking not_yet.
 - Tickets or bookings are on sale now: status confirmed, booking open.
+- It asks for an RSVP or a booking now and says how, by a link, an e-mail address or a phone number: status confirmed, booking open.
 - Exact dates, and tickets go on sale later: status announced, booking not_yet.
 - An event that comes round again, such as an annual festival, and the item gives only a month or a year for its coming edition without announcing that edition: it says "usually", "every year in", "held in September every year", "dates to be confirmed", or it describes the annual event and gives no dates for the next one. Status expected. Booking not_yet when the item says tickets will go on sale, and none otherwise.
 - Only a month or a year, and the item announces this edition for it, such as "FynArts returns in June 2027": status announced. Booking follows what the item says about tickets (not_yet when they go on sale later), and is none when it says nothing.
-- Exact dates, and nothing to book (a market, a free walk, an open day): status confirmed, booking none.
+- Exact dates, and nothing to book or reserve (a market, a free concert, a free walk, an open day, an exhibition you walk into): status confirmed, booking none. A free event that needs no booking has booking none, not open.
 - Booking has ended but it is still going ahead: status confirmed, booking closed.
 A session that is sold out or cancelled on its own, while others are not, is marked on that session.
 

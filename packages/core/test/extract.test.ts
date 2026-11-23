@@ -391,6 +391,23 @@ describe("A title that names no experience", () => {
   });
 });
 
+describe("Status and booking", () => {
+  test("the instructions take an RSVP asked for now as open, a save-the-date as not yet, and a free walk-in as none", () => {
+    assert.match(EXTRACTION_INSTRUCTIONS, /asks for an RSVP or a booking now and says how[^\n]*booking open/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /"Save the date"[^\n]*status announced, booking not_yet/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /A free event that needs no booking has booking none, not open/);
+    // "Save the date" comes before the rules that open booking, so a page with both is not yet bookable.
+    assert.ok(EXTRACTION_INSTRUCTIONS.indexOf('"Save the date"') < EXTRACTION_INSTRUCTIONS.indexOf("asks for an RSVP"));
+  });
+
+  test("in code, booking open on an announced or expected experience confirms it", () => {
+    const rsvp = settled({ status: "announced", booking: "open" });
+    assert.deepEqual([rsvp.status, rsvp.booking], ["confirmed", "open"]);
+    const saveTheDate = settled({ status: "announced", booking: "not_yet" });
+    assert.deepEqual([saveTheDate.status, saveTheDate.booking], ["announced", "not_yet"]);
+  });
+});
+
 describe("A price", () => {
   test("stated once is both its lowest and its highest", async () => {
     const { extractor } = extractorFor(
