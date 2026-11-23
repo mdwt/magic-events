@@ -12,14 +12,16 @@ import { HERMANUS_SLUG } from "./location.ts";
 
 export const sources: SaveSourceInput[] = [
   {
+    // The festival's own site: its event list is the page of each of its own events.
     name: "Hermanus FynArts",
     kind: "web_page",
     locationSlug: HERMANUS_SLUG,
-    settings: { urls: ["https://www.hermanusfynarts.co.za/event-list"] },
+    settings: { urls: ["https://www.hermanusfynarts.co.za/event-list"], ownPages: true },
     priority: 30,
   },
   {
-    // The site's own events feed. It lists nothing until the next festival's programme is published.
+    // The site's own events feed. It lists nothing until the next festival's programme is published. A feed is
+    // not a page a person opens, so it is not the festival's page address.
     name: "Hermanus Whale Festival",
     kind: "web_page",
     locationSlug: HERMANUS_SLUG,

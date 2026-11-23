@@ -99,6 +99,9 @@ const manifestSchema = z.object({
       priority: z.number().int(),
       // False for a site a plain fetch cannot read, so the schedule leaves it alone.
       active: z.boolean(),
+      // True when the source's pages are an organiser's own, about its own offerings: each page is then the page
+      // address of every experience on it that has none more specific.
+      ownPages: z.boolean().default(false),
       // Page addresses of the source that have no capture, such as a search page that listed nothing.
       urls: z.array(z.url()).default([]),
       // Captures that are not loaded, such as a PDF calendar that a seeded source already fetches.
@@ -173,7 +176,12 @@ function readSources(dir: string, only: string | undefined): { sources: SourceTo
     if (urls.length > 0) {
       sources.push({
         slug: entry.slug,
-        input: { ...common, name: entry.name, kind: "web_page", settings: { urls } },
+        input: {
+          ...common,
+          name: entry.name,
+          kind: "web_page",
+          settings: { urls, ...(entry.ownPages ? { ownPages: true } : {}) },
+        },
         captures: [...pages.values()],
       });
     }
