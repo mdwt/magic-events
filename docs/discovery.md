@@ -19,7 +19,7 @@ flowchart LR
   DP[Data processing] -- claims pending, marks processed or failed --> DIS
 ```
 
-Services call each other's services directly. Nothing is copied between domains and no domain event is needed for the hand-off. All tables are in one Postgres database.
+Services call each other's services directly, through the other domain's inbound port. Nothing is copied between domains and no domain event is needed for the hand-off. All tables are in one Postgres database.
 
 ## Tables
 
@@ -32,7 +32,7 @@ A site or feed that publishes experiences for one location.
 | Name, kind | Kind picks the adapter that fetches it and the extractor that reads it (see Source kinds) |
 | Location | One location per source. A site that covers two places is entered twice, once per location |
 | Settings | JSON the adapter reads: page addresses, organiser ID, calendar name. Each kind defines its own |
-| Credentials | The name of an environment variable holding the API key. Keys are never stored in the table |
+| Credentials | The name of the setting that holds the API key, such as `QUICKET_API_KEY`. Discovery gets the key from the settings provider. Keys are never stored in the table |
 | Sync state | JSON the adapter keeps between runs, such as Quicket's last-modified time for incremental fetches |
 | Fetch interval | How often this source is fetched |
 | Missed runs before removal | How many successful, complete runs in a row may miss a listing before it counts as gone |
@@ -73,7 +73,7 @@ One version of a listing's content, whole and exactly as the source returned it.
 | --- | --- |
 | Listing, run | Which listing, and the run that fetched this version |
 | Fetched time, content type | |
-| Content | The JSON, HTML or text as returned, in a Postgres `text` column. A PDF is stored as base64 |
+| Content | The JSON, HTML, XML or text as returned, in a Postgres `text` column. A PDF is stored as base64 |
 | Fingerprint | The hash of this version's content |
 | Status | Pending, processed, failed |
 | Attempts, error | For failed ones |
@@ -89,15 +89,27 @@ Version 1 has five kinds. Each source has a kind, and each kind has one adapter 
 | --- | --- | --- | --- | --- | --- |
 | Quicket | Quicket | API with a free key. Returns all public events with no location filter, incremental by last-modified | One event, as JSON | Quicket's event ID | Field mapping |
 | Ticketmaster | Ticketmaster Discovery | API with a free key. Filters by point | One event, as JSON | Ticketmaster's event ID | Field mapping |
-| WordPress | Hermanus Times posts | WordPress REST API (blocked, see Access) | One post, as JSON | The post ID | Language model |
+| RSS feed | Hermanus Times | Fetches the feed address in the source's settings | One post: its item in the feed, as XML, with the post's full text | The item's GUID | Language model |
 | PDF calendar | whalecoast.info annual and monthly events PDFs, Overstrand weekly diary. Each calendar is its own source | The adapter fetches the calendar page, asks the language model which link is the current file, because file names change with each reissue, and downloads it | One calendar's current PDF file | The calendar's name from the source's settings | Language model, which reads the PDF itself |
 | Web page | Organiser sites, Wesgro, AllEvents.in, SA-Venues, Xplorio, Webtickets, Computicket, estates and hotels | Fetches the page addresses in the source's settings | One page, as HTML | The page's address | Language model |
 
-Three kinds have an API: Quicket, Ticketmaster and WordPress. PDF calendars and web pages are fetched as files and pages.
+A kind is named for how a source is fetched, never for the software its site runs on. Two kinds have an API: Quicket and Ticketmaster. RSS feeds, PDF calendars and web pages are fetched as feeds, files and pages.
 
-Adding another web page or PDF calendar is adding a source row with its address in the settings. It needs no new code.
+Adding another RSS feed, web page or PDF calendar is adding a source row with its address in the settings. It needs no new code.
 
 The paid APIs the research found (PredictHQ, SerpApi Google Events, Bandsintown) and the sources it found closed (Facebook events, Eventbrite search) have no kind.
+
+### Runs and model use by kind
+
+| Kind | A run is | Language model in the fetch | Language model in extraction |
+| --- | --- | --- | --- |
+| Quicket | Incremental: only what changed since the last run (see Open questions) | No | No |
+| Ticketmaster | Complete | No | No |
+| RSS feed | Never complete. A feed holds only the latest posts, so a post that leaves the feed is not a removed listing | No | Yes |
+| PDF calendar | Complete | Yes, to find the current file | Yes |
+| Web page | Complete. An address that answers not found is a missing listing. Any other failure fails the run | No | Yes |
+
+Classification uses the language model for every experience, whatever its kind. The embedding model is no part of any kind: Catalogue embeds the profile of every saved experience. Both models and their providers are in [data-processing.md](data-processing.md).
 
 ### Access
 
@@ -107,20 +119,20 @@ Checked on 23 Nov 2026 by calling each one without a key.
 | --- | --- | --- |
 | Quicket | An API key. Sign up at developer.quicket.co.za and get a key there | The API answers 401 without a key. Not yet tested with one |
 | Ticketmaster | An API key. Sign up at developer.ticketmaster.com. 5000 calls a day, 5 a second | The API answers 401 without a key. Its documentation lists South Africa. Whether it holds any Hermanus events is not yet known |
-| WordPress | Nothing to sign up for | Hermanus Times is a WordPress site at novanews.co.za/hermanustimes, but its posts API answers 403 behind a Cloudflare browser check. Its RSS feed is open: 10 posts a page with their full text. Nine of the ten latest posts were national news |
+| RSS feed | Nothing | The Hermanus Times feed at novanews.co.za/hermanustimes/feed/ answers a plain request: 10 posts a page with their full text, and `?paged=N` reaches older posts. Its article pages are open too. Its posts API, category pages and sitemaps answer 403 behind a Cloudflare browser check, which a headless browser did not pass either. Most posts are national news and sport. The site's own events calendar has listed nothing since November 2025 |
 | PDF calendar | Nothing | whalecoast.info is reachable. Its site has no events API, so the PDFs remain the source |
 | Web page | Nothing | Public pages. Not checked one by one |
 
-## Adapter interface
+## Fetch port and adapters
 
-An adapter is a plug-in behind Discovery's fetch port. Discovery picks it by the source's kind, calls it, and does everything after: fingerprints, saving raw listings as pending, and closing the run. Adding a source of a new kind means adding one adapter, plus an extractor for it in Data processing.
+Discovery's fetch port is one interface, `SourceFetcher`, and each kind's adapter implements it. Discovery picks the adapter by the source's kind, calls it, and does everything after: fingerprints, saving raw listings as pending, and closing the run. Adding a source of a new kind means adding one adapter, plus an extractor for it in Data processing.
 
 ```ts
-interface SourceAdapter {
+interface SourceFetcher {
   kind: string;
   fetch(input: {
     settings: unknown;          // the source's settings JSON
-    credentials?: string;       // read from the environment variable the source names
+    credentials?: string;       // the API key, from the settings provider, by the setting the source names
     location: Location;         // from the Catalogue service
     syncState: unknown;         // what this adapter saved last run
   }): Promise<{
@@ -133,10 +145,12 @@ interface SourceAdapter {
 interface FetchedListing {
   sourceListingId: string;      // the source's own ID or the web address; stable across runs
   url?: string;
-  contentType: string;          // application/json, text/html, application/pdf
+  contentType: string;          // application/json, text/html, application/xml, application/pdf
   content: string;              // exactly as returned; a PDF as base64
 }
 ```
+
+An adapter is built with the outbound ports it needs and reaches nothing else. The PDF calendar adapter is built with the language model port, which is how it asks for the current file. No adapter imports another adapter or a provider's SDK.
 
 An adapter returns each listing whole. It does not split a page, post or calendar into experiences; that is extraction, and it belongs to Data processing.
 
@@ -173,7 +187,7 @@ Removed is not Cancelled. Cancelled means a source said the organisers cancelled
 
 Data processing never reads Discovery's tables. It uses two calls on the Discovery service:
 
-- **Claim** pending raw listings. They are claimed with `FOR UPDATE SKIP LOCKED`, so two workers never take the same one. Each comes with its source's kind and location.
+- **Claim** pending raw listings. Two workers never get the same one: Discovery's repository claims them with `FOR UPDATE SKIP LOCKED`. Each comes with its source's kind and location.
 - **Mark** a raw listing processed, or failed with the error and one more attempt. A failed raw listing goes back to pending until it reaches the source's max processing attempts, then stays failed.
 
 | Status | Means | Moves to |
@@ -192,7 +206,7 @@ Discovery uses a language model where finding something takes judgement and not 
 | Research source | For experiences with no feed, such as seasons and standing recurring experiences. The model is given a research question about the location, searches the web and reads pages, and returns its findings with the addresses it used. Each answer is a listing and goes through processing like any other | An agent that searches the web. It needs a port of its own | Proposed |
 | Source scouting | For a new location, the model searches the web for sites, calendars and organisers that publish experiences there, and proposes source rows with a kind and an address. A system admin approves them | An agent that searches the web. It needs a port of its own | Proposed |
 
-The language model is not used for fetching, fingerprints, saving, or deciding that a listing has disappeared.
+Apart from finding the current calendar file, the language model is not used in fetching, fingerprints, saving, or deciding that a listing has disappeared.
 
 The two proposed agents search the web, which the language model port does not offer. If they are taken up they get a research port, and its first adapter would be Claude with Anthropic's web search and web fetch tools.
 
@@ -207,8 +221,8 @@ System settings are environment variables, read through the settings provider (s
 | `DISCOVERY_DEFAULT_FETCH_INTERVAL_HOURS` | 24 | Fetch interval given to a new source |
 | `DISCOVERY_DEFAULT_MISSED_RUNS_BEFORE_REMOVAL` | 3 | Missed runs before removal given to a new source |
 | `DISCOVERY_DEFAULT_MAX_PROCESSING_ATTEMPTS` | 3 | Max processing attempts given to a new source |
-| `QUICKET_API_KEY` | None | The Quicket API key. The Quicket source row names this variable |
-| `TICKETMASTER_API_KEY` | None | The Ticketmaster API key. The Ticketmaster source row names this variable |
+| `QUICKET_API_KEY` | None | The Quicket API key. The Quicket source row names this setting |
+| `TICKETMASTER_API_KEY` | None | The Ticketmaster API key. The Ticketmaster source row names this setting |
 
 The language model settings (`LANGUAGE_MODEL_PROVIDER`, `LANGUAGE_MODEL`, `LANGUAGE_MODEL_TIMEOUT_SECONDS`) are listed in [data-processing.md](data-processing.md) and apply here too.
 
@@ -230,18 +244,17 @@ Catalogue calls neither, so the dependencies have no cycles.
 | One location per source | A source row carries its location and settings |
 | Configuration | Fetch interval, missed runs before removal and max processing attempts are set per source. System settings, such as how often the schedule runs and the defaults a new source gets, are environment variables listed under Settings |
 | Language model | Discovery uses the language model port to find the current calendar file. PDFs are stored whole and read by the language model in processing, so no PDF text is extracted here |
-| Source kinds | Five in version 1: Quicket, Ticketmaster, WordPress, PDF calendar and web page. One adapter and one extractor per kind |
+| Source kinds | Five in version 1: Quicket, Ticketmaster, RSS feed, PDF calendar and web page. One adapter and one extractor per kind. A kind is named for how a source is fetched, not for the software its site runs on |
 | Listing | The lasting record of one item a source publishes: an API event, a page, a post or a calendar. Fetched again on every run and kept in sync. It can describe several experiences |
 | Raw listing | One version of a listing's content, whole as fetched. Saved only when the listing is new or changed |
-| Adapters | Behind one interface. Adapters fetch; Discovery saves; Data processing extracts |
-| Credentials | API keys live in environment variables; a source stores only the variable's name |
+| Adapters | Behind one port, the fetch port. Adapters fetch; Discovery saves; Data processing extracts |
+| Credentials | API keys are settings, read through the settings provider; a source stores only the setting's name |
 | Disappeared listings | Checked again over the configured number of successful, complete runs, then the source link is removed. An experience with no source links left is set to Removed, a final status that is separate from Cancelled. A Past or Cancelled experience keeps its status |
 | Returning listings | Removed is final. A listing that comes back becomes a new experience |
 | Raw content | Postgres `text` column. **Later:** move to MinIO (S3) and store a key instead |
 
 ## Open questions
 
-- [ ] The WordPress kind cannot fetch Hermanus Times: its posts API is behind a Cloudflare browser check (see Access). *Proposed:* the fifth kind becomes RSS feed, which reads the open feed, one listing per post with its full text.
 - [ ] The location has only a centre point, but the sources cover Hermanus and the wider Overstrand (Stanford, Gansbaai, Kleinmond). Does a location need a radius for adapters to filter by?
 - [ ] Seasons (whale season, the fynbos bloom) and many recurring experiences (First Fridays, Art in the Park, parkrun) have no feed. Clients can't create experiences, so how do these get in? *Proposed:* a sixth kind, the research source, where a language model researches the location on the web (see Language model in Discovery).
 - [ ] Quicket's runs are incremental and only complete runs count as a miss, so a listing Quicket removes is never noticed, and an unchanged Quicket listing is never verified again. Does the Quicket adapter also make a complete run at some interval?

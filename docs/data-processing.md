@@ -6,7 +6,7 @@ Source of truth for how a raw listing becomes published experiences, and for how
 
 ## Overview
 
-Data processing takes pending raw listings from Discovery and turns each one into zero or more experiences, which Catalogue saves. It does four things to a raw listing, in order: extract, classify, match, save.
+Data processing takes pending raw listings from Discovery and turns each one into zero or more experiences, which Catalogue saves. It does four things to a raw listing, in order: extract, classify, match, save. What it saved is then appended to the data warehouse.
 
 ```mermaid
 flowchart LR
@@ -18,18 +18,19 @@ flowchart LR
   W -- mark processed or failed --> DIS
 ```
 
-Data processing owns the extractors, the classifier, the matching decision, and the attribute and tag definitions. It has no table of experiences: Catalogue stores them, and Discovery stores the raw listings.
+Data processing owns the extractors, the classifier, the matching decision, and the attribute and tag definitions. Catalogue stores the experiences and Discovery stores the raw listings. Data processing's own tables are the definitions, the data warehouse and the undefined values saved for review.
 
 ## Steps
 
 One raw listing is processed in one transaction, from claim to mark. If the worker crashes, the transaction rolls back and the raw listing is pending again.
 
-1. **Claim.** The processing worker runs on a loop and claims a pending raw listing through the Discovery service. It keeps going while raw listings are pending and waits the idle interval when there are none. The idle interval and the number of workers are settings (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
+1. **Claim.** The processing worker runs on a loop and claims a pending raw listing through the Discovery service. Only the latest version of a listing can be claimed (see Versions of a listing). It keeps going while raw listings are pending and waits the idle interval when there are none. The idle interval and the number of workers are settings (see Settings). It comes with its source's kind and location, and Data processing gets the location (name, centre point, timezone) from the Catalogue service.
 2. **Extract.** The extractor for the source's kind reads the content and returns zero or more extracted experiences (see Extractors).
 3. **Classify.** Each extracted experience is given its attribute values, tags and profile (see Classification).
 4. **Match.** Each extracted experience is matched to an existing experience or becomes a new one (see Matching).
 5. **Save.** The Catalogue service saves each experience with its sessions, attribute values, tags, profile and source link. Catalogue bumps the version and writes the change row when something really changed.
-6. **Mark.** Data processing marks the raw listing processed through the Discovery service.
+6. **Append to the warehouse.** Data processing appends each experience it saved to the data warehouse (see Data warehouse).
+7. **Mark.** Data processing marks the raw listing processed through the Discovery service.
 
 Three cases need no extraction or end early:
 
@@ -37,9 +38,19 @@ Three cases need no extraction or end early:
 - **Nothing extracted.** A post or page that describes no experience is marked processed. Any links the listing had are removed, as below.
 - **Failure.** If any step fails, including a language model answer that does not fit the expected shape, nothing from that raw listing is saved to Catalogue. It is marked failed with the error and one more attempt, and goes back to pending until it reaches the source's max processing attempts.
 
+### Versions of a listing
+
+A listing can change twice before it is processed, so two of its versions can be waiting at once. Only the latest version of a listing can be claimed. An older version that is still pending or failed is set to Superseded and is never processed, so old values are never put back over newer ones.
+
+### Processing again
+
+Processed is not final. A listing can be processed again at any time: its latest version goes back to pending and runs through the same steps, and the experiences it links to are updated. That is how a listing picks up a fixed extractor or new definitions. What sets a listing back to pending is an open question.
+
 ## Extractors
 
 An extractor is a plug-in, one per source kind, with the same kinds as Discovery's adapters. It turns one raw listing's content into extracted experiences. It does not classify, match or save.
+
+Extractors are Data processing's own code, not adapters. The field-mapping ones reach nothing outside the domain, and the language model ones reach the model only through the language model port.
 
 ```ts
 interface Extractor {
@@ -88,11 +99,16 @@ The fields are the experience fields in [data-model.md](data-model.md). An extra
 | --- | --- | --- |
 | Quicket | Maps the event's JSON fields in code | One experience |
 | Ticketmaster | Maps the event's JSON fields in code | One experience |
-| WordPress | The language model, given the post's title and body as text | Every experience the post describes, often none |
+| RSS feed | The language model, given the post's title and body as text | Every experience the post describes, often none |
 | PDF calendar | The language model, given the PDF file itself | Every row that is an experience |
 | Web page | The language model, given the page's visible text | Every experience on the page |
 
 The three language model extractors share one implementation. Each kind only prepares the content differently. The model is given the content, the location's name and region, the fetch time and the extracted experience shape, and must answer in that shape. The model is reached through the language model port (see Ports).
+
+Two things every extractor leaves out:
+
+- **What is already over.** An experience whose last date is before the fetch time is not returned. A news post about last weekend produces nothing.
+- **Festival programme items.** A festival is one experience. The talks, concerts and exhibitions on its programme are not extracted separately.
 
 ## Classification
 
@@ -100,7 +116,7 @@ One step, shared by every source kind. The language model assigns each extracted
 
 - **Given:** the extracted experience (title, summary, description, venue, hints) and the definitions: every attribute with its options, and every tag, each with its description.
 - **Returns:** a value for each attribute it can decide, the tags that apply, and the profile (see Profile).
-- **Checked against the definitions:** an attribute, option or tag that is not defined is dropped. A value must fit the attribute's type, and a single-valued attribute gets one value. An attribute with no value gets its default, if it has one.
+- **Checked against the definitions:** an attribute, option or tag that is not defined is not put on the experience and is saved for review (see Undefined values). A value must fit the attribute's type, and a single-valued attribute gets one value. An attribute with no value gets its default, if it has one.
 
 The definitions are configuration, not code. A definition's description is the context the language model reads to decide when it applies. Classification is improved by adding definitions or rewording descriptions, with no change to code or the schema. The shape of a definition is in [data-model.md](data-model.md).
 
@@ -196,19 +212,45 @@ The classification step also writes each experience's profile: a short text in E
 - **Says:** what it is, what you do there, who it suits, the setting and the feel, in two to four sentences.
 - **Written from:** the extracted experience's fields and the attribute values and tags just assigned, and nothing else. A fact that is in neither is left out, so a profile never states an age limit, accessibility or suitability that no source gave.
 - **Kept apart from the description:** the source's summary and description are saved as extracted. The profile is its own field on the experience, saved by Catalogue.
-- **Written again:** every time the experience is processed.
+- **Written again:** every time the experience is processed. The new profile replaces the stored one, so the profile always reflects the latest version of the source.
 
 An example, for the Hermanus Whale Festival: "Annual three-day festival on the Hermanus waterfront during whale season. Land-based whale watching, live music, a craft and food market, and children's activities. Outdoor and busy, suits families and all ages."
+
+### Undefined values
+
+The language model can return an attribute, option or tag that is not in the definitions. That value is not put on the experience, and the rest of the answer is saved as usual. The raw listing does not fail.
+
+Each such value is saved for review, with as much detail as there is: the raw listing, the extracted experience, whether it was an attribute, an option or a tag, the value returned, and the model's whole answer. Version 1 only stores these rows. Nothing reads them or acts on them.
 
 ## Matching
 
 Matching decides, for each extracted experience, whether it is an experience Catalogue already has. Data processing makes the decision; Catalogue supplies the source links and the candidates.
 
 1. **The listing already links to experiences.** The extracted experience is compared with those first, and the one it matches is updated. A Quicket or Ticketmaster listing describes one experience, so it always updates the one it links to.
-2. **Otherwise** Catalogue returns candidates: experiences in the same location with overlapping dates and a similar title. Cancelled, Removed and Past experiences are never candidates. Data processing links the listing to one of them, or creates a new experience.
+2. **Otherwise** Catalogue returns candidates: experiences in the same location with overlapping dates and a similar title. Cancelled, Removed and Past experiences are never candidates. A candidate with the same title, once normalised, and overlapping dates is a match, decided in code with no model. If no candidate matches that way, the language model is shown the extracted experience and the candidates and picks one or none. With none, a new experience is created.
 3. **Links that fall away.** An experience the listing linked to before, which this version no longer describes, loses that link. If it has no links left, Catalogue sets it to Removed.
 
 A listing can link to several experiences, and an experience has at most one link per listing. One experience can have links from many listings and sources.
+
+### When sources disagree
+
+The same experience appears on many sources, and they do not always agree. The Whale Festival is on Quicket, AllEvents, Wesgro, SA-Venues and the tourism PDF, and winetourism.com lists different FynArts 2027 dates from the organiser.
+
+- Each source has a priority number.
+- An experience's fields come from its highest-priority linked listing.
+- A lower-priority listing only fills fields that are empty.
+- When the highest-priority link is removed, the next one takes over.
+
+## Data warehouse
+
+After saving, Data processing appends each experience it saved to the data warehouse: a table in the same Postgres database, owned by Data processing.
+
+- **One row per experience, per processing.** The row holds the experience as Catalogue saved it, and the raw listing it came from.
+- **Append only.** A row is never changed or deleted, so the table is the history of what processing produced.
+- **Inside the raw listing's transaction.** A raw listing that fails leaves no rows.
+- **A copy, kept as history.** Catalogue's store stays the one that search and changed-since are served from.
+
+Who reads the warehouse is an open question in [architecture.md](architecture.md).
 
 ## Embeddings and semantic ranking
 
@@ -303,14 +345,14 @@ No part of the domain names a provider or imports a provider's SDK. The adapters
 
 ### Language model port
 
-Owned by Data processing. Discovery uses the same port (see [discovery.md](discovery.md)).
+Shared by Data processing and Discovery (see [discovery.md](discovery.md)). Like the settings provider it belongs to no domain, so Discovery does not depend on Data processing by using it. The instructions and the answer's shape stay with the domain that asks.
 
 | Used for | The model is given | The model returns | Status |
 | --- | --- | --- | --- |
-| Extraction of a WordPress post or web page | The text, the location's name and region, the fetch time | The extracted experiences | Version 1 |
+| Extraction of an RSS feed post or web page | The text, the location's name and region, the fetch time | The extracted experiences | Version 1 |
 | Extraction of a PDF calendar | The PDF file itself, with the same context | The extracted experiences | Version 1 |
 | Classification | One extracted experience and the attribute, option and tag definitions with their descriptions | Attribute values, tags and the profile | Version 1 |
-| The match decision | One extracted experience and the candidates from Catalogue | One candidate, or none | Proposed (see Open questions) |
+| The match decision, when no candidate matches in code | One extracted experience and the candidates from Catalogue | One candidate, or none | Version 1 |
 
 Each use is one request with one answer in a set shape. None is an agent: the steps are fixed and the code controls them.
 
@@ -380,34 +422,47 @@ The attribute, option and tag definitions are not settings. They are rows (see C
 
 | Decision | |
 | --- | --- |
-| Steps | Extract, classify, match, save. One raw listing is one transaction, from claim to mark |
-| Extraction | One extractor per source kind. Field mapping in code for Quicket and Ticketmaster. The language model for WordPress, PDF calendar and web page |
+| Steps | Extract, classify, match, save, then append to the data warehouse. One raw listing is one transaction, from claim to mark, including while the language model answers |
+| Extraction | One extractor per source kind. Field mapping in code for Quicket and Ticketmaster. The language model for RSS feed, PDF calendar and web page |
 | Several experiences per listing | An extractor returns zero or more experiences. A post, page or calendar is never forced into one |
 | Classification | One step for every kind: the language model picks attribute values and tags from the definitions and their descriptions, and writes the profile |
 | Category and format | Separate attributes. Category is what an experience is about, format is the form it takes. Festival, market and talk are formats |
 | Audience | One attribute with Family, All ages and Adults. There is no family category |
-| Profile | A short text the language model writes for every experience, from its extracted fields and assigned values only. Saved beside the source's description, never in place of it |
+| Profile | A short text the language model writes for every experience, from its extracted fields and assigned values only. Saved beside the source's description, never in place of it. Written again on every processing, so it always reflects the latest version of the source |
 | Embeddings | Catalogue embeds each experience's title and profile, in a worker of its own. Saving an experience never calls the embedding model |
 | Ranking | A query text orders the results and never filters them. The order is by meaning and by keyword, combined by reciprocal rank fusion |
 | Ports and adapters | The language model and the embedding model are each reached through a port. The domain names no provider. A provider is changed by writing an adapter and changing a setting |
 | Adapters in version 1 | Language model: Claude, through the Anthropic API. Embedding model: Amazon Titan Text Embeddings V2, through Amazon Bedrock |
 | Definitions | Configurable rows with a default set, not enums. Improving classification means adding or rewording definitions |
-| Matching | By the listing's existing source links first, then by comparing candidates |
+| Matching | By the listing's existing source links first, then by comparing candidates. The same normalised title and overlapping dates is a match in code. Otherwise the language model picks one candidate or none |
+| Sources that disagree | Each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. When that link is removed, the next one takes over |
+| Versions of a listing | Only the latest version of a listing can be claimed. Older pending or failed versions are set to Superseded |
+| Processing again | Processed is not final. A listing's latest version can be processed again at any time |
+| Already over | An extractor leaves out experiences whose last date is before the fetch time |
+| Festival programmes | A festival is one experience. Its programme items are not extracted separately |
+| Undefined values | An attribute, option or tag that is not defined is not put on the experience. It is saved for review with as much detail as possible, and version 1 does nothing more with it |
+| Data warehouse | A table in the same Postgres database. After saving, Data processing appends each experience it saved |
 | Failure | Nothing is saved from a raw listing that fails. It is retried up to the source's max processing attempts |
 
 ## Open questions
 
-Each has a proposed answer. None is agreed yet.
+Three questions are still open. Each has a proposed answer that is not agreed yet.
 
-- [ ] **Sources that disagree.** The same experience appears on many sources (the Whale Festival is on Quicket, AllEvents, Wesgro, SA-Venues and the tourism PDF), and they disagree (winetourism.com lists different FynArts 2027 dates from the organiser). Which one's fields win? *Proposed:* each source has a priority number. An experience's fields come from its highest-priority linked listing, and lower-priority listings only fill fields that are empty. When that link is removed, the next one takes over.
-- [ ] **The match decision.** What makes a candidate the same experience? *Proposed:* a candidate with the same title, once normalised, and overlapping dates is a match without a model. Otherwise the language model is shown the candidates and picks one or none.
-- [ ] **Status and booking from a listing.** What in a listing sets each status? *Proposed:* says cancelled: Cancelled, Closed. Says postponed with no new date: Postponed, Closed. Tickets on sale: Confirmed, Open. Sold out: Confirmed, Sold out. Exact dates with an on-sale time ahead: Announced, Not yet. Exact dates and nothing to book: Confirmed, None. Only a month or year: Announced. Expected is never set from a listing.
-- [ ] **Version order.** Two versions of one listing can both be pending, and a failed older version can be retried after a newer one was processed. *Proposed:* only the latest version of a listing can be claimed. Older pending or failed versions get a new status, Superseded.
-- [ ] **Processing again.** Processed is final, so listings already processed never pick up a fixed extractor or new definitions. *Proposed:* a system admin action sets the latest version of chosen raw listings, by source or by kind, back to pending.
-- [ ] **Already over.** A news post can describe something that has already happened. *Proposed:* an extractor leaves out experiences whose last date is before the fetch time.
-- [ ] **Festival programmes.** A festival page can list hundreds of programme items. *Proposed:* a festival is one experience, and its programme items are not extracted separately.
-- [ ] **Profile and versions.** The language model words a profile differently each time an experience is processed, and Catalogue bumps the version on every real change, so a reworded profile would be reported by changed-since. *Proposed:* a change to the profile alone does not bump the version or write a change row.
-- [ ] **Data warehouse.** The architecture gives Data processing a port that loads the data warehouse, but no step here loads it. See the open question in [architecture.md](architecture.md).
+- [ ] **Status and booking from a listing.** Extraction reads what a listing says and sets the experience's status and booking from it. A listing that says "cancelled" or "sold out" is clear. Most listings say neither: they give a date, or only a month, and perhaps a ticket link. Which status and booking does each of those get? *Proposed:* the rules in the table below, given to the extractors. Expected is never set from a listing.
+- [ ] **What sends a listing to be processed again.** Processed is not final (see Processing again), but nothing yet says what sets a listing back to pending. *Proposed:* a system admin action sets the latest version of chosen listings, by source or by kind, back to pending.
+- [ ] **Profile and versions.** The profile is written again on every processing (see Profile), in different words each time, and Catalogue bumps the version on every real change, so a reworded profile would be reported by changed-since. *Proposed:* a change to the profile alone does not bump the version or write a change row.
+
+The proposed rules for status and booking:
+
+| What the listing says or shows | Status | Booking |
+| --- | --- | --- |
+| The organisers cancelled it | Cancelled | Closed |
+| Postponed, with no new date | Postponed | Closed |
+| Tickets are on sale | Confirmed | Open |
+| Sold out | Confirmed | Sold out |
+| Exact dates, and tickets go on sale later | Announced | Not yet |
+| Exact dates, and nothing to book | Confirmed | None |
+| Only a month or a year | Announced | Not set by this |
 
 ## Adapters
 

@@ -116,6 +116,8 @@ flowchart TB
   DP --> LM
   CAT --> EM
   DP --> DW
+  DIS --> STO
+  DP --> STO
   CAT --> STO
   ORG --> STO
 ```
@@ -131,19 +133,30 @@ Models from outside providers sit behind ports like everything else. The domains
 
 The ports and their adapters are defined in [data-processing.md](data-processing.md).
 
-REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker and Catalogue's move of finished experiences to Past without passing through Identity, because no client is involved.
+REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler starts discovery, the processing worker, Catalogue's embedding worker and Catalogue's move of finished experiences to Past without passing through Identity, because no client is involved.
 
 | Domain | Inbound ports (what it offers) | Outbound ports (what it needs) |
 | --- | --- | --- |
 | Discovery | Run discovery for a source; manage sources; claim pending raw listings; mark them processed or failed | Fetch from a source; store runs, listings and raw listings; get a source's location from Catalogue; ask the language model |
-| Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; ask the language model; load the data warehouse |
-| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; move finished experiences to Past | Store locations, published experiences and their history; embed texts |
+| Data processing | Process pending raw listings; manage attribute and tag definitions | Claim and mark raw listings through Discovery; get a location, match and save experiences through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
+| Catalogue | Search experiences; get changes since; manage locations; get a location; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; move finished experiences to Past | Store locations, published experiences and their history; embed texts |
 | Identity | Authenticate a caller; authorise an action | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
 | Organizations | Manage tenants; manage users and roles; get a tenant | Store tenants |
 
+### Rules
+
+Static analysis checks these, so they hold by tooling and not by convention.
+
+- A domain's core, which is its service, its ports and its types, imports no adapter, no provider's SDK and no database client.
+- Everything outside the system is reached through an outbound port: sources, the language model, the embedding model, storage and the data warehouse. An adapter implements the port and is the only code that imports its technology.
+- An adapter imports the port it implements and the ports it is built with. Only the code that wires the system together at startup imports an adapter.
+- A domain calls another domain only through that domain's inbound port, and only along the arrows in How domains talk.
+- The settings provider and the language model port are shared and belong to no domain, so using them makes no domain depend on another.
+- One exception: Better Auth. Identity and Organizations use it and its tables directly, with no port over it.
+
 ## How domains talk
 
-A domain that needs another domain's data calls that domain's service. Nothing is copied between domains and nothing is kept in sync. All tables are in one Postgres database.
+A domain that needs another domain's data calls that domain's service through its inbound port, and uses only that port and the types on it. Nothing is copied between domains and nothing is kept in sync. All tables are in one Postgres database.
 
 | Service | Calls | For |
 | --- | --- | --- |
@@ -222,13 +235,14 @@ Because every run fetches the same listings again, a change at the source months
 | What happens when a listing disappears from its source? | After the configured number of successful, complete runs without it, its source link is removed. An experience with no source links left is set to Removed. Cancelled is only for an experience its organisers cancelled |
 | What happens when an experience is over? | Catalogue sets it to Past, and search leaves it out |
 | How do domains share data? | By calling each other's services. Nothing is copied or kept in sync |
-| Which sources does version 1 fetch? | Five kinds, with one adapter and one extractor each: Quicket, Ticketmaster, WordPress posts, PDF calendars and web pages |
+| Which sources does version 1 fetch? | Five kinds, with one adapter and one extractor each: Quicket, Ticketmaster, RSS feeds, PDF calendars and web pages. A kind is named for how a source is fetched |
 | How does an experience stay up to date? | Discovery keeps a record of every listing and fetches it again on every run. A changed listing is processed again and updates its experiences |
 | What is a raw listing? | One version of a listing's content, whole as fetched. Data processing extracts zero or more experiences from it |
 | Are categories and tags fixed? | No. They are configurable definitions with a default set. Classification improves by adding definitions and descriptions, with no code change |
 | Which domain events are defined? | Only those for sourcing and processing experiences: `raw_listing.captured` and `experience.processed` |
 | Where is the system configured? | System settings are environment variables read through one settings provider, and each domain's document lists its own. Per-source settings are on the source row. Categories and tags are definition rows |
 | How are model providers kept swappable? | Each model is reached through a port, and the domains name no provider. Version 1's adapters are Claude through the Anthropic API for the language model, and Amazon Titan through Amazon Bedrock for the embedding model |
+| Is everything outside the system behind a port? | Yes, with one exception: Better Auth, which Identity and Organizations use directly. The rules are under Architecture, and static analysis checks them |
 
 ## Open questions
 

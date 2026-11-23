@@ -35,5 +35,5 @@ Nothing reads them. Domains call each other's services, and the hand-off from fe
 
 | Domain event | Raised by | When | Carries |
 | --- | --- | --- | --- |
-| `raw_listing.captured` | Discovery | A run saves a raw listing: a listing that is new, has changed or was removed | Raw listing ID, listing ID, run ID, source, kind, fetched time, content type |
+| `raw_listing.captured` | Discovery | A run saves a raw listing: a listing that is new, has changed or was removed | Raw listing ID, listing ID, run ID, source, source kind, fetched time, content type |
 | `experience.processed` | Data processing | Processing a raw listing created or changed an experience. One per experience | Experience ID, version, raw listing ID |
