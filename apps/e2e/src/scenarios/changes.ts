@@ -53,9 +53,9 @@ export function registerChanges(): void {
       {
         "Dancing Queen: The Ultimate ABBA Experience": "cancelled",
         "Andrew Young Live Concert": "postponed",
-        "That ’80s Show: 80s Tribute Concert": "rescheduled",
-        "Christmas Eve Dinner 2026 at Moody Lagoon": "changed",
-        "Race2Hermanus Triathlon 2027": "confirmed",
+        "That ’80s Show": "rescheduled",
+        "Christmas Eve Dinner": "changed",
+        "Race2Hermanus Triathlon": "confirmed",
         // E2E-23 removed it, after T1, and its dates are in the range.
         "Swallow Series Wine Tasting Lunches": "removed",
       },
@@ -64,9 +64,9 @@ export function registerChanges(): void {
     const five = [
       "Dancing Queen: The Ultimate ABBA Experience",
       "Andrew Young Live Concert",
-      "That ’80s Show: 80s Tribute Concert",
-      "Christmas Eve Dinner 2026 at Moody Lagoon",
-      "Race2Hermanus Triathlon 2027",
+      "That ’80s Show",
+      "Christmas Eve Dinner",
+      "Race2Hermanus Triathlon",
       "Swallow Series Wine Tasting Lunches",
     ];
     const others = items.filter((item) => !five.includes(item.experience.title));
@@ -82,7 +82,7 @@ export function registerChanges(): void {
       andrew?.status === "postponed" && andrew.booking === "closed" && !andrew.bookable,
       `the postponed concert is returned postponed, closed and not bookable: ${show(andrew && [andrew.status, andrew.booking, andrew.bookable])}`,
     );
-    const r2h = titled((await search({ location: "hermanus", from: "2027-05-02", to: "2027-05-02", limit: 100 })).result.items, "Race2Hermanus Triathlon 2027")[0];
+    const r2h = titled((await search({ location: "hermanus", from: "2027-05-02", to: "2027-05-02", limit: 100 })).result.items, "Race2Hermanus Triathlon")[0];
     c.ok(r2h?.bookable === true, "the confirmed triathlon is bookable");
     const t0 = recall<string>("T0");
     if (t0 !== undefined) {
@@ -114,7 +114,7 @@ export function registerChanges(): void {
   });
 
   scenario("E2E-29", "Moved out of the dates searched", async ({ c }) => {
-    const title = "That ’80s Show: 80s Tribute Concert";
+    const title = "That ’80s Show";
     for (const [from, to, movedOut] of [["2027-02-20", "2027-02-28", true], ["2027-03-01", "2027-03-10", false]] as const) {
       const items = await allChanges({ location: "hermanus", from, to, since: since(c) });
       const show80s = items.find((item) => item.experience.title === title);

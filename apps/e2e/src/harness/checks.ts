@@ -18,6 +18,15 @@ export class Checks {
     return same;
   }
 
+  // Two lists of names that must hold the same names, whatever the order: says which are missing and which are extra.
+  sameSet(actual: string[], expected: string[], what: string): boolean {
+    const missing = expected.filter((one) => !actual.includes(one));
+    const extra = actual.filter((one) => !expected.includes(one));
+    if (missing.length === 0 && extra.length === 0) return true;
+    this.problems.push(`${what}: missing ${show(missing, 2000)}, not expected ${show(extra, 2000)}`);
+    return false;
+  }
+
   fail(what: string): void {
     this.problems.push(what);
   }

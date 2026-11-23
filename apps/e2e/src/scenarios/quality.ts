@@ -280,11 +280,11 @@ export function registerQuality(): void {
       else c.fail(message);
     }
     for (const title of [
-      "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026",
+      "Rumours of Fleetwood Mac",
       "Swallow Series Wine Tasting Lunches",
       "Sourdough Baking Class",
       "Where the Wild Things Come to Rest: Carol Bryant Wildlife Sculpture Exhibition",
-      "Kalfiefees Hermanus Kunstefees 2027",
+      "Kalfiefees Hermanus Kunstefees",
       "Hermanus Country Market",
       "Hermanus Country Market Summer Night Markets",
     ]) {

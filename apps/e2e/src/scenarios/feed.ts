@@ -230,9 +230,9 @@ export function registerFeedChanges(): void {
     const expected: Record<string, string> = {
       "Dancing Queen: The Ultimate ABBA Experience": "cancelled",
       "Andrew Young Live Concert": "postponed",
-      "That ’80s Show: 80s Tribute Concert": "",
-      "Christmas Eve Dinner 2026 at Moody Lagoon": "",
-      "Race2Hermanus Triathlon 2027": "confirmed",
+      "That ’80s Show": "",
+      "Christmas Eve Dinner": "",
+      "Race2Hermanus Triathlon": "confirmed",
     };
     for (const [title, status] of Object.entries(expected)) {
       const was = before.find((one) => one.title === title);
@@ -247,11 +247,11 @@ export function registerFeedChanges(): void {
 
     const andrew = titled(await searchAll({ location: "hermanus", from: "2027-01-09", to: "2027-01-09" }), "Andrew Young Live Concert")[0];
     c.ok(andrew?.status === "postponed" && andrew.booking === "closed", `Andrew Young shows postponed and closed: ${show(andrew?.status)}`);
-    const eighties = titled(await searchAll({ location: "hermanus", from: "2026-12-01", to: "2027-03-31" }), "That ’80s Show: 80s Tribute Concert")[0];
+    const eighties = titled(await searchAll({ location: "hermanus", from: "2026-12-01", to: "2027-03-31" }), "That ’80s Show")[0];
     c.equal(eighties ? sessionDays(eighties) : [], ["2026-12-12", "2027-03-06"], "the 80s show's dates");
-    const dinner = titled(await searchAll({ location: "hermanus", from: "2026-12-24", to: "2026-12-24" }), "Christmas Eve Dinner 2026 at Moody Lagoon")[0];
+    const dinner = titled(await searchAll({ location: "hermanus", from: "2026-12-24", to: "2026-12-24" }), "Christmas Eve Dinner")[0];
     c.equal(dinner ? [dinner.price.min, dinner.price.max, dinner.price.currency] : [], [650, 650, "ZAR"], "the Christmas Eve dinner's price");
-    const r2h = titled(await searchAll({ location: "hermanus", from: "2027-05-02", to: "2027-05-02" }), "Race2Hermanus Triathlon 2027")[0];
+    const r2h = titled(await searchAll({ location: "hermanus", from: "2027-05-02", to: "2027-05-02" }), "Race2Hermanus Triathlon")[0];
     c.ok(r2h?.status === "confirmed" && r2h.booking === "open" && r2h.bookable, `the triathlon is confirmed, open and bookable: ${show(r2h?.status)}`);
     c.ok(r2h?.bookingUrl === "https://r2h.bikeruntri.co.za/enter", `the triathlon's booking link: ${show(r2h?.bookingUrl)}`);
   });
@@ -273,8 +273,8 @@ export function registerFeedChanges(): void {
   scenario("E2E-24", "One experience across many sources", async ({ c }) => {
     const cases: [string, string, string, number][] = [
       // On the captured pages: four and five listings. The development database adds the seeded sources' listings.
-      ["2026-12-11", "Fleetwood Mac", "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026", 4],
-      ["2026-11-28", "Rosoberry", "Rosoberry Harvest Fest 2026", 5],
+      ["2026-12-11", "Fleetwood Mac", "Rumours of Fleetwood Mac", 4],
+      ["2026-11-28", "Rosoberry", "Rosoberry Harvest Fest", 5],
     ];
     for (const [day, text, title, sources] of cases) {
       const items = await searchAll({ location: "hermanus", from: day, to: day, query: text });
@@ -297,15 +297,16 @@ export function registerFeedChanges(): void {
     c.ok(none.code !== 0, "reprocess with no selector exits with an error");
     c.ok(/exactly one of --listing, --experience, --source(,| and) --location/.test(none.output), `it names the four selectors: ${none.output.trim().slice(0, 200)}`);
 
-    const festival = titled(await searchAll(WINTER), "2027 Hermanus FynArts Festival")[0];
+    const festival = titled(await searchAll(WINTER), "Hermanus FynArts Festival")[0];
     const before = await versions();
     if (c.ok(festival !== undefined, "search returns the FynArts Festival") && festival) {
       const sent = await pipeline(["reprocess", "--experience", festival.slug]);
       const count = Number((/Sent (\d+) listings back/.exec(sent.stdout) ?? [])[1] ?? "0");
       c.ok(sent.code === 0 && count > 0, `the experience reprocess sends its listings back: ${sent.stdout.trim().slice(0, 200)}`);
-      const processed = await captures(["--source", "hermanus-fynarts"]);
+      // Its listings are on several sources, so every captured source is loaded to answer them.
+      const processed = await captures();
       checkNoFailure(c, processed, "Processing the FynArts listings");
-      const now = titled(await searchAll(WINTER), "2027 Hermanus FynArts Festival");
+      const now = titled(await searchAll(WINTER), "Hermanus FynArts Festival");
       c.equal(ids(now), [festival.id], "the FynArts Festival keeps its ID, and there is one");
       c.equal(now[0]?.version, festival.version, "its version, with no field changed");
       logs((lc) => {

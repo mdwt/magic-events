@@ -71,7 +71,7 @@ export async function liveSchedule(c: Checks): Promise<void> {
     };
     const call = await send(server, { path: "/v1/experiences/search", client: planner, body: { ...WINTER, limit: 100, query: "art festival" } });
     const result = call.json as SearchResult;
-    const festival = titled(result.items, "2027 Hermanus FynArts Festival")[0];
+    const festival = titled(result.items, "Hermanus FynArts Festival")[0];
     c.ok(festival !== undefined, `the winter stay returns the FynArts Festival: ${show(result.items.map((item) => item.title))}`);
     const searched = server.find((line) => line.requestId === call.requestId && line.msg === "Searched experiences");
     c.ok(searched?.byMeaning === true, "a query text orders by meaning, with a real embedding");
@@ -111,11 +111,11 @@ export async function liveRefetch(c: Checks): Promise<void> {
     const one = await pipeline(["refetch", "--listing", id]);
     c.ok(/belongs to Hermanus FynArts, which is fetched whole/.test(one.stdout), `refetch --listing names its source: ${printedOf(one).trim().slice(-200)}`);
   }
-  const festival = titled(await searchAll(WINTER), "2027 Hermanus FynArts Festival")[0];
+  const festival = titled(await searchAll(WINTER), "Hermanus FynArts Festival")[0];
   if (festival) {
     const again = await pipeline(["reprocess", "--experience", festival.slug, "--now"]);
     c.ok(/Sent \d+ listings back/.test(again.stdout) && /Processed \d+ raw listings/.test(again.stdout), "reprocess --experience --now processes them");
-    const now = titled(await searchAll(WINTER), "2027 Hermanus FynArts Festival");
+    const now = titled(await searchAll(WINTER), "Hermanus FynArts Festival");
     c.equal(now.map((item) => item.id), [festival.id], "the FynArts Festival keeps its ID, and there is one");
   }
   const sent = await pipeline(["reprocess", "--source", "Quicket public pages"]);

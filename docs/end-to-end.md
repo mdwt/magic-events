@@ -57,11 +57,11 @@ Two stays are used throughout:
 - **Who and how:** Agency Planner, person key, REST.
 - **Steps:** search with the winter stay.
 - **Passes when:**
-  - The answer is 200 with `total` 33.
+  - The answer is 200 with `total` 38.
   - Every item's status is expected, announced, confirmed or postponed, and every session it carries overlaps 20 to 30 June 2027.
   - Items come most premium first (E2E-44), and within a tier in date order of their first session in the stay.
   - `bookable` is true exactly when status is confirmed, booking is open and there is a link to book through: `bookingUrl`, or failing that `pageUrl`.
-  - "2027 Hermanus FynArts Festival" is there: announced, booking not yet, not bookable, one session 24 June to 4 July 2027 with day precision.
+  - "Hermanus FynArts Festival" is there: announced, booking not yet, not bookable, one session 24 June to 4 July 2027 with day precision.
   - "Sculpture on the Cliffs" is there with one session of month precision, June 2026 to June 2027.
   - "Hermanus Country Market" is there with exactly one session, Saturday 26 June, 09:00 to 14:00.
   - Every item has the fields of the search answer, its own page address (`pageUrl`, which may be empty) among them.
@@ -72,7 +72,7 @@ Two stays are used throughout:
 - **Who and how:** Agency Planner, REST.
 - **Steps:** the winter stay with `"attributes": { "category": ["visual_arts"] }`. Then the winter stay with `"tags": ["whales"]`.
 - **Passes when:**
-  - The first answer has exactly the four experiences with visual arts as a category: 2027 Hermanus FynArts Festival, Sculpture on the Cliffs, Hermanus Country Market and Akwaaba Market. Hermanus parkrun is not there.
+  - The first answer has exactly the four experiences with visual arts as a category: Hermanus FynArts Festival, Sculpture on the Cliffs, Hermanus Country Market and Akwaaba Market. Hermanus parkrun is not there.
   - The second answer includes "Hermanus Whale Cruises boat-based whale watching", and every item carries the tag `whales`.
 
 #### E2E-03 · A family with young children
@@ -81,9 +81,9 @@ Two stays are used throughout:
 - **Who and how:** App Planner, REST.
 - **Steps:** search 12 to 31 December 2026 with `"attributes": { "audience": ["family", "all_ages"], "minimum_age": { "max": 10 } }`. Then the same dates with `"attributes": { "minimum_age": { "min": 18 } }`.
 - **Passes when:**
-  - The first answer includes "Paddakoor Akademie Presents - CHRISTMAS CARNIVAL" (12 December) and "New Years´s Eve Family Day at Landskein" (31 December), and includes experiences with no age limit recorded, such as Hermanus Country Market.
-  - No item in it has audience adults or a minimum age above 10. "Electro DANCE - Sunset Beats to Late Night Bass" (18 and over) is not there.
-  - The second answer is only experiences with a recorded minimum age of 18 or more: "Electro DANCE - Sunset Beats to Late Night Bass", one session starting on 16 December. It runs from 19:00 to 01:00, so the session ends on the 17th.
+  - The first answer includes "Paddakoor Akademie Christmas Carnival" (12 December) and "New Year's Eve Family Day" (31 December), and includes experiences with no age limit recorded, such as Hermanus Country Market.
+  - No item in it has audience adults or a minimum age above 10. "Electro Dance - Sunset Beats to Late Night Bass" (18 and over) is not there.
+  - The second answer is exactly the experiences with a recorded minimum age of 18 or more: "Electro Dance - Sunset Beats to Late Night Bass", one session starting on 16 December (it runs from 19:00 to 01:00, so the session ends on the 17th), "Dam Fine Wine", "Wild about Wine", "Somos Sunset House & Dining" and "Millennium Live by The Gecko".
 
 #### E2E-04 · Only what can be booked now
 
@@ -92,7 +92,7 @@ Two stays are used throughout:
 - **Steps:** the winter stay with `"bookable": true`.
 - **Passes when:**
   - Every item is confirmed, booking open, has a link to book through and is `bookable`.
-  - The answer is the eight experiences that are: Cape Shark Adventures, Cuvée Weekends at Benguela Cove, Deli Dining at Dal-Italia, Harold Porter National Botanical Garden, Hermanus Whale Cruises boat-based whale watching, Panthera Africa Sunset Visits, Shark Cage Diving & Surface Viewing- Gansbaai and Sourdough Baking Class.
+  - The answer is the eleven experiences that are: Boat-based whale watching with Southern Right Charters, Cuvée Weekends, Deli Dining at Dal-Italia, Family Sharing Lunch, Harold Porter National Botanical Garden visit, Hermanus Whale Cruises boat-based whale watching, Panthera Africa Sunset Visits, Private whale watching charter with Southern Right Charters, Shark Cage Diving & Surface Viewing, Shark cage diving with Cape Shark Adventures and Sourdough Baking Class.
   - The FynArts Festival, whose booking has not opened, is not there.
 
 #### E2E-05 · By the place's name
@@ -122,7 +122,7 @@ Two stays are used throughout:
 - **Steps:** the winter stay with `"query": "sculpture and art galleries, quiet and outdoors"`. Then with `"query": "FynArts"`. Then the first again with the embedding model unreachable (the server started with `AWS_REGION` empty). `pnpm e2e` has no AWS settings, so all three are this last case.
 - **Passes when:**
   - Each answer has the same `total` and the same set of experiences as E2E-01. The query text only reorders.
-  - Results come most premium first, and the query text orders within a tier. "Sculpture on the Cliffs" is in the first three of its tier in the first answer, and "2027 Hermanus FynArts Festival" is first in the second.
+  - Results come most premium first, and the query text orders within a tier. "Sculpture on the Cliffs" is in the first three of its tier in the first answer, and "Hermanus FynArts Festival" is first of its tier in the second.
   - With the model unreachable the search still answers 200 with the same set, ordered by keyword, within the 5 second wait plus the search itself.
 
 #### E2E-08 · Paging through a long answer
@@ -130,7 +130,7 @@ Two stays are used throughout:
 - **Goal:** "Show me ten at a time."
 - **Who and how:** Agency Planner, REST.
 - **Steps:** the winter stay with `"limit": 10` and `"offset"` 0, 10, 20 and 30.
-- **Passes when:** every page has `total` 33; the pages hold 10, 10, 10 and 3 items; no experience is on two pages; together they are E2E-01's items in E2E-01's order.
+- **Passes when:** every page has `total` 38; the pages hold 10, 10, 10 and 8 items; no experience is on two pages; together they are E2E-01's items in E2E-01's order.
 
 #### E2E-09 · The same answer for an AI agent over MCP
 
@@ -149,7 +149,7 @@ Two stays are used throughout:
 - **Steps:** ask the question as written, with nothing else.
 - **Passes when:**
   - The server log shows a `search_experiences` call with `location` `hermanus` (or a point in Hermanus), `from` 2027-06-20 and `to` 2027-06-30, made with the agent key (`callerKind` agent).
-  - The reply names the 2027 Hermanus FynArts Festival with its dates, 24 June to 4 July 2027, and says it cannot be booked yet. It names Sculpture on the Cliffs.
+  - The reply names the Hermanus FynArts Festival with its dates, 24 June to 4 July 2027, and says it cannot be booked yet. It names Sculpture on the Cliffs.
   - Every experience the reply names is in the tool's answer, with the dates the answer gives.
 
 ### Each kind of experience in the brief
@@ -160,7 +160,7 @@ Two stays are used throughout:
 - **Who and how:** Agency Planner, REST.
 - **Steps:** search 11 to 11 December 2026. Then 12 to 12 December 2026.
 - **Passes when:**
-  - The first answer has "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026" once: confirmed, booking open, bookable, venue Hermanus Golf Club, price 430 ZAR, one session on 11 December from 18:00 to 22:30, and a booking link.
+  - The first answer has "Rumours of Fleetwood Mac" once: confirmed, booking open, bookable, venue Hermanus Golf Club, price 430 ZAR, one session on 11 December from 18:00 to 22:30, and a booking link.
   - The second answer does not have it.
 
 #### E2E-12 · Something that runs, only on its own dates
@@ -185,7 +185,7 @@ The run and the weekly class are never returned for a day between their dates. T
 - **Who and how:** Agency Planner, REST.
 - **Steps:** search 14 to 15 August 2027. Then 1 to 5 September 2027.
 - **Passes when:**
-  - The first answer has "Kalfiefees Hermanus Kunstefees 2027": expected, as its 2027 edition is known only by its month, not bookable, one session from 1 to 31 August 2027 with month precision and no times.
+  - The first answer has "Kalfiefees Hermanus Kunstefees": expected, as its 2027 edition is known only by its month, not bookable, one session from 1 to 31 August 2027 with month precision and no times.
   - The second answer does not have it.
   - An experience whose days are announced has day precision: the FynArts Festival in E2E-01.
 
@@ -205,8 +205,8 @@ The run and the weekly class are never returned for a day between their dates. T
 - **Who and how:** Agency Planner, REST.
 - **Steps:** the winter stay with `"tags": ["whale-season"]`. Then look at the tags of the experiences named below in any search that returns them.
 - **Passes when:**
-  - The answer includes the 2027 Hermanus FynArts Festival.
-  - The FynArts Festival carries `whale-season` and `winter`. "Hermanus Whale Cruises boat-based whale watching" (June to November) carries `whale-season` and `whales`. "Christmas Eve Dinner 2026 at Moody Lagoon" carries `summer`, `high-season` and `south-african-school-holidays`, and not `whale-season`.
+  - The answer includes the Hermanus FynArts Festival.
+  - The FynArts Festival carries `whale-season` and `winter`. "Hermanus Whale Cruises boat-based whale watching" (June to November) carries `whale-season` and `whales`. "Christmas Eve Dinner" carries `summer`, `high-season` and `south-african-school-holidays`, and not `whale-season`.
   - No search returns an experience that is a season. "Southern Right Whales in Walker Bay" must not be an experience.
 
 A season tag is on the experience, not on each session, so an experience carries a season only when all of its dates fall inside it. A market that runs all year carries no season.
@@ -221,7 +221,7 @@ A season tag is on the experience, not on each session, so an experience carries
 - **Passes when:**
   - The May 2028 answer has the open-ended recurring experiences with their sessions in those dates: Hermanus Country Market on Saturdays 6 and 13 May 2028.
   - The September 2027 answer has "Swallow Series Wine Tasting Lunches" with its one session on 4 September 2027.
-  - The October 2027 answer has the annual festival expected next year: "Hermanus Whale Festival", status expected, one session from 1 to 31 October 2027 with month precision. The development database also has Hermanus Flower and Eco Fair and Hermanus Adventure Week in September 2027, expected, from the seeded sources.
+  - The next editions of annual events, known only by their month, are there as Expected, each with one session of month precision: "Stanford in Bloom" and "Hermanus Botanical Society Flower Show" in September 2027, "Hermanus Whale Festival" and "Pam Golding Hangklip Marathon" in October 2027.
   - Every bookable item that far ahead has a link to book through. That an item confirmed with booking open that far ahead has its tickets on sale now is checked by hand against its source.
 
 #### E2E-17 · Nothing beyond what is known
@@ -244,7 +244,7 @@ An annual festival known only by its month, with no announcement yet for the com
   - The log says the jobs started, with each schedule.
   - Every active seeded source has a run. Each run succeeded, or failed with a reason recorded.
   - No raw listing is left pending: `pipeline process` prints "Nothing was pending."
-  - The winter stay returns the 2027 Hermanus FynArts Festival, from the Hermanus FynArts source.
+  - The winter stay returns the Hermanus FynArts Festival, from the Hermanus FynArts source.
   - Every experience search can return has an embedding, so a query text can order by meaning: `pipeline embed` prints 0 remain.
 
 #### E2E-19 · A failed fetch is tried again
@@ -288,9 +288,9 @@ An annual festival known only by its month, with no announcement yet for the com
 | --- | --- | --- | --- |
 | Dancing Queen: The Ultimate ABBA Experience | `benguela-cove/dancing-queen-ultimate-abba-experience.txt` | Called off by the organisers: status cancelled, booking closed | Cancelled |
 | Andrew Young Live Concert | `benguela-cove/andrew-young-live-concert.txt` | Postponed with no new date: status postponed, booking closed | Postponed |
-| That ’80s Show: 80s Tribute Concert | `benguela-cove/that-80s-show-concert.txt` | The 27 February 2027 show moves to 6 March 2027 | Rescheduled |
-| Christmas Eve Dinner 2026 at Moody Lagoon | `benguela-cove/christmas-eve-dinner-2026.txt` | A price of R650 a person | Changed |
-| Race2Hermanus Triathlon 2027 | `race2hermanus/home.txt` | Entries open: status confirmed, booking open, a booking link | Confirmed |
+| That ’80s Show | `benguela-cove/that-80s-show-concert.txt` | The 27 February 2027 show moves to 6 March 2027 | Rescheduled |
+| Christmas Eve Dinner | `benguela-cove/christmas-eve-dinner-2026.txt` | A price of R650 a person | Changed |
+| Race2Hermanus Triathlon | `race2hermanus/home.txt` | Entries open: status confirmed, booking open, a booking link | Confirmed |
 
 - **Passes when:**
   - Each load reports the edited pages as changed and every other page unchanged.
@@ -312,7 +312,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Goal:** the same concert listed on several sites is one experience.
 - **Who and how:** Agency Planner, REST.
 - **Steps:** search 11 to 11 December 2026 with `"query": "Fleetwood Mac"`. Search 28 to 28 November 2026 with `"query": "Rosoberry"`.
-- **Passes when:** "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026" (four listings, on Quicket, AllEvents.in, Facebook and The Village NEWS) is returned once, and "Rosoberry Harvest Fest 2026" (five listings, on those four and Wesgro) is returned once. On the development database the seeded sources add listings: six for the concert and eight for the festival.
+- **Passes when:** "Rumours of Fleetwood Mac" (four listings, on Quicket, AllEvents.in, Facebook and The Village NEWS) is returned once, and "Rosoberry Harvest Fest" (five listings, on those four and Wesgro) is returned once. On the development database the seeded sources add listings: six for the concert and eight for the festival.
 
 #### E2E-25 · The operator fetches again and processes again
 
@@ -320,7 +320,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Who and how:** the system admin, the command line.
 - **Steps:**
   - `pipeline reprocess` with no selector.
-  - `pipeline reprocess --experience <slug>` with the FynArts Festival's slug as search returns it, then `captures --source hermanus-fynarts`, which processes the listings sent back from the captured files. `pipeline reprocess --source "Quicket event pages"`, then `captures --source quicket`.
+  - `pipeline reprocess --experience <slug>` with the FynArts Festival's slug as search returns it, then `captures`, which processes the listings sent back from the captured files: the festival's listings are on several sources. `pipeline reprocess --source "Quicket event pages"`, then `captures --source quicket`.
   - With `pnpm e2e:live`, which has the language model: `pipeline refetch --location hermanus`, `pipeline refetch --source "Hermanus FynArts"`, and `pipeline refetch --listing <ID>` with a listing's ID read from the database. `pipeline reprocess --experience <slug> --now`. `pipeline reprocess --source "Quicket public pages"`, then `pipeline process`.
 - **Passes when:**
   - Each refetch prints a line per source fetched, with its counts. The listing's refetch says which source it belongs to and fetches that source whole.
@@ -365,7 +365,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Who and how:** Agency Planner, REST.
 - **Steps:** ask for changes since T1 with 20 to 28 February 2027, the dates the planner searched before the show moved. Then with 1 to 10 March 2027.
 - **Passes when:**
-  - Both answers report "That ’80s Show: 80s Tribute Concert" as rescheduled.
+  - Both answers report "That ’80s Show" as rescheduled.
   - The first, from dates it is no longer on, has `movedOut` true and the sessions it has now. The second has `movedOut` false.
 
 #### E2E-30 · Checking back through MCP
@@ -541,7 +541,7 @@ This is what the owner cares about most.
 | Nothing outside the area | Every venue is in Hermanus or the towns around it listed under Coverage in [sources.md](sources.md), or in a neighbouring town such as Bot River or Franskraal. None is in Cape Town, Sandton or further | Holds |
 | No experience twice | No two items are the same event: same title, overlapping dates and the same page or booking address. One item per ticketed date, each with its own booking link | Failed: "Hermanus Whale Festival" was two items, September 2027 from Xplorio and October 2027 from SA-Venues, merged by issue 54 |
 | No season as an experience | No title names a season or a natural spectacle alone | Fails: "Southern Right Whales in Walker Bay". Issue 48 |
-| Titles a planner would recognise | Every title names an experience | Fails: "Time" and "Hermanus 2026". Issue 48 |
+| Titles a planner would recognise | Every title names an experience | Failed: "Time" and "Hermanus 2026", now "Time: a faith gathering on life lessons" and "Atlantic Flying Club Slope Soaring Weekend". Issue 48 |
 | Festivals are one experience | No item is one item of a festival's programme on the festival's own dates. Checked by hand | Holds |
 | Bookable means it can be booked | Every bookable item has a booking link or its own page address where it can be booked | Failed: 17 bookable items had neither, such as "Sourdough Baking Class". Holds by rule since issue 55: bookable needs a link |
 | One session per date for Quicket | No experience from Quicket covers days its page does not list, whatever its times | To check against each page: "Sip & Solve: Blind Wine & Whisky Tasting" is one session from 19 to 30 December 2026. Issue 36 |
@@ -555,6 +555,7 @@ This is what the owner cares about most.
   - No item of a lower tier comes before an item of a higher tier, in either of the first two answers. The order of tiers is luxury, premium, standard, everyday, and an experience with no tier counts as standard.
   - Every whale-watching boat trip comes before every parkrun and every town market, with and without the query text.
   - Within a tier, with no query text the soonest comes first.
+  - "Private whale watching charter with Southern Right Charters", the one luxury experience, comes first in both, before every premium item.
   - The third answer has no parkrun and no market, and every item's `attributes.tier` is luxury or premium.
   - REST and MCP give the same items in the same order.
 

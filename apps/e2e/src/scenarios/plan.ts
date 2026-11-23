@@ -29,6 +29,21 @@ import { client, mainServer, recall, remember, state } from "../harness/state.ts
 // Planning a trip (UC1), each kind of experience in the brief, and the long planning window: E2E-01 to E2E-17.
 
 const SEARCHABLE = ["expected", "announced", "confirmed", "postponed"];
+
+// What can be booked now for the winter stay, on the captured pages.
+const BOOKABLE_IN_WINTER = [
+  "Boat-based whale watching with Southern Right Charters",
+  "Cuvée Weekends",
+  "Deli Dining at Dal-Italia",
+  "Family Sharing Lunch",
+  "Harold Porter National Botanical Garden visit",
+  "Hermanus Whale Cruises boat-based whale watching",
+  "Panthera Africa Sunset Visits",
+  "Private whale watching charter with Southern Right Charters",
+  "Shark Cage Diving & Surface Viewing",
+  "Shark cage diving with Cape Shark Adventures",
+  "Sourdough Baking Class",
+];
 const HERMANUS = { lat: -34.4187, lng: 19.2345 };
 
 function one(c: Checks, items: Experience[], title: string): Experience | undefined {
@@ -84,7 +99,7 @@ function searchLogs(c: Checks, call: Call): void {
 export function registerPlanning(): void {
   scenario("E2E-01", "What is on while the traveller is there", async ({ c, logs }) => {
     const { call, result } = await search(WINTER);
-    c.equal(result.total, 33, "total");
+    c.equal(result.total, 38, "total");
     const items = await searchAll(WINTER);
     remember("E2E-01", { total: result.total, items });
     for (const item of items) {
@@ -99,7 +114,7 @@ export function registerPlanning(): void {
     }
     checkDateOrderWithinTier(c, items, "date order within a tier");
 
-    const festival = one(c, items, "2027 Hermanus FynArts Festival");
+    const festival = one(c, items, "Hermanus FynArts Festival");
     if (festival) {
       c.equal([festival.status, festival.booking, festival.bookable], ["announced", "not_yet", false], "FynArts status, booking, bookable");
       c.equal(
@@ -131,11 +146,7 @@ export function registerPlanning(): void {
 
   scenario("E2E-02", "Only what suits their interests", async ({ c }) => {
     const art = await searchAll({ ...WINTER, attributes: { category: ["visual_arts"] } });
-    c.equal(
-      titles(art).sort(),
-      ["2027 Hermanus FynArts Festival", "Akwaaba Market", "Hermanus Country Market", "Sculpture on the Cliffs"].sort(),
-      "the visual arts experiences",
-    );
+    c.sameSet(titles(art), ["Hermanus FynArts Festival", "Akwaaba Market", "Hermanus Country Market", "Sculpture on the Cliffs"], "the visual arts experiences");
     absent(c, art, "Hermanus parkrun", "for visual arts");
     for (const item of art) c.ok(item.attributes.category?.includes("visual_arts") === true, `"${item.title}" is not visual arts`);
     const whales = await searchAll({ ...WINTER, tags: ["whales"] });
@@ -149,7 +160,7 @@ export function registerPlanning(): void {
       { location: "hermanus", from: "2026-12-12", to: "2026-12-31", attributes: { audience: ["family", "all_ages"], minimum_age: { max: 10 } } },
       app,
     );
-    for (const title of ["Paddakoor Akademie Presents - CHRISTMAS CARNIVAL", "New Years´s Eve Family Day at Landskein", "Hermanus Country Market"]) {
+    for (const title of ["Paddakoor Akademie Christmas Carnival", "New Year's Eve Family Day", "Hermanus Country Market"]) {
       c.ok(titled(family, title).length === 1, `"${title}" is there for the family`);
     }
     for (const item of family) {
@@ -157,10 +168,18 @@ export function registerPlanning(): void {
       const age = item.attributes.minimum_age?.[0];
       c.ok(typeof age !== "number" || age <= 10, `"${item.title}" has minimum age ${String(age)}`);
     }
-    absent(c, family, "Electro DANCE - Sunset Beats to Late Night Bass", "for the family");
+    absent(c, family, "Electro Dance - Sunset Beats to Late Night Bass", "for the family");
     const adults = await searchAll({ location: "hermanus", from: "2026-12-12", to: "2026-12-31", attributes: { minimum_age: { min: 18 } } }, app);
-    c.equal(titles(adults), ["Electro DANCE - Sunset Beats to Late Night Bass"], "the 18 and over answer");
-    const electro = adults[0];
+    c.sameSet(
+      titles(adults),
+      ["Electro Dance - Sunset Beats to Late Night Bass", "Dam Fine Wine", "Wild about Wine", "Somos Sunset House & Dining", "Millennium Live by The Gecko"],
+      "the 18 and over answer",
+    );
+    for (const item of adults) {
+      const age = item.attributes.minimum_age?.[0];
+      c.ok(typeof age === "number" && age >= 18, `"${item.title}" has minimum age ${String(age)}`);
+    }
+    const electro = titled(adults, "Electro Dance - Sunset Beats to Late Night Bass")[0];
     // The night runs from 19:00 on the 16th to 01:00 on the 17th, which is one session starting on the 16th.
     if (electro) c.equal(electro.sessions.map((s) => s.startDate), ["2026-12-16"], "Electro DANCE sessions start");
   });
@@ -170,21 +189,8 @@ export function registerPlanning(): void {
     for (const item of items) {
       c.ok(item.status === "confirmed" && item.booking === "open" && item.bookable, `"${item.title}" is not confirmed, open and bookable`);
     }
-    c.equal(
-      titles(items).sort(),
-      [
-        "Cape Shark Adventures",
-        "Cuvée Weekends at Benguela Cove",
-        "Deli Dining at Dal-Italia",
-        "Harold Porter National Botanical Garden",
-        "Hermanus Whale Cruises boat-based whale watching",
-        "Panthera Africa Sunset Visits",
-        "Shark Cage Diving & Surface Viewing- Gansbaai",
-        "Sourdough Baking Class",
-      ].sort(),
-      "the bookable experiences",
-    );
-    absent(c, items, "2027 Hermanus FynArts Festival", "as bookable");
+    c.sameSet(titles(items), BOOKABLE_IN_WINTER, "the bookable experiences");
+    absent(c, items, "Hermanus FynArts Festival", "as bookable");
   });
 
   scenario("E2E-05", "By the place's name", async ({ c, logs }) => {
@@ -270,7 +276,9 @@ export function registerPlanning(): void {
     );
     const fynarts = await search({ ...WINTER, limit: 100, query: "FynArts" });
     c.equal(ids(fynarts.result.items).sort(), expected, "FynArts query: the same set as E2E-01");
-    c.equal(fynarts.result.items[0]?.title, "2027 Hermanus FynArts Festival", "the first for FynArts");
+    const festival = titled(fynarts.result.items, "Hermanus FynArts Festival")[0];
+    const festivalTier = festival === undefined ? [] : fynarts.result.items.filter((item) => tierOf(item) === tierOf(festival));
+    c.equal(festivalTier[0]?.title, "Hermanus FynArts Festival", "the first of its tier for FynArts");
     if (state.live) {
       c.note("The run with the embedding model unreachable is E2E-07 on the server without AWS_REGION, in the live run.");
     } else {
@@ -291,8 +299,8 @@ export function registerPlanning(): void {
     const first = recall<{ total: number; items: Experience[] }>("E2E-01");
     const pages: SearchResult[] = [];
     for (const offset of [0, 10, 20, 30]) pages.push((await search({ ...WINTER, limit: 10, offset })).result);
-    for (const page of pages) c.equal(page.total, 33, `total at offset ${page.offset}`);
-    c.equal(pages.map((page) => page.items.length), [10, 10, 10, 3], "page sizes");
+    for (const page of pages) c.equal(page.total, 38, `total at offset ${page.offset}`);
+    c.equal(pages.map((page) => page.items.length), [10, 10, 10, 8], "page sizes");
     const together = pages.flatMap((page) => ids(page.items));
     c.equal(new Set(together).size, together.length, "no experience is on two pages");
     if (first) c.equal(together, ids(first.items), "together they are E2E-01's items in its order");
@@ -353,7 +361,7 @@ export function registerPlanning(): void {
 
   scenario("E2E-11", "Something to go to on one date", async ({ c }) => {
     const items = await searchAll({ location: "hermanus", from: "2026-12-11", to: "2026-12-11" });
-    const title = "Rumours of Fleetwood Mac Tribute at Hermanus Golf Club 11 Dec 2026";
+    const title = "Rumours of Fleetwood Mac";
     const show11 = one(c, items, title);
     if (show11) {
       c.equal([show11.status, show11.booking, show11.bookable], ["confirmed", "open", true], "status, booking, bookable");
@@ -393,7 +401,7 @@ export function registerPlanning(): void {
   });
 
   scenario("E2E-13", "Something months away, known only by its month", async ({ c }) => {
-    const title = "Kalfiefees Hermanus Kunstefees 2027";
+    const title = "Kalfiefees Hermanus Kunstefees";
     const fees = one(c, await searchAll({ location: "hermanus", from: "2027-08-14", to: "2027-08-15" }), title);
     if (fees) {
       c.equal([fees.status, fees.bookable], ["expected", false], "status and bookable");
@@ -404,7 +412,7 @@ export function registerPlanning(): void {
       );
     }
     absent(c, await searchAll({ location: "hermanus", from: "2027-09-01", to: "2027-09-05" }), title, "in September");
-    const festival = titled(recall<{ items: Experience[] }>("E2E-01")?.items ?? [], "2027 Hermanus FynArts Festival")[0];
+    const festival = titled(recall<{ items: Experience[] }>("E2E-01")?.items ?? [], "Hermanus FynArts Festival")[0];
     c.ok(festival?.sessions.every((s) => s.precision === "day") === true, "the FynArts Festival, whose days are announced, has day precision");
   });
 
@@ -438,14 +446,14 @@ export function registerPlanning(): void {
 
   scenario("E2E-15", "Seasons are tags, never experiences", async ({ c }) => {
     const season = await searchAll({ ...WINTER, tags: ["whale-season"] });
-    c.ok(titled(season, "2027 Hermanus FynArts Festival").length === 1, "the FynArts Festival is in whale season");
+    c.ok(titled(season, "Hermanus FynArts Festival").length === 1, "the FynArts Festival is in whale season");
     const winter = await searchAll(WINTER);
     const tagsOf = (items: Experience[], title: string) => titled(items, title)[0]?.tags ?? [];
-    const fynarts = tagsOf(winter, "2027 Hermanus FynArts Festival");
+    const fynarts = tagsOf(winter, "Hermanus FynArts Festival");
     c.ok(fynarts.includes("whale-season") && fynarts.includes("winter"), `FynArts carries whale-season and winter: ${show(fynarts)}`);
     const cruises = tagsOf(winter, "Hermanus Whale Cruises boat-based whale watching");
     c.ok(cruises.includes("whale-season") && cruises.includes("whales"), `the whale cruises carry whale-season and whales: ${show(cruises)}`);
-    const dinner = tagsOf(await searchAll({ location: "hermanus", from: "2026-12-24", to: "2026-12-24" }), "Christmas Eve Dinner 2026 at Moody Lagoon");
+    const dinner = tagsOf(await searchAll({ location: "hermanus", from: "2026-12-24", to: "2026-12-24" }), "Christmas Eve Dinner");
     c.ok(
       ["summer", "high-season", "south-african-school-holidays"].every((tag) => dinner.includes(tag)) && !dinner.includes("whale-season"),
       `the Christmas Eve dinner carries summer, high-season and the school holidays, and not whale-season: ${show(dinner)}`,
@@ -464,13 +472,20 @@ export function registerPlanning(): void {
     const market = one(c, may, "Hermanus Country Market");
     if (market) c.equal(sessionDays(market), ["2028-05-06", "2028-05-13"], "the market's Saturdays in May 2028");
     const september = await searchAll({ location: "hermanus", from: "2027-09-01", to: "2027-09-30" });
-    // On the captured pages the one annual festival known only by its month next year is the Whale Festival, in
-    // October. The development database also has the Flower and Eco Fair and Adventure Week, from seeded sources.
+    // The next editions of annual events, known only by their month: Expected, with month precision.
     const october = await searchAll({ location: "hermanus", from: "2027-10-01", to: "2027-10-31" });
-    const festival = one(c, october, "Hermanus Whale Festival");
-    if (festival) {
-      c.ok(festival.status === "expected", `the Whale Festival is expected (${festival.status})`);
-      c.equal(festival.sessions.map((s) => [s.startDate, s.endDate, s.precision]), [["2027-10-01", "2027-10-31", "month"]], "the Whale Festival's session");
+    const editions: [Experience[], string, string, string][] = [
+      [september, "Stanford in Bloom", "2027-09-01", "2027-09-30"],
+      [september, "Hermanus Botanical Society Flower Show", "2027-09-01", "2027-09-30"],
+      [october, "Hermanus Whale Festival", "2027-10-01", "2027-10-31"],
+      [october, "Pam Golding Hangklip Marathon", "2027-10-01", "2027-10-31"],
+    ];
+    for (const [items, title, from, to] of editions) {
+      const edition = one(c, items, title);
+      if (edition) {
+        c.ok(edition.status === "expected", `"${title}" is expected (${edition.status})`);
+        c.equal(edition.sessions.map((s) => [s.startDate, s.endDate, s.precision]), [[from, to, "month"]], `"${title}" session`);
+      }
     }
     const swallow = one(c, september, "Swallow Series Wine Tasting Lunches");
     if (swallow) c.equal(sessionDays(swallow), ["2027-09-04"], "the Swallow Series in September 2027");
@@ -515,6 +530,7 @@ export function registerPlanning(): void {
           }
         }
         if (body.query === undefined) checkDateOrderWithinTier(c, items, "with no query text, the soonest first within a tier");
+        c.equal(items[0]?.title, "Private whale watching charter with Southern Right Charters", `${show(body)}: the luxury charter comes first`);
         const lastBoat = Math.max(-1, ...items.map((item, index) => (boat(item) ? index : -1)));
         const firstPlain = items.findIndex(plain);
         c.ok(items.some(boat), `${show(body)} has a whale-watching boat trip`);
