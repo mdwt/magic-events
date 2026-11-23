@@ -79,7 +79,9 @@ When Data processing asks the language model which stored experience an extracte
 plainly, in `src/plain-match.ts`. It says "same" only when that is safe: once the words of the venues and of dates are
 set aside, the two titles have the same words, or one only adds to the other and they are one dated experience at the
 same place starting the same day. Titles that each name something of their own, such as two operators' whale watching
-trips from New Harbour, and a recurring experience that only one title adds to, are unsure. An unsure pair is asked of
+trips from New Harbour, a recurring experience that only one title adds to or that shares only one word ("ParkRun"
+and "Hermanus parkrun"), and a series known by its month against one dated event in it unless the titles have the same
+words, are unsure. An unsure pair is asked of
 the real model; with `--no-model` it is left as two experiences and never merged. The summary names every plain match.
 
 ## Scripts
