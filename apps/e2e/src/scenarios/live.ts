@@ -98,8 +98,6 @@ export async function liveRefetch(c: Checks): Promise<void> {
     c.note("The live refetch and reprocess are skipped: ANTHROPIC_API_KEY is not set.");
     return;
   }
-  const location = await pipeline(["refetch", "--location", "hermanus"]);
-  c.ok(/^ {2}.+: \d+ found, \d+ new or changed, \d+ unchanged, \d+ removed/m.test(location.stdout), "refetch --location prints a line per source with its counts");
   const source = await pipeline(["refetch", "--source", "Hermanus FynArts"]);
   c.ok(/Hermanus FynArts: \d+ found/.test(source.stdout), `refetch --source: ${printedOf(source).trim().slice(-200)}`);
   const listing = await query<{ id: string }>(
@@ -122,4 +120,9 @@ export async function liveRefetch(c: Checks): Promise<void> {
   c.ok(sent.code === 0, `reprocess --source: ${printedOf(sent).trim()}`);
   const processed = await pipeline(["process"]);
   c.ok(processed.code === 0 && !/FAILED/.test(processed.stdout), `pipeline process: ${printedOf(processed).trim().slice(-300)}`);
+  // Last, and not processed: it fetches every page of every active source, and the first live fetch of a captured
+  // source sees each page as changed, which would be a model call for each of hundreds of pages.
+  const location = await pipeline(["refetch", "--location", "hermanus"]);
+  c.ok(/^ {2}.+: \d+ found, \d+ new or changed, \d+ unchanged, \d+ removed/m.test(location.stdout), "refetch --location prints a line per source with its counts");
+  c.note("The pages refetch --location found are left unprocessed: processing them is a model call each.");
 }

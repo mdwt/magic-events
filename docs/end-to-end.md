@@ -321,7 +321,7 @@ An annual festival known only by its month, with no announcement yet for the com
 - **Steps:**
   - `pipeline reprocess` with no selector.
   - `pipeline reprocess --experience <slug>` with the FynArts Festival's slug as search returns it, then `captures`, which processes the listings sent back from the captured files: the festival's listings are on several sources. `pipeline reprocess --source "Quicket event pages"`, then `captures --source quicket`.
-  - With `pnpm e2e:live`, which has the language model: `pipeline refetch --location hermanus`, `pipeline refetch --source "Hermanus FynArts"`, and `pipeline refetch --listing <ID>` with a listing's ID read from the database. `pipeline reprocess --experience <slug> --now`. `pipeline reprocess --source "Quicket public pages"`, then `pipeline process`.
+  - With `pnpm e2e:live`, which has the language model: `pipeline refetch --source "Hermanus FynArts"`, and `pipeline refetch --listing <ID>` with a listing's ID read from the database. `pipeline reprocess --experience <slug> --now`. `pipeline reprocess --source "Quicket public pages"`, then `pipeline process`. Last, `pipeline refetch --location hermanus`, whose pages are left unprocessed: the first live fetch of a captured source sees every page as changed, and processing them is a model call each.
 - **Passes when:**
   - Each refetch prints a line per source fetched, with its counts. The listing's refetch says which source it belongs to and fetches that source whole.
   - The experience reprocess prints how many listings it sent back and processes them. The FynArts Festival keeps its ID, and no second FynArts Festival appears. Its version goes up only if a field really changed.
