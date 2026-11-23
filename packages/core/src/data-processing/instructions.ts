@@ -84,6 +84,6 @@ Profile
 
 The definitions follow.`;
 
-export const MATCH_INSTRUCTIONS = `You decide whether an experience that a source describes is the same experience as one of a few already known, which may have come from other sources. The same experience is the same event or the same running show, market or season at the same place, even when its title is worded differently, its dates have moved, or one source gives fewer details. A different edition of a yearly event, a different show at the same venue, or a different event with a similar name is not the same experience.
+export const MATCH_INSTRUCTIONS = `You decide whether an experience that a source describes is the same experience as one of a few already known, which may have come from other sources. The same experience is the same event or the same running show, market or season at the same place, even when its title is worded differently, its dates have moved, or one source gives fewer details. A different edition of a yearly event, a different show at the same venue, a different event with a similar name, or the same kind of trip, tour or class run by a different operator or organiser, even from the same place, is not the same experience.
 
 Answer with the ID of the one known experience it is, exactly as given, or with an empty ID when it is none of them. When you are not sure, answer with an empty ID.`;

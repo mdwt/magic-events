@@ -348,6 +348,41 @@ describe("Matching", () => {
     );
   });
 
+  test("another operator's whale watching from the same harbour is left to the model, and with none is a new experience", async () => {
+    const southernRight = stored({
+      id: "e-southern-right",
+      title: "Boat-based whale watching with Southern Right Charters",
+      type: "recurring",
+      venueName: "The Whale Shack, New Harbour",
+      firstDate: "2026-11-23",
+      lastDate: null,
+      recurrenceRule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+      listingIds: [OTHER_LISTING],
+    });
+    const whaleCruises = answered({
+      title: "Hermanus Whale Cruises boat-based whale watching",
+      type: "recurring",
+      status: "confirmed",
+      booking: "open",
+      sessions: [],
+      recurrence: {
+        rule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+        start: "2026-11-23",
+        end: "",
+        startTime: "",
+        endTime: "",
+        skipped: [],
+      },
+      venueName: "New Harbour",
+    });
+    const model = fakeLanguageModel({ extract: [extraction(whaleCruises)], match: [{ experienceId: "" }] });
+    const { service, state } = setup({ model, experiences: [southernRight] });
+    await service.processNext();
+    const [request] = model.of("match");
+    assert.match(request?.text ?? "", /Venue: New Harbour, Hermanus[\s\S]*Southern Right Charters; venue: The Whale Shack, New Harbour/);
+    assert.equal(state.saves[0]?.experienceId, undefined);
+  });
+
   test("when no title matches, the model picks among the candidates", async () => {
     const candidate = stored({ id: "e-other", title: "FynArts Festival of the Arts", listingIds: [OTHER_LISTING] });
     const model = fakeLanguageModel({ extract: [extraction(answered())], match: [{ experienceId: "e-other" }] });

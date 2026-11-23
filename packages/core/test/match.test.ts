@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 import type { ExtractedExperience } from "../src/data-processing/extract.ts";
+import { MATCH_INSTRUCTIONS } from "../src/data-processing/instructions.ts";
 import {
+  datesFit,
   matchInCode,
   matchLinked,
   matchText,
@@ -83,6 +85,35 @@ describe("Matching in code", () => {
     assert.equal(onlyMonthOrYear(mixed), false);
     const recurring = { ...fynArts, sessions: [], recurrence: { rule: "FREQ=WEEKLY;BYDAY=SA", start: "2027-01-02" } };
     assert.equal(onlyMonthOrYear(recurring), false);
+  });
+
+  test("two operators' whale watching trips from New Harbour are not matched in code, though their dates fit", () => {
+    // As data/hermanus/extracted/hermanus-whale-cruises.json and southern-right-charters.json have them.
+    const whaleCruises: ExtractedExperience = {
+      title: "Hermanus Whale Cruises boat-based whale watching",
+      type: "recurring",
+      status: "confirmed",
+      booking: "open",
+      sessions: [],
+      recurrence: { rule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11", start: "2026-11-23" },
+      venue: { name: "New Harbour", address: "148 Westcliff Road, Hermanus", city: "Hermanus" },
+      hints: [],
+    };
+    const southernRight = stored({
+      title: "Boat-based whale watching with Southern Right Charters",
+      type: "recurring",
+      venueName: "The Whale Shack, New Harbour",
+      city: "Hermanus",
+      firstDate: "2026-11-23",
+      lastDate: null,
+      sessions: [{ startDate: "2026-11-23", endDate: "2026-11-23" }],
+      recurrenceRule: "FREQ=DAILY;BYMONTH=6,7,8,9,10,11",
+    });
+    const whaleSpan = { start: "2026-11-23", end: "2028-11-23" };
+    assert.ok(datesFit(whaleCruises, whaleSpan, southernRight));
+    assert.equal(matchInCode(whaleCruises, whaleSpan, [southernRight]), undefined);
+    // The model is asked instead, and is told that another operator's trip is another experience.
+    assert.match(MATCH_INSTRUCTIONS, /different operator or organiser/);
   });
 
   test("among the listing's own links only the title is compared, since the listing moves their dates", () => {
