@@ -1,7 +1,7 @@
 import { events, listing, rawListing, run, source, type Db, type Tx } from "@magic-events/db";
-import { and, asc, count, desc, eq, gt, gte, inArray, isNull, lte, ne, notExists, or, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, gte, inArray, lte, max, ne, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
-import type { DiscoveryRepository, ListingVersion, Source } from "../../core/discovery/ports.ts";
+import type { DiscoveryRepository, ListingVersion, RecentRun, Source } from "../../core/discovery/ports.ts";
 
 type SourceRow = typeof source.$inferSelect;
 
@@ -76,36 +76,27 @@ export function createDiscoveryRepository(db: Db): DiscoveryRepository {
       return row ? { ...toSource(row), syncState: row.syncState } : null;
     },
 
-    async findDueSources(now) {
-      const lastRun = db
-        .select({ sourceId: run.sourceId, startedAt: sql<Date>`max(${run.startedAt})`.as("last_started_at") })
-        .from(run)
-        .groupBy(run.sourceId)
-        .as("last_run");
-      const running = db
-        .select({ one: sql`1` })
-        .from(run)
-        .where(and(eq(run.sourceId, source.id), eq(run.status, "running")));
+    async findRecentRuns(sourceIds) {
+      const bySource: Record<string, RecentRun[]> = Object.fromEntries(sourceIds.map((id) => [id, []]));
+      if (sourceIds.length === 0) return bySource;
+      const success = alias(run, "success");
+      const lastSuccess = db
+        .select({ startedAt: max(success.startedAt) })
+        .from(success)
+        .where(and(eq(success.sourceId, run.sourceId), eq(success.status, "succeeded")));
+      // Every source's runs since its last success in one query.
       const rows = await db
-        .select({ source })
-        .from(source)
-        .leftJoin(lastRun, eq(lastRun.sourceId, source.id))
+        .select({ sourceId: run.sourceId, status: run.status, startedAt: run.startedAt, finishedAt: run.finishedAt })
+        .from(run)
         .where(
           and(
-            eq(source.active, true),
-            notExists(running),
-            or(
-              isNull(lastRun.startedAt),
-              lte(
-                sql`${lastRun.startedAt} + make_interval(hours => ${source.fetchIntervalHours})`,
-                sql`${now.toISOString()}::timestamptz`,
-              ),
-            ),
+            inArray(run.sourceId, sourceIds),
+            gte(run.startedAt, sql`coalesce((${lastSuccess}), '-infinity'::timestamptz)`),
           ),
         )
-        // The longest waiting first.
-        .orderBy(sql`${lastRun.startedAt} asc nulls first`, asc(source.name));
-      return rows.map((row) => toSource(row.source));
+        .orderBy(desc(run.startedAt), desc(run.id));
+      for (const { sourceId, ...recent } of rows) bySource[sourceId]?.push(recent);
+      return bySource;
     },
 
     async saveSyncState(sourceId, syncState) {

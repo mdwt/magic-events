@@ -72,6 +72,8 @@ describe("createSourceFetchers", () => {
       scheduleIntervalSeconds: 60,
       fetchTimeoutSeconds: 30,
       userAgent: "test",
+      fetchRetries: 5,
+      fetchRetryBackoffMinutes: 15,
       horizonMonths: 24,
       credentials: {},
     };

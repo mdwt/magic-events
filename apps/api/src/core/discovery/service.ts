@@ -3,6 +3,7 @@ import type { Clock } from "../shared/clock.ts";
 import { AppError } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { DiscoverySettings } from "../shared/settings.ts";
+import { isDue, nextFetch, type DueInput, type RecentRun } from "./due.ts";
 import { errorMessage, fingerprint, sourcingWindow } from "./fetching.ts";
 import type {
   ClaimedRawListing,
@@ -95,8 +96,11 @@ export class DiscoveryService implements Discovery {
 
   // One source after another, so two fetches never run at once.
   async runDueSources(): Promise<RunSummary[]> {
-    const due = await this.#repository.findDueSources(this.#clock());
-    this.#logger.debug({ due: due.length }, "Found the sources that are due");
+    const now = this.#clock();
+    const active = (await this.#repository.listSources()).filter((source) => source.active);
+    const runs = await this.#repository.findRecentRuns(active.map((source) => source.id));
+    const due = active.filter((source) => isDue(this.#dueInput(source, runs[source.id] ?? []), now));
+    this.#logger.debug({ active: active.length, due: due.length }, "Found the sources that are due");
     const summaries: RunSummary[] = [];
     for (const source of due) summaries.push(await this.runSource(source.id));
     return summaries;
@@ -125,8 +129,6 @@ export class DiscoveryService implements Discovery {
       await this.#repository.saveSyncState(source.id, result.syncState);
     } catch (caught) {
       error = errorMessage(caught);
-      if (caught instanceof RunRefused) logger.warn({ error }, "The run was refused");
-      else logger.warn({ error }, "The fetch failed");
     }
 
     const status = error === null ? "succeeded" : "failed";
@@ -139,6 +141,7 @@ export class DiscoveryService implements Discovery {
       error,
       finishedAt: this.#clock(),
     });
+    if (error !== null) await this.#logFailure(source, error, logger);
 
     // Only a successful, complete run says what the source no longer lists. A feed or an incremental fetch does not.
     let removed = 0;
@@ -228,6 +231,32 @@ export class DiscoveryService implements Discovery {
   async getListingPriorities(listingIds: string[]): Promise<Record<string, number>> {
     if (listingIds.length === 0) return {};
     return this.#repository.findListingPriorities([...new Set(listingIds)]);
+  }
+
+  #dueInput(source: Source, runs: RecentRun[]): DueInput {
+    return {
+      fetchIntervalHours: source.fetchIntervalHours,
+      runs,
+      fetchRetries: this.#settings.fetchRetries,
+      fetchRetryBackoffMinutes: this.#settings.fetchRetryBackoffMinutes,
+    };
+  }
+
+  // Says which retry comes next and when, or that the retries are used up.
+  async #logFailure(source: Source, error: string, logger: Logger): Promise<void> {
+    const runs = await this.#repository.findRecentRuns([source.id]);
+    const next = nextFetch(this.#dueInput(source, runs[source.id] ?? []));
+    if (next.kind === "retry") {
+      logger.warn(
+        { error, nextRetry: next.retry, retries: this.#settings.fetchRetries, nextAt: next.at.toISOString() },
+        "The run failed and will be tried again",
+      );
+    } else if (next.kind === "regular") {
+      logger.error(
+        { error, retries: this.#settings.fetchRetries, nextAt: next.at.toISOString() },
+        "The run failed; retries used up, waiting for the next regular fetch",
+      );
+    }
   }
 
   async #fetch(source: SourceForRun, location: Location, now: Date, logger: Logger): Promise<FetchResult> {

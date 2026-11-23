@@ -358,6 +358,32 @@ describe("Discovery: sources that are due", () => {
     assert.deepEqual(await services.runDueSources(), []);
   });
 
+  test("a failed fetch is tried again after its backoff, not a whole interval later", async () => {
+    const services = harness.services.discovery;
+    const saved = await services.saveSource({ ...pages, name: "Flaky", fetchIntervalHours: 168 });
+    returns("web_page", [page("a", "A")]);
+    await services.runSource(saved.id);
+    later(168);
+    next.web_page = () => Promise.reject(new Error("GET https://example.com answered 503 Service Unavailable"));
+    assert.deepEqual(
+      (await services.runDueSources()).map((one) => one.status),
+      ["failed"],
+    );
+
+    later(0.2);
+    assert.deepEqual(await services.runDueSources(), []);
+    // 15 minutes after the failed run finished.
+    later(0.05);
+    returns("web_page", [page("a", "A")]);
+    assert.deepEqual(
+      (await services.runDueSources()).map((one) => one.status),
+      ["succeeded"],
+    );
+    // The success ends the retries: the next fetch is a whole interval later.
+    later(1);
+    assert.deepEqual(await services.runDueSources(), []);
+  });
+
   test("lists every source", async () => {
     await harness.services.discovery.saveSource({ ...pages, name: "B" });
     await harness.services.discovery.saveSource({ ...pages, name: "A" });

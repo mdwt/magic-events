@@ -16,6 +16,7 @@ import type {
   SourceFetcher,
   SourceForRun,
 } from "../src/core/discovery/ports.ts";
+import type { RecentRun } from "../src/core/discovery/due.ts";
 import { DiscoveryService } from "../src/core/discovery/service.ts";
 import { AppError } from "../src/core/shared/errors.ts";
 import type { Logger } from "../src/core/shared/logger.ts";
@@ -62,14 +63,18 @@ const settings: DiscoverySettings = {
   scheduleIntervalSeconds: 60,
   fetchTimeoutSeconds: 30,
   userAgent: "test",
+  fetchRetries: 5,
+  fetchRetryBackoffMinutes: 15,
   horizonMonths: 24,
   credentials: { TEST_API_KEY: "secret-key" },
 };
 
-interface FakeRun extends RunOutcome {
+interface FakeRun extends Omit<RunOutcome, "status" | "finishedAt"> {
   id: string;
   sourceId: string;
+  status: RecentRun["status"];
   startedAt: Date;
+  finishedAt: Date | null;
 }
 
 interface FakeListing extends KnownListing {
@@ -92,7 +97,6 @@ function memoryRepository() {
   const rawListings: FakeRawListing[] = [];
   const syncStates: Record<string, unknown>[] = [];
   let failSaveAfter = Infinity;
-  let dueAt: Date | undefined;
 
   function capture(listingId: string, version: ListingVersion) {
     rawListings.push({ listingId, runId: version.runId, kind: "listing", content: version.content });
@@ -106,9 +110,20 @@ function memoryRepository() {
     },
     listSources: () => Promise.resolve([...sources.values()]),
     findSource: (id) => Promise.resolve(sources.get(id) ?? null),
-    findDueSources(now) {
-      dueAt = now;
-      return Promise.resolve([...sources.values()].filter((source) => source.active));
+    findRecentRuns(sourceIds) {
+      const bySource: Record<string, RecentRun[]> = {};
+      for (const sourceId of sourceIds) {
+        const recent: RecentRun[] = [];
+        const newestFirst = runs
+          .filter((one) => one.sourceId === sourceId)
+          .sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime());
+        for (const one of newestFirst) {
+          recent.push({ status: one.status, startedAt: one.startedAt, finishedAt: one.finishedAt });
+          if (one.status === "succeeded") break;
+        }
+        bySource[sourceId] = recent;
+      }
+      return Promise.resolve(bySource);
     },
     saveSyncState(sourceId, syncState) {
       syncStates.push(syncState);
@@ -122,13 +137,13 @@ function memoryRepository() {
         id,
         sourceId,
         startedAt,
-        status: "failed",
+        status: "running",
         complete: false,
         listingsFound: 0,
         listingsNewOrChanged: 0,
         listingsUnchanged: 0,
-        error: "still running",
-        finishedAt: startedAt,
+        error: null,
+        finishedAt: null,
       });
       return Promise.resolve(id);
     },
@@ -200,7 +215,6 @@ function memoryRepository() {
     failSavesAfter(count: number) {
       failSaveAfter = count;
     },
-    dueAt: () => dueAt,
   };
 }
 
@@ -256,6 +270,9 @@ function setup(options: { fetchers?: SourceFetcher[]; start?: string } = {}) {
     // A day later, so each run starts after the one before.
     nextDay: () => {
       now = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    },
+    later: (minutes: number) => {
+      now = new Date(now.getTime() + minutes * 60 * 1000);
     },
     source: (input: Partial<SaveSourceInput> = {}): Promise<Source> =>
       service.saveSource({ name: "Organiser pages", kind: "web_page", locationSlug: "hermanus", ...input }),
@@ -563,19 +580,43 @@ describe("DiscoveryService.runSource: listings that disappear", () => {
 });
 
 describe("DiscoveryService: due sources and the sourcing window", () => {
-  test("runs every source the repository says is due, one after another, as of the clock", async () => {
-    const { service, memory, adapter, source } = setup({ start: "2026-11-23T08:00:00Z" });
-    await source({ name: "One" });
-    await source({ name: "Two" });
+  test("runs the active sources that are due, one after another: never run, then by interval and retries", async () => {
+    const { service, adapter, later, source } = setup({ start: "2026-11-23T08:00:00Z" });
+    const steady = await source({ name: "Steady", fetchIntervalHours: 24 });
+    const flaky = await source({ name: "Flaky", fetchIntervalHours: 24 });
+    await source({ name: "Never ran" });
+    await source({ name: "Inactive", active: false });
 
-    const summaries = await service.runDueSources();
+    adapter.fails("GET https://example.com answered 503 Service Unavailable");
+    await service.runSource(flaky.id);
+    adapter.returns([]);
+    await service.runSource(steady.id);
 
-    assert.deepEqual(
-      summaries.map((one) => one.sourceName),
-      ["One", "Two"],
-    );
+    const names = async () => (await service.runDueSources()).map((one) => one.sourceName).sort();
+    assert.deepEqual(await names(), ["Never ran"]);
+    // Flaky keeps failing.
+    adapter.fails("GET https://example.com answered 503 Service Unavailable");
+    // The first retry waits 15 minutes after the failed run finished.
+    later(14);
+    assert.deepEqual(await names(), []);
+    later(1);
+    assert.deepEqual(await names(), ["Flaky"]);
+    // It failed again, so the second retry waits 30 minutes.
+    later(29);
+    assert.deepEqual(await names(), []);
+    later(1);
+    assert.deepEqual(await names(), ["Flaky"]);
+    // A day after they ran, every source is due again.
+    later(24 * 60);
+    assert.deepEqual(await names(), ["Flaky", "Never ran", "Steady"]);
+  });
+
+  test("a source run by hand runs whether or not it is due", async () => {
+    const { service, adapter, source } = setup();
+    const saved = await source();
+    await service.runSource(saved.id);
+    await service.runSource(saved.id);
     assert.equal(adapter.calls.length, 2);
-    assert.equal(memory.dueAt()?.toISOString(), "2026-11-23T08:00:00.000Z");
   });
 
   test("hands the adapter today to the horizon, in the location's time zone", async () => {
