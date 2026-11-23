@@ -94,7 +94,8 @@ issued: by the seed (`pnpm db:seed` prints them), or by a system admin through t
 Send the key as `Authorization: Bearer <key>`, or as `x-api-key: <key>`. Every path checks it except `/health`, and a
 path that does not exist answers 401 to a caller without a valid key.
 
-A key that is missing, unknown, disabled or expired is 401 with one message, so a caller cannot tell which. A key that
+A key that is missing, unknown, revoked or expired gets a 401, and the message is the same for all four, so a caller
+cannot tell which. A key that
 cannot be checked, because the database cannot be reached, is never 401: the answer is 503 `unavailable` with
 `Retry-After`, as `/health` gives while the database is down. Better Auth's key check reports any failure inside it as
 an invalid key, so Identity trusts that verdict only once the key store answers.
@@ -117,18 +118,24 @@ Every REST failure has one format:
 {
   "error": {
     "code": "invalid_input",
-    "message": "The request is not valid.",
-    "details": [{ "path": "near.lat", "message": "Too big: expected number to be <=90" }],
+    "message": "Give near.lat, the latitude, as a number from -90 to 90, such as -34.4187.",
+    "details": [
+      { "path": "near.lat", "message": "Give near.lat, the latitude, as a number from -90 to 90, such as -34.4187." }
+    ],
     "requestId": "3f1c..."
   }
 }
 ```
 
+The message is written for the person on the other end, and an agent can pass it on as it is. It says what went wrong
+and what to do instead. When the details name several problems, the message gives each one in turn. Each detail's
+message makes sense on its own, so the details also let a client mark the fields to fix.
+
 | Status | Code | When |
 | --- | --- | --- |
-| 400 | `invalid_input` | The body, query, address or tool arguments do not fit the schema, the body is not valid JSON, or a value is refused, such as an unknown location. The details say which fields and why |
-| 401 | `unauthenticated` | The key is missing, unknown, disabled or expired. Comes with `WWW-Authenticate: Bearer realm="magic-events"` |
-| 403 | `forbidden` | The caller may not do this, their tenant is suspended, or `/mcp` was called from a host or origin that is not allowed |
+| 400 | `invalid_input` | The body, query, address or tool arguments do not fit the schema, the body is not valid JSON, or a value is refused, such as a place the feed does not cover. The details say which fields and what to give |
+| 401 | `unauthenticated` | The key is missing, unknown, revoked or expired. Comes with `WWW-Authenticate: Bearer realm="magic-events"` |
+| 403 | `forbidden` | The caller's organisation is suspended, or `/mcp` was called from a host or origin that is not allowed |
 | 404 | `not_found` | Nothing is at this address, or no tenant, user or credential has this slug or ID |
 | 405 | `method_not_allowed` | The address does not answer this method. `Allow` names the ones it does |
 | 406 | `not_acceptable` | A POST to `/mcp` whose `Accept` does not name both `application/json` and `text/event-stream` |
