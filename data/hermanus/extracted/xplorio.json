@@ -1,0 +1,451 @@
+[
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/hermanus/deli-dining-at-dal-italia/",
+    "url": "https://xplorio.com/hermanus/deli-dining-at-dal-italia/",
+    "rawFile": "raw/xplorio/hermanus-deli-dining-at-dal-italia.txt",
+    "fetchedAt": "2026-11-23T13:57:57Z",
+    "title": "Deli Dining at Dal-Italia",
+    "summary": "Dal-Italia Delicatessen in Hermanus presents a dining experience straight from Italy every Friday night.",
+    "description": "Dal-Italia Delicatessen in Hermanus presents a dining experience straight from Italy every Friday night. The deli’s indoor and outdoor seating offers the best of both worlds. Downstairs brings a lively deli vibe, upstairs is a bit more traditional, and the courtyard is perfect for a relaxed alfresco experience. Fabio Lenci’s special Chef’s Menu features both new favourites and classics, along with activities such as wine-tasting experiences. Booking is advisable, especially for larger tables. Dal-Italia Delicatessen is proud to be affiliated with another iconic cuisine landmark, the much-celebrated Fabio’s Ristorante on St Peter's Lane.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=FR",
+      "start": "2026-11-27",
+      "startTime": "18:00",
+      "endTime": "21:00"
+    },
+    "venue": {
+      "name": "Dal-Italia Delicatessen",
+      "address": "13 Aberdeen Street, Hermanus 7200",
+      "city": "Hermanus"
+    },
+    "hints": [
+      "Events",
+      "Special Events",
+      "With Chef Fabio Lenci"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink"
+      ],
+      "format": "dining_event",
+      "setting": "both",
+      "scale": "local"
+    },
+    "tags": [
+      "wine"
+    ],
+    "profile": "Every Friday night Dal-Italia Delicatessen on Aberdeen Street in Hermanus serves Chef Fabio Lenci's special Italian menu, with seating in the deli, upstairs or in the courtyard, and activities such as wine tasting. Diners book a table for the evening. It suits anyone wanting an Italian dinner out."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/hermanus/benguela-cove-parkrun/",
+    "url": "https://xplorio.com/hermanus/benguela-cove-parkrun/",
+    "rawFile": "raw/xplorio/hermanus-benguela-cove-parkrun.txt",
+    "fetchedAt": "2026-11-23T13:57:53Z",
+    "title": "Benguela Cove Parkrun",
+    "summary": "A free, fun, and friendly weekly 5km community event.",
+    "description": "A free, fun, and friendly weekly 5km community event. Walk, jog, run, volunteer or spectate – it's up to you! Every week we grab a post parkrun coffee at Benguela Adventure Centre - please come and join us!",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00",
+      "endTime": "10:00"
+    },
+    "venue": {
+      "name": "Benguela Adventure",
+      "address": "R42, Bot River Lagoon, Hermanus 7200",
+      "city": "Hermanus"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Events",
+      "Sport",
+      "Weekly Free 5km Timed Run"
+    ],
+    "attributes": {
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A free weekly 5km timed parkrun at Benguela Cove every Saturday morning. People walk, jog, run, volunteer or spectate, then join the group for coffee at Benguela Adventure Centre. It suits runners and walkers of any pace."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/bettys-bay/bettys-bay-parkrun/",
+    "url": "https://xplorio.com/bettys-bay/bettys-bay-parkrun/",
+    "rawFile": "raw/xplorio/bettys-bay-bettys-bay-parkrun.txt",
+    "fetchedAt": "2026-11-23T13:57:34Z",
+    "title": "Betty’s Bay Parkrun",
+    "summary": "Betty’s Bay Parkrun is a weekly 5km community event held every Saturday morning at the Harold Porter National Botanical Garden.",
+    "description": "Betty’s Bay Parkrun is a weekly 5km community event held every Saturday morning at the Harold Porter National Botanical Garden. The Parkrun is free, fun, and friendly, with a stunning view of mountains, ocean and the botanical garden. Whether you walk, jog, run, crawl, or do a combo, you can travel at your own pace. Although times are recorded and sent to you for your benefit, everyone who finishes the Parkrun is a winner, whatever their placing! If the physical activity is not for you, Betty's Bay Parkrun welcomes volunteers and spectators because every fantastic event needs a solid backup crew and enthusiastic fan base! So grab your walking or running shoes, load friends, family and work colleagues into the car, and see you at the Betty's Bay Parkrun!",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00",
+      "endTime": "11:00"
+    },
+    "venue": {
+      "name": "Harold Porter National Botanical Garden",
+      "address": "Betty's Bay 7141",
+      "city": "Betty's Bay"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Events",
+      "Sport Events",
+      "Every Saturday Morning"
+    ],
+    "attributes": {
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "gardens"
+    ],
+    "profile": "A free weekly 5km parkrun every Saturday morning in the Harold Porter National Botanical Garden, with views of mountains, ocean and the garden. People walk, jog or run at their own pace, or volunteer and spectate. It suits families and walkers or runners of any level."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/gansbaai/groeneweide-parkrun/",
+    "url": "https://xplorio.com/gansbaai/groeneweide-parkrun/",
+    "rawFile": "raw/xplorio/gansbaai-groeneweide-parkrun.txt",
+    "fetchedAt": "2026-11-23T13:57:48Z",
+    "title": "Groeneweide Parkrun",
+    "summary": "Groeneweide Parkrun is a weekly 5km community event held every Saturday morning at Groeneweide Farm in Franskraal just outside Gansbaai.",
+    "description": "Groeneweide Parkrun is a weekly 5km community event held every Saturday morning at Groeneweide Farm in Franskraal just outside Gansbaai. Free, fun, and friendly, the one-loop route has stunning views of farmland, trees, mountains and the distant Atlantic Ocean. Whether you walk, jog, run or crawl, you can travel at your own pace. Although times are recorded and sent to you for your benefit, everyone who finishes the Parkrun is a winner, whatever their placing! If the physical activity is not for you, Groeneweide Parkrun welcomes volunteers and spectators because every fantastic event needs a solid backup crew and enthusiastic fan base! So grab your walking or running shoes, load friends, family and work colleagues into the car, and see you at the Groeneweide Parkrun!",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "08:00",
+      "endTime": "10:00"
+    },
+    "venue": {
+      "name": "Groeneweide Farm",
+      "address": "Off the R43 between Gansbaai and Uilkraal, Gansbaai 7220",
+      "city": "Gansbaai"
+    },
+    "price": {
+      "min": 0,
+      "max": 0,
+      "currency": "ZAR"
+    },
+    "hints": [
+      "Gansbaai Events",
+      "Sports",
+      "In Partnership With Discovery Vitality"
+    ],
+    "attributes": {
+      "category": [
+        "sport",
+        "outdoor_and_adventure"
+      ],
+      "format": "race",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A free weekly 5km parkrun every Saturday morning on a one-loop route at Groeneweide Farm in Franskraal, with views of farmland, mountains and the distant Atlantic. People walk, jog or run at their own pace, or volunteer and spectate. It suits families and walkers or runners of any level."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/gansbaai/gansbaai-market/",
+    "url": "https://xplorio.com/gansbaai/gansbaai-market/",
+    "rawFile": "raw/xplorio/gansbaai-gansbaai-market.txt",
+    "fetchedAt": "2026-11-23T13:57:41Z",
+    "title": "Gansbaai Market / Gansbaai Mark",
+    "summary": "Gansbaai’s Farmer’s Market every Saturday and on pre-announced occasions in-season.",
+    "description": "Bring your shopping basket and tell all your friends to meet you at Gansbaai’s Farmer’s Market every Saturday and on pre-announced occasions in-season. Gansbaai Market / Gansbaai Mark is the place to be if you love local vibes, sustainable shopping and delicious food. Get together with the community as you shop for organically grown produce, plants, handmade gifts, and an ever-changing selection of upcycled and preloved goods on sale at the Gansbaai Market / Gansbaai Mark. Stock up on a tasty selection of bottled condiments, artisanal bakes and delicious takeaways! For added enjoyment, the Gansbaai Market / Gansbaai Mark has picnic tables and chairs, a jungle gym for the kids and a DJ playing all your favourite hits.",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=SA",
+      "start": "2026-11-28",
+      "startTime": "09:00",
+      "endTime": "13:00"
+    },
+    "venue": {
+      "name": "Market Square",
+      "address": "Kapokblom Street, Gansbaai 7220",
+      "city": "Gansbaai"
+    },
+    "hints": [
+      "Gansbaai Events",
+      "Markets",
+      "A Market For The Whole Family"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "community_and_causes"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft"
+    ],
+    "profile": "Gansbaai's farmers' market runs every Saturday morning on Market Square, with organic produce, plants, handmade gifts, preloved goods, artisanal bakes and takeaways. Visitors shop, sit at the picnic tables while a DJ plays, and children use the jungle gym. It suits families and anyone who likes local markets."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/gansbaai/groeneweide-monthly-market-and-boot-sale/",
+    "url": "https://xplorio.com/gansbaai/groeneweide-monthly-market-and-boot-sale/",
+    "rawFile": "raw/xplorio/gansbaai-groeneweide-monthly-market-and-boot-sale.txt",
+    "fetchedAt": "2026-11-23T13:57:45Z",
+    "title": "Groeneweide Monthly Market and Boot Sale",
+    "summary": "Visit Groeneweide Farm in Franskraal every first Saturday for handmade crafts, local art, baked treats, food, bargains and pre-loved treasures.",
+    "description": "Visit Groeneweide Farm in Franskraal every first Saturday for handmade crafts, local art, baked treats, food, bargains and pre-loved treasures at our family-friendly market and boot sale!",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=MONTHLY;BYDAY=1SA",
+      "start": "2026-12-05",
+      "startTime": "09:00",
+      "endTime": "14:00"
+    },
+    "venue": {
+      "name": "Groeneweide Farm",
+      "address": "Franskraal 7220",
+      "city": "Gansbaai"
+    },
+    "hints": [
+      "Gansbaai Events",
+      "Markets",
+      "Groeneweide Market & Boot Sale!"
+    ],
+    "attributes": {
+      "category": [
+        "food_and_drink",
+        "hobbies_and_lifestyle"
+      ],
+      "format": "market",
+      "audience": "family",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "craft",
+      "antiques"
+    ],
+    "profile": "A family-friendly market and boot sale at Groeneweide Farm in Franskraal on the first Saturday of every month. Visitors browse handmade crafts, local art, baked treats, food, bargains and pre-loved goods. It suits families and bargain hunters."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/gansbaai/barc-fundraising-golf-day/",
+    "url": "https://xplorio.com/gansbaai/barc-fundraising-golf-day/",
+    "rawFile": "raw/xplorio/gansbaai-barc-fundraising-golf-day.txt",
+    "fetchedAt": "2026-11-23T13:57:39Z",
+    "title": "BARC Fundraising Golf Day",
+    "summary": "Join BARC for a fundraising golf day at Kleinbaai Golf Club on 5 December 2026.",
+    "description": "Join BARC for a fundraising golf day at Kleinbaai Golf Club on 5 December 2026. Enjoy a 2 Ball American Scramble while supporting animal rescue!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "open",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "08:00",
+        "endTime": "17:00"
+      }
+    ],
+    "venue": {
+      "name": "Gansbaai Golf Club",
+      "address": "Kleinbaai, Gansbaai 7220",
+      "city": "Gansbaai"
+    },
+    "hints": [
+      "Gansbaai Events",
+      "Sports",
+      "Tee off for tails! Join BARC’s charity golf day and help make a difference for animals"
+    ],
+    "attributes": {
+      "category": [
+        "sport",
+        "community_and_causes"
+      ],
+      "format": "match_or_tournament",
+      "audience": "adults",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "golf",
+      "charity"
+    ],
+    "profile": "BARC's fundraising golf day, a 2 Ball American Scramble at Kleinbaai near Gansbaai in support of animal rescue. Golfers enter to play for the day. It suits golfers who want to support a cause."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/gansbaai/rewilding-greater-gansbaai/",
+    "url": "https://xplorio.com/gansbaai/rewilding-greater-gansbaai/",
+    "rawFile": "raw/xplorio/gansbaai-rewilding-greater-gansbaai.txt",
+    "fetchedAt": "2026-11-23T13:57:50Z",
+    "title": "Rewilding Greater Gansbaai",
+    "summary": "Help protect and restore the local landscape by clearing invasive plants.",
+    "description": "Join Rewilding Greater Gansbaai on Saturday, 7 November, to help protect and restore our beautiful local landscape by clearing invasive plants. Volunteers will meet at 09:30 AM at the Restaurant at Groeneweide Farm in Franskraal. Please remember to bring a hat, sunscreen, sturdy boots, a small handspade, and plenty of water. As a token of appreciation for your time and hard work, free coffee will be provided for all helpers after the event. Remember, it takes one landscape and many hands—we look forward to seeing you there!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-05",
+        "precision": "day",
+        "startTime": "09:30",
+        "endTime": "13:00"
+      }
+    ],
+    "venue": {
+      "name": "Groeneweide Farm (Restaurant)",
+      "address": "Franskraal, Gansbaai 7220",
+      "city": "Gansbaai"
+    },
+    "hints": [
+      "Gansbaai Events",
+      "Special Events",
+      "One Landscape Many Hands"
+    ],
+    "attributes": {
+      "category": [
+        "community_and_causes",
+        "nature_and_wildlife"
+      ],
+      "format": "class_or_workshop",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "A volunteer morning with Rewilding Greater Gansbaai, clearing invasive plants to restore the local landscape, meeting at the restaurant at Groeneweide Farm in Franskraal. Volunteers bring a hat, sunscreen, boots, a hand spade and water, and get free coffee afterwards. It suits visitors who want to help with conservation."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/kleinmond/kleinmond-chess-club/",
+    "url": "https://xplorio.com/kleinmond/kleinmond-chess-club/",
+    "rawFile": "raw/xplorio/kleinmond-kleinmond-chess-club.txt",
+    "fetchedAt": "2026-11-23T13:58:00Z",
+    "title": "Kleinmond Chess Club",
+    "summary": "Anyone who is interested in joining can pop in at the Kleinmond Library every Tuesday evening from 18:00 to 20:00.",
+    "description": "Kleinmond Chess Club was founded in August 2016 and has come a long way since. Initially, the intention was for like-minded adults to meet weekly for a game of chess but our club also started admitting junior members in 2019 due to great demand from the youngsters in our area. Our membership numbers have steadily increased largely due to our open door policy and the fact that we strongly feel that our club is for people of all different age groups and skill levels interested in playing chess within our community. Kleinmond Chess Club is also part of the Overberg Chess Federation.\nAlthough our club is for social chess purposes we do however host a number of internal championships throughout the year to keep things interesting and play for a top spot on our ranking scoreboard to keep the competitive spirit alive within our group. Anyone who is interested in joining can pop in at the Kleinmond Library every Tuesday evening from 18:00 to 20:00",
+    "type": "recurring",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [],
+    "recurrence": {
+      "rule": "FREQ=WEEKLY;BYDAY=TU",
+      "start": "2026-11-24",
+      "startTime": "18:00",
+      "endTime": "20:00"
+    },
+    "venue": {
+      "name": "Kleinmond Library Hall",
+      "address": "Kleinmond 7195",
+      "city": "Kleinmond"
+    },
+    "hints": [
+      "Local Clubs",
+      "Special Interest Clubs",
+      "Welcomes new members"
+    ],
+    "attributes": {
+      "category": [
+        "hobbies_and_lifestyle"
+      ],
+      "format": "class_or_workshop",
+      "audience": "all_ages",
+      "setting": "indoor",
+      "scale": "local"
+    },
+    "tags": [],
+    "profile": "Kleinmond Chess Club meets for social chess at the Kleinmond Library Hall every Tuesday evening from 18:00 to 20:00, and anyone interested can pop in. Players of all ages and skill levels play games, with internal championships during the year. It suits chess players visiting Kleinmond."
+  },
+  {
+    "source": "Xplorio",
+    "sourceListingId": "https://xplorio.com/stanford/rivergate-christmas-market/",
+    "url": "https://xplorio.com/stanford/rivergate-christmas-market/",
+    "rawFile": "raw/xplorio/stanford-rivergate-christmas-market.txt",
+    "fetchedAt": "2026-11-23T13:58:03Z",
+    "title": "Rivergate Christmas Market",
+    "summary": "Join us at Rivergate Christmas Market on 13 December 2026 from 9am for 80 stalls, live music, local artisans, food and drinks!",
+    "description": "Join us at Rivergate Christmas Market on 13 December 2026 from 9am for 80 stalls, live music, local artisans, food and drinks!",
+    "type": "single",
+    "status": "confirmed",
+    "booking": "none",
+    "sessions": [
+      {
+        "start": "2026-12-13",
+        "precision": "day",
+        "startTime": "10:00",
+        "endTime": "18:00"
+      }
+    ],
+    "venue": {
+      "name": "Rivergate Guest Farm",
+      "address": "Wortelgat Road, Stanford 7210",
+      "city": "Stanford"
+    },
+    "hints": [
+      "Events",
+      "Markets",
+      "Artisinal Shopping - Food & Wine - Live Music"
+    ],
+    "attributes": {
+      "category": [
+        "holidays_and_celebrations",
+        "food_and_drink"
+      ],
+      "format": "market",
+      "audience": "all_ages",
+      "setting": "outdoor",
+      "scale": "local"
+    },
+    "tags": [
+      "christmas",
+      "craft"
+    ],
+    "profile": "Rivergate's Christmas market at Rivergate Guest Farm near Stanford, with 80 stalls, live music, local artisans, food and drinks. Visitors shop for gifts and spend the day. It suits families and gift shoppers."
+  }
+]
