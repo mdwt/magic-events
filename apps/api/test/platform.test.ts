@@ -51,15 +51,8 @@ describe("authentication", () => {
     { method: "DELETE", url: "/mcp" },
     { method: "POST", url: "/v1/experiences/search", payload: SEARCH },
     { method: "GET", url: "/no/such/path" },
+    { method: "POST", url: "/v1/experiences/changes", payload: { since: "2026-01-01T00:00:00Z" } },
     { method: "POST", url: "/v1/no-such-route", payload: {} },
-    { method: "POST", url: "/v1/tenants", payload: { name: "Blue", slug: "blue", kind: "travel_agency" } },
-    { method: "GET", url: "/v1/tenants" },
-    { method: "GET", url: "/v1/tenants/blue" },
-    { method: "PATCH", url: "/v1/tenants/blue", payload: { status: "suspended" } },
-    { method: "POST", url: "/v1/tenants/blue/users", payload: { name: "Ann", email: "ann@example.com" } },
-    { method: "POST", url: "/v1/users/someone/credentials", payload: { name: "desk", kind: "person" } },
-    { method: "GET", url: "/v1/users/someone/credentials" },
-    { method: "DELETE", url: "/v1/users/someone/credentials/something" },
   ] as const;
 
   for (const route of routes) {
@@ -99,8 +92,8 @@ describe("authentication", () => {
 
   test("with a valid key, a known path asked with another method is 405 with Allow", async () => {
     for (const [method, url, allow] of [
-      ["PUT", "/v1/tenants", "GET, HEAD, POST"],
-      ["DELETE", "/v1/tenants/blue", "GET, HEAD, PATCH"],
+      ["PUT", "/openapi.json", "GET, HEAD"],
+      ["DELETE", "/v1/experiences/changes", "POST"],
       ["GET", "/v1/experiences/search?x=1", "POST"],
     ] as const) {
       const response = await harness.app.inject({ method, url, headers: bearer(key) });
@@ -111,7 +104,32 @@ describe("authentication", () => {
       assert.match(error.message, new RegExp(method));
     }
     // Without a key it is 401, as for a path that does not exist.
-    assert.equal((await harness.app.inject({ method: "PUT", url: "/v1/tenants" })).statusCode, 401);
+    assert.equal((await harness.app.inject({ method: "PUT", url: "/openapi.json" })).statusCode, 401);
+  });
+
+  // Tenants, users and keys are managed from the command line. The API has no address for them.
+  const ADMIN_ADDRESSES = [
+    { method: "POST", url: "/v1/tenants", payload: { name: "Blue", slug: "blue", kind: "travel_agency" } },
+    { method: "GET", url: "/v1/tenants" },
+    { method: "GET", url: "/v1/tenants/blue" },
+    { method: "PATCH", url: "/v1/tenants/blue", payload: { status: "suspended" } },
+    { method: "POST", url: "/v1/tenants/blue/users", payload: { name: "Ann", email: "ann@example.com" } },
+    { method: "POST", url: "/v1/users/someone/credentials", payload: { name: "desk", kind: "person" } },
+    { method: "GET", url: "/v1/users/someone/credentials" },
+    { method: "DELETE", url: "/v1/users/someone/credentials/something" },
+  ] as const;
+
+  test("the old admin addresses are not_found with a key, a system admin's too, and 401 without", async () => {
+    const admin = await harness.createCaller({ role: "system_admin" });
+    for (const route of ADMIN_ADDRESSES) {
+      for (const credential of [key, admin.key]) {
+        const response = await harness.app.inject({ ...route, headers: bearer(credential) });
+        assert.equal(response.statusCode, 404, `${route.method} ${route.url}`);
+        assert.equal(errorOf(response).code, "not_found");
+      }
+      const refused = await harness.app.inject({ ...route, headers: {} });
+      assert.equal(refused.statusCode, 401, `${route.method} ${route.url}`);
+    }
   });
 
   test("with a valid key, an unknown path is not_found in the error format", async () => {
@@ -362,11 +380,6 @@ describe("the OpenAPI document", () => {
       "/mcp": ["post", "get", "delete"],
       "/v1/experiences/search": ["post"],
       "/v1/experiences/changes": ["post"],
-      "/v1/tenants": ["post", "get"],
-      "/v1/tenants/{slug}": ["get", "patch"],
-      "/v1/tenants/{slug}/users": ["post"],
-      "/v1/users/{userId}/credentials": ["post", "get"],
-      "/v1/users/{userId}/credentials/{credentialId}": ["delete"],
     };
     assert.deepEqual(Object.keys(document.paths).sort(), Object.keys(expected).sort());
     for (const [path, methods] of Object.entries(expected)) {
@@ -387,22 +400,8 @@ describe("the OpenAPI document", () => {
     assert.ok(document.paths["/v1/experiences/search"]?.post?.requestBody);
     assert.ok(document.paths["/v1/experiences/search"].post.responses["200"]);
     for (const [path, method] of [
-      ["/v1/tenants/{slug}", "get"],
-      ["/v1/tenants/{slug}", "patch"],
-      ["/v1/tenants/{slug}/users", "post"],
-      ["/v1/users/{userId}/credentials", "post"],
-      ["/v1/users/{userId}/credentials", "get"],
-      ["/v1/users/{userId}/credentials/{credentialId}", "delete"],
-    ] as const) {
-      assert.ok(document.paths[path]?.[method]?.responses["404"], `${method} ${path} does not document 404`);
-    }
-    for (const [path, method] of [
       ["/v1/experiences/search", "post"],
       ["/v1/experiences/changes", "post"],
-      ["/v1/tenants", "post"],
-      ["/v1/tenants/{slug}", "patch"],
-      ["/v1/tenants/{slug}/users", "post"],
-      ["/v1/users/{userId}/credentials", "post"],
     ] as const) {
       for (const status of ["413", "415"]) {
         assert.ok(document.paths[path]?.[method]?.responses[status], `${method} ${path} does not document ${status}`);
@@ -414,11 +413,6 @@ describe("the OpenAPI document", () => {
     for (const method of ["get", "delete"] as const) {
       assert.ok(document.paths["/mcp"]?.[method]?.responses["405"], `${method} /mcp does not document 405`);
     }
-    for (const path of ["/v1/tenants", "/v1/tenants/{slug}/users"] as const) {
-      assert.ok(document.paths[path]?.post?.responses["409"], `post ${path} does not document 409`);
-    }
-    assert.ok(document.paths["/v1/tenants"]?.post?.responses["201"]);
-    assert.ok(document.paths["/v1/tenants"].post.requestBody);
   });
 });
 
@@ -445,6 +439,47 @@ describe("MCP", () => {
     assert.ok(search.inputSchema);
     assert.ok(search.outputSchema);
     assert.equal(search.annotations?.readOnlyHint, true);
+  });
+
+  test("initialize answers the version asked for when it is supported, and the latest when it is not", async () => {
+    for (const [asked, answered] of [
+      ["2025-11-25", "2025-11-25"],
+      ["2025-06-18", "2025-06-18"],
+      ["2025-03-26", "2025-03-26"],
+      ["1999-01-01", "2025-11-25"],
+    ] as const) {
+      const response = await mcp({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: { protocolVersion: asked, capabilities: {}, clientInfo: { name: "test", version: "1.0.0" } },
+      });
+      assert.equal(response.statusCode, 200);
+      assert.equal(response.json<{ result: { protocolVersion: string } }>().result.protocolVersion, answered, asked);
+      // Stateless: no session is started, so no later request needs one.
+      assert.equal(response.headers["mcp-session-id"], undefined);
+    }
+  });
+
+  test("a notification is answered 202 with no body, and ping with an empty result", async () => {
+    const notification = await mcp({ jsonrpc: "2.0", method: "notifications/initialized" });
+    assert.equal(notification.statusCode, 202);
+    assert.equal(notification.body, "");
+
+    const ping = await mcp({ jsonrpc: "2.0", id: 7, method: "ping" }, { ...bearer(key), "mcp-protocol-version": "2025-11-25" });
+    assert.equal(ping.statusCode, 200);
+    assert.deepEqual(ping.json(), { jsonrpc: "2.0", id: 7, result: {} });
+  });
+
+  test("a batch, which the 2025-03-26 revision allows, is answered with a batch", async () => {
+    const response = await mcp([
+      { jsonrpc: "2.0", id: 1, method: "ping" },
+      { jsonrpc: "2.0", id: 2, method: "tools/list" },
+    ]);
+    assert.equal(response.statusCode, 200);
+    const answers = response.json<{ id: number; result?: unknown }[]>();
+    assert.deepEqual(answers.map((answer) => answer.id).sort(), [1, 2]);
+    assert.ok(answers.every((answer) => answer.result !== undefined));
   });
 
   test("a tool call returns structured content and the same JSON as text", async () => {

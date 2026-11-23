@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 // Organizations: the tenants and the people in them.
 // It calls no other domain. Users, membership and roles are on Better Auth's user table, used directly.
 
@@ -50,66 +48,21 @@ export interface SaveUserInput {
   tenantSlug?: string;
 }
 
-// ---- Onboarding: what a system admin sends, over REST and MCP alike ----
+// What a system admin gives to create a tenant. It is created active.
+export interface CreateTenantInput {
+  name: string;
+  slug: string;
+  kind: TenantKind;
+  configuration?: Record<string, unknown>;
+}
 
-const slugSchema = z
-  .string()
-  .min(1)
-  .max(63)
-  .describe("The tenant's slug: lowercase letters, digits and single hyphens, such as blue-travel. It cannot be changed.");
-const nameSchema = z.string().min(1).max(200);
-const configurationSchema = z
-  .record(z.string(), z.unknown())
-  .describe("The tenant's configuration, as a JSON object. When it is given, it replaces the whole configuration.");
-
-export const createTenantInputSchema = z.strictObject({
-  name: nameSchema.describe("The tenant's name, such as Blue Travel."),
-  slug: slugSchema,
-  kind: z.enum(TENANT_KINDS).describe("What the tenant is: a travel agency or a travel app."),
-  configuration: configurationSchema.optional(),
-});
-export type CreateTenantInput = z.infer<typeof createTenantInputSchema>;
-
-export const updateTenantInputSchema = z.strictObject({
-  name: nameSchema.optional().describe("The tenant's new name."),
-  status: z
-    .enum(TENANT_STATUSES)
-    .optional()
-    .describe("active, or suspended to turn the tenant's access off: its users are refused until it is active again."),
-  configuration: configurationSchema.optional(),
-});
-export type UpdateTenantInput = z.infer<typeof updateTenantInputSchema>;
-
-export const tenantSlugParamsSchema = z.strictObject({ slug: slugSchema });
-
-export const addTenantUserInputSchema = z.strictObject({
-  name: nameSchema.describe("The person's name."),
-  email: z.string().min(1).max(254).describe("The person's email address. One user per address."),
-});
-export type AddTenantUserInput = z.infer<typeof addTenantUserInputSchema>;
-
-// ---- Onboarding: what is answered ----
-
-export const tenantSchema = z.object({
-  id: z.uuid(),
-  name: z.string(),
-  slug: z.string(),
-  kind: z.enum(TENANT_KINDS),
-  status: z.enum(TENANT_STATUSES),
-  configuration: z.record(z.string(), z.unknown()),
-});
-
-export const userSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string(),
-  role: z.enum(ROLES),
-  tenantId: z.uuid().nullable().describe("The user's tenant. Empty for a system admin."),
-});
-
-export const tenantWithUsersSchema = tenantSchema.extend({ users: z.array(userSchema) });
-
-export const tenantListSchema = z.object({ items: z.array(tenantSchema) });
+// What a system admin changes on a tenant; what is left out stays as it is. A configuration replaces the whole one,
+// and suspended turns the tenant's access off until it is active again.
+export interface UpdateTenantInput {
+  name?: string;
+  status?: TenantStatus;
+  configuration?: Record<string, unknown>;
+}
 
 // Inbound port: what Organizations offers.
 export interface Organizations {
@@ -126,6 +79,8 @@ export interface Organizations {
   getTenantBySlug(slug: string): Promise<Tenant>;
   // The users of one tenant, by name.
   listUsers(tenantId: string): Promise<User[]>;
+  // Fails with not_found when there is no user with the email address, however it is written.
+  getUserByEmail(email: string): Promise<User>;
   // Creates the user, or updates the one that has this email address. For the seed, which can be run again.
   saveUser(input: SaveUserInput): Promise<User>;
   // Creates the user. Fails with invalid_input when the email address is taken.
@@ -153,6 +108,8 @@ export interface OrganizationsRepository {
   findTenantById(id: string): Promise<Tenant | null>;
   findTenantBySlug(slug: string): Promise<Tenant | null>;
   listUsers(tenantId: string): Promise<User[]>;
+  // The email address as it is stored, lower-cased.
+  findUserByEmail(email: string): Promise<User | null>;
   upsertUser(input: UserRow): Promise<User>;
   // Null when a user with the email address already exists.
   insertUser(input: UserRow): Promise<User | null>;

@@ -39,6 +39,7 @@ const organizations: Organizations = {
   getTenant: () => Promise.resolve(null),
   getTenantBySlug: () => Promise.reject(new Error("not used")),
   listUsers: () => Promise.resolve([]),
+  getUserByEmail: () => Promise.reject(new Error("not used")),
   saveUser: () => Promise.reject(new Error("not used")),
   createUser: () => Promise.reject(new Error("not used")),
   getMembership: (userId) => Promise.resolve([ANN, BOB].includes(userId) ? member(userId) : null),

@@ -120,6 +120,35 @@ test("a client in an active tenant may act, and a client in a suspended tenant m
   }, forbidden);
 });
 
+test("a tenant suspended after its keys were issued is refused on the next call, and let in again once active", async () => {
+  const { key, tenantId } = await harness.createCaller();
+  identity.authorise(await identity.authenticate(key), "experiences.search");
+  const tenant = await harness.services.organizations.getTenant(tenantId ?? "");
+  assert.ok(tenant);
+
+  await harness.services.organizations.updateTenant(tenant.slug, { status: "suspended" });
+  const suspended = await identity.authenticate(key);
+  assert.throws(() => {
+    identity.authorise(suspended, "experiences.search");
+  }, forbidden);
+
+  await harness.services.organizations.updateTenant(tenant.slug, { status: "active" });
+  identity.authorise(await identity.authenticate(key), "experiences.search");
+});
+
+test("a revoked key is refused from then on, while the user's other key still works", async () => {
+  const { key, userId } = await harness.createCaller();
+  const other = await identity.issueCredential({ userId, kind: "agent", name: "assistant" });
+  const [first] = (await identity.listCredentials(userId)).filter((one) => one.id !== other.id);
+  assert.ok(first);
+
+  const revoked = await identity.revokeCredential(userId, first.id);
+  assert.equal(revoked.enabled, false);
+  await assert.rejects(identity.authenticate(key), unauthenticated);
+  assert.equal((await identity.authenticate(other.key)).userId, userId);
+  assert.equal((await identity.listCredentials(userId)).find((one) => one.id === first.id)?.enabled, false);
+});
+
 test("a system admin belongs to no tenant and may do everything", async () => {
   const admin = await identity.authenticate((await harness.createCaller({ role: "system_admin" })).key);
   assert.equal(admin.tenant, null);

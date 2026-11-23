@@ -42,6 +42,7 @@ function memoryRepository(): OrganizationsRepository {
     findTenantById: (id) => Promise.resolve(tenants.find((one) => one.id === id) ?? null),
     findTenantBySlug: (slug) => Promise.resolve(bySlug(slug)),
     listUsers: (tenantId) => Promise.resolve(users.filter((one) => one.tenantId === tenantId)),
+    findUserByEmail: (email) => Promise.resolve(users.find((one) => one.email === email) ?? null),
     upsertUser(input) {
       const existing = users.find((one) => one.email === input.email);
       if (existing) return Promise.resolve(Object.assign(existing, input));

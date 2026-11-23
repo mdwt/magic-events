@@ -84,6 +84,12 @@ export class OrganizationsService implements Organizations {
     return this.#repository.listUsers(tenantId);
   }
 
+  async getUserByEmail(email: string): Promise<User> {
+    const found = await this.#repository.findUserByEmail(email.trim().toLowerCase());
+    if (found === null) throw new AppError("not_found", `There is no user with the email address "${email}".`);
+    return found;
+  }
+
   async saveUser(input: SaveUserInput): Promise<User> {
     const saved = await this.#repository.upsertUser(await this.#userRow(input));
     this.#logger.info({ userId: saved.id, role: saved.role, tenantId: saved.tenantId }, "User saved");

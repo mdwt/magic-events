@@ -21,6 +21,7 @@
     "db:seed:samples": "pnpm --filter @magic-events/cli seed:samples",
     "db:studio": "pnpm --filter @magic-events/db studio",
     "cli:pipeline": "pnpm --filter @magic-events/cli run pipeline",
+    "cli:admin": "pnpm --filter @magic-events/cli run admin",
     "cli:captures": "pnpm --filter @magic-events/cli run captures",
     "openapi": "pnpm --filter @magic-events/api openapi",
     "openapi:check": "pnpm --filter @magic-events/api openapi:check",

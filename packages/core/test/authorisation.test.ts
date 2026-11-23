@@ -34,6 +34,7 @@ const identity = new IdentityService({
     getTenant: () => Promise.resolve(null),
     getTenantBySlug: () => Promise.reject(new Error("not used")),
     listUsers: () => Promise.resolve([]),
+    getUserByEmail: () => Promise.reject(new Error("not used")),
     saveUser: () => Promise.reject(new Error("not used")),
     createUser: () => Promise.reject(new Error("not used")),
     getMembership: (): Promise<Membership | null> => Promise.resolve(null),
@@ -42,7 +43,7 @@ const identity = new IdentityService({
   logger: silent,
 });
 
-const ACTIONS: Action[] = ["experiences.search", "mcp.use", "openapi.read"];
+const ACTIONS: Action[] = ["experiences.search", "experiences.changes", "mcp.use", "openapi.read"];
 
 function caller(overrides: Partial<Caller>): Caller {
   return {
@@ -82,17 +83,9 @@ test("a client without a tenant may do nothing", () => {
   }
 });
 
-test("a system admin may do everything", () => {
-  for (const action of [...ACTIONS, "tenants.manage"] as const) {
+test("a system admin may do everything a client may", () => {
+  for (const action of ACTIONS) {
     identity.authorise(caller({ role: "system_admin", tenant: null }), action);
-  }
-});
-
-test("a client may not manage tenants, as a person or an agent", () => {
-  for (const kind of ["person", "agent"] as const) {
-    assert.throws(() => {
-      identity.authorise(caller({ kind }), "tenants.manage");
-    }, forbidden);
   }
 });
 

@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test": "node --env-file-if-exists=../../.env --test --test-concurrency=1 \"test/**/*.test.ts\"",
     "pipeline": "node --env-file-if-exists=../../.env src/pipeline.ts",
+    "admin": "node --env-file-if-exists=../../.env src/admin.ts",
     "captures": "node --env-file-if-exists=../../.env src/load-captures.ts",
     "seed": "node --env-file-if-exists=../../.env src/seed/run.ts",
     "seed:samples": "node --env-file-if-exists=../../.env src/seed/run.ts --samples"

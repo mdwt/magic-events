@@ -65,11 +65,6 @@ export const bodyErrorResponses = {
   415: errorSchema("unsupported_media_type", "The request body is not JSON. Send it with Content-Type: application/json."),
 };
 
-// For a route that creates something whose name must not be taken.
-export const conflictResponse = {
-  409: errorSchema("conflict", "It already exists: the details name the field that is taken."),
-};
-
 // For a route that exists only to refuse a method. Allow names the methods the address answers.
 export const methodNotAllowedResponse = {
   405: errorSchema("method_not_allowed", "The address does not answer this method. Allow names the ones it does."),
@@ -78,11 +73,6 @@ export const methodNotAllowedResponse = {
 // For the MCP endpoint, whose transport needs the caller to accept both JSON and an event stream.
 export const notAcceptableResponse = {
   406: errorSchema("not_acceptable", "The Accept header must name both application/json and text/event-stream."),
-};
-
-// For a route that names something in its address, which may not exist.
-export const notFoundResponse = {
-  404: errorSchema("not_found", "There is nothing with this ID or slug."),
 };
 
 export interface ErrorBody {

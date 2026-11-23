@@ -99,3 +99,31 @@ test("a client must have a tenant, and the tenant must exist", async () => {
 test("a user that does not exist has no membership", async () => {
   assert.equal(await organizations.getMembership("no-such-user"), null);
 });
+
+test("a taken slug and a taken email address are refused with conflict, however the address is written", async () => {
+  await organizations.createTenant({ name: "Red Agency", slug: "red", kind: "travel_agency" });
+  await assert.rejects(
+    organizations.createTenant({ name: "Red Again", slug: "red", kind: "travel_app" }),
+    failsWith("conflict"),
+  );
+  assert.equal((await harness.db.select().from(tenant).where(eq(tenant.slug, "red"))).length, 1);
+
+  await organizations.createUser({ name: "Rae", email: "rae@red.example.com", role: "client", tenantSlug: "red" });
+  await assert.rejects(
+    organizations.createUser({ name: "Rae again", email: "RAE@red.example.com", role: "client", tenantSlug: "red" }),
+    failsWith("conflict"),
+  );
+  assert.equal((await harness.db.select().from(user).where(eq(user.email, "rae@red.example.com"))).length, 1);
+});
+
+test("a user is found by their email address, however it is written, and an unknown one is not_found", async () => {
+  await organizations.saveTenant({ name: "Teal Agency", slug: "teal", kind: "travel_agency" });
+  const created = await organizations.createUser({
+    name: "Tom",
+    email: "tom@teal.example.com",
+    role: "client",
+    tenantSlug: "teal",
+  });
+  assert.deepEqual(await organizations.getUserByEmail(" Tom@Teal.example.COM "), created);
+  await assert.rejects(organizations.getUserByEmail("nobody@teal.example.com"), failsWith("not_found"));
+});

@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { Role, TenantStatus } from "../organizations/ports.ts";
 import { AppError } from "../shared/errors.ts";
 
@@ -15,8 +14,6 @@ export const CREDENTIAL_NAME_MAX_LENGTH = 32;
 export type Action =
   | "experiences.search"
   | "experiences.changes"
-  // Onboarding: creating tenants, adding their users and issuing their credentials. A system admin's alone.
-  | "tenants.manage"
   | "mcp.use"
   | "openapi.read";
 
@@ -43,42 +40,6 @@ export interface CredentialSummary {
   kind: CallerKind;
   enabled: boolean;
 }
-
-// ---- Credentials: what a system admin sends and gets, over REST and MCP alike ----
-
-const userIdSchema = z.string().min(1).max(128).describe("The user's ID, as returned when the user was added.");
-
-export const userIdParamsSchema = z.strictObject({ userId: userIdSchema });
-
-export const credentialParamsSchema = z.strictObject({
-  userId: userIdSchema,
-  credentialId: z.string().min(1).max(128).describe("The credential's ID, as returned when it was issued or listed."),
-});
-
-export const issueCredentialInputSchema = z.strictObject({
-  name: z
-    .string()
-    .min(1)
-    .max(CREDENTIAL_NAME_MAX_LENGTH)
-    .describe("A name that says where the key is used, such as \"planning desk\" or \"trip assistant\"."),
-  kind: z
-    .enum(CALLER_KINDS)
-    .describe("Who uses the key: a person, or an AI agent acting for them. Both have the same access."),
-});
-
-export const issuedCredentialSchema = z.object({
-  id: z.string(),
-  key: z.string().describe("The API key. It is shown only in this answer and cannot be read again, so keep it now."),
-});
-
-export const credentialSummarySchema = z.object({
-  id: z.string(),
-  name: z.string().nullable(),
-  kind: z.enum(CALLER_KINDS),
-  enabled: z.boolean().describe("False once the key is revoked: it is refused from then on."),
-});
-
-export const credentialListSchema = z.object({ items: z.array(credentialSummarySchema) });
 
 // What authenticate fails with when a credential has made too many requests: rate_limited, with when to try again.
 // retryAfterSeconds is undefined when it is not known.

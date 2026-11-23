@@ -93,6 +93,11 @@ export function createOrganizationsRepository(db: Db): OrganizationsRepository {
       return rows.map(toUser);
     },
 
+    async findUserByEmail(email) {
+      const [row] = await db.select().from(user).where(eq(user.email, email));
+      return row ? toUser(row) : null;
+    },
+
     async findMembership(userId): Promise<Membership | null> {
       const [row] = await db.select().from(user).leftJoin(tenant, eq(user.tenantId, tenant.id)).where(eq(user.id, userId));
       if (!row) return null;
