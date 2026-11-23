@@ -83,24 +83,22 @@ openssl rand -base64 48    # paste the output into .env as BETTER_AUTH_SECRET
 
 `BETTER_AUTH_SECRET` is the only value you have to set. The defaults cover the rest.
 
-**3. Start Postgres**
+**3. Set up the database**
 
 ```sh
-pnpm db:up
+pnpm quickstart
 ```
 
-This starts the one container in [docker-compose.yml](docker-compose.yml). More on it under
-[The database](#the-database).
+One command, three jobs:
 
-**4. Run the migrations and seed the data**
+- It starts Postgres, the one container in [docker-compose.yml](docker-compose.yml). More on it under
+  [The database](#the-database).
+- It restores a snapshot of the feed: 283 experiences in and around Hermanus, already classified and embedded. No
+  website is fetched and no model is called.
+- It seeds two example tenants and their users, and prints five API keys, each starting with `mev_`.
 
-```sh
-pnpm db:migrate    # creates the database and applies the migrations
-pnpm db:seed       # Hermanus, its sources, two example tenants, their users and API keys
-```
-
-The seed prints five API keys, each starting with `mev_`. **Copy them somewhere now.** They are stored only as a hash
-and can't be shown again, and running the seed a second time won't issue new ones.
+**Copy the keys somewhere now.** They are stored only as a hash and can't be shown again, and seeding a second time
+won't issue new ones.
 
 Lost one? Issue a fresh key to the same user:
 
@@ -111,16 +109,7 @@ pnpm cli:admin key issue --user planner@agency.example.com --name "my key" --kin
 `pnpm cli:admin` is also how you onboard a tenant, add its users and revoke a key. The API has no admin endpoints, so
 it all happens here. The commands are in [apps/cli](apps/cli/README.md#commands).
 
-**5. Load some events**
-
-```sh
-pnpm cli:captures
-```
-
-This runs the captured Hermanus pages in `data/hermanus` through the pipeline, so you have real experiences to search
-without fetching a single website.
-
-**6. Start the server**
+**4. Start the server**
 
 ```sh
 pnpm dev
@@ -129,19 +118,51 @@ pnpm dev
 The API is now on <http://localhost:4000>, and the web app on <http://localhost:3000>. Both restart when the code
 changes.
 
-**7. Check it works**
+**5. Check it works**
 
 ```sh
 curl http://localhost:4000/health
+```
 
+That answers `{"status":"ok"}`. Now search for what's on in Hermanus over ten days in December:
+
+```sh
 curl http://localhost:4000/v1/experiences/search \
   -H "Authorization: Bearer <key>" \
   -H "Content-Type: application/json" \
   -d '{"location":"hermanus","from":"2026-12-10","to":"2026-12-20"}'
 ```
 
-The first answers `{"status":"ok"}`. The second returns what's on in Hermanus over those ten days. Every endpoint is
-described in [apps/api](apps/api/README.md#endpoints) and in the OpenAPI document at `/openapi.json`.
+And ask what changed for a stay since a moment in the past, the way a planner checks back on a trip:
+
+```sh
+curl http://localhost:4000/v1/experiences/changes \
+  -H "Authorization: Bearer <key>" \
+  -H "Content-Type: application/json" \
+  -d '{"location":"hermanus","from":"2026-12-01","to":"2027-09-30","since":"2026-11-23T17:10:00Z"}'
+```
+
+That returns nine experiences: one cancelled, one postponed, one rescheduled, and so on. Those nine changes were made
+for demonstration and aren't true of the real events. What's in the snapshot, and what was changed, is in
+[packages/db/snapshot](packages/db/snapshot/README.md).
+
+Every endpoint is described in [apps/api](apps/api/README.md#endpoints) and in the OpenAPI document at
+`/openapi.json`.
+
+### Building the feed yourself
+
+The snapshot is the shortcut. To build the same feed through the real pipeline, from the captured pages in
+`data/hermanus`, swap step 3 for:
+
+```sh
+pnpm db:up
+pnpm db:migrate     # creates the database and applies the migrations
+pnpm db:seed        # Hermanus, its sources, the example tenants and users, and the API keys
+pnpm cli:captures   # runs the captured pages through the pipeline
+```
+
+`pnpm quickstart` leaves a database that already has tables alone. To replace it with the snapshot, run
+`pnpm db:restore --replace`, then `pnpm db:seed` for new users and keys.
 
 ## The database
 
@@ -163,7 +184,7 @@ docker compose down -v             # stop it and delete the data
 ```
 
 The Compose project has a fixed name, `magic-events`, so the main checkout and every git worktree share one container
-and one database. After `docker compose down -v`, run steps 3 to 5 again to get back to a working setup.
+and one database. After `docker compose down -v`, run `pnpm quickstart` again to get back to a working setup.
 
 ## Connect Claude
 
@@ -256,11 +277,11 @@ claude mcp add --transport http magic-events http://localhost:4000/mcp --header 
 
 ## Fetching live data
 
-The captured pages are enough to explore. To fetch the real sources, add two things to `.env`:
+The snapshot is enough to explore. To fetch the real sources, add two things to `.env`:
 
 - `ANTHROPIC_API_KEY`, for the language model that turns listings into experiences.
-- `AWS_REGION` and AWS credentials, for the embedding model on Amazon Bedrock. Without them search still works, and
-  orders results by keyword alone.
+- `AWS_REGION` and AWS credentials, for the embedding model on Amazon Bedrock. Search uses it too, to embed the
+  traveller's query: without the credentials, search still works and orders results by keyword alone.
 
 `pnpm cli:pipeline run` then fetches every source, processes what it found and embeds the results. The commands are in
 [apps/cli](apps/cli/README.md).
