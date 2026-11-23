@@ -4,7 +4,7 @@
 
 ## System overview
 
-The system is a multi-tenant platform that finds, processes and serves experiences by location. Travel businesses query it to plan trips. Clients only read; they cannot create or change experiences. Clients reach it through a REST API and an MCP interface. This revision defines the domains, their boundaries and the main use cases, and makes no technology choices.
+The system is a multi-tenant platform that finds, processes and serves experiences by location. Travel businesses query it to plan trips. Clients only read; they cannot create or change experiences. Clients reach it through a REST API and an MCP interface, which are theirs alone. The platform operator works from the command line. This revision defines the domains, their boundaries and the main use cases, and makes no technology choices.
 
 Version 1 is an experience feed. It holds no trip context and serves experiences from the search parameters the client sends.
 
@@ -23,8 +23,8 @@ Version 1 has two roles. Every person or agent that calls the system acts as one
 
 | Role | Kind | Who holds it | What they can do |
 | --- | --- | --- | --- |
-| System admin | System role | The platform operator | Onboard and configure tenants, manage users and roles, manage locations and sources, oversee discovery and processing |
-| Client | User role | Users of a client tenant | Search experiences and track changes |
+| System admin | System role | The platform operator | From the command line: onboard and configure tenants, add their users, issue and revoke their keys, suspend a tenant, manage locations and sources, and run discovery and processing by hand. A system admin's key can call the client endpoints too |
+| Client | User role | Users of a client tenant | Search experiences and track changes, through the REST API or MCP |
 
 Client tenants come in two kinds. All of them hold the client role, and they use the system differently:
 
@@ -86,6 +86,7 @@ flowchart TB
     SCH[Scheduler]
     REST[REST API]
     MCP[MCP]
+    CLI[Command line]
   end
   ID[Identity: authenticates and authorises every call]
   subgraph Application core
@@ -104,6 +105,8 @@ flowchart TB
   end
   REST --> ID
   MCP --> ID
+  CLI --> ORG
+  CLI --> ID
   ID --> CAT
   ID --> ORG
   SCH --> DIS
@@ -137,7 +140,7 @@ Models from outside providers sit behind ports like everything else. The domains
 
 The model ports and their adapters are defined in [data-processing.md](data-processing.md). The job queue is described under Background jobs, below, and publishing domain events in [domain-events.md](domain-events.md).
 
-REST and MCP are two adapters on the same inbound ports, so a person and an agent get identical behaviour. The scheduler is the third inbound side. It starts discovery, processing, Catalogue's embedding, and Catalogue's upkeep, which moves finished experiences to Past and generates recurring sessions further ahead, without passing through Identity, because no client is involved.
+REST and MCP are the client's two adapters, on the same inbound ports, so a person and an agent get identical behaviour. Both offer the same two things, searching experiences and checking what changed, and nothing else. The command line is the operator's: with it a system admin onboards tenants, adds their users, issues and revokes their keys and suspends a tenant, and runs the pipeline and the seed by hand. It runs where the system runs and calls the services directly, with no API key. The scheduler is the other inbound side. It starts discovery, processing, Catalogue's embedding, and Catalogue's upkeep, which moves finished experiences to Past and generates recurring sessions further ahead, without passing through Identity, because no client is involved.
 
 ### Background jobs
 
@@ -163,7 +166,7 @@ Work that no client asks for is a job: finding the sources that are due, fetchin
 | Data processing | Process pending raw listings; process listings again; manage attribute and tag definitions and seasons | Claim and mark raw listings, get their sources' priorities, find a source and send listings back through Discovery; get a location, get an experience's listings, match and save experiences and remove source links through Catalogue; store attribute and tag definitions; ask the language model; load the data warehouse |
 | Catalogue | Search experiences; get changes since; manage locations; get a location; get an experience; find an experience by source link or candidates; save an experience; remove a source link; embed experiences that have no embedding; keep up, which moves finished experiences to Past, closes bookings whose close time has passed and generates the sessions of recurring experiences further ahead | Store locations, published experiences and their history; embed texts; get the attribute definitions and the tag and season slugs from Data processing |
 | Identity | Authenticate a caller; authorise an action; issue, list and revoke a user's credentials | Store credentials (Better Auth); get a user's tenant and its status from Organizations |
-| Organizations | Create, change, list and get tenants; add and list a tenant's users; get a user's role and tenant | Store tenants and users |
+| Organizations | Create, change, list and get tenants; add and list a tenant's users; find a user by their email address; get a user's role and tenant | Store tenants and users |
 
 ### Rules
 
@@ -223,12 +226,14 @@ Because every run fetches the same listings again, a change at the source months
 
 ### UC4: A system admin onboards a travel agency
 
-1. **Identity** authenticates the system admin and authorises tenant management.
-2. **Organizations** creates the tenant as a travel agency and sets its configuration.
-3. **Organizations** adds the agency's first user with the client role.
-4. **Identity** issues that user's credentials for REST and MCP.
+The operator does this from the command line, with `pnpm cli:admin`. The API has no admin endpoints.
 
-Onboarding is the action `tenants.manage`, and only a system admin may take it. Over REST and MCP alike, a system admin creates, lists, reads and changes tenants, suspending one included, adds users to a tenant with the client role, and issues, lists and revokes a user's API keys. A key is shown once, when it is issued. Revoking a key disables it: it is refused from then on, and stays in the user's list as disabled.
+1. The operator runs the commands where the system runs. They call the services directly, with no API key, so no client can reach them.
+2. **Organizations** creates the tenant as a travel agency and sets its configuration: `admin tenant create`.
+3. **Organizations** adds the agency's first user with the client role: `admin user add`.
+4. **Identity** issues that user's credentials, a person's key and an agent's key, which work at once over REST and MCP: `admin key issue`.
+
+From the command line a system admin also lists, reads and changes tenants, suspending one included, and lists and revokes a user's API keys. A user is named by their email address. A key is shown once, when it is issued. Suspending a tenant refuses its users until it is active again. Revoking a key disables it: it is refused from then on, the user's other keys keep working, and it stays in the user's list as revoked.
 
 ## Glossary
 
@@ -260,6 +265,7 @@ Onboarding is the action `tenants.manage`, and only a system admin may take it. 
 | Do agents need their own role? | No. Agents can do exactly what clients can. Identity knows whether a caller is an agent or a person |
 | Who does a credential belong to? | A user. Every credential is an API key that belongs to one user, and the key records whether a person or an agent uses it. An agent's key acts as its user |
 | How does a caller sign in? | With an API key, on REST and MCP alike. Version 1 has no OAuth and no sign-up |
+| Who is the API for, and where is admin work done? | The API is for clients only. REST and MCP are customer-facing and offer the same two things: searching experiences and checking what changed. Admin work is done by the operator, from the command line: onboarding a tenant, adding its user, issuing and revoking keys, suspending a tenant. Version 1 has no admin API |
 | Where does trip context live? | Nowhere in the system. It is an experience feed that serves experiences from the client's search parameters |
 | How does a client search by place? | With a location's slug, such as `hermanus`, which searches around its centre, or with a point. The radius is the client's, with a default. Distance is worked out at query time |
 | How are attribute filters checked? | Against Data processing's attribute definitions, which Catalogue reads through its service. A key that is no attribute, an attribute that cannot be filtered on, or a value that is none of its options is refused, and the error lists what can be used |
