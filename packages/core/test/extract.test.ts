@@ -353,6 +353,9 @@ describe("A title is tidied", () => {
     ["ALBERT FROST TRIO", "Albert Frost Trio", undefined],
     ["HARCOURTS 10KM ROAD RACE", "Harcourts 10KM Road Race", undefined],
     ["PRIDE FUN WALK", "Pride Fun Walk", undefined],
+    // One word in capitals is a name, such as a band's, and stays as written.
+    ["RAAF", "RAAF", undefined],
+    ["SOMOS", "SOMOS", undefined],
     ["TWO COOKIES | MAKE ONE. GIVE ONE.", "Two Cookies Make One. Give One.", undefined],
     ["NYE PARTY WITH DJ MILKY AT THE BMX TRACK", "NYE Party with DJ Milky at the BMX Track", undefined],
     ["The Gecko , Hermanus", "The Gecko, Hermanus", undefined],

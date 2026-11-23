@@ -13,6 +13,7 @@ import { matchAnswerSchema, type MatchAnswer } from "@magic-events/core/data-pro
 import type { ProcessingOutcome } from "@magic-events/core/data-processing/ports.ts";
 import type { FetchedListing, SaveSourceInput, SourceFetcher } from "@magic-events/core/discovery/ports.ts";
 import { type LanguageModel, LanguageModelFailed, type LanguageModelRequest } from "@magic-events/core/shared/language-model.ts";
+import { capturedIndex } from "./captured-title.ts";
 import { matchPlainly, readMatchQuestion } from "./plain-match.ts";
 
 // Loads pages captured by a browser scrape through the pipeline, as if the sources had just been fetched.
@@ -302,8 +303,11 @@ class CaptureModel implements LanguageModel {
     }
 
     if (schema === classificationAnswerSchema) {
-      const title = /^Title: (.*)$/m.exec(request.text)?.[1];
-      const index = this.#current.findIndex((experience) => experience.title.trim() === title);
+      const title = /^Title: (.*)$/m.exec(request.text)?.[1] ?? "";
+      const index = capturedIndex(
+        this.#current.map((experience) => experience.title),
+        title,
+      );
       const captured = this.#current[index];
       if (captured) {
         // Taken out, so a second experience with the same title on the page gets its own.

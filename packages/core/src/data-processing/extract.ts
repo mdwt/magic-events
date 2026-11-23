@@ -500,8 +500,9 @@ function titleCaseWord(word: string, first: boolean): string {
 
 // A title tidied in the ways that need no judgement: the segments of a title joined by pipes that are only the
 // place, a date, a label or the site's name are taken off and the rest joined with spaces ("Hermanus | Solstice |
-// Secret Sunset" is "Solstice Secret Sunset"); a title wholly in capitals is put in title case; spaces before a
-// comma, doubled spaces and punctuation at either end are taken off. What else a title needs is the model's.
+// Secret Sunset" is "Solstice Secret Sunset"); a title of several words wholly in capitals is put in title case,
+// while one word in capitals is a name, such as the band RAAF, and stays; spaces before a comma, doubled spaces and
+// punctuation at either end are taken off. What else a title needs is the model's.
 export function tidyTitle(title: string, places: string[], site: string | undefined): string {
   let tidied = title.replace(/\s+/g, " ").trim();
   if (tidied.includes("|")) {
@@ -516,7 +517,8 @@ export function tidyTitle(title: string, places: string[], site: string | undefi
     tidied = (kept.length > 0 ? kept : segments).join(" ");
   }
   const letters = tidied.replace(/[^\p{L}]/gu, "");
-  if (letters.length > 3 && letters === letters.toUpperCase() && letters !== letters.toLowerCase()) {
+  const severalWords = tidied.split(" ").filter((word) => /\p{L}/u.test(word)).length > 1;
+  if (severalWords && letters === letters.toUpperCase() && letters !== letters.toLowerCase()) {
     tidied = tidied
       .split(" ")
       .map((word, index) => titleCaseWord(word, index === 0))
