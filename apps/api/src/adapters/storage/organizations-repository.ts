@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { tenant, user, type Db } from "@magic-events/db";
-import { eq, sql } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 import type { Membership, OrganizationsRepository, Tenant, User } from "../../core/organizations/ports.ts";
 
 // Tenants are Organizations' own table. Users, membership and roles are on Better Auth's user table, which
@@ -32,6 +32,26 @@ export function createOrganizationsRepository(db: Db): OrganizationsRepository {
       return toTenant(row);
     },
 
+    async insertTenant(input) {
+      // A taken slug inserts nothing, so two admins creating the same tenant at once cannot both succeed.
+      const [row] = await db.insert(tenant).values(input).onConflictDoNothing({ target: tenant.slug }).returning();
+      return row ? toTenant(row) : null;
+    },
+
+    async updateTenant(slug, changes) {
+      const [row] = await db
+        .update(tenant)
+        .set({ ...changes, updatedAt: sql`now()` })
+        .where(eq(tenant.slug, slug))
+        .returning();
+      return row ? toTenant(row) : null;
+    },
+
+    async listTenants() {
+      const rows = await db.select().from(tenant).orderBy(asc(tenant.name), asc(tenant.slug));
+      return rows.map(toTenant);
+    },
+
     async findTenantById(id) {
       // The ID column is a UUID, so anything else names no tenant.
       if (!UUID.test(id)) return null;
@@ -56,6 +76,21 @@ export function createOrganizationsRepository(db: Db): OrganizationsRepository {
         .returning();
       if (!row) throw new Error("The user upsert returned no row");
       return toUser(row);
+    },
+
+    async insertUser(input) {
+      const [row] = await db
+        .insert(user)
+        .values({ id: randomUUID(), ...input })
+        .onConflictDoNothing({ target: user.email })
+        .returning();
+      return row ? toUser(row) : null;
+    },
+
+    async listUsers(tenantId) {
+      if (!UUID.test(tenantId)) return [];
+      const rows = await db.select().from(user).where(eq(user.tenantId, tenantId)).orderBy(asc(user.name), asc(user.email));
+      return rows.map(toUser);
     },
 
     async findMembership(userId): Promise<Membership | null> {

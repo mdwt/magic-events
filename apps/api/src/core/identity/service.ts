@@ -5,6 +5,8 @@ import { AppError } from "../shared/errors.ts";
 import type { Logger } from "../shared/logger.ts";
 import type { IdentitySettings } from "../shared/settings.ts";
 import {
+  CALLER_KINDS,
+  CREDENTIAL_NAME_MAX_LENGTH,
   CredentialRateLimitedError,
   type Action,
   type Caller,
@@ -17,7 +19,7 @@ import {
 // The parts of Better Auth that Identity calls. Identity uses Better Auth directly, the one documented exception to
 // ports; the instance is built with its API key plugin by the composition root.
 export interface IdentityAuth {
-  api: Pick<BetterAuth<{ plugins: [ReturnType<typeof apiKey>] }>["api"], "createApiKey" | "verifyApiKey">;
+  api: Pick<BetterAuth<{ plugins: [ReturnType<typeof apiKey>] }>["api"], "createApiKey" | "verifyApiKey" | "updateApiKey">;
   $context: Promise<{ adapter: Pick<DBAdapter, "findMany"> }>;
 }
 
@@ -35,8 +37,6 @@ const ALLOWED: Record<Action, Record<Role, boolean>> = {
 // One message for a missing, unknown, disabled or expired key, so a caller cannot tell which.
 export const UNAUTHENTICATED_MESSAGE = "A valid API key is required. Send it as: Authorization: Bearer <key>.";
 
-const NAME_MAX_LENGTH = 32;
-const KINDS: readonly CallerKind[] = ["person", "agent"];
 
 export class IdentityService implements Identity {
   readonly #auth: IdentityAuth;
@@ -98,13 +98,12 @@ export class IdentityService implements Identity {
 
   async issueCredential(input: { userId: string; kind: CallerKind; name: string }): Promise<IssuedCredential> {
     const name = input.name.trim();
-    if (name.length === 0 || name.length > NAME_MAX_LENGTH) {
+    if (name.length === 0 || name.length > CREDENTIAL_NAME_MAX_LENGTH) {
       throw new AppError("invalid_input", "The credential's name is not valid.", [
-        { path: "name", message: `Must be 1 to ${NAME_MAX_LENGTH} characters.` },
+        { path: "name", message: `Must be 1 to ${CREDENTIAL_NAME_MAX_LENGTH} characters.` },
       ]);
     }
-    const membership = await this.#organizations.getMembership(input.userId);
-    if (membership === null) throw new AppError("not_found", "There is no user with this ID.");
+    await this.#requireUser(input.userId);
 
     const created = await this.#auth.api.createApiKey({
       body: {
@@ -116,11 +115,13 @@ export class IdentityService implements Identity {
         rateLimitTimeWindow: this.#settings.apiKeyRateLimitWindowSeconds * 1000,
       },
     });
-    this.#logger.info({ userId: input.userId, credentialId: created.id, kind: input.kind }, "Credential issued");
+    // Under its own key, so the caller's userId and credentialId on the line still say who did it. Never the key.
+    this.#logger.info({ credential: { id: created.id, userId: input.userId, kind: input.kind } }, "Credential issued");
     return { id: created.id, key: created.key };
   }
 
   async listCredentials(userId: string): Promise<CredentialSummary[]> {
+    await this.#requireUser(userId);
     // The plugin's list endpoint needs a signed-in session, which a server call does not have, so the keys are read
     // through Better Auth's own adapter. The hashed keys are never read out.
     const { adapter } = await this.#auth.$context;
@@ -135,6 +136,24 @@ export class IdentityService implements Identity {
       kind: kindOf(key.metadata) ?? "person",
       enabled: key.enabled !== false,
     }));
+  }
+
+  async revokeCredential(userId: string, credentialId: string): Promise<CredentialSummary> {
+    // Only this user's credentials are searched, so another user's credential ID is not_found too.
+    const credentials = await this.listCredentials(userId);
+    if (!credentials.some((credential) => credential.id === credentialId)) {
+      throw new AppError("not_found", "This user has no credential with this ID.");
+    }
+    // Disabled rather than deleted: the plugin deletes a key only for a signed-in session, verifyApiKey refuses a
+    // disabled key just the same, and the user's list still shows the key was revoked.
+    const updated = await this.#auth.api.updateApiKey({ body: { keyId: credentialId, userId, enabled: false } });
+    this.#logger.info({ credential: { id: credentialId, userId } }, "Credential revoked");
+    return { id: updated.id, name: updated.name, kind: kindOf(updated.metadata) ?? "person", enabled: updated.enabled };
+  }
+
+  async #requireUser(userId: string): Promise<void> {
+    const membership = await this.#organizations.getMembership(userId);
+    if (membership === null) throw new AppError("not_found", "There is no user with this ID.");
   }
 
   #refuse(reason: string, credentialId?: string): never {
@@ -154,7 +173,7 @@ function kindOf(metadata: unknown): CallerKind | null {
     }
   }
   if (typeof value !== "object" || value === null || !("kind" in value)) return null;
-  return KINDS.find((kind) => kind === value.kind) ?? null;
+  return CALLER_KINDS.find((kind) => kind === value.kind) ?? null;
 }
 
 // The plugin says how long to wait, in milliseconds, in the error's details.
