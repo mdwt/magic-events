@@ -9,6 +9,7 @@
     "./migrate": "./src/migrate.ts"
   },
   "scripts": {
+    "build": "tsc",
     "typecheck": "tsc",
     "lint": "eslint .",
     "generate": "drizzle-kit generate",
