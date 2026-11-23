@@ -78,7 +78,7 @@ Stored with each experience, in their own tables:
 | Attribute value | The experience's value for an attribute, such as its category | The value fits the attribute's type. A single-valued attribute has one value per experience |
 | Tag | A tag on the experience | A tag appears once per experience |
 | Source link | A listing that this experience was built from | One experience can have links from many listings and sources. A listing can link to several experiences, with at most one link to each. Data processing matches listings by these links |
-| Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. Feeds changed-since (UC2) |
+| Change | One row per version: when, what kind of change, and the previous values | Written automatically on every version. When the dates changed, the previous values hold every session the experience had, generated ones included. Feeds changed-since (UC2) |
 
 ### Dates and sessions
 
@@ -179,6 +179,11 @@ Changed-since takes the same search parameters as a search, without the query te
 
 Status and bookable narrow only the experiences that are going ahead. A Cancelled or Removed experience that matches the place, dates, attributes and tags is always reported. It is matched on its sessions in the dates, whatever each session's status.
 
+An experience the client saw for its dates and that has since moved out of them is reported too, because that is the change a planner most needs to hear:
+
+- **Matched on its sessions as they were.** Its first change row after the time given that holds previous sessions holds them as they were at that time. If one of them was Scheduled and overlapped the dates, the experience is reported, with the change kind it got, usually Rescheduled. One first published after that time was never seen by the client, so it is not matched this way. Place, attributes, tags, status and bookable apply as above, to the experience as it is now.
+- **Marked as moved out.** An entry whose experience has no session in the dates now (no Scheduled one, or none at all for a Cancelled or Removed one) carries `movedOut: true`. Its sessions are then the ones it has now, all outside the dates: where it moved to, or none when it has no dates left. Every other entry has `movedOut: false` and carries its sessions in the dates.
+
 ### Catalogue settings
 
 System settings are environment variables, read through the settings provider (see [architecture.md](architecture.md)).
@@ -252,6 +257,7 @@ The table belongs to no domain: a domain's repository appends its own domain eve
 | Position | An experience's own position, the venue's coordinates, is optional. One with no position is searched from its location's centre |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status and booking are separate fields, as defined under Experience status. Cancelled means cancelled by the organisers. Removed means no source lists it any more. Past means it is over. All three are final and left out of search |
+| Moved out of the dates | Changed-since matches an experience on its sessions now and on its sessions before the first change since the time given, read from that change row. One that matched only before is reported with `movedOut: true` and the sessions it has now |
 | Change kind | A change row has one kind. When one version changes several things, it is the first that applies of cancelled, removed, postponed, rescheduled, confirmed and changed |
 | Auth | Better Auth and its own tables in v1 |
 | Tenant | Our own `tenant` table, owned by Organizations. A user's tenant and role are two fields on Better Auth's user table, and its organization plugin is not used. The seed creates the tenants, their users and their API keys. There is no sign-up. A system admin can also onboard a tenant through the API (UC4 in [architecture.md](architecture.md)) |
