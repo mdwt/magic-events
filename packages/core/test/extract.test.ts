@@ -322,6 +322,54 @@ describe("The checks on each extracted experience", () => {
   });
 });
 
+describe("A title that names no experience", () => {
+  const fixture = (name: string) => readFileSync(new URL(`./fixtures/sources/${name}`, import.meta.url), "utf8");
+
+  test("is dropped with a warning when it is only the place and a year, or a label of the page", async () => {
+    const warnings: unknown[] = [];
+    const logger: Logger = { ...silent, warn: (fields) => warnings.push(fields) };
+    // What a real run returned for AllEvents.in's pages, whose own names for the events are "Time" and
+    // "Hermanus 2026", and the name the instructions now ask for.
+    const model = fakeLanguageModel({
+      extract: [
+        extraction(
+          answered({
+            title: "Time",
+            city: "Hawston",
+            sessions: [session({ start: "2026-12-05", end: "", startTime: "06:45" })],
+          }),
+          answered({ title: "Hermanus 2026", sessions: [session({ start: "2026-11-27", end: "2026-11-29" })] }),
+          answered({ title: "What's On: Hermanus, December", sessions: [session({ start: "2026-12-12", end: "" })] }),
+          answered({
+            title: "Atlantic Flying Club slope soaring weekend",
+            sessions: [session({ start: "2026-11-27", end: "2026-11-29" })],
+          }),
+        ),
+      ],
+    });
+    const extractor = createExtractors({ languageModel: model, horizonMonths: 24, logger }).get("web_page");
+    assert.ok(extractor);
+    const experiences = await extractor.extract(
+      input({
+        content: fixture("allevents-time.txt") + fixture("allevents-hermanus-2026.txt"),
+        contentType: "text/plain",
+      }),
+    );
+    assert.deepEqual(
+      experiences.map((experience) => experience.title),
+      ["Atlantic Flying Club slope soaring weekend"],
+    );
+    assert.equal(warnings.length, 3);
+    assert.match(JSON.stringify(warnings[0]), /names no experience/);
+  });
+
+  test("the instructions leave out seasons and ask for a title that names the experience", () => {
+    assert.match(EXTRACTION_INSTRUCTIONS, /A season or a natural spectacle/);
+    assert.doesNotMatch(EXTRACTION_INSTRUCTIONS, /A season with months and no date/);
+    assert.match(EXTRACTION_INSTRUCTIONS, /A title must name the experience/);
+  });
+});
+
 describe("An event that structured data gives one start and one end", () => {
   // Quicket's search page for Hermanus as fetched on 23 November 2026, cut to four of its events. Its visible text
   // is empty: the events are in its structured data and nowhere else.

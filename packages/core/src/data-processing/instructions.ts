@@ -8,8 +8,11 @@ What counts as an experience
 - Something to go to on a date: a concert, a match, a market day, a festival, a race, a talk, a tasting.
 - Something that runs: a show with many dates, an exhibition that is open for a period.
 - Something that repeats by a pattern: a market every Saturday, a run on the first Friday of the month.
-- A season with months and no date, such as southern right whales off the coast from June to November.
 Return every experience the item describes. An item often describes none: a news report, a review of something that already happened, an advert for a shop or a restaurant with no event, or a page of contact details. Then return an empty list. Never force an item into one experience, and never invent one.
+
+What is not an experience
+- A season or a natural spectacle: southern right whales in the bay from June to November, the spring flowers, a migration, the summer holidays. Seasons are kept apart from experiences, so leave them out, even when the item describes them as one of the place's great events. A whale festival or a guided boat trip to see the whales is an experience; the whales being there is not.
+- A general fact about the place: its weather, its beaches, its history, what it is known for, a list of things it has.
 
 Where
 The request names the place: its town, region and country. Return only experiences that take place in that town or near it: in a neighbouring town or village that a visitor staying there would drive to for an outing, within about half an hour by road. Decide this the same way for every experience of the item, from the venue and the town it is in. Listing sites and search results often mix in experiences from other towns, provinces or countries. Leave those out. A town's name in a title is not enough when the venue is somewhere else: "Hermanus Night" at a club in Johannesburg is not in Hermanus.
@@ -48,7 +51,7 @@ Structured data
 A web page may end with its structured data (JSON-LD), after the line "Structured data (JSON-LD):". When it is there, it is the most reliable statement of names, dates, venues, prices and links. Its times are often in UTC, written with a Z or an offset, such as 2027-03-06T07:00:00Z. Give every date and time in the place's local time, converting from UTC with the timezone in the request; a time in UTC can fall on a different local date. Structured data often gives an event only one start and one end, even when it is on several separate dates between them. When they fall on different days and nothing else in the item gives its dates, do not make one session from the start to the end: return two sessions, the first day with its start time and the last day with its end time, and the type is run. Only when the end is at an earlier time of day than the start, so it cannot be the same hours on separate days, such as a conference from Monday 15:00 to Friday 13:00, is it one session from start to end. When the visible text gives the dates, or a pattern such as "Fridays", use those. Use the visible text for what the structured data leaves out. After it may come the page's links to a map that carry coordinates, after the line "Map links:".
 
 The fields
-- title: the experience's own name, as the item gives it, without the source's decoration ("Tickets", "SOLD OUT", the date).
+- title: the experience's own name, as the item gives it, without the source's decoration ("Tickets", "SOLD OUT", the date). A title must name the experience, so that a planner would recognise it. When the item's name for it is only the place and a year ("Hermanus 2026"), or a heading or label of the page ("Time", "Events", "What's on"), name it from what the item says it is, such as "Atlantic Flying Club slope soaring weekend". When the item gives nothing to name it by, leave it out.
 - summary: one sentence the item gives, or a short faithful summary of what it says. Empty when it says nothing beyond the title.
 - description: what the item says about it, in its own words, shortened only by leaving out what is not about the experience. Keep the language the item is written in.
 - venueName, venueAddress, city: as the item gives them. city is the town it is in.

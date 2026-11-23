@@ -393,6 +393,29 @@ export function settleExperience(
   return { experience };
 }
 
+// Words a page uses for its headings and labels, which name no experience on their own.
+const LABEL_WORDS = new Set(
+  ("time times date dates day days venue venues location locations where when details detail info information " +
+    "tickets ticket book booking bookings event events home about contact more calendar whats what s on upcoming " +
+    "programme program schedule news gallery share today tomorrow tonight weekend this next all new the a an and " +
+    "of in at for to").split(" "),
+);
+const MONTHS = new Set(
+  ("january february march april may june july august september october november december jan feb mar apr jun jul " +
+    "aug sep sept oct nov dec").split(" "),
+);
+
+// Why a title names no experience, or undefined when it names one. A title that is only the place, a year, a month
+// or the page's headings and labels, such as "Hermanus 2026" or "Time", is a misreading of the page.
+export function titleProblem(title: string, places: string[]): string | undefined {
+  const placeWords = new Set(places.flatMap((place) => plainWords(place).split(" ")));
+  const left = plainWords(title)
+    .split(" ")
+    .filter((word) => word !== "" && !/^\d+$/.test(word) && !placeWords.has(word))
+    .filter((word) => !LABEL_WORDS.has(word) && !MONTHS.has(word));
+  return left.length === 0 ? `the title "${title}" names no experience, only a place, a date or a label` : undefined;
+}
+
 // How far from the source's location a venue may be. Sources list what is within about half an hour's drive, so
 // a position further than this is a misreading, such as a swapped sign or another venue's coordinates.
 export const MAX_VENUE_DISTANCE_KM = 100;
@@ -679,6 +702,17 @@ class LanguageModelExtractor implements Extractor {
       const settled = settleExperience(answered, input.url);
       if ("problem" in settled) {
         this.#logger.warn({ title: answered.title, problem: settled.problem }, "Extracted experience dropped");
+        continue;
+      }
+      const { location } = input;
+      const titled = titleProblem(settled.experience.title, [
+        location.name,
+        location.region,
+        location.country,
+        settled.experience.venue?.city ?? "",
+      ]);
+      if (titled !== undefined) {
+        this.#logger.warn({ title: answered.title, problem: titled }, "Extracted experience dropped");
         continue;
       }
       if (prepared.statedSpans !== undefined && prepared.statedSpans.length > 0) {
