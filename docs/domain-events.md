@@ -37,7 +37,7 @@ Every domain event is one row in the repo's append-only `events` table.
 
 | Domain event | When | Read by | Carries |
 | --- | --- | --- | --- |
-| `raw_listing.captured` | A run saves a listing that is new or has changed since the last copy | Data processing | Raw listing ID, run ID, source, location ID, the source's listing ID, address, fetched time, content type, the content or a reference to it |
+| `raw_listing.captured` | A run saves a listing that is new or has changed since the last copy | Data processing | Raw listing ID, run ID, source, location ID, the source's listing ID, address, fetched time, content type, the content |
 
 ## Data processing
 
