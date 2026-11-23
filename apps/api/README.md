@@ -194,6 +194,31 @@ answer, request ID included. Arguments that do not fit a tool are `invalid_input
 can correct its call, and the caller's right to the tool is checked before them. A tool that does not exist is a
 JSON-RPC invalid params error. A refusal at the HTTP level, such as 401, 403, 405 or 406, is in the format above.
 
+## Logs
+
+Pino writes one JSON line per event to standard output (`LOG_PRETTY=true` for readable lines). `LOG_LEVEL` sets how
+much: `info` by default.
+
+| Level | What is logged |
+| --- | --- |
+| `debug` | Every request as it starts; the resolved search or changes query, with its count and duration; a job starting and finishing; a run starting; each page fetched |
+| `info` | Every request completed, with `method`, `url`, `statusCode` and `durationMs`; the server started, with its settings that are safe to show, and stopped; each MCP tool called, with its arguments; a run finished, with its counts; a raw listing processed, with its outcome; an experience published or changed; each domain event published (`eventId`, `type`, `resourceId`); a tenant created, a user added, a key issued or revoked |
+| `warn` | A refused call, with `reason` and, for wrong input, `details` naming each field; a job that failed and will be tried again |
+| `error` | A system error, with `err` in full; a job given up; the database out of reach |
+
+Every line of a request carries `requestId`, the `x-request-id` the client got back. Once the key is checked, every line
+also carries who is calling: `tenantId`, `userId`, `callerKind` (person or agent), `role` and `credentialId`. A job's
+lines carry `job` and `jobId`. No key and no `Authorization` header is ever logged.
+
+```sh
+# One request, from the inbound side through the domain service, in order
+jq -c 'select(.requestId == "3f1c...")' server.log
+# One client's calls: by key, or by user
+jq -c 'select(.credentialId == "<key ID>" and .msg == "Request completed") | {time, method, url, statusCode, durationMs}' server.log
+# Every refusal and failure
+jq -c 'select(.level >= 40) | {time, requestId, userId, msg, reason, code}' server.log
+```
+
 ## Background jobs
 
 `src/server.ts` starts the jobs once the server is listening, on pg-boss queues in the same database. Every 15 minutes
