@@ -122,7 +122,7 @@ Three separate questions get three separate fields: is it happening (status), ca
 
 The single set of attributes and tags every experience is described with. System-managed.
 
-- **Attribute:** a key, a label, a type (option, text, number, true/false, date), whether it takes several values, and whether clients can filter on it. Categories are an option attribute.
+- **Attribute:** a key, a name, a type (option, text, number, true/false, date), a default value, whether it takes several values, and whether clients can filter on it. Categories are an option attribute.
 - **Attribute option:** an allowed value of an option attribute.
 - **Tag:** a name and slug. Not tenant-scoped, and not freeform per tenant.
 
@@ -196,7 +196,7 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 | Locations | System-managed places the system covers, owned by Catalogue, not tied to a tenant |
 | Experiences | System-managed and visible to every tenant |
 | Client access | Read only. Clients cannot create or change experiences |
-| Vocabulary | One system-managed set of attributes and tags |
+| Vocabulary | A system-defined list in the database: attributes with a name, a type and a default value, their options, and tags. Catalogue filters on it and clients list it from it |
 | Distance | Not stored. Worked out at query time from the caller's point and radius |
 | Deletion | No soft delete. An experience is not deleted while a source still lists it |
 | Status | Status, booking and past are separate, as defined under Experience status |
@@ -209,4 +209,3 @@ The repo's append-only `events` table, ordered by global position. Each domain r
 
 - [ ] If Better Auth's organization plugin is used, its organization and member tables overlap the tenant. Which one holds the tenant?
 - [ ] An experience always has a location (Hermanus), but its own map position (the venue's coordinates) is optional, and radius search uses that position. When an experience has no position, should search use its location's centre instead, or must every experience have its own position?
-- [ ] How does Catalogue get the vocabulary it filters on, and how do clients list it?

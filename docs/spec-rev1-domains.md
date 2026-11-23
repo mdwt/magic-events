@@ -200,8 +200,6 @@ Eight months later, the agent refines the trip and books activities. They want o
 
 ## Open questions
 
-Category and tag vocabulary is tracked in data-model.md.
-
 - [ ] Does an agent's credential belong to a specific user or to the tenant? The MCP question was closed on roles, but this part is still unanswered, and no flow issues or revokes an agent credential.
 - [ ] A source that marks an experience cancelled is covered: Data processing sets the status from the source. What happens when a listing disappears from its source without being marked cancelled?
 - [ ] Who reads the data warehouse in v1? Data processing loads it, and Catalogue serves search from its own store.
