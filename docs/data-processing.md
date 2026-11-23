@@ -306,6 +306,13 @@ Matching decides, for each extracted experience, whether it is an experience Cat
 
 A listing can link to several experiences, and an experience has at most one link per listing. One experience can have links from many listings and sources.
 
+Two things that look alike are still two experiences:
+
+- **Another operator's or organiser's trip.** The same kind of trip, tour or class run by someone else, even from the same place, is another experience: boat-based whale watching from New Harbour by Hermanus Whale Cruises and by Southern Right Charters are two. Their normalised titles differ, so they are never matched in code, and the model's instructions say so.
+- **The same title on separate pages.** Two listings with the same title on different dates, each sold on its own page with its own ticket link, such as Quicket's "Blessing of the Harvest" on 7 and 30 January, are two experiences and not one with two sessions, because an experience has one booking link and each date is booked through its own page. Their day dates do not overlap, so matching by dates that fit already keeps them apart.
+
+The captures command (`apps/cli`) stands in for the model's match answer with a plain rule before it asks the model. That rule is never looser than safe: it says the same only when the titles have the same words once the venues' words and dates are set aside, or when one title only adds to the other for one dated experience at the same place on the same day. Anything else it is unsure of goes to the model, and with `--no-model` the pair is left as two experiences.
+
 ### When sources disagree
 
 The same experience appears on many sources, and they do not always agree. The Whale Festival is on Quicket, AllEvents, Wesgro, SA-Venues and the tourism PDF, and winetourism.com lists different FynArts 2027 dates from the organiser.
